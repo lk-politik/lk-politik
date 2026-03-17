@@ -1,0 +1,58 @@
+[
+  {
+    "term": "Binnenmarkt",
+    "def": "Ein gemeinsamer Wirtschaftsraum, in dem Waren, Personen, Dienstleistungen und Kapital frei zirkulieren können — die vier Grundfreiheiten. Der EU-Binnenmarkt besteht seit dem 1. Januar 1993.",
+    "units": ["3-5"],
+    "chapter": 3,
+    "ab": 1
+  },
+  {
+    "term": "Vier Grundfreiheiten",
+    "def": "Die vier Kernfreiheiten des EU-Binnenmarkts: freier Warenverkehr, freier Personenverkehr, freier Dienstleistungsverkehr und freier Kapitalverkehr.",
+    "units": ["3-5"],
+    "chapter": 3,
+    "ab": 1
+  },
+  {
+    "term": "Sozialdumping",
+    "def": "Das Phänomen, dass Unternehmen oder Arbeitnehmer aus Ländern mit niedrigen Lohn- und Sozialstandards in Ländern mit höheren Standards zu geringeren Kosten anbieten, was dort Löhne und Arbeitsbedingungen unter Druck setzt.",
+    "units": ["3-5"],
+    "chapter": 3,
+    "ab": 2
+  },
+  {
+    "term": "Brain Drain",
+    "def": "Die Abwanderung gut ausgebildeter Fachkräfte aus wirtschaftlich schwächeren Regionen in stärkere, was die Herkunftsregion weiter schwächt.",
+    "units": ["3-5"],
+    "chapter": 3,
+    "ab": 2
+  },
+  {
+    "term": "Steuerwettbewerb",
+    "def": "Der Wettbewerb zwischen Staaten um Unternehmensansiedlungen durch niedrige Steuersätze, was Steuereinnahmen anderer Staaten untergräbt.",
+    "units": ["3-5"],
+    "chapter": 3,
+    "ab": 2
+  },
+  {
+    "term": "Cassis-de-Dijon-Prinzip",
+    "def": "Grundsatz des EuGH (1979): Ein in einem EU-Mitgliedstaat rechtmäßig hergestelltes und vertriebenes Produkt darf in allen anderen Mitgliedstaaten verkauft werden. Basis des gegenseitigen Anerkennungsprinzips.",
+    "units": ["3-5"],
+    "chapter": 3,
+    "ab": 2
+  },
+  {
+    "term": "LuxLeaks",
+    "def": "Enthüllungsskandal (2014): Luxemburg hatte geheime Steuerdeals mit über 300 Unternehmen geschlossen, die effektive Steuersätze unter 1 % ermöglichten — ein Beispiel für schädlichen Steuerwettbewerb innerhalb der EU.",
+    "units": ["3-5"],
+    "chapter": 3,
+    "ab": 2
+  },
+  {
+    "term": "Entsenderichtlinie",
+    "def": "EU-Richtlinie, die Mindestarbeitsbedingungen (u.a. Mindestlohn des Gastlandes) für Arbeitnehmer festlegt, die vorübergehend in einen anderen EU-Staat entsandt werden.",
+    "units": ["3-5"],
+    "chapter": 3,
+    "ab": 2
+  }
+]
