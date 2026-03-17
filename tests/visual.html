@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Visual Test — New Block Types</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>:root{--acc:#b45309;--accG:rgba(180,83,9,.08)}</style>
+</head>
+<body style="padding:2rem;background:var(--bg)">
+
+<h2 style="font-family:var(--ff-head);margin-bottom:1rem">AB2 Block</h2>
+<div class="ab2" id="ab2-test">
+  <div class="ab2-head">
+    <span class="op-badge" data-op="analysieren">analysieren · AB II</span>
+    Aufgabe 1
+  </div>
+  <div class="ab2-body">
+    <p>Analysiere das Schaubild im Kontext des Binnenmarkts.</p>
+  </div>
+</div>
+
+<h2 style="font-family:var(--ff-head);margin:2rem 0 1rem">UK Block — pairs variant</h2>
+<div class="uk" id="uk-test" data-uk="pairs">
+  <div class="uk-head">
+    <span class="op-badge" data-op="beurteilen">beurteilen · AB III</span>
+    Urteilskompetenz
+  </div>
+  <div class="uk-body">
+    <div class="uk-step"><span class="uk-step-label">1. Kontext</span><p>Was sagt die Theorie?</p></div>
+    <div class="uk-step"><span class="uk-step-label">2. Fall</span><p>Was zeigt das Material?</p></div>
+    <div class="uk-step"><span class="uk-step-label">3. Verbindung</span><p>Wo liegt der Konflikt?</p></div>
+    <div class="uk-step uk-abwaegung">
+      <span class="uk-step-label">4. Abwägung</span>
+      <div class="uk-pairs">
+        <div class="uk-pair"><span class="uk-pair-label">Argument</span><p>Der Binnenmarkt fördert Wachstum…</p></div>
+        <div class="uk-pair uk-pair-contra"><span class="uk-pair-label">Gegenargument</span><p>Jedoch führt er zu Sozialdumping…</p></div>
+      </div>
+    </div>
+    <div class="uk-step uk-urteil"><span class="uk-step-label">5. Mein Urteil</span><p>Dein begründetes Urteil…</p></div>
+  </div>
+</div>
+
+<h2 style="font-family:var(--ff-head);margin:2rem 0 1rem">UK Block — perspektiven variant</h2>
+<div class="uk" data-uk="perspektiven">
+  <div class="uk-head">⚖️ Urteilskompetenz</div>
+  <div class="uk-body">
+    <div class="uk-step"><span class="uk-step-label">1. Kontext</span><p>Was sagt die Theorie?</p></div>
+    <div class="uk-step"><span class="uk-step-label">2. Fall</span><p>Was zeigt das Material?</p></div>
+    <div class="uk-step"><span class="uk-step-label">3. Verbindung</span><p>Wo liegt der Konflikt?</p></div>
+    <div class="uk-step uk-abwaegung">
+      <span class="uk-step-label">4. Abwägung</span>
+      <div class="uk-perspektiven">
+        <div class="uk-perspektiv"><span class="uk-perspektiv-label">🇫🇷 Frankreich</span><p>Der Binnenmarkt nützt uns…</p></div>
+        <div class="uk-perspektiv"><span class="uk-perspektiv-label">🇵🇱 Polen</span><p>Für uns bedeutet das…</p></div>
+        <div class="uk-perspektiv"><span class="uk-perspektiv-label">👷 Arbeitnehmer</span><p>Ich sehe das kritisch…</p></div>
+        <div class="uk-perspektiv"><span class="uk-perspektiv-label">Deine Position</span><p>Nach Abwägung…</p></div>
+      </div>
+    </div>
+    <div class="uk-step uk-urteil"><span class="uk-step-label">5. Mein Urteil</span><p>Urteil…</p></div>
+  </div>
+</div>
+
+<h2 style="font-family:var(--ff-head);margin:2rem 0 1rem">UK Block — matrix variant</h2>
+<div class="uk" data-uk="matrix">
+  <div class="uk-head">⚖️ Urteilskompetenz</div>
+  <div class="uk-body">
+    <div class="uk-step"><span class="uk-step-label">1. Kontext</span><p>Was sagt die Theorie?</p></div>
+    <div class="uk-step"><span class="uk-step-label">2. Fall</span><p>Was zeigt das Material?</p></div>
+    <div class="uk-step"><span class="uk-step-label">3. Verbindung</span><p>Wo liegt der Konflikt?</p></div>
+    <div class="uk-step uk-abwaegung">
+      <span class="uk-step-label">4. Abwägung</span>
+      <table class="uk-matrix">
+        <thead><tr><th></th><th class="pro">Vorteile</th><th class="con">Risiken</th></tr></thead>
+        <tbody>
+          <tr><td>Wirtschaft</td><td class="uk-matrix-pro">…</td><td class="uk-matrix-con">…</td></tr>
+          <tr><td>Gesellschaft</td><td class="uk-matrix-pro">…</td><td class="uk-matrix-con">…</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="uk-step uk-urteil"><span class="uk-step-label">5. Mein Urteil</span><p>Urteil…</p></div>
+  </div>
+</div>
+
+<h2 style="font-family:var(--ff-head);margin:2rem 0 1rem">Priority System</h2>
+<button class="prio-toggle-btn" id="prio-toggle">◇ Prüfungsrelevanz anzeigen</button>
+<div class="sw" data-p="core" style="margin-top:1rem"><div class="sw-head"><span class="sw-label">📘 SACHWISSEN</span><span class="sw-title">Core Block</span></div><div class="sw-body"><p>Dieser Block ist prüfungsrelevant.</p></div></div>
+<div class="sw" data-p="imp" style="margin-top:.75rem"><div class="sw-head"><span class="sw-label">📘 SACHWISSEN</span><span class="sw-title">Important Block</span></div><div class="sw-body"><p>Normaler Block.</p></div></div>
+<div class="sw" data-p="ctx" style="margin-top:.75rem"><div class="sw-head"><span class="sw-label">📘 SACHWISSEN</span><span class="sw-title">Context Block</span></div><div class="sw-body"><p>Nur illustrativ.</p></div></div>
+
+<h2 style="font-family:var(--ff-head);margin:2rem 0 1rem">Fachbegriff Test</h2>
+<div class="sw">
+  <div class="sw-head"><span class="sw-label">📘 SACHWISSEN</span><span class="sw-title">Fachbegriff Test</span></div>
+  <div class="sw-body"><p>Der <strong class="fb">Binnenmarkt</strong> basiert auf den <strong class="fb">Vier Grundfreiheiten</strong>.</p></div>
+</div>
+
+<h2 style="font-family:var(--ff-head);margin:2rem 0 1rem">Unlock Test (ab2 + uk with data-gate)</h2>
+<button onclick="simulateGatePass(1)">Simulate Gate 1 Pass</button>
+<button onclick="simulateGatePass(3)" style="margin-left:.5rem">Simulate Gate 3 Pass</button>
+
+<div class="ab2 locked" data-gate="1" style="margin-top:1rem">
+  <div class="ab2-head"><span class="op-badge" data-op="analysieren">analysieren · AB II</span> Aufgabe 1</div>
+  <div class="ab2-body"><p>Dieser Block wird durch Gate 1 freigeschaltet.</p></div>
+</div>
+
+<div class="uk locked" data-gate="3" data-uk="pairs" style="margin-top:1rem">
+  <div class="uk-head">⚖️ Urteilskompetenz</div>
+  <div class="uk-body">
+    <div class="uk-step uk-urteil"><span class="uk-step-label">5. Mein Urteil</span><p>Freigeschaltet durch Gate 3.</p></div>
+  </div>
+</div>
+
+<script>
+document.getElementById('prio-toggle').addEventListener('click', function() {
+  var active = document.body.classList.toggle('prio-active');
+  this.textContent = active ? '◆ Prüfungsrelevanz aktiv' : '◇ Prüfungsrelevanz anzeigen';
+});
+function simulateGatePass(n) {
+  document.querySelectorAll('[data-gate="' + n + '"].locked').forEach(function(el) {
+    el.classList.remove('locked');
+    el.classList.add('unlocking');
+    setTimeout(function() { el.classList.remove('unlocking'); }, 600);
+  });
+}
+</script>
+</body>
+</html>

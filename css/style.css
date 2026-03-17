@@ -1,0 +1,2080 @@
+/* ==========================================================
+   Politik-LK — Gemeinsames CSS
+   SLP Perl | GitHub Pages | iPad Safari + Desktop Chrome/Edge
+   ==========================================================
+   Fonts   : Fraunces (serif) · DM Sans (body) · IBM Plex Mono
+   Zielgerät: iPad Safari, Desktop Chrome/Edge
+   Hinweis : Akzentfarbe wird pro Einheit überschrieben:
+             <style>:root{--acc:#b45309;--accL:#fef3e2;--accG:rgba(180,83,9,.08)}</style>
+   ========================================================== */
+
+/* ----------------------------------------------------------
+   0. Google Fonts Import
+   ---------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+/* ----------------------------------------------------------
+   1. Design Tokens
+   ---------------------------------------------------------- */
+:root {
+  /* Farben */
+  --bg:        #f5f0e8;
+  --card:      #ffffff;
+  --input-bg:  #faf8f4;
+
+  --ink:       #1a1a1a;
+  --ink2:      #4a4540;
+  --ink3:      #8a8278;
+
+  --border:    #d6cfc4;
+  --border-l:  #e8e2d8;
+
+  --gold:      #c5960c;
+  --gold-l:    #fef9ec;
+  --ok:        #2d7a4f;
+  --ok-l:      #eaf4ee;
+  --err:       #b83232;
+  --err-l:     #fbeaea;
+
+  /* System-Farbe für Wissensblöcke — einheitlich über alle Einheiten */
+  --sw:        #0891b2;
+  --swB:       rgba(8, 145, 178, .12);
+
+  /* Akzentfarbe — wird pro Einheit überschrieben */
+  --acc:       #3b6fa0;
+  --accL:      #e8f0f8;
+  --accG:      rgba(59, 111, 160, 0.08);
+
+  /* Typografie */
+  --ff-head:   'Fraunces', Georgia, serif;
+  --ff-body:   'DM Sans', system-ui, sans-serif;
+  --ff-mono:   'IBM Plex Mono', 'Courier New', monospace;
+
+  /* Spacing & Layout */
+  --r:         10px;
+  --r-sm:      6px;
+  --max-w:     960px;
+  --gap:       1.5rem;
+}
+
+/* ----------------------------------------------------------
+   2. Reset & Base
+   ---------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--ff-body);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.65;
+  min-height: 100vh;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: var(--acc); text-decoration: underline; }
+a:hover { opacity: .8; }
+
+/* ----------------------------------------------------------
+   3. Typografie
+   ---------------------------------------------------------- */
+h1, h2, h3, h4 {
+  font-family: var(--ff-head);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); }
+h2 { font-size: clamp(1.25rem, 3vw, 1.75rem); margin-top: 2rem; margin-bottom: .75rem; }
+h3 { font-size: 1.15rem; margin-top: 1.5rem; margin-bottom: .5rem; }
+
+p  { margin-bottom: .9rem; }
+p:last-child { margin-bottom: 0; }
+
+ul, ol { padding-left: 1.4rem; margin-bottom: .9rem; }
+li { margin-bottom: .3rem; }
+
+strong { font-weight: 600; }
+em     { font-style: italic; }
+
+code, .mono {
+  font-family: var(--ff-mono);
+  font-size: .875em;
+  background: var(--border-l);
+  padding: .1em .35em;
+  border-radius: 3px;
+}
+
+/* ----------------------------------------------------------
+   4. Layout
+   ---------------------------------------------------------- */
+.page-wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 2.5rem 1.75rem 5rem;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 1.5rem;
+  margin-bottom: var(--gap);
+}
+
+/* ----------------------------------------------------------
+   5. Breadcrumb-Navigation
+   ---------------------------------------------------------- */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .35rem;
+  font-family: var(--ff-mono);
+  font-size: .78rem;
+  color: var(--ink3);
+  margin-bottom: 1.25rem;
+}
+
+.breadcrumb a {
+  color: var(--ink3);
+  text-decoration: none;
+}
+.breadcrumb a:hover { color: var(--acc); }
+
+.breadcrumb .sep {
+  color: var(--border);
+  user-select: none;
+}
+
+.breadcrumb .current {
+  color: var(--acc);
+  font-weight: 500;
+}
+
+/* ----------------------------------------------------------
+   6. Header (Einheits-Header)
+   ---------------------------------------------------------- */
+.unit-header {
+  text-align: center;
+  padding: 2.5rem 1.5rem 2rem;
+  margin-bottom: var(--gap);
+  border-bottom: 2px solid var(--border);
+  position: relative;
+}
+
+/* Accent stripe under the border — unit color signal */
+.unit-header::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 2px;
+  background: var(--acc);
+}
+
+.unit-header .label {
+  font-family: var(--ff-mono);
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--acc);
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  margin-bottom: .6rem;
+}
+
+.unit-header h1 {
+  margin-bottom: .4rem;
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+}
+
+.unit-header .sub {
+  font-size: .9rem;
+  color: var(--ink2);
+  max-width: 580px;
+  margin: 0 auto .2rem;
+  line-height: 1.6;
+}
+
+/* Progress bar compact inside header area */
+.unit-header .progress-wrap {
+  max-width: 440px;
+  margin: 1rem auto 0;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+/* ----------------------------------------------------------
+   7. Progress-Bar
+   ---------------------------------------------------------- */
+.progress-wrap {
+  background: var(--card);
+  border: 1px solid var(--border-l);
+  border-radius: var(--r);
+  padding: .75rem 1.25rem;
+  margin-bottom: var(--gap);
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+}
+
+.progress-label {
+  font-family: var(--ff-mono);
+  font-size: .75rem;
+  color: var(--ink3);
+  margin-bottom: .5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.progress-bar {
+  height: 8px;
+  background: var(--border-l);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--acc), var(--gold));
+  border-radius: 99px;
+  transition: width .6s ease;
+  width: 0%;
+}
+
+/* ----------------------------------------------------------
+   8. Sachwissen-Block (.sw)
+   ---------------------------------------------------------- */
+.sw {
+  background: var(--card);
+  border: 1px solid var(--border-l);
+  border-left: 4px solid var(--acc);
+  border-radius: var(--r);
+  padding: 0;
+  margin-bottom: var(--gap);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,.05);
+}
+
+.sw-head {
+  padding: 1.1rem 1.5rem .9rem;
+  border-bottom: 1px solid var(--border-l);
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+}
+
+/* System badge — always cyan, independent of unit accent color */
+.sw-label {
+  font-family: var(--ff-mono);
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: .22em .65em;
+  border-radius: 4px;
+  white-space: nowrap;
+  background: var(--swB);
+  color: var(--sw);
+  flex-shrink: 0;
+}
+
+/* Block title — serif, warm, inviting */
+.sw-title {
+  font-family: var(--ff-head);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.25;
+}
+
+/* Text inside knowledge blocks — editorial feel */
+.sw p {
+  font-size: .9rem;
+  color: var(--ink2);
+  line-height: 1.85;
+  margin-bottom: .85rem;
+}
+.sw p:last-child { margin-bottom: 0; }
+
+/* Bold key terms: unit accent color — color-codes terms to this unit, aids retention */
+.sw strong { color: var(--acc); font-weight: 600; }
+
+.sw h3 {
+  font-family: var(--ff-head);
+  font-size: .975rem;
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: .35rem;
+  color: var(--acc);
+}
+
+.sw ol, .sw ul {
+  font-size: .9rem;
+  color: var(--ink2);
+  line-height: 1.75;
+  padding-left: 1.6rem;
+}
+.sw li { margin-bottom: .4rem; }
+
+/* Numbered list: counter number gets accent color + bold to match the term that follows */
+.sw ol {
+  list-style: none;
+  padding-left: 0;
+  counter-reset: sw-counter;
+}
+.sw ol li {
+  counter-increment: sw-counter;
+  padding-left: 2rem;
+  position: relative;
+}
+.sw ol li::before {
+  content: counter(sw-counter) ".";
+  position: absolute;
+  left: 0;
+  font-weight: 700;
+  color: var(--acc);
+  font-family: var(--ff-mono);
+  font-size: .8rem;
+  top: .05em;
+}
+
+/* ----------------------------------------------------------
+   9. Einstieg-Box (.einstieg)
+   ---------------------------------------------------------- */
+.einstieg {
+  background: var(--card);
+  border: 2px solid var(--acc);
+  border-radius: var(--r);
+  padding: 1.75rem 1.5rem 1.5rem;
+  margin-bottom: var(--gap);
+  box-shadow: 0 1px 3px rgba(0,0,0,.05);
+}
+
+/* Fraunces heading inside einstieg — warm, inviting entry point */
+.einstieg h2 {
+  font-family: var(--ff-head);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--acc);
+  margin-top: 0;
+  margin-bottom: .9rem;
+  line-height: 1.3;
+}
+
+.einstieg p {
+  font-size: .9rem;
+  color: var(--ink2);
+  line-height: 1.75;
+}
+
+/* Fallback for legacy mono label */
+.einstieg-head {
+  font-family: var(--ff-mono);
+  font-size: .75rem;
+  font-weight: 500;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: .75rem;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+/* Lehrkraft-Notiz innerhalb .einstieg (und allgemein) */
+.lk-note {
+  background: var(--gold-l);
+  border: 1px solid #e8c96a;
+  border-radius: var(--r-sm);
+  padding: .75rem 1rem;
+  margin-top: .75rem;
+  font-size: .875rem;
+  color: #7a5c00;
+}
+
+.lk-note strong {
+  font-family: var(--ff-mono);
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  display: block;
+  margin-bottom: .3rem;
+}
+
+/* Beispiel-Box */
+.example {
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: .75rem 1rem;
+  margin-top: .75rem;
+  font-size: .9rem;
+  font-style: italic;
+  color: var(--ink2);
+}
+
+.example::before {
+  content: "Beispiel: ";
+  font-style: normal;
+  font-weight: 600;
+  font-size: .8rem;
+  font-family: var(--ff-mono);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--ink3);
+  display: block;
+  margin-bottom: .3rem;
+}
+
+/* ----------------------------------------------------------
+   10. Aktivitäts-Box (.act-box)
+   ---------------------------------------------------------- */
+.act-box {
+  background: var(--card);
+  border: 1px solid var(--border-l);
+  border-top: 3px solid var(--acc);
+  border-radius: var(--r);
+  padding: 1.5rem;
+  margin-bottom: var(--gap);
+  box-shadow: 0 1px 3px rgba(0,0,0,.05);
+}
+
+.act-box-head {
+  font-family: var(--ff-mono);
+  font-size: .75rem;
+  font-weight: 500;
+  color: var(--acc);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: .75rem;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+.act-box h3 {
+  color: var(--acc);
+  font-size: 1.05rem;
+  margin-top: 0;
+}
+
+/* ----------------------------------------------------------
+   11. Ablauf-Box (.ablauf-box) — immer sichtbar
+   ---------------------------------------------------------- */
+.ablauf-box {
+  background: var(--gold-l);
+  border: 1px solid #e8c96a;
+  border-radius: var(--r);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: var(--gap);
+}
+
+.ablauf-box-head {
+  font-family: var(--ff-mono);
+  font-size: .75rem;
+  font-weight: 500;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: .75rem;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+.ablauf-box ol, .ablauf-box ul {
+  color: var(--ink2);
+  font-size: .925rem;
+}
+
+.ablauf-box .ablauf-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: .75rem;
+}
+
+.ablauf-tag {
+  font-family: var(--ff-mono);
+  font-size: .72rem;
+  background: #fff7dc;
+  border: 1px solid #e8c96a;
+  color: #7a5c00;
+  border-radius: 99px;
+  padding: .2em .7em;
+}
+
+/* ----------------------------------------------------------
+   12. Auflösungs-Box (.aufloesung-box) — per JS sichtbar
+   ---------------------------------------------------------- */
+.aufloesung-box {
+  display: none;
+  background: var(--ok-l);
+  border: 1px solid #a5d4b8;
+  border-left: 4px solid var(--ok);
+  border-radius: var(--r);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: var(--gap);
+}
+
+.aufloesung-box.vis {
+  display: block;
+}
+
+.aufloesung-box-head {
+  font-family: var(--ff-mono);
+  font-size: .75rem;
+  font-weight: 500;
+  color: var(--ok);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: .75rem;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+/* ----------------------------------------------------------
+   13. Quiz-Gate (.qg)
+   ---------------------------------------------------------- */
+.qg {
+  background: var(--input-bg);
+  border: 1px solid var(--border-l);
+  border-radius: var(--r);
+  margin-bottom: var(--gap);
+  overflow: hidden;
+}
+
+.qg-head {
+  background: rgba(0,0,0,.025);
+  border-bottom: 1px solid var(--border-l);
+  padding: .8rem 1.25rem;
+  font-family: var(--ff-mono);
+  font-size: .7rem;
+  font-weight: 600;
+  color: var(--ink2);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+/* Status badge inside gate header */
+.qg-head .qg-status {
+  margin-left: auto;
+  font-size: .68rem;
+  padding: .18em .6em;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.qg-head .qg-status.pend { background: var(--gold-l); color: var(--gold); }
+.qg-head .qg-status.pass { background: var(--ok-l);   color: var(--ok); }
+
+.qg-body {
+  padding: 1.1rem 1.25rem 1.25rem;
+}
+
+/* Quiz items */
+.qi {
+  margin-bottom: 1.1rem;
+  padding-bottom: .9rem;
+  border-bottom: 1px solid var(--border-l);
+}
+.qi:last-of-type { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+.qi-n {
+  font-family: var(--ff-mono);
+  font-size: .68rem;
+  color: var(--ink3);
+  letter-spacing: .06em;
+  margin-bottom: .3rem;
+}
+
+.qi-t {
+  font-size: .875rem;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.55;
+  margin-bottom: .6rem;
+}
+
+.qg-locked {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  color: var(--ink3);
+  font-size: .9rem;
+}
+
+.qg-locked .lock-icon {
+  font-size: 2rem;
+  margin-bottom: .75rem;
+  display: block;
+}
+
+/* ----------------------------------------------------------
+   14. Multiple-Choice (.mc / .mco)
+   ---------------------------------------------------------- */
+.mc {
+  margin-bottom: 1.5rem;
+}
+
+.mc-q {
+  font-weight: 600;
+  margin-bottom: .75rem;
+  line-height: 1.4;
+}
+
+.mc-q .q-num {
+  font-family: var(--ff-mono);
+  font-size: .8rem;
+  color: var(--acc);
+  margin-right: .4rem;
+}
+
+.mco-list {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  list-style: none;
+  padding: 0;
+}
+
+.mco {
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+  background: var(--card);
+  border: 1.5px solid var(--border-l);
+  border-radius: var(--r-sm);
+  padding: .55rem .9rem;
+  font-size: .875rem;
+  color: var(--ink2);
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+  user-select: none;
+}
+
+.mco:hover {
+  border-color: var(--acc);
+  background: var(--accL);
+}
+
+.mco input[type="radio"],
+.mco input[type="checkbox"] {
+  margin-top: .15rem;
+  accent-color: var(--acc);
+  flex-shrink: 0;
+}
+
+.mco.correct {
+  border-color: var(--ok);
+  background: var(--ok-l);
+}
+
+.mco.wrong {
+  border-color: var(--err);
+  background: var(--err-l);
+}
+
+.mco.selected {
+  border-color: var(--acc);
+  background: var(--accL);
+}
+
+.mc-feedback {
+  margin-top: .75rem;
+  padding: .6rem 1rem;
+  border-radius: var(--r-sm);
+  font-size: .875rem;
+  display: none;
+}
+
+.mc-feedback.ok  { display: block; background: var(--ok-l);  color: var(--ok);  border: 1px solid #a5d4b8; }
+.mc-feedback.err { display: block; background: var(--err-l); color: var(--err); border: 1px solid #e8a0a0; }
+
+/* ----------------------------------------------------------
+   15. Texteingabe (.qinp)
+   ---------------------------------------------------------- */
+.qinp {
+  margin-bottom: 1.5rem;
+}
+
+.qinp-label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: .5rem;
+  line-height: 1.4;
+}
+
+.qinp input[type="text"],
+.qinp textarea {
+  width: 100%;
+  max-width: 380px;
+  background: var(--card);
+  border: 1.5px solid var(--border-l);
+  border-radius: var(--r-sm);
+  padding: .5rem .75rem;
+  font-family: var(--ff-mono);
+  font-size: .8rem;
+  color: var(--ink);
+  transition: border-color .2s, box-shadow .2s;
+  resize: vertical;
+}
+
+.qinp input[type="text"]:focus,
+.qinp textarea:focus {
+  outline: none;
+  border-color: var(--acc);
+  box-shadow: 0 0 0 3px var(--accG);
+}
+
+.qinp-hint {
+  font-size: .8rem;
+  color: var(--ink3);
+  margin-top: .35rem;
+}
+
+.qinp-feedback {
+  margin-top: .5rem;
+  font-size: .875rem;
+  display: none;
+}
+.qinp-feedback.ok  { display: block; color: var(--ok); }
+.qinp-feedback.err { display: block; color: var(--err); }
+
+/* ----------------------------------------------------------
+   16. Reihenfolge-Aufgabe (.olist / .oitem)
+   ---------------------------------------------------------- */
+.olist {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin-bottom: 1rem;
+}
+
+.oitem {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  background: var(--input-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: .7rem 1rem;
+  cursor: grab;
+  transition: border-color .15s, box-shadow .15s;
+  touch-action: none; /* iPad drag support */
+}
+
+.oitem:active { cursor: grabbing; }
+
+.oitem.dragging {
+  opacity: .5;
+  border-color: var(--acc);
+  box-shadow: 0 4px 12px rgba(0,0,0,.12);
+}
+
+.oitem.over {
+  border-color: var(--acc);
+  background: var(--accL);
+}
+
+.oitem-handle {
+  color: var(--ink3);
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.oitem-num {
+  font-family: var(--ff-mono);
+  font-size: .8rem;
+  color: var(--acc);
+  min-width: 1.5rem;
+  flex-shrink: 0;
+}
+
+.oitem.correct { border-color: var(--ok);  background: var(--ok-l); }
+.oitem.wrong   { border-color: var(--err); background: var(--err-l); }
+
+/* ----------------------------------------------------------
+   17. Arbeitsblatt-Aufgabe (.auf)
+   ---------------------------------------------------------- */
+.auf {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: var(--gap);
+}
+
+.auf-head {
+  background: var(--accG);
+  border-bottom: 1px solid var(--border);
+  padding: .75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.auf-num {
+  font-family: var(--ff-mono);
+  font-size: .75rem;
+  font-weight: 500;
+  color: var(--acc);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.auf-pts {
+  font-family: var(--ff-mono);
+  font-size: .72rem;
+  color: var(--ink3);
+}
+
+.auf-body {
+  padding: 1.25rem 1.5rem;
+}
+
+.auf-task {
+  font-weight: 500;
+  margin-bottom: .75rem;
+  line-height: 1.45;
+}
+
+.auf textarea {
+  width: 100%;
+  min-height: 120px;
+  background: var(--input-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: .75rem 1rem;
+  font-family: var(--ff-body);
+  font-size: .95rem;
+  color: var(--ink);
+  resize: vertical;
+  transition: border-color .15s;
+}
+
+.auf textarea:focus {
+  outline: none;
+  border-color: var(--acc);
+  box-shadow: 0 0 0 3px var(--accG);
+}
+
+/* ----------------------------------------------------------
+   18. Lückentext (.luecke)
+   ---------------------------------------------------------- */
+.luecke-wrap {
+  line-height: 2.2;
+  margin-bottom: 1rem;
+}
+
+.luecke {
+  display: inline-block;
+  min-width: 100px;
+  border: none;
+  border-bottom: 2px solid var(--acc);
+  background: transparent;
+  font-family: var(--ff-body);
+  font-size: 1em;
+  color: var(--ink);
+  padding: 0 .25em;
+  text-align: center;
+  transition: border-color .15s;
+}
+
+.luecke:focus {
+  outline: none;
+  border-bottom-color: var(--ink);
+}
+
+.luecke.correct { border-bottom-color: var(--ok);  color: var(--ok); }
+.luecke.wrong   { border-bottom-color: var(--err); color: var(--err); }
+
+/* ----------------------------------------------------------
+   19. Reflexions-Aufgabe (.reflexion)
+   ---------------------------------------------------------- */
+.reflexion {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: var(--gap);
+}
+
+.reflexion-head {
+  background: var(--accG);
+  border-bottom: 1px solid var(--border);
+  padding: .75rem 1.25rem;
+  font-family: var(--ff-mono);
+  font-size: .75rem;
+  font-weight: 500;
+  color: var(--acc);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+.reflexion-body {
+  padding: 1.25rem 1.5rem;
+}
+
+.reflexion-task {
+  font-weight: 500;
+  margin-bottom: 1rem;
+  line-height: 1.45;
+}
+
+.strukturhilfe {
+  background: var(--input-bg);
+  border: 1px solid var(--border-l);
+  border-radius: var(--r-sm);
+  padding: .75rem 1rem;
+  margin-bottom: .75rem;
+  font-size: .875rem;
+  color: var(--ink2);
+}
+
+.strukturhilfe-head {
+  font-family: var(--ff-mono);
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--ink3);
+  margin-bottom: .4rem;
+}
+
+.reflexion-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-family: var(--ff-mono);
+  font-size: .78rem;
+  color: var(--ink3);
+  background: var(--border-l);
+  border-radius: 99px;
+  padding: .3em .9em;
+  margin-bottom: .75rem;
+}
+
+/* ----------------------------------------------------------
+   20. Passwort-Eingabe (.pw-input)
+   ---------------------------------------------------------- */
+.pw-input {
+  margin-bottom: var(--gap);
+}
+
+.pw-input-wrap {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+.pw-input input[type="password"],
+.pw-input input[type="text"] {
+  flex: 1;
+  min-width: 180px;
+  background: var(--input-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: .6rem .9rem;
+  font-family: var(--ff-mono);
+  font-size: .95rem;
+  color: var(--ink);
+  transition: border-color .15s;
+}
+
+.pw-input input:focus {
+  outline: none;
+  border-color: var(--acc);
+  box-shadow: 0 0 0 3px var(--accG);
+}
+
+.pw-input .pw-label {
+  display: block;
+  font-family: var(--ff-mono);
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--ink3);
+  margin-bottom: .4rem;
+}
+
+.pw-input .pw-hint {
+  font-size: .8rem;
+  color: var(--ink3);
+  margin-top: .4rem;
+}
+
+.pw-input .pw-hint.err { color: var(--err); }
+.pw-input .pw-hint.ok  { color: var(--ok); }
+
+/* Schüler-Passwort (Akzentfarbe) vs. Master-Passwort (Gold) */
+.pw-input.master input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(197,150,12,.12);
+}
+
+.pw-input.master .pw-label { color: var(--gold); }
+
+/* ----------------------------------------------------------
+   21. Bild-Container (.img-container)
+   ---------------------------------------------------------- */
+.img-container {
+  margin-bottom: var(--gap);
+}
+
+.img-container img {
+  width: 100%;
+  max-width: 100%;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+}
+
+.img-caption {
+  font-size: .8rem;
+  color: var(--ink3);
+  margin-top: .4rem;
+  line-height: 1.4;
+}
+
+.img-caption .source {
+  font-family: var(--ff-mono);
+  font-size: .72rem;
+}
+
+/* ----------------------------------------------------------
+   22. Buttons
+   ---------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-family: var(--ff-body);
+  font-weight: 600;
+  font-size: .9rem;
+  border: none;
+  border-radius: var(--r-sm);
+  padding: .6rem 1.2rem;
+  cursor: pointer;
+  transition: opacity .15s, transform .1s;
+  text-decoration: none;
+}
+
+.btn:active { transform: scale(.97); }
+
+.btn-primary {
+  background: var(--acc);
+  color: #fff;
+}
+.btn-primary:hover { opacity: .88; color: #fff; }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--acc);
+  border: 1.5px solid var(--acc);
+}
+.btn-ghost:hover { background: var(--accL); }
+
+.btn-gold {
+  background: var(--gold);
+  color: #fff;
+}
+.btn-gold:hover { opacity: .88; color: #fff; }
+
+.btn-sm {
+  font-size: .8rem;
+  padding: .4rem .9rem;
+}
+
+/* ----------------------------------------------------------
+   23. Badges & Tags
+   ---------------------------------------------------------- */
+.badge {
+  display: inline-block;
+  font-family: var(--ff-mono);
+  font-size: .72rem;
+  font-weight: 500;
+  border-radius: 99px;
+  padding: .2em .75em;
+}
+
+.badge-acc   { background: var(--accL);  color: var(--acc); }
+.badge-ok    { background: var(--ok-l);  color: var(--ok); }
+.badge-err   { background: var(--err-l); color: var(--err); }
+.badge-gold  { background: var(--gold-l); color: #7a5c00; }
+.badge-muted { background: var(--border-l); color: var(--ink3); }
+
+/* ----------------------------------------------------------
+   24. Divider / Abschnitt-Trenner
+   ---------------------------------------------------------- */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.5rem 0 1.75rem;
+  text-align: center;
+  position: relative;
+}
+
+/* The label text — Fraunces serif for warmth */
+.section-divider span {
+  font-family: var(--ff-head);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--acc);
+  white-space: nowrap;
+  position: relative;
+  background: var(--bg);
+  padding: 0 1rem;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ----------------------------------------------------------
+   25. Footer
+   ---------------------------------------------------------- */
+.page-footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: .8rem;
+  color: var(--ink3);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: .5rem;
+}
+
+/* ----------------------------------------------------------
+   26. Utility Classes
+   ---------------------------------------------------------- */
+.mt-0 { margin-top: 0; }
+.mt-1 { margin-top: .5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mb-0 { margin-bottom: 0; }
+.mb-1 { margin-bottom: .5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+
+.text-sm   { font-size: .875rem; }
+.text-xs   { font-size: .8rem; }
+.text-mono { font-family: var(--ff-mono); }
+.text-muted { color: var(--ink3); }
+.text-acc   { color: var(--acc); }
+.text-ok    { color: var(--ok); }
+.text-err   { color: var(--err); }
+.text-gold  { color: var(--gold); }
+
+.hidden { display: none !important; }
+.vis    { display: block !important; }
+
+/* ----------------------------------------------------------
+   27. Responsive (iPad / Mobile)
+   ---------------------------------------------------------- */
+@media (max-width: 600px) {
+  .page-wrap { padding: 1rem .9rem 3rem; }
+
+  .unit-header { padding: 1.25rem 1.1rem; }
+  .card        { padding: 1.1rem; }
+  .auf-body,
+  .qg-body,
+  .reflexion-body { padding: 1rem 1.1rem; }
+
+  .pw-input-wrap { flex-direction: column; }
+  .pw-input input { min-width: unset; }
+
+  .btn { width: 100%; justify-content: center; }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+  /* iPad — main target device, comfortable content width */
+  .page-wrap { padding: 2rem 1.75rem 4rem; }
+}
+
+@media (min-width: 1025px) {
+  /* Desktop — cap width, generous padding so content doesn't touch the limit */
+  .page-wrap { padding: 2.5rem 2.5rem 5rem; }
+}
+
+/* ----------------------------------------------------------
+   28. Chip-Bank & Lückentext-Slots  (.bank, .chip, .ls, .lp)
+   ---------------------------------------------------------- */
+.bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  padding: .75rem 1rem;
+  background: var(--accL);
+  border-radius: var(--r-sm);
+  margin-bottom: 1rem;
+  min-height: 2.5rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: .25em .75em;
+  background: #fff;
+  border: 1.5px solid var(--acc);
+  border-radius: 99px;
+  font-family: var(--ff-mono);
+  font-size: .82rem;
+  color: var(--acc);
+  cursor: grab;
+  user-select: none;
+  transition: opacity .15s, background .15s;
+}
+.chip:active { cursor: grabbing; }
+.chip.used { opacity: .3; pointer-events: none; }
+.chip.sel  { background: var(--acc); color: #fff; }
+
+/* Inline Lückentext-Slot (span inside running text) */
+.ls {
+  display: inline-block;
+  min-width: 4rem;
+  border-bottom: 2px solid var(--acc);
+  padding: 0 .2em;
+  margin: 0 .2em;
+  text-align: center;
+  font-family: var(--ff-mono);
+  font-size: .88rem;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background .15s;
+}
+.ls.filled { background: var(--accL); border-bottom-color: var(--acc); }
+.ls.ok  { background: var(--ok-l); border-bottom-color: var(--ok);   color: var(--ok); }
+.ls.bad { background: var(--err-l); border-bottom-color: var(--err); color: var(--err); }
+
+/* Schaubild-Slot (block-level, for diagrams) */
+.ss {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 5rem;
+  min-height: 1.8rem;
+  border: 1.5px dashed var(--acc);
+  border-radius: var(--r-sm);
+  padding: .2em .5em;
+  font-family: var(--ff-mono);
+  font-size: .82rem;
+  cursor: pointer;
+  transition: background .15s;
+}
+.ss.filled { background: var(--accL); border-style: solid; }
+.ss.ok  { background: var(--ok-l); border-color: var(--ok);  color: var(--ok); }
+.ss.bad { background: var(--err-l); border-color: var(--err); color: var(--err); }
+
+/* Lückentext paragraph wrapper */
+.lp {
+  line-height: 2;
+  margin-bottom: .75rem;
+}
+
+/* ----------------------------------------------------------
+   29. Kategorisierung  (.kat-list, .kat-item, .kat-btn …)
+   ---------------------------------------------------------- */
+.kat-list {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  margin: .75rem 0;
+}
+
+.kat-item {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .6rem .9rem;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  transition: border-color .15s, background .15s;
+}
+.kat-item.correct { border-color: var(--ok);  background: var(--ok-l); }
+.kat-item.wrong   { border-color: var(--err); background: var(--err-l); }
+
+.kat-text {
+  flex: 1;
+  font-size: .92rem;
+  line-height: 1.4;
+}
+
+.kat-btns {
+  display: flex;
+  gap: .4rem;
+  flex-shrink: 0;
+}
+
+.kat-btn {
+  padding: .3em .85em;
+  border: 1.5px solid var(--border);
+  border-radius: 99px;
+  background: #fff;
+  font-family: var(--ff-mono);
+  font-size: .78rem;
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.kat-btn.ad {
+  border-color: var(--ok);
+  color: var(--ok);
+}
+.kat-btn.ad:hover,
+.kat-btn.ad.selected { background: var(--ok); color: #fff; }
+
+.kat-btn.ae {
+  border-color: var(--err);
+  color: var(--err);
+}
+.kat-btn.ae:hover,
+.kat-btn.ae.selected { background: var(--err); color: #fff; }
+
+/* ----------------------------------------------------------
+   30. Reihenfolge-Ergänzung  (.onum, .oarr, .oab)
+   ---------------------------------------------------------- */
+.onum {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: var(--accL);
+  color: var(--acc);
+  font-family: var(--ff-mono);
+  font-size: .78rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* .oarr = container holding the two arrow buttons */
+.oarr {
+  display: flex;
+  gap: 3px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* .oab = individual up/down arrow button */
+.oab {
+  width: 1.4rem;
+  height: 1.4rem;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--card, #fff);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .7rem;
+  transition: border-color .15s, background .15s;
+}
+.oab:hover { border-color: var(--acc); background: var(--accL); }
+
+/* ----------------------------------------------------------
+   31. Multiple-Choice Legacy-Namen  (.mc, .mco.sel/ok/bad, .mcr)
+   ---------------------------------------------------------- */
+.mc {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+  margin: .5rem 0;
+}
+
+/* Legacy state aliases (map to v2 semantics) */
+.mco.sel  { background: var(--accL); border-color: var(--acc); }
+.mco.ok   { background: var(--ok-l); border-color: var(--ok); }
+.mco.bad  { background: var(--err-l); border-color: var(--err); }
+
+.mcr {
+  font-family: var(--ff-mono);
+  font-size: .82rem;
+  margin-top: .5rem;
+  padding: .4rem .75rem;
+  border-radius: var(--r-sm);
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+
+/* ----------------------------------------------------------
+   32. Quiz-Input States  (.qinp.ok, .qinp.bad)
+   ---------------------------------------------------------- */
+.qinp.ok  input { border-color: var(--ok);  background: var(--ok-l); }
+.qinp.bad input { border-color: var(--err); background: var(--err-l); }
+
+/* ----------------------------------------------------------
+   33. Zuordnung  (.zg, .zlist, .zi, .zi.sel/matched/ok-m/bad-m, .zarr, .zcl)
+   ---------------------------------------------------------- */
+.zg {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: .75rem;
+  align-items: start;
+  margin: .75rem 0;
+}
+
+.zlist {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+
+.zi {
+  padding: .5rem .85rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  background: #fff;
+  font-size: .9rem;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.zi:hover    { border-color: var(--acc); background: var(--accL); }
+.zi.sel      { border-color: var(--acc); background: var(--accL); }
+.zi.matched  { border-color: var(--ink3); background: var(--bg); opacity: .6; cursor: default; }
+.zi.ok-m     { border-color: var(--ok);  background: var(--ok-l); cursor: default; }
+.zi.bad-m    { border-color: var(--err); background: var(--err-l); cursor: default; }
+
+.zi .mn {
+  font-family: var(--ff-mono);
+  font-size: .75rem;
+  color: var(--ink3);
+  flex-shrink: 0;
+}
+
+.zarr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .3rem;
+  padding-top: .5rem;
+  color: var(--ink3);
+  font-size: .85rem;
+}
+
+.zcl {
+  font-family: var(--ff-mono);
+  font-size: .72rem;
+  color: var(--acc);
+  cursor: pointer;
+  text-decoration: underline;
+  margin-top: .25rem;
+}
+
+/* ----------------------------------------------------------
+   34. Ergebnis-Anzeige & Button-Row  (.btn-row, .ares, .cbtn)
+   ---------------------------------------------------------- */
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: .75rem;
+}
+
+.ares {
+  display: none;
+  align-items: center;
+  gap: .5rem;
+  padding: .5rem .9rem;
+  border-radius: var(--r-sm);
+  font-family: var(--ff-mono);
+  font-size: .82rem;
+  font-weight: 600;
+  margin-top: .5rem;
+}
+.ares.vis { display: flex; }
+.ares.g   { background: var(--ok-l);   color: var(--ok); }
+.ares.p   { background: var(--accL);   color: var(--acc); }
+.ares.b   { background: var(--err-l);  color: var(--err); }
+
+/* Legacy control buttons */
+.cbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .5rem 1.1rem;
+  border: none;
+  border-radius: var(--r-sm);
+  background: var(--acc);
+  color: #fff;
+  font-family: var(--ff-body);
+  font-weight: 600;
+  font-size: .88rem;
+  cursor: pointer;
+  transition: opacity .15s, transform .1s;
+}
+.cbtn:active { transform: scale(.97); }
+.cbtn:hover  { opacity: .88; }
+
+.cbtn.ghost {
+  background: transparent;
+  color: var(--acc);
+  border: 1.5px solid var(--acc);
+}
+.cbtn.ghost:hover { background: var(--accL); opacity: 1; }
+
+.cbtn.small {
+  font-size: .8rem;
+  padding: .35rem .8rem;
+}
+
+.cbtn.warn {
+  background: var(--err);
+  color: #fff;
+}
+
+.cbtn.retry        { display: none; }
+.cbtn.retry.vis    { display: inline-flex; }
+
+/* ----------------------------------------------------------
+   35. Passwort-Anzeige-Box  (.pw-reveal)
+   ---------------------------------------------------------- */
+.pw-reveal {
+  display: none;
+  align-items: center;
+  gap: .6rem;
+  margin-top: .6rem;
+  padding: .55rem .9rem;
+  background: var(--ok-l);
+  border: 1px solid var(--ok);
+  border-radius: var(--r-sm);
+  font-family: var(--ff-mono);
+  font-size: .85rem;
+  color: var(--ok);
+}
+.pw-reveal.vis { display: flex; }
+.pw-reveal strong { color: var(--ink); }
+
+/* ----------------------------------------------------------
+   36. Slot (Block-Lücke, engine.js .slot) & v2 Kategorisierung-Aliases
+   ---------------------------------------------------------- */
+/* Lückentext-Block-Slot (inline element inside .lp paragraphs, used by engine) */
+.slot {
+  display: inline-block;
+  min-width: 8rem;
+  padding: .1em .6em;
+  border: none;
+  border-bottom: 2px dashed var(--border);
+  border-radius: 4px 4px 0 0;
+  background: var(--input-bg, #f8f7f5);
+  font-family: var(--ff-mono);
+  font-size: .82rem;
+  font-weight: 500;
+  color: var(--acc);
+  text-align: center;
+  cursor: pointer;
+  vertical-align: baseline;
+  min-height: 1.5rem;
+  line-height: 1.5rem;
+  transition: border-color .15s, background .15s;
+}
+.slot:hover { border-color: var(--acc); background: var(--accL); }
+.slot.filled  { border-bottom-style: solid; border-color: var(--acc); background: var(--accL); }
+.slot.correct { border-color: var(--ok)  !important; background: var(--ok-l)  !important; color: var(--ok)  !important; }
+.slot.wrong   { border-color: var(--err) !important; background: var(--err-l) !important; color: var(--err) !important; }
+
+/* v2 Kategorisierung aliases (.k-* = same as .kat-* but used in einheit HTML) */
+.k-list  { display: flex; flex-direction: column; gap: .5rem; }
+.k-item  {
+  display: flex; align-items: center; gap: .75rem;
+  padding: .6rem .9rem;
+  background: var(--input-bg, #f8f7f5); border: 1.5px solid var(--border);
+  border-radius: var(--r-sm); transition: border-color .15s, background .15s;
+}
+.k-item.correct { border-color: var(--ok);  background: var(--ok-l); }
+.k-item.wrong   { border-color: var(--err); background: var(--err-l); }
+.k-text { flex: 1; font-size: .9rem; line-height: 1.5; color: var(--ink2); }
+.k-btns { display: flex; gap: .4rem; flex-shrink: 0; }
+.k-btn  {
+  font-family: var(--ff-mono); font-size: .75rem; font-weight: 600;
+  padding: .3em .85em;
+  border: 1.5px solid var(--border); border-radius: 99px;
+  background: var(--card, #fff); cursor: pointer; transition: background .15s, color .15s, border-color .15s;
+}
+.k-btn:hover    { border-color: var(--acc); }
+.k-btn.selected { background: var(--acc); color: #fff; border-color: var(--acc); }
+
+/* Quiz-Item within a gate */
+.qi { margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-l); }
+.qi:last-of-type { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.qi-n { font-family: var(--ff-mono); font-size: .7rem; color: var(--ink3); letter-spacing: .05em; margin-bottom: .3rem; }
+.qi-t { font-size: .9rem; font-weight: 500; margin-bottom: .6rem; line-height: 1.55; }
+
+/* Aufgaben-Kopfzeile */
+.auf-n { font-family: var(--ff-head); font-size: 1.6rem; font-weight: 800; color: var(--acc); line-height: 1; min-width: 2rem; }
+.auf-h { display: flex; align-items: flex-start; gap: .9rem; margin-bottom: 1rem; }
+.auf-m h2 { font-size: 1.05rem; margin-top: 0; margin-bottom: .3rem; }
+.auf-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.auf-i { font-size: .9rem; color: var(--ink2); margin-bottom: 1rem; line-height: 1.7; padding-left: 3rem; }
+
+/* Lernziel-Pills */
+.lz-list { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; margin-top: .9rem; }
+.lz-pill {
+  font-family: var(--ff-mono); font-size: .68rem; letter-spacing: .05em;
+  text-transform: uppercase; padding: 4px 12px; border-radius: 99px; font-weight: 600;
+  background: var(--accL); color: var(--acc); border: 1px solid rgba(0,0,0,.08);
+}
+.lz-tag { font-family: var(--ff-mono); font-size: .68rem; letter-spacing: .05em; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; font-weight: 600; background: var(--gold-l); color: var(--gold); }
+.lz-tag.ex { background: var(--accL); color: var(--acc); }
+
+/* Quellenverzeichnis */
+.src-list { list-style: none; padding: 0; margin-bottom: 1.5rem; }
+.src-list li { font-size: .8rem; color: var(--ink2); margin-bottom: .4rem; padding-left: 1.2rem; position: relative; line-height: 1.5; }
+.src-list li::before { content: '→'; position: absolute; left: 0; color: var(--ink3); }
+.src-list a { color: var(--acc); }
+
+/* Arbeitsblatt & SW lock states */
+#arbeitsblatt.locked { opacity: .18; pointer-events: none; filter: blur(3px); }
+#arbeitsblatt.unlocking { animation: unlockP .6s ease-out; }
+@keyframes unlockP { 0%{opacity:.18;transform:scale(.98)} 60%{box-shadow:0 0 40px var(--accG)} 100%{opacity:1;transform:scale(1)} }
+#arbeitsblatt:not(.locked) .ab-gate-msg { display: none; }
+.sw.locked    { opacity: .15; pointer-events: none; filter: blur(3px); transform: scale(.98); }
+.sw.unlocking { animation: unlockP .7s ease-out; }
+
+/* Gate passed state */
+.qg[data-passed="1"]        { border-color: var(--ok); background: var(--ok-l); }
+.qg[data-passed="1"] .qg-head { background: var(--ok-l); border-color: #a5d4b8; }
+
+@media(max-width:600px) {
+  .auf-i, .auf-body { padding-left: 0; }
+  .k-item { flex-direction: column; align-items: flex-start; }
+}
+
+/* ----------------------------------------------------------
+   37. Bild-Unterschrift  (.img-cap, .img-src)
+   ---------------------------------------------------------- */
+.img-cap {
+  font-size: .82rem;
+  color: var(--ink3);
+  margin-top: .35rem;
+  line-height: 1.4;
+  font-style: italic;
+}
+
+.img-src {
+  font-family: var(--ff-mono);
+  font-size: .72rem;
+  color: var(--ink3);
+  display: block;
+  margin-top: .15rem;
+}
+
+/* =====================================================
+   38. AB II Task Block (.ab2)
+   Inline analysis task — escalating visual weight
+   part of the arc, between SW blocks
+   ===================================================== */
+
+.ab2 {
+  background: var(--card);
+  border: 1px solid var(--border-l);
+  border-left: 4px solid var(--acc);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: var(--gap);
+}
+
+.ab2-head {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .6rem 1rem;
+  background: var(--accG);
+  font-family: var(--ff-mono);
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--acc);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.ab2-body {
+  padding: .9rem 1.1rem;
+  font-size: .9rem;
+  line-height: 1.65;
+  color: var(--ink2);
+}
+
+.ab2-body p { margin-bottom: .5rem; }
+.ab2-body p:last-child { margin-bottom: 0; }
+
+/* =====================================================
+   39. Urteilskompetenz Block (.uk)
+   AB III scaffold — visually breaks the arc pattern
+   Amber full border, inverted header
+   ===================================================== */
+
+.uk {
+  background: var(--card);
+  border: 2px solid var(--acc);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: var(--gap);
+}
+
+.uk-head {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  padding: .75rem 1.1rem;
+  background: var(--acc);
+  color: #fff;
+  font-family: var(--ff-mono);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+/* Operator badge inside uk-head inherits white text */
+.uk-head .op-badge {
+  background: rgba(255,255,255,.2);
+  color: #fff;
+  border-color: rgba(255,255,255,.3);
+}
+
+.uk-body {
+  padding: .25rem 0;
+}
+
+/* Steps */
+.uk-step {
+  padding: .75rem 1.1rem;
+  border-bottom: 1px solid var(--border-l);
+  font-size: .9rem;
+  line-height: 1.65;
+}
+
+.uk-step:last-child { border-bottom: none; }
+
+.uk-step-label {
+  display: block;
+  font-family: var(--ff-mono);
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--acc);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: .35rem;
+}
+
+.uk-step p { color: var(--ink2); margin-bottom: .4rem; }
+.uk-step p:last-child { margin-bottom: 0; }
+
+/* Urteil step — slightly heavier treatment */
+.uk-urteil {
+  background: var(--accG);
+}
+
+.uk-urteil .uk-step-label { font-size: .72rem; }
+
+/* ── Step 4 variant: pairs ──────────────────────── */
+.uk[data-uk="pairs"] .uk-pairs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .75rem;
+  margin-top: .35rem;
+}
+
+@media (max-width: 600px) {
+  .uk[data-uk="pairs"] .uk-pairs { grid-template-columns: 1fr; }
+}
+
+.uk-pair {
+  background: rgba(45,122,79,.07);
+  border-left: 3px solid var(--ok);
+  border-radius: var(--r-sm);
+  padding: .6rem .8rem;
+}
+
+.uk-pair-contra {
+  background: rgba(184,50,50,.06);
+  border-left-color: var(--err);
+}
+
+.uk-pair-label {
+  display: block;
+  font-family: var(--ff-mono);
+  font-size: .63rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: .25rem;
+}
+
+.uk-pair .uk-pair-label { color: var(--ok); }
+.uk-pair-contra .uk-pair-label { color: var(--err); }
+
+/* ── Step 4 variant: perspektiven ──────────────── */
+.uk[data-uk="perspektiven"] .uk-perspektiven {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .6rem;
+  margin-top: .35rem;
+}
+
+@media (max-width: 600px) {
+  .uk[data-uk="perspektiven"] .uk-perspektiven { grid-template-columns: 1fr; }
+}
+
+.uk-perspektiv {
+  background: var(--input-bg);
+  border: 1px solid var(--border-l);
+  border-radius: var(--r-sm);
+  padding: .6rem .8rem;
+}
+
+.uk-perspektiv-label {
+  display: block;
+  font-family: var(--ff-mono);
+  font-size: .63rem;
+  font-weight: 700;
+  color: var(--acc);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: .25rem;
+}
+
+/* ── Step 4 variant: matrix ────────────────────── */
+.uk[data-uk="matrix"] .uk-matrix {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: .35rem;
+  font-size: .85rem;
+}
+
+.uk-matrix th, .uk-matrix td {
+  padding: .45rem .7rem;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+
+.uk-matrix thead tr { background: var(--input-bg); }
+.uk-matrix th:first-child { min-width: 100px; }
+.uk-matrix .uk-matrix-pro { background: rgba(45,122,79,.05); }
+.uk-matrix .uk-matrix-con { background: rgba(184,50,50,.04); }
+.uk-matrix th.pro { color: var(--ok); }
+.uk-matrix th.con { color: var(--err); }
+
+/* =====================================================
+   40. Operator Badge + Tooltip (.op-badge, .op-tooltip)
+   Tappable badge on AB II/III tasks — shows operator
+   description and sentence starter on click
+   ===================================================== */
+
+.op-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .3em;
+  padding: .18em .55em;
+  background: var(--accG);
+  color: var(--acc);
+  border: 1px solid rgba(180,83,9,.25);
+  border-radius: 4px;
+  font-family: var(--ff-mono);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  cursor: pointer;
+  user-select: none;
+  transition: background .15s;
+  text-transform: lowercase;
+}
+
+.op-badge:hover { background: rgba(180,83,9,.14); }
+.op-badge::after { content: ' ▾'; font-size: .65rem; }
+
+/* Tooltip container — positioned by JS */
+.op-tooltip {
+  position: fixed;
+  z-index: 900;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--acc);
+  border-radius: var(--r);
+  padding: .85rem 1rem;
+  max-width: 280px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.12);
+  font-size: .82rem;
+  line-height: 1.55;
+  color: var(--ink2);
+}
+
+.op-tooltip-op {
+  font-family: var(--ff-mono);
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--acc);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: .4rem;
+}
+
+.op-tooltip-desc { margin-bottom: .55rem; }
+
+.op-tooltip-starter {
+  background: var(--input-bg);
+  border-left: 3px solid var(--acc);
+  padding: .4rem .65rem;
+  font-style: italic;
+  font-size: .8rem;
+  color: var(--ink);
+  border-radius: 0 4px 4px 0;
+  margin-bottom: .55rem;
+}
+
+.op-tooltip-link {
+  display: block;
+  font-family: var(--ff-mono);
+  font-size: .68rem;
+  color: var(--sw);
+  text-decoration: none;
+  margin-top: .35rem;
+}
+
+.op-tooltip-link:hover { text-decoration: underline; }
+
+/* =====================================================
+   41. Knowledge Priority System
+   data-p="core|imp|ctx" on .sw blocks
+   Toggle activated by .prio-active on body
+   Off by default — no visual change until toggled
+   ===================================================== */
+
+/* Core: amber diamond marker before sw-head */
+body.prio-active .sw[data-p="core"] .sw-head::before {
+  content: '◆ ';
+  color: var(--acc);
+  font-size: .7rem;
+  font-family: var(--ff-mono);
+  margin-right: .2em;
+}
+
+/* Context: muted treatment */
+body.prio-active .sw[data-p="ctx"] .sw-head {
+  opacity: .55;
+}
+
+body.prio-active .sw[data-p="ctx"] .sw-body {
+  opacity: .65;
+}
+
+body.prio-active .sw[data-p="ctx"] {
+  border-left-color: var(--border);
+}
+
+/* Term-level core override (class="p-core" on <strong>) */
+.p-core {
+  /* Same as .sw strong but explicit for term-level override */
+  color: var(--acc);
+  font-weight: 600;
+}
+
+body.prio-active strong.p-core::after {
+  content: ' ◆';
+  font-size: .6rem;
+  vertical-align: super;
+  color: var(--acc);
+  font-family: var(--ff-mono);
+  font-weight: 700;
+}
+
+/* Priority toggle button */
+.prio-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-family: var(--ff-mono);
+  font-size: .7rem;
+  font-weight: 600;
+  color: var(--ink3);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: .25em .65em;
+  cursor: pointer;
+  transition: all .15s;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.prio-toggle-btn:hover {
+  border-color: var(--acc);
+  color: var(--acc);
+}
+
+body.prio-active .prio-toggle-btn {
+  background: var(--accG);
+  border-color: var(--acc);
+  color: var(--acc);
+}
+
+/* =====================================================
+   42. Fachbegriff Inline Tooltip (.fb, .fb-tooltip)
+   Amber-underlined terms in SW blocks
+   Tap/hover → compact popover with definition
+   ===================================================== */
+
+.fb {
+  color: var(--acc);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.fb-tooltip {
+  position: fixed;
+  z-index: 901;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--sw);
+  border-radius: var(--r);
+  padding: .75rem .9rem;
+  max-width: 260px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.12);
+  font-size: .82rem;
+  line-height: 1.55;
+  color: var(--ink2);
+}
+
+.fb-tooltip-term {
+  font-family: var(--ff-mono);
+  font-size: .7rem;
+  font-weight: 700;
+  color: var(--sw);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: .35rem;
+}
+
+.fb-tooltip-def { margin-bottom: .4rem; }
+
+.fb-tooltip-units {
+  font-family: var(--ff-mono);
+  font-size: .65rem;
+  color: var(--ink3);
+}
