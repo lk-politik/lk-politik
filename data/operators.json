@@ -1,0 +1,200 @@
+[
+  {
+    "name": "nennen",
+    "ab": 1,
+    "description": "Sachverhalte, Begriffe oder Beispiele ohne Erklärung aufzählen.",
+    "starter": "Nenne zunächst …: erstens …, zweitens …, drittens …"
+  },
+  {
+    "name": "beschreiben",
+    "ab": 1,
+    "description": "Sachverhalte, Strukturen oder Vorgänge in eigenen Worten sachlich darstellen.",
+    "starter": "Beschreibe, indem du zunächst … und anschließend … darstellst."
+  },
+  {
+    "name": "darstellen",
+    "ab": 1,
+    "description": "Einen Sachverhalt strukturiert und geordnet wiedergeben.",
+    "starter": "Stelle dar, wie … aufgebaut ist: Zunächst …, dann …, schließlich …"
+  },
+  {
+    "name": "erklären",
+    "ab": 1,
+    "description": "Ursachen, Zusammenhänge oder Funktionsweisen verständlich machen.",
+    "starter": "Erkläre, warum … gilt: … führt dazu, dass …, weil …"
+  },
+  {
+    "name": "wiedergeben",
+    "ab": 1,
+    "description": "Inhalte eines Textes oder Materials mit eigenen Worten zusammenfassen.",
+    "starter": "Gib den Inhalt wieder: Der Text/Das Material zeigt, dass …"
+  },
+  {
+    "name": "charakterisieren",
+    "ab": 1,
+    "description": "Wesentliche Merkmale eines Sachverhalts oder einer Position hervorheben.",
+    "starter": "Charakterisiere … durch seine wesentlichen Merkmale: …"
+  },
+  {
+    "name": "zusammenfassen",
+    "ab": 1,
+    "description": "Die Kernaussagen eines Textes oder Vorgangs kompakt wiedergeben.",
+    "starter": "Zusammenfassend lässt sich sagen: …"
+  },
+  {
+    "name": "definieren",
+    "ab": 1,
+    "description": "Einen Begriff präzise und vollständig bestimmen.",
+    "starter": "Unter … versteht man …, das sich von … unterscheidet durch …"
+  },
+  {
+    "name": "skizzieren",
+    "ab": 1,
+    "description": "Einen Überblick über die wesentlichen Aspekte geben, ohne Details.",
+    "starter": "Skizziere die wichtigsten Aspekte: Erstens …, zweitens …"
+  },
+  {
+    "name": "erläutern",
+    "ab": 2,
+    "description": "Einen Sachverhalt detailliert und nachvollziehbar im Kontext des Materials erklären — Theorie und Beispiel verbinden.",
+    "starter": "Erläutere, indem du zunächst den Begriff … darstellst und ihn anschließend am Beispiel … konkretisierst."
+  },
+  {
+    "name": "analysieren",
+    "ab": 2,
+    "description": "Ein Material oder eine Position systematisch auf seine Bestandteile, Ursachen und Wirkungen untersuchen.",
+    "starter": "Analysiere das Material, indem du zunächst … identifizierst und dann den Zusammenhang mit … herausarbeitest."
+  },
+  {
+    "name": "begründen",
+    "ab": 2,
+    "description": "Eine Aussage mit sachlichen Argumenten und Belegen stützen.",
+    "starter": "Begründe deine Aussage mit Bezug auf …: Weil …, folgt daraus, dass …"
+  },
+  {
+    "name": "belegen",
+    "ab": 2,
+    "description": "Eine These durch konkrete Beispiele oder Textstellen nachweisen.",
+    "starter": "Belege die These durch folgendes Beispiel aus dem Material: …"
+  },
+  {
+    "name": "einordnen",
+    "ab": 2,
+    "description": "Einen Sachverhalt in einen größeren Zusammenhang (historisch, theoretisch, politisch) stellen.",
+    "starter": "Ordne … in den Kontext von … ein: … steht im Zusammenhang mit …, weil …"
+  },
+  {
+    "name": "untersuchen",
+    "ab": 2,
+    "description": "Einen Sachverhalt gezielt auf bestimmte Aspekte hin prüfen und herausarbeiten.",
+    "starter": "Untersuche … im Hinblick auf …: Zunächst zeigt sich, dass …, was darauf hindeutet, dass …"
+  },
+  {
+    "name": "vergleichen",
+    "ab": 2,
+    "description": "Gemeinsamkeiten und Unterschiede zwischen zwei oder mehr Sachverhalten herausarbeiten.",
+    "starter": "Vergleiche … und …: Beide haben gemeinsam, dass …, unterscheiden sich jedoch darin, dass …"
+  },
+  {
+    "name": "auswerten",
+    "ab": 2,
+    "description": "Informationen aus Materialien (Grafiken, Texte, Daten) gezielt herausarbeiten und interpretieren.",
+    "starter": "Werte das Material aus: Das Material zeigt …, was bedeutet, dass …"
+  },
+  {
+    "name": "herausarbeiten",
+    "ab": 2,
+    "description": "Wesentliche Aspekte, Positionen oder Strukturen aus einem Material explizit benennen.",
+    "starter": "Arbeite heraus, welche … im Material erkennbar sind: … deutet darauf hin, dass …"
+  },
+  {
+    "name": "anwenden",
+    "ab": 2,
+    "description": "Theoretisches Wissen auf einen konkreten Fall oder ein Material übertragen.",
+    "starter": "Wende … auf den vorliegenden Fall an: Das Konzept … bedeutet hier konkret, dass …"
+  },
+  {
+    "name": "nachweisen",
+    "ab": 2,
+    "description": "Mithilfe von Belegen aus dem Material eine Aussage als zutreffend bestätigen.",
+    "starter": "Weise nach, dass …: Das Material zeigt auf Zeile/Abschnitt … deutlich, dass …"
+  },
+  {
+    "name": "überprüfen",
+    "ab": 2,
+    "description": "Eine Aussage oder These anhand von Kriterien und Material auf ihre Richtigkeit prüfen.",
+    "starter": "Überprüfe die These … anhand des Materials: Die These trifft zu/nicht zu, weil …"
+  },
+  {
+    "name": "beurteilen",
+    "ab": 3,
+    "description": "Auf Basis von Sachwissen und Materialanalyse zu einem sachlich begründeten Urteil kommen — ohne persönliche Wertung.",
+    "starter": "Beurteile, indem du zunächst den theoretischen Kontext (AB I) nennst, den Fall analysierst (AB II) und dann urteilst: Insgesamt ist … zu beurteilen als …, weil …"
+  },
+  {
+    "name": "bewerten",
+    "ab": 3,
+    "description": "Einen Sachverhalt vor dem Hintergrund eigener oder gesellschaftlicher Werte einschätzen und begründen.",
+    "starter": "Bewerte … aus der Perspektive von …: Positiv ist …, kritisch zu sehen ist …, insgesamt überwiegt …"
+  },
+  {
+    "name": "erörtern",
+    "ab": 3,
+    "description": "Argumente für und gegen eine These systematisch abwägen und zu einem begründeten Ergebnis kommen.",
+    "starter": "Erörtere, indem du zunächst Argumente für … darstellst (weil …), dann Gegenargumente nennst (jedoch …) und abschließend urteilst: …"
+  },
+  {
+    "name": "diskutieren",
+    "ab": 3,
+    "description": "Verschiedene Positionen zu einer Frage darstellen, gegeneinander abwägen und eine eigene Einschätzung entwickeln.",
+    "starter": "Diskutiere die Frage, indem du verschiedene Perspektiven darstellst: Einerseits …, andererseits …, letztendlich …"
+  },
+  {
+    "name": "stellung nehmen",
+    "ab": 3,
+    "description": "Eine klare, begründete Position zu einem Sachverhalt oder einer These einnehmen.",
+    "starter": "Nimm Stellung: Ich vertrete die Position, dass …, weil … Das Gegenargument … entkräfte ich damit, dass …"
+  },
+  {
+    "name": "prüfen",
+    "ab": 3,
+    "description": "Einen Sachverhalt, eine These oder eine Entscheidung anhand von Kriterien kritisch hinterfragen.",
+    "starter": "Prüfe, ob … den Kriterien von … entspricht: Einerseits erfüllt … das Kriterium … (weil …), andererseits verletzt … das Kriterium … (weil …)"
+  },
+  {
+    "name": "entwickeln",
+    "ab": 3,
+    "description": "Ausgehend von einer Analyse eine neue Lösung, ein Konzept oder eine Position konstruktiv ausarbeiten.",
+    "starter": "Entwickle einen Vorschlag, indem du zunächst das Problem benennst (…), dann Kriterien aufstellst (…) und schließlich eine begründete Lösung formulierst (…)."
+  },
+  {
+    "name": "entwerfen",
+    "ab": 3,
+    "description": "Eine konkrete Lösung, ein Konzept oder ein Szenario strukturiert und begründet skizzieren.",
+    "starter": "Entwerfe …, indem du ausgehend von … folgende Lösung vorschlägst: …"
+  },
+  {
+    "name": "gestalten",
+    "ab": 3,
+    "description": "Ein Produkt, einen Text oder eine Darstellung zielgerichtet und begründet anfertigen.",
+    "starter": "Gestalte …, indem du … berücksichtigst und die Entscheidung begründest: …"
+  },
+  {
+    "name": "abwägen",
+    "ab": 3,
+    "description": "Vor- und Nachteile oder konkurrierende Positionen systematisch gegeneinander aufwiegen.",
+    "starter": "Wäge ab: Für … spricht …, dagegen spricht …. Unter Berücksichtigung von … überwiegt …"
+  },
+  {
+    "name": "urteilen",
+    "ab": 3,
+    "description": "Zu einem sachlich fundierten, argumentativ begründeten Urteil kommen — der Kern der Urteilskompetenz.",
+    "starter": "Urteile auf Basis von AB I und AB II: Mein Urteil lautet …, weil … Das Gegenargument … berücksichtige ich, komme aber dennoch zu dem Schluss, dass …"
+  },
+  {
+    "name": "vorschlagen",
+    "ab": 3,
+    "description": "Eine konkrete Maßnahme, Alternative oder Verbesserung begründet empfehlen.",
+    "starter": "Schlage vor: Um … zu verbessern, wäre … sinnvoll, weil … Dies würde … bewirken."
+  }
+]
