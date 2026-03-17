@@ -49,7 +49,7 @@ All blocks use the same CSS/JS primitives. The unit format is the sequence and s
 
 ### Knowledge Tier (cyan system identity — `--sw`)
 - **`sw`** — Sachwissen block. White card, amber left border, `📘 SACHWISSEN` badge in cyan (system color, independent of unit accent). Fachbegriffe in bold accent color. May contain numbered lists with bold accent counters.
-- **`einstieg`** — Unit opening hook. Appears once per unit. Amber full border, serif heading.
+- **`einstieg`** — Unit opening hook. Appears once per unit. Amber full border, serif heading. **Always visible** — never locked, not part of the QG unlock chain. Sets context before students enter the knowledge sequence.
 
 ### Gating Tier (warm gray, low visual weight)
 - **`qg`** — Verständnischeck gate. Warm gray background, minimal mono header. AB I badge per question. Status: Offen / Bestanden. Unlocks next SW block.
@@ -71,6 +71,8 @@ All blocks use the same CSS/JS primitives. The unit format is the sequence and s
 
 The arc is implicit — no named phase labels on the page. AB I/II tasks look similar. The UK/AB III block visually breaks the pattern through heavier treatment. Students feel the cognitive shift when they reach it. Pedagogically honest: the arc is always there, not announced.
 
+The sequential unlock system reinforces this intentionally: content is gated, each gate passed reveals the next step. This creates a light "gamey" progression — students earn access to the next block. The satisfaction of unlocking is motivating without making the learning feel like a game rather than study.
+
 ---
 
 ## Unified UK Block — The AB Arc Made Explicit
@@ -79,17 +81,20 @@ The five-step scaffold maps directly to AB I and II:
 
 ```
 AB I foundation
-  1. Kontext     — What does theory / norm / principle say?
-  2. Fall        — What does the material / case / verdict show?
+  1. Kontext       — What does theory / norm / principle say?
+  2. Fall          — What does the material / case / verdict show?
 
 AB II foundation
-  3. Verbindung  — How do they relate? Where is the conflict or issue?
-  4. Abwägung    — What perspectives or dimensions are in play?
-                   (stakeholder cards / argument pairs / pros-cons matrix
-                    — chosen per task via data-uk attribute)
+  3. Verbindung    — How do they relate? Where is the conflict or issue?
+  4. Abwägung      — What perspectives or dimensions are in play?
+                     (stakeholder cards / argument pairs / pros-cons matrix
+                      — chosen per task via data-uk attribute)
 
 AB III synthesis
-  5. Mein Urteil — A critical, illuminated, argued opinion built on 1–4
+  5. Mein Urteil   — A critical, illuminated, argued opinion built on 1–4
+  6. Korrekturvorschlag (optional) — If the case reveals a problem: what
+                     would a better solution / policy / ruling look like?
+                     Only included when the question explicitly demands it.
 ```
 
 Students doing QG (AB I) and AB II tasks throughout the unit are already building steps 1–4. The UK block collects, names, and demands the synthesis. The scaffold teaches the thinking without imposing a named external method.
@@ -222,6 +227,18 @@ All JSON files use root-relative paths (`/data/…`) in all JS fetch calls.
 | `/data/operators.json` | 34 operators, AB level, description, sentence starter | Operator badge JS tooltips |
 | `/data/glossary.json` | Fachbegriffe, definitions, unit sources, chapter, AB level | Inline fb tooltips + fachbegriffe.html |
 | `/data/units.json` | Unit metadata: title, chapter, format, Lehrplan ref | Startseite navigation, filtering |
+
+`units.json` entry structure:
+```json
+{
+  "id": "3-5",
+  "title": "Der Europäische Binnenmarkt",
+  "chapter": 3,
+  "format": "arc",
+  "lehrplan": "SK 3.5 / UK 3.5",
+  "accent": "#b45309"
+}
+```
 
 Priority tagging lives in HTML attributes — no JSON needed. JS reads `data-p` and `class="p-core"` at runtime for the toggle.
 
