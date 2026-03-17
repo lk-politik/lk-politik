@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fachbegriffe — Politik-LK</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+:root { --acc: #2d5986; --accL: #e8f0f8; --accG: rgba(45,89,134,.08); }
+
+.fb-page-filter {
+  display: flex;
+  gap: .6rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.fb-filter-btn {
+  font-family: var(--ff-mono);
+  font-size: .7rem;
+  font-weight: 600;
+  padding: .3em .8em;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--card);
+  color: var(--ink3);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  transition: all .15s;
+}
+
+.fb-filter-btn:hover,
+.fb-filter-btn.active {
+  background: var(--accG);
+  border-color: var(--acc);
+  color: var(--acc);
+}
+
+.fb-list { list-style: none; padding: 0; }
+
+.fb-entry {
+  background: var(--card);
+  border: 1px solid var(--border-l);
+  border-left: 4px solid var(--sw);
+  border-radius: var(--r);
+  padding: .85rem 1.1rem;
+  margin-bottom: .75rem;
+}
+
+.fb-entry-term {
+  font-family: var(--ff-mono);
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--sw);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: .3rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.fb-ab-badge {
+  font-size: .65rem;
+  background: var(--swB);
+  color: var(--sw);
+  padding: .1em .5em;
+  border-radius: 3px;
+}
+
+.fb-entry-def {
+  font-size: .88rem;
+  color: var(--ink2);
+  line-height: 1.6;
+  margin-bottom: .4rem;
+}
+
+.fb-entry-units {
+  font-family: var(--ff-mono);
+  font-size: .68rem;
+  color: var(--ink3);
+}
+
+.fb-empty {
+  color: var(--ink3);
+  font-style: italic;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+#fb-search {
+  width: 100%;
+  max-width: 420px;
+  padding: .55rem .85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  font-family: var(--ff-body);
+  font-size: .9rem;
+  background: var(--card);
+  color: var(--ink);
+  margin-bottom: 1.25rem;
+}
+
+#fb-search:focus { outline: none; border-color: var(--sw); }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <nav class="breadcrumb">
+    <a href="index.html">Startseite</a>
+    <span class="sep">›</span>
+    <span class="current">Fachbegriffe</span>
+  </nav>
+
+  <div class="unit-header" style="text-align:left;border-bottom:none;padding-left:0">
+    <h1>Fachbegriffe</h1>
+    <p class="sub">Alle Fachbegriffe alphabetisch — klicke einen Begriff für die Definition an.</p>
+  </div>
+
+  <input type="search" id="fb-search" placeholder="Begriff suchen …" autocomplete="off">
+
+  <div class="fb-page-filter" id="fb-filters">
+    <button class="fb-filter-btn active" data-filter="all">Alle Kapitel</button>
+    <!-- Chapter buttons rendered by JS -->
+  </div>
+
+  <ul class="fb-list" id="fb-list">
+    <li class="fb-empty">Lade Fachbegriffe …</li>
+  </ul>
+
+</div>
+
+<script src="js/progress.js"></script>
+<script>
+(function () {
+  var _all    = [];
+  var _filter = 'all';
+  var _search = '';
+
+  var listEl    = document.getElementById('fb-list');
+  var filtersEl = document.getElementById('fb-filters');
+  var searchEl  = document.getElementById('fb-search');
+
+  function _render() {
+    var items = _all.filter(function (g) {
+      var matchChapter = _filter === 'all' || String(g.chapter) === _filter;
+      var matchSearch  = !_search || g.term.toLowerCase().includes(_search) || g.def.toLowerCase().includes(_search);
+      return matchChapter && matchSearch;
+    });
+
+    // Sort alphabetically
+    items.sort(function (a, b) { return a.term.localeCompare(b.term, 'de'); });
+
+    if (!items.length) {
+      listEl.innerHTML = '<li class="fb-empty">Keine Begriffe gefunden.</li>';
+      return;
+    }
+
+    listEl.innerHTML = items.map(function (g) {
+      var abLabel = g.ab ? ' <span class="fb-ab-badge">AB ' + ['','I','II','III'][g.ab] + '</span>' : '';
+      var unitLinks = g.units.map(function (u) { return 'Einheit ' + u; }).join(', ');
+      return '<li class="fb-entry">' +
+        '<div class="fb-entry-term">' + g.term + abLabel + '</div>' +
+        '<div class="fb-entry-def">' + g.def + '</div>' +
+        '<div class="fb-entry-units">→ ' + unitLinks + '</div>' +
+        '</li>';
+    }).join('');
+  }
+
+  function _buildFilters(data) {
+    var chapters = [...new Set(data.map(function (g) { return g.chapter; }))].sort();
+    chapters.forEach(function (ch) {
+      var btn = document.createElement('button');
+      btn.className = 'fb-filter-btn';
+      btn.dataset.filter = String(ch);
+      btn.textContent = 'Kapitel ' + ch;
+      btn.addEventListener('click', function () {
+        _filter = btn.dataset.filter;
+        filtersEl.querySelectorAll('.fb-filter-btn').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        _render();
+      });
+      filtersEl.appendChild(btn);
+    });
+
+    filtersEl.querySelector('[data-filter="all"]').addEventListener('click', function () {
+      _filter = 'all';
+      filtersEl.querySelectorAll('.fb-filter-btn').forEach(function (b) { b.classList.remove('active'); });
+      this.classList.add('active');
+      _render();
+    });
+  }
+
+  searchEl.addEventListener('input', function () {
+    _search = searchEl.value.trim().toLowerCase();
+    _render();
+  });
+
+  fetch('/data/glossary.json')
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      _all = data;
+      _buildFilters(data);
+      _render();
+    })
+    .catch(function () {
+      listEl.innerHTML = '<li class="fb-empty">Fachbegriffe konnten nicht geladen werden.</li>';
+    });
+})();
+</script>
+
+</body>
+</html>
