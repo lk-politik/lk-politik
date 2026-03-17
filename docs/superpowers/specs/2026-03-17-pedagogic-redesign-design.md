@@ -28,7 +28,7 @@ AB levels are **cumulative**, not parallel. Each builds on the previous:
 | Level | Competency | What students do |
 |---|---|---|
 | AB I | Facts | State what theory, norm, or material says |
-| AB II | Understanding | Identify connections, conflicts, issues between theory and case/material — including perspectives |
+| AB II | Understanding + Explaining | Identify connections, conflicts, and issues between theory and case/material (including perspectives) — and articulate them clearly in writing |
 | AB III | Political maturity | Form an illuminated, critical, argued opinion built on AB I + II |
 
 The AB arc is a **tool**, not a mandatory template for every unit. It must be trained periodically on high-Abitur-relevance topics for spaced repetition. 20 units need variety — methods adapt to lesson content and objectives, not the reverse.
