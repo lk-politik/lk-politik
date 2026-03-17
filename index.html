@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Politik-LK — SLP Perl</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Akzentfarbe Startseite -->
+  <style>
+    :root { --acc: #2d5986; --accL: #e8f0f9; --accG: rgba(45,89,134,.08); }
+
+    /* ---- Seiten-spezifische Stile ---- */
+    .site-header {
+      text-align: center;
+      padding: 2.5rem 1.5rem 2rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+    }
+    .site-header .school-label {
+      font-family: var(--ff-mono);
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--ink3);
+      margin-bottom: .6rem;
+    }
+    .site-header h1 { margin-bottom: .4rem; }
+    .site-header .subtitle {
+      font-size: 1rem;
+      color: var(--ink2);
+    }
+
+    /* ---- Kapitel-Abschnitt ---- */
+    .chapter-section { margin-bottom: 2.5rem; }
+    .chapter-label {
+      font-family: var(--ff-mono);
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--ink3);
+      margin-bottom: .35rem;
+    }
+    .chapter-title {
+      font-family: var(--ff-head);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 1.1rem;
+      padding-bottom: .6rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    /* ---- Einheiten-Grid ---- */
+    .units-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+
+    /* ---- Einheits-Karte ---- */
+    .unit-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow .2s, border-color .2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .unit-card:hover { border-color: var(--acc); box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+    .unit-card.pending { opacity: .6; pointer-events: none; }
+    .unit-card.pending:hover { border-color: var(--border); box-shadow: none; }
+
+    .unit-card-top {
+      padding: 1.1rem 1.25rem .75rem;
+      border-bottom: 1px solid var(--border-l);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: .5rem;
+    }
+    .unit-card-num {
+      font-family: var(--ff-mono);
+      font-size: .72rem;
+      font-weight: 500;
+      color: var(--acc);
+      background: var(--accL);
+      border-radius: 99px;
+      padding: .2em .75em;
+      flex-shrink: 0;
+      margin-top: .1rem;
+    }
+    .unit-card-num.pending-num { color: var(--ink3); background: var(--border-l); }
+
+    .unit-card-title {
+      font-family: var(--ff-head);
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.3;
+      flex: 1;
+    }
+
+    .unit-card-body {
+      padding: .75rem 1.25rem 1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+    }
+    .unit-card-desc {
+      font-size: .875rem;
+      color: var(--ink2);
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    /* Mini-Fortschrittsbalken auf Karte */
+    .unit-card-progress {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+    .unit-card-bar {
+      flex: 1;
+      height: 5px;
+      background: var(--border-l);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .unit-card-bar-fill {
+      height: 100%;
+      background: var(--acc);
+      border-radius: 99px;
+      width: 0%;
+      transition: width .4s ease;
+    }
+    .unit-card-pct {
+      font-family: var(--ff-mono);
+      font-size: .7rem;
+      color: var(--ink3);
+      min-width: 2.5rem;
+      text-align: right;
+    }
+
+    .unit-card-footer {
+      padding: .6rem 1.25rem .8rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .5rem;
+    }
+
+    /* ---- Status-Badge ---- */
+    .status-active   { background: var(--ok-l);    color: var(--ok); }
+    .status-pending  { background: var(--border-l); color: var(--ink3); }
+    .status-special  { background: var(--accL);     color: var(--acc); }
+
+    /* ---- Platzhalter-Kapitel ---- */
+    .placeholder-chapters {
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+      margin-bottom: 2.5rem;
+    }
+    .placeholder-chapter {
+      background: var(--card);
+      border: 1px dashed var(--border);
+      border-radius: var(--r);
+      padding: .9rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      opacity: .5;
+    }
+    .placeholder-chapter-num {
+      font-family: var(--ff-mono);
+      font-size: .75rem;
+      color: var(--ink3);
+      min-width: 2rem;
+    }
+    .placeholder-chapter-title {
+      font-family: var(--ff-head);
+      font-size: .95rem;
+      color: var(--ink3);
+    }
+
+    /* ---- Lehrkraft-Dashboard ---- */
+    .lk-section {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+    .lk-section-head {
+      font-family: var(--ff-mono);
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--gold);
+      margin-bottom: .75rem;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+
+    /* Admin-Panel */
+    #lk-panel {
+      background: var(--gold-l);
+      border: 1px solid #e8c96a;
+      border-radius: var(--r);
+      padding: 1.5rem;
+      margin-top: 1rem;
+    }
+    #lk-panel h3 {
+      font-size: 1rem;
+      margin-top: 0;
+      margin-bottom: 1rem;
+      color: #7a5c00;
+    }
+    .pw-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .875rem;
+      margin-bottom: 1.25rem;
+    }
+    .pw-table th {
+      font-family: var(--ff-mono);
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: #7a5c00;
+      text-align: left;
+      padding: .4rem .75rem;
+      border-bottom: 1px solid #e8c96a;
+    }
+    .pw-table td {
+      padding: .5rem .75rem;
+      border-bottom: 1px solid #f0e4b0;
+      vertical-align: middle;
+    }
+    .pw-table tr:last-child td { border-bottom: none; }
+    .pw-table .pw-val {
+      font-family: var(--ff-mono);
+      font-size: .85rem;
+      color: var(--ink2);
+    }
+    .pw-table .pw-changed { color: var(--acc); font-weight: 500; }
+
+    .lk-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .6rem;
+      margin-top: .25rem;
+    }
+
+    /* ---- Abschnitts-Header innerhalb Kapitel 3 ---- */
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin: 1.75rem 0 .9rem;
+    }
+    .section-head:first-child { margin-top: 0; }
+    .section-head-label {
+      font-family: var(--ff-mono);
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--ink3);
+      white-space: nowrap;
+    }
+    .section-head-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .section-head-title {
+      font-family: var(--ff-head);
+      font-size: .95rem;
+      font-weight: 600;
+      color: var(--ink2);
+      white-space: nowrap;
+    }
+
+    /* ---- Kompetenz-Zeilen auf Karte ---- */
+    .unit-card-comp {
+      font-size: .8rem;
+      color: var(--ink2);
+      line-height: 1.45;
+      margin-bottom: .35rem;
+    }
+    .unit-card-comp .comp-label {
+      font-family: var(--ff-mono);
+      font-size: .65rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--ink3);
+      display: block;
+      margin-bottom: .15rem;
+    }
+    .unit-card-comp.urteil .comp-label { color: var(--acc); }
+
+    @media (max-width: 600px) {
+      .units-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- ===== Site-Header ===== -->
+  <header class="site-header">
+    <p class="school-label">Deutsch-Luxemburgisches Schengen-Lyzeum Perl</p>
+    <h1>Politik-Leistungskurs (GOS)</h1>
+    <p class="subtitle">Digitale Lerneinheiten · Schuljahr 2025/26</p>
+  </header>
+
+  <!-- ═══════════════ AB-TRAINING ═══════════════ -->
+  <section class="ab-training-section" style="margin-bottom:2rem">
+    <div style="font-family:var(--ff-mono);font-size:.72rem;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:1rem">
+      📐 AB-Leitfaden
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem">
+
+      <!-- AB I -->
+      <div id="ab-training-i" style="background:var(--card);border:1px solid var(--border-l);border-left:4px solid var(--sw);border-radius:var(--r);padding:1rem">
+        <div style="font-family:var(--ff-mono);font-size:.7rem;font-weight:700;color:var(--sw);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem">AB I · Wissen zeigen</div>
+        <p style="font-size:.85rem;color:var(--ink2);margin-bottom:.6rem">Du stellst Sachverhalte dar, ohne sie zu bewerten. Zeige, dass du weißt, <em>was</em> gilt.</p>
+        <p style="font-size:.78rem;color:var(--ink3);font-family:var(--ff-mono)">Operatoren: nennen · beschreiben · erklären · darstellen</p>
+        <div style="margin-top:.75rem;background:var(--input-bg);border-left:3px solid var(--sw);padding:.5rem .7rem;font-size:.8rem;font-style:italic;color:var(--ink)">
+          „Nenne die vier Grundfreiheiten des Binnenmarkts."
+        </div>
+      </div>
+
+      <!-- AB II -->
+      <div id="ab-training-ii" style="background:var(--card);border:1px solid var(--border-l);border-left:4px solid var(--acc);border-radius:var(--r);padding:1rem">
+        <div style="font-family:var(--ff-mono);font-size:.7rem;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem">AB II · Verstehen + Erklären</div>
+        <p style="font-size:.85rem;color:var(--ink2);margin-bottom:.6rem">Du stellst Verbindungen her: Wie hängen Theorie und Material zusammen? Wo liegt der Konflikt oder die Frage? Und kannst du das klar formulieren?</p>
+        <p style="font-size:.78rem;color:var(--ink3);font-family:var(--ff-mono)">Operatoren: erläutern · analysieren · einordnen · vergleichen</p>
+        <div style="margin-top:.75rem;background:var(--input-bg);border-left:3px solid var(--acc);padding:.5rem .7rem;font-size:.8rem;font-style:italic;color:var(--ink)">
+          „Erläutere, indem du zunächst das Konzept darstellst und es dann am Beispiel konkretisierst."
+        </div>
+      </div>
+
+      <!-- AB III -->
+      <div id="ab-training-iii" style="background:var(--card);border:2px solid var(--acc);border-radius:var(--r);overflow:hidden">
+        <div style="background:var(--acc);padding:.6rem 1rem;font-family:var(--ff-mono);font-size:.7rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.1em">AB III · Politisch urteilen</div>
+        <div style="padding:1rem">
+          <p style="font-size:.85rem;color:var(--ink2);margin-bottom:.75rem">Du bildest ein begründetes, kritisches Urteil — aufbauend auf AB I und AB II. Das ist der Kern der Urteilskompetenz.</p>
+          <div style="font-family:var(--ff-mono);font-size:.68rem;color:var(--acc);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem">Die 5 Schritte:</div>
+          <ol style="padding-left:1.25rem;font-size:.82rem;color:var(--ink2);line-height:1.7">
+            <li><strong style="color:var(--acc)">Kontext</strong> — Was sagt die Theorie/Norm?</li>
+            <li><strong style="color:var(--acc)">Fall</strong> — Was zeigt das Material?</li>
+            <li><strong style="color:var(--acc)">Verbindung</strong> — Wo liegt der Konflikt?</li>
+            <li><strong style="color:var(--acc)">Abwägung</strong> — Welche Perspektiven gibt es?</li>
+            <li><strong style="color:var(--acc)">Urteil</strong> — Deine begründete Einschätzung.</li>
+          </ol>
+          <div style="margin-top:.75rem;background:var(--accG);border-left:3px solid var(--acc);padding:.5rem .7rem;font-size:.8rem;font-style:italic;color:var(--ink)">
+            „Mein Urteil lautet …, weil … Das Gegenargument … berücksichtige ich, komme aber dennoch zu dem Schluss, dass …"
+          </div>
+          <p style="font-family:var(--ff-mono);font-size:.68rem;color:var(--ink3);margin-top:.6rem">Operatoren: beurteilen · bewerten · erörtern · urteilen</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <!-- ═══════════════ /AB-TRAINING ═══════════════ -->
+
+  <!-- ===== Kapitel 3: Die Europäische Union ===== -->
+  <section class="chapter-section">
+    <p class="chapter-label">Kapitel 3 · Die Europäische Union</p>
+    <div id="units-all"></div>
+  </section>
+
+  <!-- ===== Lehrkraft-Dashboard ===== -->
+  <section class="lk-section" id="lk-section">
+    <p class="lk-section-head">&#9670; Lehrkraft</p>
+
+    <div class="pw-input master" id="lk-pw-wrap">
+      <span class="pw-label">Masterpasswort eingeben</span>
+      <div class="pw-input-wrap">
+        <input type="password" id="lk-pw-inp" placeholder="Masterpasswort …"
+               onkeydown="if(event.key==='Enter') lkChkPw()">
+        <button class="btn btn-gold btn-sm" onclick="lkChkPw()">Öffnen</button>
+      </div>
+      <span class="pw-hint" id="lk-pw-hint"></span>
+    </div>
+
+    <div id="lk-panel" class="hidden">
+      <h3>&#9670; Lehrkraft-Dashboard</h3>
+
+      <table class="pw-table" id="pw-table">
+        <thead>
+          <tr>
+            <th>Einheit</th>
+            <th>Schülerpasswort</th>
+            <th>Fortschritt</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="pw-table-body"></tbody>
+      </table>
+
+      <div class="lk-actions">
+        <button class="btn btn-gold btn-sm" onclick="lkRegenPw()">
+          &#8635; Alle Passwörter neu generieren
+        </button>
+        <button class="btn btn-ghost btn-sm" onclick="lkClearAll()">
+          Gesamten Fortschritt löschen
+        </button>
+      </div>
+
+      <p class="text-xs text-muted" style="margin-top:.75rem">
+        Passwörter werden im localStorage dieses Browsers gespeichert.
+        Änderungen gelten nur auf diesem Gerät.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="page-footer">
+    <span>Politik-LK · Deutsch-Luxemburgisches Schengen-Lyzeum Perl</span>
+    <span>© 2025/26</span>
+  </footer>
+
+</div><!-- /.page-wrap -->
+
+<script src="js/progress.js"></script>
+<script src="js/engine.js"></script>
+<script>
+/* ==========================================================
+   index.js (inline) — Startseite
+   ========================================================== */
+
+/* ----------------------------------------------------------
+   Einheits-Daten — gruppiert nach Lehrplan-Abschnitten
+   Sachkompetenz (sk) + Urteilskompetenz (uk) aus Lehrplan
+---------------------------------------------------------- */
+var SECTIONS = [
+  {
+    label: 'Die politische Organisation der EU',
+    units: [
+      {
+        id: '3-2', num: '3.2',
+        title: 'Die EU nach dem Vertrag von Lissabon',
+        sk: 'Institutionellen Aufbau der EU und Funktionsweise der EU-Organe erläutern',
+        uk: 'Prüfen, inwiefern der Vertrag von Lissabon mehr Demokratie und Effizienz schafft',
+        href: 'einheiten/3-2_lissabon.html', status: 'pending', stuPw: null, color: null
+      },
+      {
+        id: '3-3', num: '3.3',
+        title: 'Gesetzgebung in der EU',
+        sk: 'Den Gesetzgebungsprozess in der EU an einem Beispiel beschreiben',
+        uk: 'Unterschiede zum nationalen Gesetzgebungsverfahren erläutern',
+        href: 'einheiten/3-3_gesetzgebung.html', status: 'pending', stuPw: null, color: null
+      },
+      {
+        id: '3-4', num: '3.4',
+        title: 'Das Mehrebenensystem der EU',
+        sk: 'Das Mehrebenensystem der EU beschreiben',
+        uk: 'Supranationale, nationale und regionale Ebene den EU-Institutionen zuordnen',
+        href: 'einheiten/3-4_mehrebenensystem.html', status: 'pending', stuPw: null, color: null
+      },
+      {
+        id: '3-4-sim', num: '3.4',
+        title: 'EU-Werkstatt: Social Media Simulation',
+        sk: 'Politische Kommunikation und Interessenvertretung auf EU-Ebene simulieren',
+        uk: 'Standpunkte verschiedener EU-Akteure vertreten und diskutieren',
+        href: 'einheiten/3-4_simulation.html', status: 'pending', stuPw: null, color: null,
+        special: 'Simulation'
+      }
+    ]
+  },
+  {
+    label: 'Politik- und Problemfelder',
+    units: [
+      {
+        id: '3-5', num: '3.5',
+        title: 'Der Binnenmarkt und die vier Freiheiten',
+        sk: 'Die vier Freiheiten im Binnenmarkt erläutern; Vorteile für Bürger und Volkswirtschaften darlegen',
+        uk: 'Aktuelle Herausforderungen des Binnenmarktes diskutieren',
+        href: 'einheiten/3-5_binnenmarkt.html', status: 'active',
+        stuPw: 'vier-freiheiten&grenzen', color: '#b45309'
+      },
+      {
+        id: '3-6', num: '3.6',
+        title: 'Stufen der wirtschaftlichen Integration',
+        sk: 'Stufen der wirtschaftlichen Integration von Volkswirtschaften darlegen',
+        uk: 'Schaubilder und Grafiken bezüglich des Handels innerhalb der EU analysieren',
+        href: 'einheiten/3-6_integration.html', status: 'pending', stuPw: null, color: null
+      }
+    ]
+  },
+  {
+    label: 'Währungsunion',
+    units: [
+      { id:'3-7', num:'3.7', title:'Die Eurozone',
+        sk:'Aktuelle Mitglieder der Eurozone nennen; Vorteile einer gemeinsamen Währung für die wirtschaftliche Entwicklung darlegen',
+        uk:'Schaubilder bezüglich der Handelsentwicklung innerhalb der Eurozone analysieren',
+        href:'einheiten/3-7_eurozone.html', status:'pending', stuPw:null, color:null },
+      { id:'3-8', num:'3.8', title:'EZB und Stabilitätskriterien',
+        sk:'Ziele und Aufgaben der EZB darlegen; Konvergenz- und Stabilitätskriterien des Stabilitäts- und Wachstumspakts erläutern',
+        uk:'Notwendigkeit des Stabilitätspakts begründen; Staatsverschuldungs-Grafiken analysieren',
+        href:'einheiten/3-8_ezb.html', status:'pending', stuPw:null, color:null },
+      { id:'3-9', num:'3.9', title:'Reform der Währungsunion',
+        sk:'Aktuelle Vorschläge zur Reform der Europäischen Währungsunion erläutern',
+        uk:'Maßnahmen der EU zur Hilfe für überschuldete Mitgliedsstaaten beschreiben und beurteilen',
+        href:'einheiten/3-9_reform.html', status:'pending', stuPw:null, color:null }
+    ]
+  },
+  {
+    label: 'Gemeinsame Außen- und Sicherheitspolitik',
+    units: [
+      { id:'3-10', num:'3.10', title:'GASP und ESVP',
+        sk:'Ziele der GASP und Handlungsmöglichkeiten der ESVP darlegen',
+        uk:'Begründen warum die EU außenpolitisch mit einer Stimme sprechen sollte; Schwierigkeiten gemeinsamen Vorgehens erläutern',
+        href:'einheiten/3-10_gasp.html', status:'pending', stuPw:null, color:null },
+      { id:'3-11', num:'3.11', title:'Die Hohe Vertreterin',
+        sk:'Besondere Stellung der Hohen Vertreterin für Außen- und Sicherheitspolitik darlegen',
+        uk:'Aktuelle Reformvorschläge zur gemeinsamen europäischen Verteidigung diskutieren',
+        href:'einheiten/3-11_hohe-vertreterin.html', status:'pending', stuPw:null, color:null }
+    ]
+  },
+  {
+    label: 'Asyl- und Flüchtlingspolitik',
+    units: [
+      { id:'3-12', num:'3.12', title:'Standpunkte zur Asylpolitik',
+        sk:'Unterschiedliche Standpunkte der EU-Staaten zur Asyl- und Flüchtlingspolitik darlegen',
+        uk:'Notwendigkeit einer gemeinsamen Asyl- und Flüchtlingspolitik begründen',
+        href:'einheiten/3-12_asyl.html', status:'pending', stuPw:null, color:null },
+      { id:'3-13', num:'3.13', title:'Rechtliche Grundlagen der Asylpolitik',
+        sk:'Rechtliche Bestimmungen zur Flüchtlingsaufnahme darlegen; gemeinsame EU-Werte (Art. 2 EUV) nennen',
+        uk:'Aktuelle Asyl- und Flüchtlingspolitik der EU beurteilen',
+        href:'einheiten/3-13_recht.html', status:'pending', stuPw:null, color:null }
+    ]
+  },
+  {
+    label: 'Die Zukunft der EU',
+    units: [
+      { id:'3-14', num:'3.14', title:'EU-Erweiterung',
+        sk:'Wirtschaftliche und politische Gründe für eine weitere Erweiterung darlegen',
+        uk:'Chancen und Risiken einer weiteren Erweiterung diskutieren; demokratische Handlungsfähigkeit überprüfen',
+        href:'einheiten/3-14_erweiterung.html', status:'pending', stuPw:null, color:null },
+      { id:'3-15', num:'3.15', title:'Kopenhagener Kriterien und Beitrittskandidaten',
+        sk:'Die Kopenhagener Kriterien erläutern; mögliche weitere Beitrittskandidaten nennen',
+        uk:'',
+        href:'einheiten/3-15_kopenhagen.html', status:'pending', stuPw:null, color:null },
+      { id:'3-16', num:'3.16', title:'EU-Austritt',
+        sk:'Bedingungen für einen Austritt aus der EU darlegen',
+        uk:'',
+        href:'einheiten/3-16_austritt.html', status:'pending', stuPw:null, color:null },
+      { id:'3-18', num:'3.18', title:'Brexit: Großbritannien und die EU',
+        sk:'Stand der Beziehungen zwischen Großbritannien und der EU erläutern',
+        uk:'Mögliche Auswirkungen des EU-Austritts Großbritanniens auf die EU diskutieren',
+        href:'einheiten/3-18_brexit.html', status:'pending', stuPw:null, color:null },
+      { id:'3-19', num:'3.19', title:'Bundesstaat, Staatenbund oder Staatenverbund?',
+        sk:'Bundesstaat und Staatenbund unterscheiden; Begriff Staatenverbund (BVerfG) erläutern',
+        uk:'Aktuelle Vorschläge zur weiteren EU-Integration diskutieren',
+        href:'einheiten/3-19_integration.html', status:'pending', stuPw:null, color:null },
+      { id:'3-20', num:'3.20', title:'Differenzierte Integration',
+        sk:'Den Begriff "differenzierte Integration" anhand von Beispielen erläutern',
+        uk:'Chancen und Risiken einer differenzierten Integration erörtern',
+        href:'einheiten/3-20_differenziert.html', status:'pending', stuPw:null, color:null }
+    ]
+  }
+];
+
+/* Flache Liste aller Einheiten — für Dashboard */
+var ALL_UNITS = SECTIONS.reduce(function (acc, s) { return acc.concat(s.units); }, []);
+
+/* ----------------------------------------------------------
+   Einheitskarte erstellen
+---------------------------------------------------------- */
+function _makeCard(u) {
+  var prog = Progress.load(u.id);
+  var pct  = 0;
+  if (prog) {
+    if (prog.unlocked) { pct = 100; }
+    else if (prog.gates) {
+      var vals = Object.values(prog.gates);
+      pct = vals.length ? Math.round(vals.filter(Boolean).length / vals.length * 100) : 0;
+    }
+  }
+  var isPending = u.status === 'pending';
+  var card = document.createElement(isPending ? 'div' : 'a');
+  card.className = 'unit-card' + (isPending ? ' pending' : '');
+  if (!isPending) card.href = u.href;
+
+  var badgeCls = u.special ? 'badge status-special' : (u.status === 'active' ? 'badge status-active' : 'badge status-pending');
+  var badgeTxt = u.special || (u.status === 'active' ? 'Aktiv' : 'Ausstehend');
+
+  card.innerHTML =
+    '<div class="unit-card-top">' +
+      '<span class="unit-card-num' + (isPending ? ' pending-num' : '') + '">' + u.num + '</span>' +
+      '<span class="unit-card-title">' + u.title + '</span>' +
+    '</div>' +
+    '<div class="unit-card-body">' +
+      '<div class="unit-card-comp">' +
+        '<span class="comp-label">Sachkompetenz</span>' + u.sk +
+      '</div>' +
+      (u.uk ? '<div class="unit-card-comp urteil"><span class="comp-label">Urteilskompetenz</span>' + u.uk + '</div>' : '') +
+      '<div class="unit-card-progress" style="margin-top:.5rem">' +
+        '<div class="unit-card-bar"><div class="unit-card-bar-fill" style="width:' + pct + '%' +
+          (u.color ? ';background:' + u.color : '') + '"></div></div>' +
+        '<span class="unit-card-pct">' + (isPending ? '—' : pct + '%') + '</span>' +
+      '</div>' +
+    '</div>' +
+    '<div class="unit-card-footer">' +
+      '<span class="' + badgeCls + '">' + badgeTxt + '</span>' +
+      (!isPending ? '<span class="text-xs text-muted">&#8594;</span>' : '') +
+    '</div>';
+  return card;
+}
+
+/* ----------------------------------------------------------
+   Alle Abschnitte rendern
+---------------------------------------------------------- */
+function renderUnits() {
+  var container = document.getElementById('units-all');
+  if (!container) return;
+  container.innerHTML = '';
+
+  SECTIONS.forEach(function (sec) {
+    var hd = document.createElement('div');
+    hd.className = 'section-head';
+    hd.innerHTML = '<span class="section-head-line"></span>' +
+                   '<span class="section-head-title">' + sec.label + '</span>' +
+                   '<span class="section-head-line"></span>';
+    container.appendChild(hd);
+
+    var grid = document.createElement('div');
+    grid.className = 'units-grid';
+    grid.style.marginBottom = '1rem';
+    sec.units.forEach(function (u) { grid.appendChild(_makeCard(u)); });
+    container.appendChild(grid);
+  });
+}
+
+/* ----------------------------------------------------------
+   Lehrkraft-Dashboard
+---------------------------------------------------------- */
+var _DEFAULT_MASTER = 'PO-LK';
+var _PW_STORE_KEY   = 'plk_masterPw';
+var _STU_STORE_PFX  = 'plk_stuPw_';
+
+function _getMasterPw() { return localStorage.getItem(_PW_STORE_KEY) || _DEFAULT_MASTER; }
+function _getStuPwForUnit(u) { return localStorage.getItem(_STU_STORE_PFX + u.id) || u.stuPw || '—'; }
+
+function lkChkPw() {
+  var inp = document.getElementById('lk-pw-inp');
+  var hint = document.getElementById('lk-pw-hint');
+  if (!inp) return;
+  if (inp.value.trim() === _getMasterPw()) {
+    document.getElementById('lk-pw-wrap').style.display = 'none';
+    document.getElementById('lk-panel').classList.remove('hidden');
+    lkRenderTable();
+  } else {
+    hint.className = 'pw-hint err';
+    hint.textContent = 'Falsches Masterpasswort.';
+    inp.style.borderColor = 'var(--err)';
+  }
+}
+
+function lkRenderTable() {
+  var tbody = document.getElementById('pw-table-body');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  ALL_UNITS.forEach(function (u) {
+    var pw      = _getStuPwForUnit(u);
+    var prog    = Progress.load(u.id);
+    var pct     = 0;
+    if (prog) {
+      if (prog.unlocked) pct = 100;
+      else if (prog.gates) {
+        var v = Object.values(prog.gates);
+        pct = v.length ? Math.round(v.filter(Boolean).length / v.length * 100) : 0;
+      }
+    }
+    var changed = !!localStorage.getItem(_STU_STORE_PFX + u.id);
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td><strong>' + u.num + '</strong> ' + u.title + '</td>' +
+      '<td class="pw-val' + (changed ? ' pw-changed' : '') + '">' + pw + '</td>' +
+      '<td><div style="display:flex;align-items:center;gap:.5rem">' +
+        '<div class="unit-card-bar" style="width:80px">' +
+          '<div class="unit-card-bar-fill" style="width:' + pct + '%"></div></div>' +
+        '<span class="text-xs text-muted">' + pct + '%</span></div></td>' +
+      '<td><span class="badge ' + (u.status === 'active' ? 'status-active' : 'status-pending') + '">' +
+        (u.status === 'active' ? 'Aktiv' : 'Ausstehend') + '</span></td>';
+    tbody.appendChild(tr);
+  });
+}
+
+function lkRegenPw() {
+  if (!confirm('Alle Schülerpasswörter neu generieren?\nDie neuen Passwörter werden nur in diesem Browser gespeichert.')) return;
+  var words = ['atlas','delta','elbe','rhein','mosel','saar','donau','main','karte','markt','zone','raum','recht','vertrag','charta','ebene','stufe','kreis','linie','feld','wert','kraft','grund','brücke','tor','weg','pfad','fluss','ufer','kern','rand'];
+  var special = ['!','&','#','@','%'];
+  ALL_UNITS.forEach(function (u) {
+    if (u.status !== 'active') return;
+    var w1 = words[Math.floor(Math.random() * words.length)];
+    var w2 = words[Math.floor(Math.random() * words.length)];
+    localStorage.setItem(_STU_STORE_PFX + u.id, w1 + '-' + w2 + special[Math.floor(Math.random() * special.length)]);
+  });
+  lkRenderTable();
+}
+
+function lkClearAll() {
+  Progress.clearAll();
+  renderUnits();
+}
+
+/* ----------------------------------------------------------
+   Init
+---------------------------------------------------------- */
+document.addEventListener('DOMContentLoaded', function () {
+  renderUnits();
+});
+</script>
+</body>
+</html>
