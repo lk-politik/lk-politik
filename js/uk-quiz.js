@@ -2,6 +2,8 @@
    Politik-LK — uk-quiz.js
    Interactive Urteilskompetenz block — select-all then validate
    Structure: Einleitung → Hauptteil → Schlussfolgerung
+   Maßstab/Kriterium: inline <select> dropdown (not a separate step)
+   Options per step: 2 (shuffled on init)
    Load after engine.js and tooltips.js in unit HTML files.
    ========================================================== */
 
@@ -13,12 +15,20 @@
     'level':   'AB-EBENE FALSCH',
     'step':    'FALSCHER SCHRITT',
     'chain':   'KETTE UNTERBROCHEN',
-    'massStab': 'KEIN MAßSTAB',
     'vague':   'MAßSTAB ZU VAGE',
     'sided':   'MAßSTAB EINSEITIG',
     'factual': 'KEINE BEWERTUNGSFRAGE',
     'verdict': 'MAßSTAB ANTIZIPIERT URTEIL'
   };
+
+  /* ── Fisher-Yates shuffle (in-place) ───────────────── */
+  function _shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+    }
+    return arr;
+  }
 
   /* ── Init ───────────────────────────────────────────── */
 
@@ -27,55 +37,63 @@
   });
 
   function _initBlock(block) {
-    _renderRecheckSlots(block);
+    // Shuffle options in each step's .uk-opts list
+    block.querySelectorAll('[data-step] .uk-opts').forEach(function (ul) {
+      var items = Array.from(ul.querySelectorAll('.uk-opt'));
+      _shuffle(items).forEach(function (li) { ul.appendChild(li); });
+    });
 
+    // Shuffle <select> dropdown options (skip empty placeholder)
+    var sel = block.querySelector('.uk-kriterium-sel');
+    if (sel) {
+      var opts = Array.from(sel.querySelectorAll('option[data-msidx]'));
+      _shuffle(opts).forEach(function (opt) { sel.appendChild(opt); });
+
+      sel.addEventListener('change', function () {
+        _updateKriteriumReminders(block, sel);
+        _clearKriteriumError(block);
+        _checkAllSelected(block);
+      });
+    }
+
+    // Option click handlers
     block.querySelectorAll('.uk-opt').forEach(function (opt) {
       opt.addEventListener('click', function () { _onOptClick(block, opt); });
     });
   }
 
-  /* ── Render re-check slots from Maßstab pool ─────────── */
+  /* ── Criterion reminder update ──────────────────────── */
 
-  function _renderRecheckSlots(block) {
-    var pool = block.querySelector('[data-step="massStab"] .uk-opts-pool');
-    if (!pool) return;
+  function _updateKriteriumReminders(block, sel) {
+    var idx = sel.selectedIndex;
+    var opt = idx >= 0 ? sel.options[idx] : null;
+    var txt = opt && opt.value ? opt.textContent.trim() : null;
 
-    block.querySelectorAll('.uk-opts-recheck').forEach(function (slot) {
-      pool.querySelectorAll('.uk-opt').forEach(function (src) {
-        var li = document.createElement('li');
-        li.className = 'uk-opt uk-opt-recheck';
-        li.dataset.msidx = src.dataset.msidx || '';
-        var textEl = src.querySelector('.uk-opt-text');
-        li.innerHTML = '<span class="uk-opt-text">' +
-          (textEl ? textEl.textContent.trim() : '') + '</span>';
-
-        li.addEventListener('click', function () {
-          if (li.classList.contains('correct')) return;
-          // Clear siblings in this slot
-          slot.querySelectorAll('.uk-opt-recheck').forEach(function (r) {
-            r.classList.remove('selected', 'incorrect');
-            _clearErrorNodes(r);
-          });
-          li.classList.add('selected');
-          _checkAllSelected(block);
-        });
-
-        slot.appendChild(li);
-      });
+    block.querySelectorAll('.uk-kriterium-reminder-val').forEach(function (el) {
+      el.innerHTML = txt
+        ? '<strong>' + txt + '</strong>'
+        : '<em>— noch kein Kriterium gewählt —</em>';
     });
+  }
+
+  function _clearKriteriumError(block) {
+    var wrap = block.querySelector('.uk-kriterium');
+    if (wrap) {
+      wrap.classList.remove('invalid', 'valid');
+      var err = wrap.querySelector('.uk-kriterium-error');
+      if (err) { err.textContent = ''; err.style.display = 'none'; }
+    }
   }
 
   /* ── Option click handler ──────────────────────────── */
 
   function _onOptClick(block, opt) {
     if (opt.classList.contains('correct')) return;
-    if (opt.classList.contains('uk-opt-recheck')) return; // handled by its own listener
 
     var step = opt.closest('[data-step]');
     if (!step) return;
 
-    // Deselect + clear error state for siblings in this step's main pool
-    var pool = step.querySelector('.uk-opts, .uk-opts-pool');
+    var pool = step.querySelector('.uk-opts');
     if (!pool) return;
 
     pool.querySelectorAll('.uk-opt').forEach(function (o) {
@@ -99,16 +117,13 @@
   function _checkAllSelected(block) {
     var allDone = true;
 
-    block.querySelectorAll('[data-step]').forEach(function (step) {
-      var pool = step.querySelector('.uk-opts, .uk-opts-pool');
-      if (!pool) return;
-      if (!pool.querySelector('.uk-opt.selected, .uk-opt.correct')) {
-        allDone = false;
-      }
-    });
+    // Dropdown criterion must have a value
+    var sel = block.querySelector('.uk-kriterium-sel');
+    if (sel && !sel.value) allDone = false;
 
-    block.querySelectorAll('.uk-opts-recheck').forEach(function (slot) {
-      if (!slot.querySelector('.uk-opt.selected, .uk-opt.correct')) {
+    // Each step's .uk-opts must have a selection or correct answer
+    block.querySelectorAll('[data-step] .uk-opts').forEach(function (pool) {
+      if (!pool.querySelector('.uk-opt.selected, .uk-opt.correct')) {
         allDone = false;
       }
     });
@@ -123,48 +138,48 @@
     var block = btn.closest('.uk');
     if (!block) return;
 
-    // Read selected Maßstab index
-    var msPool = block.querySelector('[data-step="massStab"] .uk-opts-pool');
-    var selMs  = msPool ? msPool.querySelector('.uk-opt.selected, .uk-opt.correct') : null;
-    var msIdx  = selMs ? selMs.dataset.msidx : null;
-
     var allCorrect = true;
 
-    // Validate main step pools
-    block.querySelectorAll('[data-step]').forEach(function (step) {
-      var pool = step.querySelector('.uk-opts, .uk-opts-pool');
-      if (!pool) return;
-      var sel = pool.querySelector('.uk-opt.selected');
-      if (!sel) return; // already .correct — skip
+    // Validate criterion dropdown
+    var sel = block.querySelector('.uk-kriterium-sel');
+    if (sel) {
+      var selOpt = sel.options[sel.selectedIndex];
+      var msCorrect = selOpt && selOpt.dataset.correct === 'true';
+      var kriteriumWrap = block.querySelector('.uk-kriterium');
 
-      var correct = sel.dataset.correct === 'true';
+      if (!msCorrect) {
+        allCorrect = false;
+        if (kriteriumWrap) {
+          kriteriumWrap.classList.add('invalid');
+          kriteriumWrap.classList.remove('valid');
+          var errEl = kriteriumWrap.querySelector('.uk-kriterium-error');
+          if (errEl && selOpt) {
+            var label = ERROR_LABELS[selOpt.dataset.error] || 'FEHLER';
+            errEl.textContent = label + (selOpt.dataset.errtext ? ' — ' + selOpt.dataset.errtext : '');
+            errEl.style.display = 'block';
+          }
+        }
+      } else {
+        if (kriteriumWrap) {
+          kriteriumWrap.classList.add('valid');
+          kriteriumWrap.classList.remove('invalid');
+        }
+      }
+    }
+
+    // Validate step options
+    block.querySelectorAll('[data-step] .uk-opts').forEach(function (pool) {
+      var selected = pool.querySelector('.uk-opt.selected');
+      if (!selected) return; // already .correct — skip
+
+      var correct = selected.dataset.correct === 'true';
       if (!correct) allCorrect = false;
 
-      sel.classList.remove('selected');
-      sel.classList.add(correct ? 'correct' : 'incorrect');
+      selected.classList.remove('selected');
+      selected.classList.add(correct ? 'correct' : 'incorrect');
 
       if (!correct) {
-        _appendError(sel, sel.dataset.error || 'chain', sel.dataset.errtext || '');
-      }
-    });
-
-    // Validate re-check slots
-    block.querySelectorAll('.uk-recheck').forEach(function (recheck) {
-      var slot = recheck.querySelector('.uk-opts-recheck');
-      if (!slot) return;
-      var sel = slot.querySelector('.uk-opt.selected');
-      if (!sel) return;
-
-      var matches = msIdx !== null && sel.dataset.msidx === msIdx;
-      if (!matches) allCorrect = false;
-
-      sel.classList.remove('selected');
-      sel.classList.add(matches ? 'correct' : 'incorrect');
-
-      if (!matches) {
-        _appendError(sel, 'chain',
-          'Du hast ein anderes Kriterium gew\u00e4hlt als in der Einleitung. ' +
-          'Die Argumentation muss durchg\u00e4ngig auf demselben Ma\u00dfstab basieren.');
+        _appendError(selected, selected.dataset.error || 'chain', selected.dataset.errtext || '');
       }
     });
 
@@ -176,7 +191,7 @@
       if (hint) hint.textContent = 'Vollst\u00e4ndige Argumentation \u2014 gut gemacht.';
     } else {
       btn.textContent = 'Erneut pr\u00fcfen';
-      btn.disabled = true; // re-enabled by _checkAllSelected when user re-selects
+      btn.disabled = true;
     }
   };
 

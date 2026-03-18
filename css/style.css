@@ -2273,3 +2273,77 @@ body.prio-active .prio-toggle-btn {
   color: #fff;
   border-color: rgba(255,255,255,.3);
 }
+
+/* =====================================================
+   44. UK Kriterium — inline dropdown + reminder
+   ===================================================== */
+
+.uk-kriterium {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .5rem .75rem;
+  margin: .9rem 0 .5rem;
+  padding: .6rem .75rem;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+}
+
+.uk-kriterium-lbl {
+  font-family: var(--ff-mono);
+  font-size: .7rem;
+  color: var(--ink3);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.uk-kriterium-sel {
+  flex: 1;
+  min-width: 12rem;
+  font-size: .875rem;
+  font-family: var(--ff-body, inherit);
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: .3rem .5rem;
+  cursor: pointer;
+  transition: border-color .15s;
+}
+.uk-kriterium-sel:focus { outline: none; border-color: var(--acc); }
+
+.uk-kriterium.valid   .uk-kriterium-sel { border-color: var(--ok);  }
+.uk-kriterium.invalid .uk-kriterium-sel { border-color: var(--err); }
+
+.uk-kriterium-error {
+  display: none;
+  width: 100%;
+  font-size: .78rem;
+  color: var(--err);
+  margin-top: .15rem;
+}
+
+/* Criterion reminder at re-check steps */
+.uk-kriterium-reminder {
+  margin: .6rem 0 .25rem;
+  padding: .45rem .75rem;
+  background: var(--accG);
+  border-left: 3px solid var(--acc);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  font-size: .83rem;
+  color: var(--ink);
+}
+.uk-kriterium-reminder .uk-kriterium-reminder-lbl {
+  font-family: var(--ff-mono);
+  font-size: .65rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--ink3);
+  display: block;
+  margin-bottom: .2rem;
+}
+.uk-kriterium-reminder .uk-kriterium-reminder-val em {
+  color: var(--ink3);
+  font-style: normal;
+}

@@ -33,6 +33,35 @@ AB levels are **cumulative**, not parallel. Each builds on the previous:
 
 The AB arc is a **tool**, not a mandatory template for every unit. It must be trained periodically on high-Abitur-relevance topics for spaced repetition. 20 units need variety — methods adapt to lesson content and objectives, not the reverse.
 
+### Lesson Mode
+
+Every unit is designed for one of two primary modes. **Mode is declared by the content author and determines which blocks are included in the digital unit.** Format (Arc, Case dive, etc.) is independent of mode — the same topic can be taught in either mode.
+
+#### Soziales Lernen (social / analog)
+
+Goal: develop political competencies through cooperation, role play, expert work, structured debate, or simulation. These are the high-engagement lessons students find most motivating.
+
+- The **digital unit is a knowledge scaffold only**: `einstieg` + `sw` + `qg` blocks. Students work through it quickly to reach the required knowledge base.
+- The analog social activity (Expertenmethode, Rollenspiel, Fishbowl-Debatte, Karusselldiskussion, etc.) follows immediately and is described in teacher notes — **not** in the HTML.
+- No `ab2`, no `uk`, no Arbeitsblatt exercises in the HTML. The social activity IS the exercise.
+- Time management priority: minimize time on digital blocks so maximum time goes to the social activity.
+
+#### AB-Training (formal competency)
+
+Goal: train Abitur-relevant writing competencies. Students produce full written responses in their notebooks. Time-intensive — one full lesson or more.
+
+Three sub-modes, used in progression as the year advances:
+
+| Sub-mode | What it trains | Blocks included |
+|---|---|---|
+| **AB I + II** | Knowledge recall + written analysis | `sw` → `qg` → `ab2` → Arbeitsblatt |
+| **AB III** | Full judgment scaffold | `sw` → `qg` → `ab2` → `uk` (interactive + written synthesis in notebook) |
+| **Kombiniert** | Full arc, used when approaching Abitur | Complete sequence: all block types |
+
+In AB-Training mode, the `uk` interactive block is used **in class together** — students work through the MCQ to identify the correct argumentation structure, then write their own full-text judgment (Einleitung → Hauptteil → Schlussfolgerung) in their notebooks using the scaffold as a guide.
+
+**Author decision rule:** default to Soziales Lernen unless the unit is explicitly designated as AB-Training. Most units in the 20-unit chapter should be social — AB-Training units are scheduled deliberately for spaced repetition of exam competencies.
+
 ### Du-Form
 
 All student-facing instructions use du-form ("Nenne das Konzept", not "Nennen Sie das Konzept").
@@ -48,22 +77,35 @@ No "Dreischritt" or similar external method names. The system works directly fro
 All blocks use the same CSS/JS primitives. The unit format is the sequence and selection.
 
 ### Knowledge Tier (cyan system identity — `--sw`)
-- **`sw`** — Sachwissen block. White card, amber left border, `📘 SACHWISSEN` badge in cyan (system color, independent of unit accent). Fachbegriffe in bold accent color. May contain numbered lists with bold accent counters.
+- **`sw`** — Sachwissen block. White card, amber left border, `📘 SACHWISSEN` badge in cyan (system color, independent of unit accent). Fachbegriffe (`<strong class="fb">`) in bold amber underline. May contain numbered lists with bold accent counters. `data-p="core|imp|ctx"` for priority tagging.
 - **`einstieg`** — Unit opening hook. Appears once per unit. Amber full border, serif heading. **Always visible** — never locked, not part of the QG unlock chain. Sets context before students enter the knowledge sequence.
 
 ### Gating Tier (warm gray, low visual weight)
-- **`qg`** — Verständnischeck gate. Warm gray background, minimal mono header. AB I badge per question. Status: Offen / Bestanden. Unlocks next SW block.
+- **`qg`** — Verständnischeck gate. Warm gray background, minimal mono header. AB I badge per question. Status: Offen / Bestanden. Unlocks next SW block (and any `ab2` or `uk` blocks carrying `data-gate="N"` where N = this gate's number).
 
-### Task Tier (escalating visual weight through the arc)
-- **`.auf`** (Aufgabe, AB II) — Standard card, amber left border, AB II badge + operator verb. Medium visual weight, feels like natural continuation of SW. HTML class: `auf`. Unlock behavior: initially hidden; revealed when the preceding QG gate passes. Multiple `.auf` blocks may appear between SW blocks — each is revealed by the same gate.
-- **`.uk`** — Urteilskompetenz block (AB III). Visually breaks the pattern: amber full border (2px), inverted amber header (white text on amber), AB III badge. Unlock behavior: hidden until the last QG in the unit passes. Open-ended — no answer-checking; students write their own judgment. Not a gate itself.
+### Task Tier — Main Arc (escalating visual weight through the arc)
 
-**Unlock chain — Arc format example** (other formats use a subset of these block types with no UK block or no SW chain depending on the format):
-`sw1` (visible) → `qg1` passes → `sw2` + `auf1` revealed → `qg2` passes → `sw3` + `auf2` revealed → `qg3` passes → `uk1` revealed. IDs follow the pattern `auf{n}` and `uk{n}`. Engine rule: `uk` blocks are treated identically to `sw` blocks in the unlock chain — they have an ID and are revealed when their gate passes. No completion event is fired for `uk` (open-ended).
+- **`.ab2`** (AB-II-Analyse) — Arc-integrated AB II analysis task. White card, amber 4px left border, `AB II` badge + operator verb. A single open-ended prompt — students write a free-text response; no auto-validation. HTML class: `ab2`. **Unlock behavior:** `data-gate="N"` attribute; revealed when QG gate N passes. One `.ab2` block typically appears between two SW blocks. IDs follow pattern `ab2-{n}`.
+
+- **`.uk`** — Urteilskompetenz block (AB III). Visually breaks the pattern: amber full border (2px), inverted amber header (white text on amber background). **Unlock behavior:** `data-gate="N"` on the final gate; always the last block in the unit. **Interactive MCQ** — not open-ended text. Structured as Einleitung → Hauptteil → Schlussfolgerung with 6 named steps (see UK Block section below). Students select one option per step from 3 choices; one correct, two distractors with typed error labels. Submit validates all at once. IDs follow pattern `uk{n}`.
+
+**Unlock chain — Arc format example:**
+`sw1` (visible) → `qg1` passes → `sw2` + `ab2-1` revealed → `qg2` passes → `sw3` + `ab2-2` revealed → `qg3` passes → `uk1` revealed. Multiple blocks can share the same `data-gate` value and all reveal simultaneously when that gate passes.
+
+### Arbeitsblatt Tier (separate section, unlocks when all QGs pass)
+
+The `#arbeitsblatt` section is gated as a whole — it unlocks once every `qg` in the unit is passed. Within it, exercises use two classes:
+
+- **`.auf`** (Aufgabe — Arbeitsblatt exercise) — Numbered task card (`.auf-n` large serif number, `.auf-h` header, `.auf-tags` with LZ/Klausurrelevant pills). Three subtypes, selected by the author; all use the `.auf` wrapper:
+  - **`zuordnung`** — Chip-bank matching. A pool of draggable chips (`<span class="chip">`) and target slots (`<span class="slot">`). Validated with `chkSl()`. Use for concept→example mapping (e.g., four freedoms to cases).
+  - **`kategorisierung`** — Binary or multi-column sort. Each item has N buttons; student picks the correct category. Validated with `chkK()`. Use for Vorteil/Herausforderung, Pro/Contra, etc.
+  - **`lückentext`** — Fill-in-the-blank. Inline input fields; validated against correct values. Use for recalling definitions or completing causal chains.
+
+- **`.reflexion`** (Reflexionsaufgabe) — Open-ended written response prompt. No textarea — students write on paper or in a separate tool. Has a word-count guidance and a structured task prompt. Not auto-validated. AB II or AB III level depending on the prompt. Use when the unit calls for an extended personal reflection that sits outside the main AB arc.
 
 ### Support Tier
-- **Operator badge** — Tappable inline badge on every AB II/III task. Shows operator verb + AB level. Tap → tooltip with expected answer structure + sentence starters in du-form.
-- **`fb`** (Fachbegriff) — Amber-underlined term in SW blocks. Tap/hover → compact popover with definition + source unit(s).
+- **Operator badge** — `<span class="op-badge" data-op="erläutern">erläutern · AB II ▾</span>` on every `.ab2` and `.uk` task. Tap → tooltip with expected answer structure + sentence starters in du-form. Source: `/data/operators.json`.
+- **`fb`** (Fachbegriff) — `<strong class="fb">Begriff</strong>` in SW blocks. Amber dotted underline. Tap/hover → compact popover with definition + source unit(s). Source: `/data/glossary.json`.
 
 ---
 
@@ -75,60 +117,94 @@ The sequential unlock system reinforces this intentionally: content is gated, ea
 
 ---
 
-## Unified UK Block — The AB Arc Made Explicit
+## Unified UK Block — Interactive AB III Scaffold
 
-The five-step scaffold maps directly to AB I and II:
+The UK block is a **fully interactive MCQ quiz** — not a text prompt. It mirrors the formal essay structure students learn for Abitur: **Einleitung → Hauptteil → Schlussfolgerung**. The 6 named steps live within that frame.
+
+### Structure and Steps
 
 ```
-AB I foundation
-  1. Kontext       — What does theory / norm / principle say?
-  2. Fall          — What does the material / case / verdict show?
+EINLEITUNG
+  Step 1 — Theoretischer Kontext (AB I)
+           What does theory / norm / principle say?
+  Step 2 — Maßstab / Kriterium (AB III)
+           Choose an evaluative criterion from a pool (~7 options).
+           Multiple valid choices; invalid options carry typed error labels.
+           This criterion is the "roter Faden" — re-checked at steps 4 and 6.
 
-AB II foundation
-  3. Verbindung    — How do they relate? Where is the conflict or issue?
-  4. Abwägung      — What perspectives or dimensions are in play?
-                     (stakeholder cards / argument pairs / pros-cons matrix
-                      — chosen per task via data-uk attribute)
+HAUPTTEIL
+  Step 3 — Material & Fall (AB I)
+           What do the case material / statistics / verdict show?
+  Step 4 — Verbindung & Konflikte (AB II)
+           Where does theory collide with case? What is the central tension?
+           [Maßstab re-check here — student selects criterion again]
+  Step 5 — Abwägung von Perspektiven (AB II)
+           How do different actors / stakeholders see the same facts?
 
-AB III synthesis
-  5. Mein Urteil   — A critical, illuminated, argued opinion built on 1–4
-  6. Korrekturvorschlag (optional) — If the case reveals a problem: what
-                     would a better solution / policy / ruling look like?
-                     Only included when the question explicitly demands it.
+SCHLUSSFOLGERUNG
+  Step 6 — Begründetes Urteil (AB III)
+           Criterion-based judgment built explicitly on steps 1–5.
+           [Maßstab re-check here — student selects criterion again]
 ```
 
-Students doing QG (AB I) and AB II tasks throughout the unit are already building steps 1–4. The UK block collects, names, and demands the synthesis. The scaffold teaches the thinking without imposing a named external method.
+### Interaction Mechanic
 
-### Step 4 Abwägung Variants (`data-uk`)
+- Each step offers **3 options** (one correct, two distractors with typed error labels and explanatory text).
+- The Maßstab step uses a **pool** (`uk-opts-pool`) — all options selectable, not mutually exclusive in layout, but only one can be selected at a time.
+- Re-check slots (`.uk-opts-recheck`, empty in HTML) are **cloned from the Maßstab pool** by JS at init. Students must pick the same criterion at steps 4 and 6 to demonstrate "roter Faden."
+- **Select all, then validate** — the submit button (`uk-submit`) is disabled until every step (including re-checks) has a selection. On submit, `chkUK()` validates all at once.
+- Wrong options get an error chip (`uk-error-chip`) with a label from the error taxonomy (see below) plus an explanatory paragraph.
+- All correct → block gets `.uk-complete`, button text becomes "✓ Abgeschlossen".
 
-The `data-uk` attribute sits on the outer `.uk` element: `<div class="uk" data-uk="pairs">`.
+### Error Taxonomy
 
-| Value | Shape | Use when |
+| `data-error` | Label shown | Meaning |
 |---|---|---|
-| `pairs` | Argument / Gegenargument pairs | Constitutional judgments, rights trade-offs, any logical opposition |
-| `perspektiven` | Stakeholder cards (country, group, institution) | International politics, Entwicklungszusammenarbeit, contested EU policies |
-| `matrix` | Pros/cons table with category rows (Wirtschaft, Gesellschaft…) | Multi-dimensional trade-offs, Politische Systeme comparisons |
+| `level` | AB-EBENE FALSCH | Content is at the wrong AB level (e.g., a judgment where a fact is asked) |
+| `step` | FALSCHER SCHRITT | Content is correct but belongs to a different step |
+| `chain` | KETTE UNTERBROCHEN | No explicit link to prior step or to Maßstab |
+| `massStab` | KEIN MAßSTAB | No evaluative criterion present |
+| `vague` | MAßSTAB ZU VAGE | Criterion too vague to guide judgment |
+| `sided` | MAßSTAB EINSEITIG | Criterion considers only one perspective |
+| `factual` | KEINE BEWERTUNGSFRAGE | Criterion is a factual question, not normative |
+| `verdict` | MAßSTAB ANTIZIPIERT URTEIL | Criterion already contains the conclusion |
 
-Outer structure (steps 1–3, 5) is identical across all variants. Only step 4 changes shape. JS reads `data-uk` on `.uk` to render the appropriate step-4 template.
+### `data-uk` Variants
+
+The `data-uk` attribute on the outer `.uk` element declares the Abwägung shape. This informs content authoring — the same 6-step structure applies in all variants; only the framing of step 5 changes.
+
+| Value | Step 5 framing | Use when |
+|---|---|---|
+| `pairs` | Argument / Gegenargument pairs | Constitutional judgments, rights trade-offs, any binary opposition |
+| `perspektiven` | Stakeholder cards (country, group, institution) | International politics, Entwicklungszusammenarbeit, contested EU policies |
+| `matrix` | Multi-dimensional pros/cons (Wirtschaft, Gesellschaft…) | Politische Systeme comparisons, multi-actor trade-offs |
+
+### Authoring the UK Block
+
+Each step needs **exactly 3 options**: one `data-correct="true"`, two with `data-error="<type>"` and `data-errtext="<explanation in du-form>"`. The Maßstab pool needs ~7 options: 2–3 valid (`data-correct="true"`) and 4–5 invalid with distinct error types. Re-check slots are **empty in HTML** — JS fills them from the Maßstab pool on DOMContentLoaded. Do not author content into `.uk-opts-recheck`.
 
 ---
 
 ## Unit Format Library
 
-Six content-agnostic formats. The format is the sequence and block selection — not new components. All formats use the same block primitives.
+Six content-agnostic formats. **Format describes content structure. Lesson mode (Soziales Lernen vs. AB-Training) is decided separately** and determines which blocks from the structure are included in the digital unit. All formats use the same block primitives.
 
-| Format | When | Ends with UK block? | Structure |
-|---|---|---|---|
-| **Arc** | High Abitur relevance, AB training | Yes | SW → QG → `.auf` → UK block |
-| **Case dive** | Events, crises, Verfassungsgericht rulings | Yes | Einstieg with material → `.auf` analysis questions → UK block |
-| **Comparison** | Two systems, countries, positions | Yes | Side-by-side SW blocks → Abwägungsmatrix UK |
-| **Debate setup** | Contested policies, reform proposals | Yes | Perspektiven cards for stakeholders → UK `perspektiven` |
-| **Timeline / process** | Historical developments, EU treaty chain | No | Chronological SW blocks → `.auf` open question ("Was hat sich verändert und warum?") |
-| **Data reading** | Charts, maps, political cartoons, statistics | Optional | Material-first → guided `.auf` analysis → optional UK if judgment is demanded |
+| Format | Content type | Natural lesson mode | Social activity examples | AB-Training blocks |
+|---|---|---|---|---|
+| **Arc** | Concept + analysis + judgment | AB-Training (primary) | — | `sw` → `qg` → `ab2` → `uk` (pairs/perspektiven/matrix) |
+| **Case dive** | Event, crisis, court ruling | Either | Investigative groups, press conference simulation | `einstieg` → `ab2` analysis questions → `uk` (pairs) |
+| **Comparison** | Two systems, countries, positions | Either | Expertenmethode (one group per system), gallery walk | Side-by-side `sw` blocks → `ab2` → `uk` (matrix) |
+| **Debate setup** | Contested policy, reform proposal | Soziales Lernen (primary) | Rollenspiel, Fishbowl-Debatte, Karusselldiskussion | `sw` → `qg` → `uk` (perspektiven) |
+| **Timeline / process** | Historical development, treaty chain | Soziales Lernen (primary) | Ordering activity, expert timeline, gallery walk | Chronological `sw` blocks → `ab2` open analysis |
+| **Data reading** | Chart, map, political cartoon, statistics | Either | Group interpretation, silent analysis + discussion | Material-first → `ab2` guided analysis → optional `uk` |
 
-Timeline and Data-reading formats intentionally omit the UK block by default. A UK block may be added to Data-reading when the task explicitly demands a judgment (e.g., "Bewerte die Entwicklung…").
+**Block selection by mode:**
+- **Soziales Lernen**: `einstieg` + `sw` + `qg` only. Analog activity in teacher notes.
+- **AB-Training**: Full format structure including `ab2`, `uk`, and Arbeitsblatt exercises.
+- `uk` is omitted in Timeline/process format regardless of mode (no judgment demanded by structure). Add only if the specific unit topic explicitly requires a Urteil.
 
 Format declared in unit HTML: `<meta name="unit-format" content="arc">`.
+Lesson mode declared in unit HTML: `<meta name="lesson-mode" content="sozial|ab-training">`.
 
 ---
 

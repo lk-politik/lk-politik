@@ -518,44 +518,167 @@ Purpose: protecting the learning process and preventing automated answer extract
     </div>
   </div>
 
-  <!-- UK Block: Urteilskompetenz -->
+  <!-- UK Block: Urteilskompetenz (interaktiv) -->
   <div class="uk locked" id="uk1" data-gate="3" data-uk="pairs">
     <div class="uk-head">
       <span class="op-badge" data-op="beurteilen">beurteilen · AB III</span>
       Urteilskompetenz — Binnenmarkt
     </div>
     <div class="uk-body">
-      <div class="uk-step">
-        <span class="uk-step-label">1. Kontext</span>
-        <p>Der EU-Binnenmarkt basiert auf den vier Grundfreiheiten und ermöglicht freie Zirkulation von Waren, Personen, Dienstleistungen und Kapital. Ziel ist wirtschaftliche Integration und gemeinsamer Wohlstand.</p>
-      </div>
-      <div class="uk-step">
-        <span class="uk-step-label">2. Fall</span>
-        <p>Tatsächlich zeigen sich in der Praxis erhebliche Probleme: Sozialdumping durch Entsendung von Niedriglohnarbeitern, Brain Drain aus osteuropäischen Ländern und Steuerwettbewerb (Stichwort LuxLeaks).</p>
-      </div>
-      <div class="uk-step">
-        <span class="uk-step-label">3. Verbindung</span>
-        <p>Die Theorie verspricht Wohlstand für alle — die Praxis zeigt, dass der Binnenmarkt asymmetrisch wirkt: Stärkere Volkswirtschaften profitieren mehr, während schwächere Länder und Arbeitnehmer Nachteile tragen können.</p>
-      </div>
-      <div class="uk-step uk-abwaegung">
-        <span class="uk-step-label">4. Abwägung</span>
-        <div class="uk-pairs">
-          <div class="uk-pair">
-            <span class="uk-pair-label">Argumente dafür</span>
-            <p>Günstigere Preise, größere Auswahl, Wirtschaftswachstum, Erasmus+, Arbeitsplätze durch grenzüberschreitende Unternehmen.</p>
+
+      <!-- ── EINLEITUNG ──────────────────────────────── -->
+      <div class="uk-section">
+        <div class="uk-section-lbl">Einleitung</div>
+
+        <!-- Step 1: Theoretischer Kontext + Kriterium -->
+        <div class="uk-step" data-step="kontext">
+          <div class="uk-step-header">
+            <span class="uk-ab-tag">AB I</span>
+            Theoretischer Kontext
           </div>
-          <div class="uk-pair uk-pair-contra">
-            <span class="uk-pair-label">Argumente dagegen</span>
-            <p>Sozialdumping, Brain Drain aus ärmeren Regionen, Steuerwettbewerb schädigt öffentliche Haushalte.</p>
+          <p class="uk-step-q">Welche Aussage beschreibt den theoretischen Rahmen des Binnenmarkts?</p>
+          <ul class="uk-opts">
+            <li class="uk-opt"
+                data-error="step"
+                data-errtext="Du beschreibst hier Fallbeispiele aus der Praxis — die gehören in 'Material &amp; Fall'. Der theoretische Kontext beschreibt, was Theorie und Normen sagen.">
+              <span class="uk-opt-text">Sozialdumping, Brain Drain und Steuerwettbewerb zeigen, dass der Binnenmarkt in der Praxis asymmetrisch wirkt und nicht alle Mitglieder gleich profitieren.</span>
+            </li>
+            <li class="uk-opt" data-correct="true">
+              <span class="uk-opt-text">Der Binnenmarkt basiert auf den vier Grundfreiheiten — er ist ein Regelwerk für wirtschaftliche Integration, das durch einheitliche Standards gemeinsamen Wohlstand sichern soll.</span>
+            </li>
+          </ul>
+
+          <!-- Inline Kriterium dropdown -->
+          <div class="uk-kriterium">
+            <span class="uk-kriterium-lbl">Kriterium (Maßstab / Rahmen):</span>
+            <select class="uk-kriterium-sel">
+              <option value="">— bitte wählen —</option>
+              <option data-correct="true" data-msidx="1"
+                      data-errtext="">
+                Sichert der Binnenmarkt Effizienz und sozialen Ausgleich für alle Mitglieder?
+              </option>
+              <option data-error="vague" data-msidx="2"
+                      data-errtext="Zu allgemein — diese Frage benennt kein Kriterium, an dem du Vor- und Nachteile messen kannst.">
+                Überwiegen die Vorteile des Binnenmarkts seine Nachteile?
+              </option>
+              <option data-correct="true" data-msidx="3"
+                      data-errtext="">
+                Schützt der Binnenmarkt die sozialen Grundrechte aller EU-Bürger?
+              </option>
+              <option data-error="verdict" data-msidx="4"
+                      data-errtext="Diese Frage antizipiert das Urteil — du setzt eine nötige Reform voraus, bevor du analysiert hast.">
+                Muss der Binnenmarkt grundlegend reformiert werden?
+              </option>
+            </select>
+            <span class="uk-kriterium-error"></span>
           </div>
         </div>
+      </div><!-- /Einleitung -->
+
+      <!-- ── HAUPTTEIL ───────────────────────────────── -->
+      <div class="uk-section">
+        <div class="uk-section-lbl">Hauptteil</div>
+
+        <!-- Step 2: Material & Fall -->
+        <div class="uk-step" data-step="fall">
+          <div class="uk-step-header">
+            <span class="uk-ab-tag">AB I</span>
+            Material &amp; Fall
+          </div>
+          <p class="uk-step-q">Welche Aussage gibt die Fallbeispiele aus dem Sachwissen sachlich wieder?</p>
+          <ul class="uk-opts">
+            <li class="uk-opt" data-correct="true">
+              <span class="uk-opt-text">Sozialdumping durch Entsendung von Niedriglohnkräften, Brain Drain aus Osteuropa und Steuervermeidung durch Konzerne (LuxLeaks) zeigen konkrete Spannungen im Binnenmarkt.</span>
+            </li>
+            <li class="uk-opt"
+                data-error="level"
+                data-errtext="Du formulierst bereits ein Urteil über den Binnenmarkt. Hier sollen zunächst die Fallbeispiele sachlich dargestellt werden — das Urteil kommt in der Schlussfolgerung.">
+              <span class="uk-opt-text">Der Binnenmarkt schadet strukturell den schwächeren EU-Ländern und Arbeitnehmern in Hochlohnländern — eine Reform ist unvermeidlich.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Step 3: Verbindung & Konflikte -->
+        <div class="uk-step" data-step="verbindung">
+          <div class="uk-step-header">
+            <span class="uk-ab-tag">AB II</span>
+            Verbindung &amp; Konflikte
+          </div>
+          <p class="uk-step-q">Welche Aussage zeigt überzeugend, wo Theorie und Fallbeispiele in Konflikt geraten?</p>
+          <ul class="uk-opts">
+            <li class="uk-opt"
+                data-error="chain"
+                data-errtext="Du listest Sachverhalte nebeneinander, ohne den Widerspruch zu benennen. Zeige, wo Anspruch und Wirklichkeit auseinanderfallen.">
+              <span class="uk-opt-text">Der Binnenmarkt hat die vier Grundfreiheiten geschaffen. Gleichzeitig entstehen Probleme wie Sozialdumping, Brain Drain und Steuerwettbewerb.</span>
+            </li>
+            <li class="uk-opt" data-correct="true">
+              <span class="uk-opt-text">Die vier Grundfreiheiten versprechen gemeinsamen Wohlstand — die Praxis zeigt jedoch asymmetrische Ergebnisse: Stärkere Volkswirtschaften profitieren strukturell mehr, während Sozialdumping und Steuervermeidung auf Kosten schwächerer Akteure gehen.</span>
+            </li>
+          </ul>
+          <!-- Criterion reminder -->
+          <div class="uk-kriterium-reminder">
+            <span class="uk-kriterium-reminder-lbl">Dein Kriterium für diesen Schritt</span>
+            <span class="uk-kriterium-reminder-val"><em>— noch kein Kriterium gewählt —</em></span>
+          </div>
+        </div>
+
+        <!-- Step 4: Abwägung von Perspektiven -->
+        <div class="uk-step" data-step="abwaegung">
+          <div class="uk-step-header">
+            <span class="uk-ab-tag">AB II</span>
+            Abwägung von Perspektiven
+          </div>
+          <p class="uk-step-q">Welche Aussage wägt verschiedene Perspektiven am überzeugendsten ab?</p>
+          <ul class="uk-opts">
+            <li class="uk-opt" data-correct="true">
+              <span class="uk-opt-text">Unternehmen und exportstarke Staaten sehen den Binnenmarkt als Wachstumsmotor. Arbeitnehmer in Hochlohnländern und ärmere Regionen erleben Lohndruck und Abwanderung. Beide Perspektiven müssen am gewählten Kriterium gemessen werden.</span>
+            </li>
+            <li class="uk-opt"
+                data-error="sided"
+                data-errtext="Du berücksichtigst nur eine Seite. Eine Abwägung zeigt, wie verschiedene Akteure dieselbe Realität unterschiedlich erleben und bewerten.">
+              <span class="uk-opt-text">Der Binnenmarkt belastet Arbeitnehmer in allen EU-Ländern durch Lohndruck und verschlechterte Arbeitsbedingungen — das überwiegt die wirtschaftlichen Vorteile deutlich.</span>
+            </li>
+          </ul>
+        </div>
+      </div><!-- /Hauptteil -->
+
+      <!-- ── SCHLUSSFOLGERUNG ────────────────────────── -->
+      <div class="uk-section">
+        <div class="uk-section-lbl">Schlussfolgerung</div>
+
+        <!-- Step 5: Begründetes Urteil -->
+        <div class="uk-step" data-step="urteil">
+          <div class="uk-step-header">
+            <span class="uk-ab-tag">AB III</span>
+            Begründetes Urteil
+          </div>
+          <p class="uk-step-q">Welches Urteil ist am besten begründet und verweist auf das gewählte Kriterium?</p>
+          <ul class="uk-opts">
+            <li class="uk-opt"
+                data-error="chain"
+                data-errtext="Das Urteil ist inhaltlich nachvollziehbar, verweist aber nicht auf das Kriterium aus der Einleitung. Das Urteil muss aus dem Kriterium folgen — das ist der rote Faden.">
+              <span class="uk-opt-text">Der Binnenmarkt hat Stärken und Schwächen. Insgesamt überwiegen die wirtschaftlichen Vorteile, aber eine schrittweise Reform wäre sinnvoll.</span>
+            </li>
+            <li class="uk-opt" data-correct="true">
+              <span class="uk-opt-text">Gemessen am Kriterium — sozialer Ausgleich und Effizienz für alle — erfüllt der Binnenmarkt seinen Anspruch nur teilweise. Solange Sozialdumping und Steuervermeidung strukturell möglich bleiben, sind verbindliche Sozialstandards und koordinierte Steuerpolitik notwendige Konsequenzen.</span>
+            </li>
+          </ul>
+          <!-- Criterion reminder -->
+          <div class="uk-kriterium-reminder">
+            <span class="uk-kriterium-reminder-lbl">Dein Kriterium für dieses Urteil</span>
+            <span class="uk-kriterium-reminder-val"><em>— noch kein Kriterium gewählt —</em></span>
+          </div>
+        </div>
+      </div><!-- /Schlussfolgerung -->
+
+      <!-- ── VALIDATE ────────────────────────────────── -->
+      <div class="uk-validate-row">
+        <button class="uk-submit" disabled onclick="chkUK(this)">Argumentation prüfen</button>
+        <span class="uk-submit-hint">Wähle für jeden Schritt eine Antwort und ein Kriterium.</span>
       </div>
-      <div class="uk-step uk-urteil">
-        <span class="uk-step-label">5. Mein Urteil</span>
-        <p>Beurteile: Überwiegen die Vorteile des Binnenmarkts die Nachteile? Beziehe dich auf mindestens zwei konkrete Beispiele aus dem Sachwissen und formuliere eine begründete Position.</p>
-      </div>
-    </div>
-  </div>
+
+    </div><!-- /uk-body -->
+  </div><!-- /uk#uk1 -->
 
   <!-- ================================================================
        ARBEITSBLATT
@@ -859,5 +982,6 @@ var CONF = {
 <script src="../js/progress.js"></script>
 <script src="../js/engine.js"></script>
 <script src="../js/tooltips.js"></script>
+<script src="../js/uk-quiz.js"></script>
 </body>
 </html>
