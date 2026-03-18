@@ -2324,26 +2324,12 @@ body.prio-active .prio-toggle-btn {
   margin-top: .15rem;
 }
 
-/* Criterion reminder at re-check steps */
-.uk-kriterium-reminder {
-  margin: .6rem 0 .25rem;
-  padding: .45rem .75rem;
+/* Re-check variant — active re-selection at Verbindung and Urteil */
+.uk-kriterium--recheck {
   background: var(--accG);
-  border-left: 3px solid var(--acc);
-  border-radius: 0 var(--r-sm) var(--r-sm) 0;
-  font-size: .83rem;
-  color: var(--ink);
+  border-color: var(--acc);
+  margin-top: .85rem;
 }
-.uk-kriterium-reminder .uk-kriterium-reminder-lbl {
-  font-family: var(--ff-mono);
-  font-size: .65rem;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  color: var(--ink3);
-  display: block;
-  margin-bottom: .2rem;
-}
-.uk-kriterium-reminder .uk-kriterium-reminder-val em {
-  color: var(--ink3);
-  font-style: normal;
+.uk-kriterium--recheck .uk-kriterium-lbl {
+  color: var(--acc);
 }

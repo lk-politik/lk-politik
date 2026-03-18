@@ -43,15 +43,26 @@
       _shuffle(items).forEach(function (li) { ul.appendChild(li); });
     });
 
-    // Shuffle <select> dropdown options (skip empty placeholder)
-    var sel = block.querySelector('.uk-kriterium-sel');
-    if (sel) {
-      var opts = Array.from(sel.querySelectorAll('option[data-msidx]'));
-      _shuffle(opts).forEach(function (opt) { sel.appendChild(opt); });
+    // Main criterion dropdown
+    var mainSel = block.querySelector('.uk-kriterium-sel[data-role="main"]');
+    if (mainSel) {
+      // Shuffle main options
+      var opts = Array.from(mainSel.querySelectorAll('option[data-msidx]'));
+      _shuffle(opts).forEach(function (opt) { mainSel.appendChild(opt); });
 
-      sel.addEventListener('change', function () {
-        _updateKriteriumReminders(block, sel);
-        _clearKriteriumError(block);
+      // Clone options into each recheck dropdown (independently shuffled)
+      block.querySelectorAll('.uk-kriterium-sel[data-role="recheck"]').forEach(function (recheckSel) {
+        var clones = opts.map(function (opt) { return opt.cloneNode(true); });
+        _shuffle(clones).forEach(function (opt) { recheckSel.appendChild(opt); });
+
+        recheckSel.addEventListener('change', function () {
+          _clearKriteriumWrapError(recheckSel.closest('.uk-kriterium'));
+          _checkAllSelected(block);
+        });
+      });
+
+      mainSel.addEventListener('change', function () {
+        _clearKriteriumWrapError(mainSel.closest('.uk-kriterium'));
         _checkAllSelected(block);
       });
     }
@@ -62,27 +73,17 @@
     });
   }
 
-  /* ── Criterion reminder update ──────────────────────── */
-
-  function _updateKriteriumReminders(block, sel) {
-    var idx = sel.selectedIndex;
-    var opt = idx >= 0 ? sel.options[idx] : null;
-    var txt = opt && opt.value ? opt.textContent.trim() : null;
-
-    block.querySelectorAll('.uk-kriterium-reminder-val').forEach(function (el) {
-      el.innerHTML = txt
-        ? '<strong>' + txt + '</strong>'
-        : '<em>— noch kein Kriterium gewählt —</em>';
-    });
+  function _clearKriteriumWrapError(wrap) {
+    if (!wrap) return;
+    wrap.classList.remove('invalid', 'valid');
+    var err = wrap.querySelector('.uk-kriterium-error');
+    if (err) { err.textContent = ''; err.style.display = 'none'; }
   }
 
   function _clearKriteriumError(block) {
-    var wrap = block.querySelector('.uk-kriterium');
-    if (wrap) {
-      wrap.classList.remove('invalid', 'valid');
-      var err = wrap.querySelector('.uk-kriterium-error');
-      if (err) { err.textContent = ''; err.style.display = 'none'; }
-    }
+    block.querySelectorAll('.uk-kriterium').forEach(function (wrap) {
+      _clearKriteriumWrapError(wrap);
+    });
   }
 
   /* ── Option click handler ──────────────────────────── */
@@ -117,9 +118,14 @@
   function _checkAllSelected(block) {
     var allDone = true;
 
-    // Dropdown criterion must have a value
-    var sel = block.querySelector('.uk-kriterium-sel');
-    if (sel && !sel.value) allDone = false;
+    // Main criterion dropdown must have a value
+    var mainSel = block.querySelector('.uk-kriterium-sel[data-role="main"]');
+    if (mainSel && !mainSel.value) allDone = false;
+
+    // All recheck dropdowns must have a value
+    block.querySelectorAll('.uk-kriterium-sel[data-role="recheck"]').forEach(function (sel) {
+      if (!sel.value) allDone = false;
+    });
 
     // Each step's .uk-opts must have a selection or correct answer
     block.querySelectorAll('[data-step] .uk-opts').forEach(function (pool) {
@@ -140,32 +146,53 @@
 
     var allCorrect = true;
 
-    // Validate criterion dropdown
-    var sel = block.querySelector('.uk-kriterium-sel');
-    if (sel) {
-      var selOpt = sel.options[sel.selectedIndex];
-      var msCorrect = selOpt && selOpt.dataset.correct === 'true';
-      var kriteriumWrap = block.querySelector('.uk-kriterium');
+    // Validate main criterion dropdown
+    var mainSel = block.querySelector('.uk-kriterium-sel[data-role="main"]');
+    var mainMsidx = null;
+    if (mainSel) {
+      var mainOpt = mainSel.options[mainSel.selectedIndex];
+      var msCorrect = mainOpt && mainOpt.dataset.correct === 'true';
+      mainMsidx = mainOpt ? mainOpt.dataset.msidx : null;
+      var mainWrap = mainSel.closest('.uk-kriterium');
 
       if (!msCorrect) {
         allCorrect = false;
-        if (kriteriumWrap) {
-          kriteriumWrap.classList.add('invalid');
-          kriteriumWrap.classList.remove('valid');
-          var errEl = kriteriumWrap.querySelector('.uk-kriterium-error');
-          if (errEl && selOpt) {
-            var label = ERROR_LABELS[selOpt.dataset.error] || 'FEHLER';
-            errEl.textContent = label + (selOpt.dataset.errtext ? ' — ' + selOpt.dataset.errtext : '');
+        if (mainWrap) {
+          mainWrap.classList.add('invalid');
+          mainWrap.classList.remove('valid');
+          var errEl = mainWrap.querySelector('.uk-kriterium-error');
+          if (errEl && mainOpt) {
+            var label = ERROR_LABELS[mainOpt.dataset.error] || 'FEHLER';
+            errEl.textContent = label + (mainOpt.dataset.errtext ? ' — ' + mainOpt.dataset.errtext : '');
             errEl.style.display = 'block';
           }
         }
       } else {
-        if (kriteriumWrap) {
-          kriteriumWrap.classList.add('valid');
-          kriteriumWrap.classList.remove('invalid');
-        }
+        if (mainWrap) { mainWrap.classList.add('valid'); mainWrap.classList.remove('invalid'); }
       }
     }
+
+    // Validate recheck dropdowns — must match main msidx
+    block.querySelectorAll('.uk-kriterium-sel[data-role="recheck"]').forEach(function (recheckSel) {
+      var recheckOpt = recheckSel.options[recheckSel.selectedIndex];
+      var matches = recheckOpt && recheckOpt.dataset.msidx === mainMsidx;
+      var recheckWrap = recheckSel.closest('.uk-kriterium');
+
+      if (!matches) {
+        allCorrect = false;
+        if (recheckWrap) {
+          recheckWrap.classList.add('invalid');
+          recheckWrap.classList.remove('valid');
+          var rErr = recheckWrap.querySelector('.uk-kriterium-error');
+          if (rErr) {
+            rErr.textContent = 'ROTER FADEN VERLOREN — Du hast ein anderes Kriterium gewählt als in der Einleitung.';
+            rErr.style.display = 'block';
+          }
+        }
+      } else {
+        if (recheckWrap) { recheckWrap.classList.add('valid'); recheckWrap.classList.remove('invalid'); }
+      }
+    });
 
     // Validate step options
     block.querySelectorAll('[data-step] .uk-opts').forEach(function (pool) {

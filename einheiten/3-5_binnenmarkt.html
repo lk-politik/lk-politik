@@ -551,7 +551,7 @@ Purpose: protecting the learning process and preventing automated answer extract
           <!-- Inline Kriterium dropdown -->
           <div class="uk-kriterium">
             <span class="uk-kriterium-lbl">Kriterium (Maßstab / Rahmen):</span>
-            <select class="uk-kriterium-sel">
+            <select class="uk-kriterium-sel" data-role="main">
               <option value="">— bitte wählen —</option>
               <option data-correct="true" data-msidx="1"
                       data-errtext="">
@@ -615,10 +615,13 @@ Purpose: protecting the learning process and preventing automated answer extract
               <span class="uk-opt-text">Die vier Grundfreiheiten versprechen gemeinsamen Wohlstand — die Praxis zeigt jedoch asymmetrische Ergebnisse: Stärkere Volkswirtschaften profitieren strukturell mehr, während Sozialdumping und Steuervermeidung auf Kosten schwächerer Akteure gehen.</span>
             </li>
           </ul>
-          <!-- Criterion reminder -->
-          <div class="uk-kriterium-reminder">
-            <span class="uk-kriterium-reminder-lbl">Dein Kriterium für diesen Schritt</span>
-            <span class="uk-kriterium-reminder-val"><em>— noch kein Kriterium gewählt —</em></span>
+          <!-- Kriterium re-check -->
+          <div class="uk-kriterium uk-kriterium--recheck">
+            <span class="uk-kriterium-lbl">Roter Faden — wähle dein Kriterium erneut:</span>
+            <select class="uk-kriterium-sel" data-role="recheck">
+              <option value="">— bitte wählen —</option>
+            </select>
+            <span class="uk-kriterium-error"></span>
           </div>
         </div>
 
@@ -663,10 +666,13 @@ Purpose: protecting the learning process and preventing automated answer extract
               <span class="uk-opt-text">Gemessen am Kriterium — sozialer Ausgleich und Effizienz für alle — erfüllt der Binnenmarkt seinen Anspruch nur teilweise. Solange Sozialdumping und Steuervermeidung strukturell möglich bleiben, sind verbindliche Sozialstandards und koordinierte Steuerpolitik notwendige Konsequenzen.</span>
             </li>
           </ul>
-          <!-- Criterion reminder -->
-          <div class="uk-kriterium-reminder">
-            <span class="uk-kriterium-reminder-lbl">Dein Kriterium für dieses Urteil</span>
-            <span class="uk-kriterium-reminder-val"><em>— noch kein Kriterium gewählt —</em></span>
+          <!-- Kriterium re-check -->
+          <div class="uk-kriterium uk-kriterium--recheck">
+            <span class="uk-kriterium-lbl">Roter Faden — wähle dein Kriterium erneut:</span>
+            <select class="uk-kriterium-sel" data-role="recheck">
+              <option value="">— bitte wählen —</option>
+            </select>
+            <span class="uk-kriterium-error"></span>
           </div>
         </div>
       </div><!-- /Schlussfolgerung -->
