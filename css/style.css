@@ -1900,7 +1900,6 @@ code, .mono {
   cursor: pointer;
   user-select: none;
   transition: background .15s;
-  text-transform: lowercase;
 }
 
 .op-badge:hover { background: rgba(180,83,9,.14); }
