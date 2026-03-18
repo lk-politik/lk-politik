@@ -2077,3 +2077,199 @@ body.prio-active .prio-toggle-btn {
   font-size: .65rem;
   color: var(--ink3);
 }
+
+/* =====================================================
+   43. Interactive UK Block — Quiz Mode
+   Select-all-then-validate Urteilskompetenz scaffold
+   Einleitung → Hauptteil → Schlussfolgerung sections
+   ===================================================== */
+
+/* Section dividers */
+.uk-section {
+  border-top: 1px solid var(--border-l);
+}
+
+.uk-section:first-child {
+  border-top: none;
+}
+
+.uk-section-lbl {
+  font-family: var(--ff-mono);
+  font-size: .62rem;
+  font-weight: 700;
+  color: var(--acc);
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  opacity: .7;
+  padding: .65rem 1.1rem .1rem;
+}
+
+/* Step header row — label + AB tag */
+.uk-step-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: .35rem;
+}
+
+.uk-ab-tag {
+  font-family: var(--ff-mono);
+  font-size: .62rem;
+  font-weight: 700;
+  color: var(--sw);
+  background: rgba(8,145,178,.1);
+  padding: .1em .55em;
+  border-radius: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Question prompt */
+.uk-step-q {
+  font-size: .85rem;
+  color: var(--ink3);
+  font-style: italic;
+  margin-bottom: .6rem;
+}
+
+/* Option list */
+.uk-opts {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+  margin: 0;
+}
+
+/* Large pool for Maßstab — 2-column grid */
+.uk-opts-pool {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .4rem;
+}
+
+@media (max-width: 600px) {
+  .uk-opts-pool { grid-template-columns: 1fr; }
+}
+
+/* Individual option */
+.uk-opt {
+  padding: .55rem .85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  font-size: .875rem;
+  line-height: 1.5;
+  color: var(--ink2);
+  background: var(--card);
+  transition: border-color .15s, background .15s;
+  position: relative;
+}
+
+.uk-opt:hover {
+  border-color: var(--acc);
+  background: var(--accG);
+}
+
+.uk-opt.selected {
+  border-color: var(--acc);
+  background: var(--accG);
+}
+
+.uk-opt.correct {
+  border-color: var(--ok);
+  background: rgba(45,122,79,.06);
+  cursor: default;
+}
+
+.uk-opt.correct::before {
+  content: '✓ ';
+  color: var(--ok);
+  font-weight: 700;
+}
+
+.uk-opt.incorrect {
+  border-color: var(--err);
+  background: rgba(184,50,50,.04);
+}
+
+/* Error feedback */
+.uk-error-chip {
+  display: inline-block;
+  margin-top: .35rem;
+  padding: .15em .6em;
+  border-radius: 3px;
+  font-family: var(--ff-mono);
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  background: rgba(184,50,50,.12);
+  color: var(--err);
+}
+
+.uk-error-text {
+  font-size: .8rem;
+  color: var(--ink3);
+  margin-top: .3rem;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* Maßstab re-check */
+.uk-recheck {
+  margin-top: .8rem;
+  padding: .65rem .85rem;
+  background: var(--input-bg);
+  border-radius: var(--r-sm);
+  border-left: 3px solid var(--acc);
+}
+
+.uk-recheck-label {
+  display: block;
+  font-family: var(--ff-mono);
+  font-size: .65rem;
+  font-weight: 700;
+  color: var(--acc);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: .5rem;
+}
+
+.uk-opts-recheck {
+  flex-direction: column;
+  gap: .3rem;
+}
+
+.uk-opt-recheck {
+  font-size: .82rem;
+  padding: .4rem .7rem;
+}
+
+/* Validate action row */
+.uk-validate-row {
+  padding: .85rem 1.1rem;
+  border-top: 1px solid var(--border-l);
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  flex-wrap: wrap;
+}
+
+.uk-submit-hint {
+  font-size: .78rem;
+  color: var(--ink3);
+  font-style: italic;
+}
+
+/* Complete state */
+.uk.uk-complete .uk-head {
+  background: var(--ok);
+}
+
+.uk.uk-complete .uk-head .op-badge {
+  background: rgba(255,255,255,.2);
+  color: #fff;
+  border-color: rgba(255,255,255,.3);
+}
