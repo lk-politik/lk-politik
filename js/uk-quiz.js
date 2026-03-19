@@ -1,8 +1,9 @@
 /* ==========================================================
    Politik-LK — uk-quiz.js
    Interactive Urteilskompetenz block — select-all then validate
-   Structure: Einleitung → Hauptteil → Schlussfolgerung
-   Maßstab/Kriterium: inline <select> dropdown (not a separate step)
+   Structure: Leitfrage → Kriterium → Einleitung → Hauptteil → Schlussfolgerung
+   Kriterium: card click (replaces <select> dropdown)
+   Recheck: compact chips pre-selected on Kriterium card click
    Options per step: 2 (shuffled on init)
    Load after engine.js and tooltips.js in unit HTML files.
    ========================================================== */
@@ -43,46 +44,52 @@
       _shuffle(items).forEach(function (li) { ul.appendChild(li); });
     });
 
-    // Main criterion dropdown
-    var mainSel = block.querySelector('.uk-kriterium-sel[data-role="main"]');
-    if (mainSel) {
-      // Shuffle main options
-      var opts = Array.from(mainSel.querySelectorAll('option[data-msidx]'));
-      _shuffle(opts).forEach(function (opt) { mainSel.appendChild(opt); });
+    // ── Kriterium selection ─────────────────────────────
+    // _kritIdx is a closure variable scoped to this block instance.
+    // window.selKrit is assigned here so inline onclick="selKrit(this)" can reach it.
+    // Note: if multiple .uk blocks exist on a page, the last _initBlock call wins.
+    // Unit 3.5 has one .uk block, so this is safe.
+    var _kritIdx = null;
 
-      // Clone options into each recheck dropdown (independently shuffled)
-      block.querySelectorAll('.uk-kriterium-sel[data-role="recheck"]').forEach(function (recheckSel) {
-        var clones = opts.map(function (opt) { return opt.cloneNode(true); });
-        _shuffle(clones).forEach(function (opt) { recheckSel.appendChild(opt); });
+    window.selKrit = function (el) {
+      var parent = el.closest('.uk-krit-opts');
+      if (!parent) return;
+      // Single-select: remove selected and wrong from all siblings (clears previous error state)
+      parent.querySelectorAll('.uk-krit-opt').forEach(function (o) {
+        o.classList.remove('selected', 'wrong');
+        var errSpan = o.querySelector('.uk-krit-opt-err');
+        if (errSpan) errSpan.textContent = '';
+      });
+      el.classList.add('selected');
+      _kritIdx = el.getAttribute('data-msidx');
 
-        recheckSel.addEventListener('change', function () {
-          _clearKriteriumWrapError(recheckSel.closest('.uk-kriterium'));
-          _checkAllSelected(block);
+      // Pre-select matching chip in all recheck blocks
+      block.querySelectorAll('.uk-krit-recheck').forEach(function (recheck) {
+        recheck.querySelectorAll('.uk-krit-chip').forEach(function (chip) {
+          chip.classList.toggle('selected', chip.getAttribute('data-msidx') === _kritIdx);
         });
       });
 
-      mainSel.addEventListener('change', function () {
-        _clearKriteriumWrapError(mainSel.closest('.uk-kriterium'));
+      _checkAllSelected(block);
+    };
+
+    // Recheck chip click handlers
+    block.querySelectorAll('.uk-krit-chip').forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        var recheck = chip.closest('.uk-krit-recheck');
+        if (!recheck) return;
+        recheck.querySelectorAll('.uk-krit-chip').forEach(function (c) {
+          c.classList.remove('selected');
+        });
+        chip.classList.add('selected');
+        _kritIdx = chip.getAttribute('data-msidx');
         _checkAllSelected(block);
       });
-    }
+    });
 
     // Option click handlers
     block.querySelectorAll('.uk-opt').forEach(function (opt) {
       opt.addEventListener('click', function () { _onOptClick(block, opt); });
-    });
-  }
-
-  function _clearKriteriumWrapError(wrap) {
-    if (!wrap) return;
-    wrap.classList.remove('invalid', 'valid');
-    var err = wrap.querySelector('.uk-kriterium-error');
-    if (err) { err.textContent = ''; err.style.display = 'none'; }
-  }
-
-  function _clearKriteriumError(block) {
-    block.querySelectorAll('.uk-kriterium').forEach(function (wrap) {
-      _clearKriteriumWrapError(wrap);
     });
   }
 
@@ -118,13 +125,13 @@
   function _checkAllSelected(block) {
     var allDone = true;
 
-    // Main criterion dropdown must have a value
-    var mainSel = block.querySelector('.uk-kriterium-sel[data-role="main"]');
-    if (mainSel && !mainSel.value) allDone = false;
+    // Kriterium card must be selected
+    if (!block.querySelector('.uk-krit-opt.selected')) allDone = false;
 
-    // All recheck dropdowns must have a value
-    block.querySelectorAll('.uk-kriterium-sel[data-role="recheck"]').forEach(function (sel) {
-      if (!sel.value) allDone = false;
+    // Each recheck block must have at least one chip selected
+    // (mismatch validation is deferred to chkUK — here we only check presence)
+    block.querySelectorAll('.uk-krit-recheck').forEach(function (recheck) {
+      if (!recheck.querySelector('.uk-krit-chip.selected')) allDone = false;
     });
 
     // Each step's .uk-opts must have a selection or correct answer
@@ -146,55 +153,55 @@
 
     var allCorrect = true;
 
-    // Validate main criterion dropdown
-    var mainSel = block.querySelector('.uk-kriterium-sel[data-role="main"]');
+    // ── Validate Kriterium card selection ──────────────
+    var kritOpt = block.querySelector('.uk-krit-opt.selected');
     var mainMsidx = null;
-    if (mainSel) {
-      var mainOpt = mainSel.options[mainSel.selectedIndex];
-      var msCorrect = mainOpt && mainOpt.dataset.correct === 'true';
-      mainMsidx = mainOpt ? mainOpt.dataset.msidx : null;
-      var mainWrap = mainSel.closest('.uk-kriterium');
+
+    if (!kritOpt) {
+      allCorrect = false;
+    } else {
+      var msCorrect = kritOpt.getAttribute('data-correct') === 'true';
+      mainMsidx = kritOpt.getAttribute('data-msidx');
 
       if (!msCorrect) {
         allCorrect = false;
-        if (mainWrap) {
-          mainWrap.classList.add('invalid');
-          mainWrap.classList.remove('valid');
-          var errEl = mainWrap.querySelector('.uk-kriterium-error');
-          if (errEl && mainOpt) {
-            var label = ERROR_LABELS[mainOpt.dataset.error] || 'FEHLER';
-            errEl.textContent = label + (mainOpt.dataset.errtext ? ' — ' + mainOpt.dataset.errtext : '');
-            errEl.style.display = 'block';
-          }
+        kritOpt.classList.remove('selected');
+        kritOpt.classList.add('wrong');
+        var errEl = kritOpt.querySelector('.uk-krit-opt-err');
+        if (errEl) {
+          var errType  = kritOpt.getAttribute('data-error') || '';
+          var errText  = kritOpt.getAttribute('data-errtext') || '';
+          var errLabel = ERROR_LABELS[errType] || 'FEHLER';
+          errEl.textContent = errLabel + (errText ? ' — ' + errText : '');
         }
       } else {
-        if (mainWrap) { mainWrap.classList.add('valid'); mainWrap.classList.remove('invalid'); }
+        kritOpt.classList.remove('selected');
+        kritOpt.classList.add('correct');
       }
     }
 
-    // Validate recheck dropdowns — must match main msidx
-    block.querySelectorAll('.uk-kriterium-sel[data-role="recheck"]').forEach(function (recheckSel) {
-      var recheckOpt = recheckSel.options[recheckSel.selectedIndex];
-      var matches = recheckOpt && recheckOpt.dataset.msidx === mainMsidx;
-      var recheckWrap = recheckSel.closest('.uk-kriterium');
+    // ── Validate recheck chips — must match mainMsidx ──
+    block.querySelectorAll('.uk-krit-recheck').forEach(function (recheck) {
+      var selChip = recheck.querySelector('.uk-krit-chip.selected');
+      var recheckMsidx = selChip ? selChip.getAttribute('data-msidx') : null;
 
-      if (!matches) {
+      if (recheckMsidx !== mainMsidx) {
         allCorrect = false;
-        if (recheckWrap) {
-          recheckWrap.classList.add('invalid');
-          recheckWrap.classList.remove('valid');
-          var rErr = recheckWrap.querySelector('.uk-kriterium-error');
-          if (rErr) {
-            rErr.textContent = 'ROTER FADEN VERLOREN — Du hast ein anderes Kriterium gewählt als in der Einleitung.';
-            rErr.style.display = 'block';
+        // Mark non-matching chips as wrong; correct chip stays
+        recheck.querySelectorAll('.uk-krit-chip').forEach(function (chip) {
+          if (chip.getAttribute('data-msidx') !== mainMsidx) {
+            chip.classList.add('wrong');
           }
+        });
+        var rErr = recheck.querySelector('.uk-krit-recheck-err');
+        if (rErr) {
+          rErr.textContent = 'ROTER FADEN VERLOREN — Du hast ein anderes Kriterium gewählt als in der Einleitung.';
+          rErr.style.display = 'block';
         }
-      } else {
-        if (recheckWrap) { recheckWrap.classList.add('valid'); recheckWrap.classList.remove('invalid'); }
       }
     });
 
-    // Validate step options
+    // ── Validate step options ───────────────────────────
     block.querySelectorAll('[data-step] .uk-opts').forEach(function (pool) {
       var selected = pool.querySelector('.uk-opt.selected');
       if (!selected) return; // already .correct — skip
@@ -210,6 +217,7 @@
       }
     });
 
+    // ── Outcome ─────────────────────────────────────────
     if (allCorrect) {
       block.classList.add('uk-complete');
       btn.disabled = true;
