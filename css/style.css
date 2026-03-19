@@ -2346,7 +2346,7 @@ code, .mono {
    ===================================================== */
 
 /* Core: corner ribbon "Prüfung" on sw-head */
-.sw[data-p="core"] {
+.sw[data-p="core"] .sw-head {
   position: relative;
 }
 
