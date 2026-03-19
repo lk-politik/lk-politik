@@ -4,49 +4,49 @@
     "def": "Ein gemeinsamer Wirtschaftsraum, in dem Waren, Personen, Dienstleistungen und Kapital frei zirkulieren können — die vier Grundfreiheiten. Der EU-Binnenmarkt besteht seit dem 1. Januar 1993.",
     "units": ["3-2", "3-5"],
     "chapter": 3,
-    "cat": "Konzept"
+    "cat": "Integrationsstufe"
   },
   {
     "term": "Vier Grundfreiheiten",
     "def": "Die vier Kernfreiheiten des EU-Binnenmarkts: freier Warenverkehr, freier Personenverkehr, freier Dienstleistungsverkehr und freier Kapitalverkehr.",
     "units": ["3-5"],
     "chapter": 3,
-    "cat": "Konzept"
+    "cat": "Prinzip"
   },
   {
     "term": "Sozialdumping",
     "def": "Das Phänomen, dass Unternehmen oder Arbeitnehmer aus Ländern mit niedrigen Lohn- und Sozialstandards in Ländern mit höheren Standards zu geringeren Kosten anbieten, was dort Löhne und Arbeitsbedingungen unter Druck setzt.",
     "units": ["3-5"],
     "chapter": 3,
-    "cat": "Konzept"
+    "cat": "Phänomen"
   },
   {
     "term": "Brain Drain",
     "def": "Die Abwanderung gut ausgebildeter Fachkräfte aus wirtschaftlich schwächeren Regionen in stärkere, was die Herkunftsregion weiter schwächt.",
     "units": ["3-5"],
     "chapter": 3,
-    "cat": "Konzept"
+    "cat": "Phänomen"
   },
   {
     "term": "Steuerwettbewerb",
     "def": "Der Wettbewerb zwischen Staaten um Unternehmensansiedlungen durch niedrige Steuersätze, was Steuereinnahmen anderer Staaten untergräbt.",
     "units": ["3-5"],
     "chapter": 3,
-    "cat": "Konzept"
+    "cat": "Phänomen"
   },
   {
     "term": "Cassis-de-Dijon-Prinzip",
     "def": "Grundsatz des EuGH (1979): Ein in einem EU-Mitgliedstaat rechtmäßig hergestelltes und vertriebenes Produkt darf in allen anderen Mitgliedstaaten verkauft werden. Basis des gegenseitigen Anerkennungsprinzips.",
     "units": ["3-5"],
     "chapter": 3,
-    "cat": "Konzept"
+    "cat": "Prinzip"
   },
   {
     "term": "LuxLeaks",
     "def": "Enthüllungsskandal (2014): Luxemburg hatte geheime Steuerdeals mit über 300 Unternehmen geschlossen, die effektive Steuersätze unter 1 % ermöglichten — ein Beispiel für schädlichen Steuerwettbewerb innerhalb der EU.",
     "units": ["3-5"],
     "chapter": 3,
-    "cat": "Konzept"
+    "cat": "Ereignis"
   },
   {
     "term": "Entsenderichtlinie",
@@ -60,21 +60,21 @@
     "def": "Das Standardverfahren der EU-Gesetzgebung: Die Kommission schlägt vor, das Europäische Parlament und der Rat der EU entscheiden gleichberechtigt. Es können bis zu drei Lesungen stattfinden.",
     "units": ["3-3"],
     "chapter": 3,
-    "cat": "Prozess"
+    "cat": "Verfahren"
   },
   {
     "term": "Initiativrecht",
     "def": "Das alleinige Recht der Europäischen Kommission, Gesetzesvorschläge einzubringen. Weder das EP noch der Rat können selbst Gesetzentwürfe vorlegen — ein wesentlicher Unterschied zum deutschen System.",
     "units": ["3-2", "3-3"],
     "chapter": 3,
-    "cat": "Konzept"
+    "cat": "Befugnis"
   },
   {
     "term": "Trilog",
     "def": "Informelle Dreierverhandlung zwischen Vertretern des EP, des Rates und der Kommission, um einen Kompromiss zu erarbeiten. Triloge beschleunigen das Verfahren, stehen aber wegen mangelnder Transparenz in der Kritik.",
     "units": ["3-3"],
     "chapter": 3,
-    "cat": "Prozess"
+    "cat": "Verfahren"
   },
   {
     "term": "Richtlinie",

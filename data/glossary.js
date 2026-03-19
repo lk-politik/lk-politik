@@ -7,7 +7,7 @@ var _PLK_GLOSSARY = [
       "3-5"
     ],
     "chapter": 3,
-    "cat": "Konzept"
+    "cat": "Integrationsstufe"
   },
   {
     "term": "Vier Grundfreiheiten",
@@ -16,7 +16,7 @@ var _PLK_GLOSSARY = [
       "3-5"
     ],
     "chapter": 3,
-    "cat": "Konzept"
+    "cat": "Prinzip"
   },
   {
     "term": "Sozialdumping",
@@ -25,7 +25,7 @@ var _PLK_GLOSSARY = [
       "3-5"
     ],
     "chapter": 3,
-    "cat": "Konzept"
+    "cat": "Phänomen"
   },
   {
     "term": "Brain Drain",
@@ -34,7 +34,7 @@ var _PLK_GLOSSARY = [
       "3-5"
     ],
     "chapter": 3,
-    "cat": "Konzept"
+    "cat": "Phänomen"
   },
   {
     "term": "Steuerwettbewerb",
@@ -43,7 +43,7 @@ var _PLK_GLOSSARY = [
       "3-5"
     ],
     "chapter": 3,
-    "cat": "Konzept"
+    "cat": "Phänomen"
   },
   {
     "term": "Cassis-de-Dijon-Prinzip",
@@ -52,7 +52,7 @@ var _PLK_GLOSSARY = [
       "3-5"
     ],
     "chapter": 3,
-    "cat": "Konzept"
+    "cat": "Prinzip"
   },
   {
     "term": "LuxLeaks",
@@ -61,7 +61,7 @@ var _PLK_GLOSSARY = [
       "3-5"
     ],
     "chapter": 3,
-    "cat": "Konzept"
+    "cat": "Ereignis"
   },
   {
     "term": "Entsenderichtlinie",
