@@ -1,198 +1,257 @@
-[
+var _PLK_GLOSSARY = [
   {
     "term": "Binnenmarkt",
     "def": "Ein gemeinsamer Wirtschaftsraum, in dem Waren, Personen, Dienstleistungen und Kapital frei zirkulieren können — die vier Grundfreiheiten. Der EU-Binnenmarkt besteht seit dem 1. Januar 1993.",
-    "units": ["3-2", "3-5"],
+    "units": [
+      "3-2",
+      "3-5"
+    ],
     "chapter": 3,
     "cat": "Konzept"
   },
   {
     "term": "Vier Grundfreiheiten",
     "def": "Die vier Kernfreiheiten des EU-Binnenmarkts: freier Warenverkehr, freier Personenverkehr, freier Dienstleistungsverkehr und freier Kapitalverkehr.",
-    "units": ["3-5"],
+    "units": [
+      "3-5"
+    ],
     "chapter": 3,
     "cat": "Konzept"
   },
   {
     "term": "Sozialdumping",
     "def": "Das Phänomen, dass Unternehmen oder Arbeitnehmer aus Ländern mit niedrigen Lohn- und Sozialstandards in Ländern mit höheren Standards zu geringeren Kosten anbieten, was dort Löhne und Arbeitsbedingungen unter Druck setzt.",
-    "units": ["3-5"],
+    "units": [
+      "3-5"
+    ],
     "chapter": 3,
     "cat": "Konzept"
   },
   {
     "term": "Brain Drain",
     "def": "Die Abwanderung gut ausgebildeter Fachkräfte aus wirtschaftlich schwächeren Regionen in stärkere, was die Herkunftsregion weiter schwächt.",
-    "units": ["3-5"],
+    "units": [
+      "3-5"
+    ],
     "chapter": 3,
     "cat": "Konzept"
   },
   {
     "term": "Steuerwettbewerb",
     "def": "Der Wettbewerb zwischen Staaten um Unternehmensansiedlungen durch niedrige Steuersätze, was Steuereinnahmen anderer Staaten untergräbt.",
-    "units": ["3-5"],
+    "units": [
+      "3-5"
+    ],
     "chapter": 3,
     "cat": "Konzept"
   },
   {
     "term": "Cassis-de-Dijon-Prinzip",
     "def": "Grundsatz des EuGH (1979): Ein in einem EU-Mitgliedstaat rechtmäßig hergestelltes und vertriebenes Produkt darf in allen anderen Mitgliedstaaten verkauft werden. Basis des gegenseitigen Anerkennungsprinzips.",
-    "units": ["3-5"],
+    "units": [
+      "3-5"
+    ],
     "chapter": 3,
     "cat": "Konzept"
   },
   {
     "term": "LuxLeaks",
     "def": "Enthüllungsskandal (2014): Luxemburg hatte geheime Steuerdeals mit über 300 Unternehmen geschlossen, die effektive Steuersätze unter 1 % ermöglichten — ein Beispiel für schädlichen Steuerwettbewerb innerhalb der EU.",
-    "units": ["3-5"],
+    "units": [
+      "3-5"
+    ],
     "chapter": 3,
     "cat": "Konzept"
   },
   {
     "term": "Entsenderichtlinie",
     "def": "EU-Richtlinie, die Mindestarbeitsbedingungen (u.a. Mindestlohn des Gastlandes) für Arbeitnehmer festlegt, die vorübergehend in einen anderen EU-Staat entsandt werden.",
-    "units": ["3-5"],
+    "units": [
+      "3-5"
+    ],
     "chapter": 3,
     "cat": "Rechtsakt"
   },
   {
     "term": "Ordentliches Gesetzgebungsverfahren",
     "def": "Das Standardverfahren der EU-Gesetzgebung: Die Kommission schlägt vor, das Europäische Parlament und der Rat der EU entscheiden gleichberechtigt. Es können bis zu drei Lesungen stattfinden.",
-    "units": ["3-3"],
+    "units": [
+      "3-3"
+    ],
     "chapter": 3,
     "cat": "Prozess"
   },
   {
     "term": "Initiativrecht",
     "def": "Das alleinige Recht der Europäischen Kommission, Gesetzesvorschläge einzubringen. Weder das EP noch der Rat können selbst Gesetzentwürfe vorlegen — ein wesentlicher Unterschied zum deutschen System.",
-    "units": ["3-2", "3-3"],
+    "units": [
+      "3-2",
+      "3-3"
+    ],
     "chapter": 3,
     "cat": "Konzept"
   },
   {
     "term": "Trilog",
     "def": "Informelle Dreierverhandlung zwischen Vertretern des EP, des Rates und der Kommission, um einen Kompromiss zu erarbeiten. Triloge beschleunigen das Verfahren, stehen aber wegen mangelnder Transparenz in der Kritik.",
-    "units": ["3-3"],
+    "units": [
+      "3-3"
+    ],
     "chapter": 3,
     "cat": "Prozess"
   },
   {
     "term": "Richtlinie",
     "def": "Ein EU-Rechtsakt, der ein Ziel vorgibt, aber den Mitgliedstaaten überlässt, wie sie es in nationales Recht umsetzen. Jeder Staat muss dafür ein eigenes Gesetz erlassen (Umsetzungsfrist).",
-    "units": ["3-3", "3-5"],
+    "units": [
+      "3-3",
+      "3-5"
+    ],
     "chapter": 3,
     "cat": "Rechtsakt"
   },
   {
     "term": "Verordnung",
     "def": "Ein EU-Rechtsakt, der sofort und unmittelbar in allen Mitgliedstaaten gilt, ohne dass nationale Parlamente ein eigenes Gesetz erlassen müssen. Gilt wortgleich in der gesamten EU.",
-    "units": ["3-3"],
+    "units": [
+      "3-3"
+    ],
     "chapter": 3,
     "cat": "Rechtsakt"
   },
   {
     "term": "Vermittlungsausschuss",
     "def": "Ein gemeinsames Gremium aus EP und Rat (EU) bzw. Bundestag und Bundesrat (DE), das bei Uneinigkeit über einen Gesetzentwurf einen Kompromiss aushandelt. Letzte Stufe vor dem Scheitern eines Gesetzes.",
-    "units": ["3-3"],
+    "units": [
+      "3-3"
+    ],
     "chapter": 3,
     "cat": "Institution"
   },
   {
     "term": "Vertrag von Lissabon",
     "def": "Der aktuell gültige EU-Grundlagenvertrag (unterzeichnet 2007, in Kraft seit 2009). Stärkt das EP, führt die doppelte Mehrheit ein, macht die Grundrechtecharta verbindlich und schafft die Position des ständigen Ratspräsidenten und des Hohen Vertreters.",
-    "units": ["3-2"],
+    "units": [
+      "3-2"
+    ],
     "chapter": 3,
     "cat": "Vertrag"
   },
   {
     "term": "Vertrag von Maastricht",
     "def": "Der Gründungsvertrag der Europäischen Union (1992). Schuf die EU als politische Union auf Basis der bestehenden Wirtschaftsgemeinschaft und legte den Grundstein für die gemeinsame Währung (Euro).",
-    "units": ["3-2"],
+    "units": [
+      "3-2"
+    ],
     "chapter": 3,
     "cat": "Vertrag"
   },
   {
     "term": "Europäisches Parlament",
     "def": "Das einzige direkt von den EU-Bürgern gewählte Organ. Entscheidet gleichberechtigt mit dem Rat über Gesetze, kontrolliert die Kommission und beschließt den EU-Haushalt. Sitz: Straßburg/Brüssel, max. 705 Abgeordnete + Präsidentin.",
-    "units": ["3-2"],
+    "units": [
+      "3-2"
+    ],
     "chapter": 3,
     "cat": "Institution"
   },
   {
     "term": "Rat der EU",
     "def": "Das Gesetzgebungsorgan der Mitgliedstaaten. Besteht je nach Thema aus den zuständigen Fachministern (1 pro Land). Beschließt seit Lissabon mit doppelter Mehrheit gemeinsam mit dem EP Gesetze.",
-    "units": ["3-2"],
+    "units": [
+      "3-2"
+    ],
     "chapter": 3,
     "cat": "Institution"
   },
   {
     "term": "Europäische Kommission",
     "def": "Das Exekutivorgan der EU mit alleinigem Initiativrecht für Gesetzesvorschläge. 'Hüterin der Verträge': überwacht die Einhaltung des EU-Rechts. 27 Kommissare (1 pro Land), Sitz: Brüssel.",
-    "units": ["3-2"],
+    "units": [
+      "3-2"
+    ],
     "chapter": 3,
     "cat": "Institution"
   },
   {
     "term": "Europäischer Rat",
     "def": "Die Staats- und Regierungschefs der 27 EU-Staaten. Legt die großen politischen Ziele der EU fest, beschließt aber keine Gesetze. Seit Lissabon mit ständigem Präsidenten (2,5 Jahre). Nicht verwechseln mit dem Rat der EU!",
-    "units": ["3-2"],
+    "units": [
+      "3-2"
+    ],
     "chapter": 3,
     "cat": "Institution"
   },
   {
     "term": "Europäische Zentralbank",
     "def": "Verantwortlich für stabile Preise im Euroraum. Legt die Geldpolitik fest, gibt den Euro aus und überwacht Banken. Unabhängig von Politik. Sitz: Frankfurt am Main.",
-    "units": ["3-2"],
+    "units": [
+      "3-2"
+    ],
     "chapter": 3,
     "cat": "Institution"
   },
   {
     "term": "Gerichtshof der EU",
     "def": "Stellt sicher, dass EU-Recht in allen Mitgliedstaaten gleich angewendet wird. 27 Richter (1 pro Staat). Seit Lissabon: Grundrechtecharta als Prüfungsmaßstab. Sitz: Luxemburg.",
-    "units": ["3-2"],
+    "units": [
+      "3-2"
+    ],
     "chapter": 3,
     "cat": "Institution"
   },
   {
     "term": "Europäischer Rechnungshof",
     "def": "Prüft alle Einnahmen und Ausgaben der EU auf ordnungsgemäße und sinnvolle Verwendung. 27 Mitglieder (1 pro Staat). Sitz: Luxemburg.",
-    "units": ["3-2"],
+    "units": [
+      "3-2"
+    ],
     "chapter": 3,
     "cat": "Institution"
   },
   {
     "term": "Doppelte Mehrheit",
     "def": "Das seit Lissabon geltende Verfahren der qualifizierten Mehrheit im Rat der EU: Ein Beschluss braucht 55 % der Mitgliedstaaten (mind. 15) und 65 % der EU-Bevölkerung. Einfacher und transparenter als das vorherige Nizza-System. Im Lehrplan auch als 'qualifizierte Mehrheit' bezeichnet.",
-    "units": ["3-2"],
+    "units": [
+      "3-2"
+    ],
     "chapter": 3,
     "cat": "Konzept"
   },
   {
     "term": "Europäische Bürgerinitiative",
     "def": "Durch Lissabon eingeführtes Instrument der direkten Demokratie: 1 Million Bürger aus mindestens 7 EU-Ländern können die Kommission auffordern, einen Gesetzesvorschlag zu prüfen. Die Kommission ist aber nicht verpflichtet zu handeln.",
-    "units": ["3-2"],
+    "units": [
+      "3-2"
+    ],
     "chapter": 3,
     "cat": "Instrument"
   },
   {
     "term": "Subsidiaritätsprinzip",
     "def": "Grundsatz, dass die EU nur dann handeln soll, wenn ein Ziel auf nationaler/regionaler Ebene nicht ausreichend erreicht werden kann. Seit Lissabon können nationale Parlamente prüfen, ob dieser Grundsatz eingehalten wird.",
-    "units": ["3-2"],
+    "units": [
+      "3-2"
+    ],
     "chapter": 3,
     "cat": "Konzept"
   },
   {
     "term": "Grundrechtecharta",
     "def": "Die EU-Grundrechtecharta enthält die Grundrechte aller EU-Bürger (z.B. Meinungsfreiheit, Datenschutz, Verbot der Todesstrafe). Seit dem Vertrag von Lissabon rechtsverbindlich und vor dem EuGH einklagbar.",
-    "units": ["3-2"],
+    "units": [
+      "3-2"
+    ],
     "chapter": 3,
     "cat": "Rechtsakt"
   },
   {
     "term": "Hoher Vertreter für Außen- und Sicherheitspolitik",
     "def": "Durch Lissabon geschaffene Position, die die Außenpolitik der EU bündelt. Zugleich Vizepräsident der Kommission. Aktuell: Kaja Kallas (Estland). Soll der EU ein einheitlicheres Auftreten in der Weltpolitik ermöglichen.",
-    "units": ["3-2"],
+    "units": [
+      "3-2"
+    ],
     "chapter": 3,
     "cat": "Posten"
   }
-]
+];

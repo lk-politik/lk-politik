@@ -61,11 +61,16 @@
   gap: .5rem;
 }
 
-.fb-ab-badge {
-  font-size: .65rem;
-  background: var(--swB);
-  color: var(--sw);
-  padding: .1em .5em;
+.fb-cat-badge {
+  font-size: .62rem;
+  font-family: var(--ff-mono);
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  background: var(--accG);
+  color: var(--acc);
+  border: 1px solid var(--accL);
+  padding: .1em .55em;
   border-radius: 3px;
 }
 
@@ -123,8 +128,8 @@
   <input type="search" id="fb-search" placeholder="Begriff suchen …" autocomplete="off">
 
   <div class="fb-page-filter" id="fb-filters">
-    <button class="fb-filter-btn active" data-filter="all">Alle Kapitel</button>
-    <!-- Chapter buttons rendered by JS -->
+    <button class="fb-filter-btn active" data-filter="all">Alle</button>
+    <!-- Category buttons rendered by JS -->
   </div>
 
   <ul class="fb-list" id="fb-list">
@@ -134,6 +139,7 @@
 </div>
 
 <script src="js/progress.js"></script>
+<script src="data/glossary.js"></script>
 <script>
 (function () {
   var _all    = [];
@@ -146,12 +152,11 @@
 
   function _render() {
     var items = _all.filter(function (g) {
-      var matchChapter = _filter === 'all' || String(g.chapter) === _filter;
-      var matchSearch  = !_search || g.term.toLowerCase().includes(_search) || g.def.toLowerCase().includes(_search);
-      return matchChapter && matchSearch;
+      var matchCat    = _filter === 'all' || g.cat === _filter;
+      var matchSearch = !_search || g.term.toLowerCase().indexOf(_search) !== -1 || g.def.toLowerCase().indexOf(_search) !== -1;
+      return matchCat && matchSearch;
     });
 
-    // Sort alphabetically
     items.sort(function (a, b) { return a.term.localeCompare(b.term, 'de'); });
 
     if (!items.length) {
@@ -160,10 +165,10 @@
     }
 
     listEl.innerHTML = items.map(function (g) {
-      var abLabel = g.ab ? ' <span class="fb-ab-badge">AB ' + ['','I','II','III'][g.ab] + '</span>' : '';
+      var catBadge  = g.cat ? ' <span class="fb-cat-badge">' + g.cat + '</span>' : '';
       var unitLinks = g.units.map(function (u) { return 'Einheit ' + u; }).join(', ');
       return '<li class="fb-entry">' +
-        '<div class="fb-entry-term">' + g.term + abLabel + '</div>' +
+        '<div class="fb-entry-term">' + g.term + catBadge + '</div>' +
         '<div class="fb-entry-def">' + g.def + '</div>' +
         '<div class="fb-entry-units">→ ' + unitLinks + '</div>' +
         '</li>';
@@ -171,14 +176,16 @@
   }
 
   function _buildFilters(data) {
-    var chapters = [...new Set(data.map(function (g) { return g.chapter; }))].sort();
-    chapters.forEach(function (ch) {
+    var catSet = {};
+    data.forEach(function (g) { if (g.cat) catSet[g.cat] = true; });
+    var cats = Object.keys(catSet).sort();
+    cats.forEach(function (cat) {
       var btn = document.createElement('button');
       btn.className = 'fb-filter-btn';
-      btn.dataset.filter = String(ch);
-      btn.textContent = 'Kapitel ' + ch;
+      btn.dataset.filter = cat;
+      btn.textContent = cat;
       btn.addEventListener('click', function () {
-        _filter = btn.dataset.filter;
+        _filter = cat;
         filtersEl.querySelectorAll('.fb-filter-btn').forEach(function (b) { b.classList.remove('active'); });
         btn.classList.add('active');
         _render();
@@ -199,16 +206,14 @@
     _render();
   });
 
-  fetch('/data/glossary.json')
-    .then(function (r) { return r.json(); })
-    .then(function (data) {
-      _all = data;
-      _buildFilters(data);
-      _render();
-    })
-    .catch(function () {
-      listEl.innerHTML = '<li class="fb-empty">Fachbegriffe konnten nicht geladen werden.</li>';
-    });
+  /* Read from global set by data/glossary.js (loaded via script tag) */
+  if (window._PLK_GLOSSARY && window._PLK_GLOSSARY.length) {
+    _all = window._PLK_GLOSSARY;
+    _buildFilters(_all);
+    _render();
+  } else {
+    listEl.innerHTML = '<li class="fb-empty">Fachbegriffe konnten nicht geladen werden.</li>';
+  }
 })();
 </script>
 
