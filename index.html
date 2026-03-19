@@ -142,6 +142,10 @@
 
   <div class="chapters" id="chapters"></div>
 
+  <div style="text-align:center;margin:1.5rem 0">
+    <a href="fachbegriffe.html" style="font-family:var(--ff-head);font-size:.9rem;font-weight:600;color:var(--acc);text-decoration:none;border:1.5px solid var(--acc);padding:.4em 1.1em;border-radius:6px;">&#128218; Fachbegriffe</a>
+  </div>
+
   <footer class="page-footer">
     <span>Politik-LK · Deutsch-Luxemburgisches Schengen-Lyzeum Perl</span>
     <span>© 2025/26</span>
@@ -169,10 +173,10 @@ var SECTIONS = [
     id: 'kap3',
     label: 'Kapitel 3 — Die Europäische Union',
     units: [
-      { id: '3-2',  num: '3.2',  title: 'Die EU nach dem Vertrag von Lissabon',          href: 'einheiten/3-2_lissabon.html',         status: 'pending', color: null },
-      { id: '3-3',  num: '3.3',  title: 'Gesetzgebung in der EU',                         href: 'einheiten/3-3_gesetzgebung.html',      status: 'pending', color: null },
+      { id: '3-2',  num: '3.2',  title: 'Die EU nach dem Vertrag von Lissabon',          href: 'einheiten/3-2_lissabon.html',         status: 'active',  color: '#2d5986' },
+      { id: '3-3',  num: '3.3',  title: 'Gesetzgebung in der EU und in Deutschland',        href: 'einheiten/3-3_gesetzgebung.html',      status: 'active',  color: '#2d5986' },
       { id: '3-4',  num: '3.4',  title: 'Das Mehrebenensystem der EU',                    href: 'einheiten/3-4_mehrebenensystem.html',  status: 'pending', color: null },
-      { id: '3-5',  num: '3.5',  title: 'Der Binnenmarkt und die vier Freiheiten',        href: 'einheiten/3-5_binnenmarkt.html',       status: 'active',  color: '#b45309' },
+      { id: '3-5',  num: '3.5',  title: 'Der Binnenmarkt und die vier Freiheiten',        href: 'einheiten/3-5_binnenmarkt.html',       status: 'pending', color: '#b45309' },
       { id: '3-6',  num: '3.6',  title: 'Stufen der wirtschaftlichen Integration',        href: 'einheiten/3-6_integration.html',       status: 'pending', color: null },
       { id: '3-7',  num: '3.7',  title: 'Die Eurozone',                                   href: 'einheiten/3-7_eurozone.html',          status: 'pending', color: null },
       { id: '3-8',  num: '3.8',  title: 'EZB und Stabilitätskriterien',                   href: 'einheiten/3-8_ezb.html',               status: 'pending', color: null },
@@ -315,7 +319,35 @@ function toggleChapter(id) {
   if (!wasOpen) el.classList.add('open');
 }
 
-document.addEventListener('DOMContentLoaded', _renderAll);
+/* ── Load units.json and merge into SECTIONS ──────────── */
+function _mergeUnits(data) {
+  var map = {};
+  for (var i = 0; i < data.length; i++) {
+    map[data[i].id] = data[i];
+  }
+  SECTIONS.forEach(function (sec) {
+    sec.units.forEach(function (u) {
+      var remote = map[u.id];
+      if (!remote) return;
+      if (remote.title)  u.title  = remote.title;
+      if (remote.status) u.status = remote.status;
+      if (remote.accent) u.color  = remote.accent;
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'data/units.json', true);
+  xhr.onload = function () {
+    if (xhr.status === 200 || (xhr.status === 0 && xhr.responseText)) {
+      try { _mergeUnits(JSON.parse(xhr.responseText)); } catch (e) { console.warn('[index] units.json parse error', e); }
+    }
+    _renderAll();
+  };
+  xhr.onerror = function () { _renderAll(); };
+  xhr.send();
+});
 </script>
 </body>
 </html>
