@@ -715,17 +715,50 @@ Purpose: protecting the learning process and preventing automated answer extract
       </div>
       <div class="uk-body">
 
+        <!-- Leitfrage banner -->
+        <div class="uk-leitfrage">
+          <div class="uk-leitfrage-label">Leitfrage</div>
+          <div class="uk-leitfrage-text">Überwiegen die Vorteile des EU-Binnenmarkts seine sozialen Kosten?</div>
+        </div>
+
+        <!-- Kriterium — erste Begegnung, volle Karten -->
+        <div class="uk-krit-block">
+          <span class="uk-krit-tag">🔴 Kriterium — Maßstab festlegen</span>
+          <div class="uk-krit-q">Welcher Maßstab ist geeignet, um die Leitfrage zu beantworten?</div>
+          <div class="uk-krit-opts">
+            <div class="uk-krit-opt" data-msidx="0" data-correct="true"  data-error="" data-errtext=""
+                 onclick="selKrit(this)">
+              <span class="uk-krit-num">A</span>
+              Sichert der Binnenmarkt Effizienz und sozialen Ausgleich für alle Mitglieder?
+              <span class="uk-krit-opt-err"></span>
+            </div>
+            <div class="uk-krit-opt" data-msidx="1" data-correct="false" data-error="sided"
+                 data-errtext="Dieser Maßstab erfasst nur die Wachstumsperspektive — soziale Konsequenzen bleiben außen vor."
+                 onclick="selKrit(this)">
+              <span class="uk-krit-num">B</span>
+              Fördert der Binnenmarkt gleichmäßiges BIP-Wachstum in allen Mitgliedstaaten?
+              <span class="uk-krit-opt-err"></span>
+            </div>
+            <div class="uk-krit-opt" data-msidx="2" data-correct="false" data-error="vague"
+                 data-errtext="Ein Beschäftigungsmaßstab greift zu kurz — er ignoriert Lohnentwicklung, soziale Standards und Verteilungswirkungen."
+                 onclick="selKrit(this)">
+              <span class="uk-krit-num">C</span>
+              Schafft der Binnenmarkt per Saldo mehr Arbeitsplätze als er verdrängt?
+              <span class="uk-krit-opt-err"></span>
+            </div>
+          </div>
+        </div>
+
         <!-- ── EINLEITUNG ──────────────────────────────── -->
         <div class="uk-section">
           <div class="uk-section-lbl">Einleitung</div>
 
-          <!-- Step 1: Theoretischer Kontext + Kriterium -->
-          <div class="uk-step" data-step="kontext">
+          <!-- Step 1: Theoretischer Kontext (AB I) -->
+          <div class="uk-step" data-step="kontext" data-ab="1">
             <div class="uk-step-header">
-              <span class="uk-ab-tag">AB I</span>
-              Theoretischer Kontext
+              <span class="uk-ab-tag">AB I — Theoretischer Kontext</span>
             </div>
-            <p class="uk-step-q">Welche Aussage beschreibt den theoretischen Rahmen des Binnenmarkts?</p>
+            <p class="uk-step-q">Welche theoretische Grundlage hilft, die Leitfrage einzuordnen?</p>
             <ul class="uk-opts">
               <li class="uk-opt"
                   data-error="step"
@@ -736,43 +769,14 @@ Purpose: protecting the learning process and preventing automated answer extract
                 <span class="uk-opt-text">Der Binnenmarkt basiert auf den vier Grundfreiheiten — er ist ein Regelwerk für wirtschaftliche Integration, das durch einheitliche Standards gemeinsamen Wohlstand sichern soll.</span>
               </li>
             </ul>
-
-            <!-- Inline Kriterium dropdown -->
-            <div class="uk-kriterium">
-              <span class="uk-kriterium-lbl">Kriterium (Maßstab / Rahmen):</span>
-              <select class="uk-kriterium-sel" data-role="main">
-                <option value="">— bitte wählen —</option>
-                <option data-correct="true" data-msidx="1" data-errtext="">
-                  Sichert der Binnenmarkt Effizienz und sozialen Ausgleich für alle Mitglieder?
-                </option>
-                <option data-error="vague" data-msidx="2"
-                        data-errtext="Zu allgemein — diese Frage benennt kein Kriterium, an dem du Vor- und Nachteile messen kannst.">
-                  Überwiegen die Vorteile des Binnenmarkts seine Nachteile?
-                </option>
-                <option data-correct="true" data-msidx="3" data-errtext="">
-                  Schützt der Binnenmarkt die sozialen Grundrechte aller EU-Bürger?
-                </option>
-                <option data-error="verdict" data-msidx="4"
-                        data-errtext="Diese Frage antizipiert das Urteil — du setzt eine nötige Reform voraus, bevor du analysiert hast.">
-                  Muss der Binnenmarkt grundlegend reformiert werden?
-                </option>
-              </select>
-              <span class="uk-kriterium-error"></span>
-            </div>
           </div>
-        </div><!-- /Einleitung -->
 
-        <!-- ── HAUPTTEIL ───────────────────────────────── -->
-        <div class="uk-section">
-          <div class="uk-section-lbl">Hauptteil</div>
-
-          <!-- Step 2: Material & Fall -->
-          <div class="uk-step" data-step="fall">
+          <!-- Step 2: Material & Fall (AB I) -->
+          <div class="uk-step" data-step="fall" data-ab="1">
             <div class="uk-step-header">
-              <span class="uk-ab-tag">AB I</span>
-              Material &amp; Fall
+              <span class="uk-ab-tag">AB I — Material &amp; Fall</span>
             </div>
-            <p class="uk-step-q">Welche Aussage gibt die Fallbeispiele aus dem Sachwissen sachlich wieder?</p>
+            <p class="uk-step-q">Welche Aussage gibt die Fallbeispiele sachlich wieder, die für die Leitfrage relevant sind?</p>
             <ul class="uk-opts">
               <li class="uk-opt" data-correct="true">
                 <span class="uk-opt-text">Sozialdumping durch Entsendung von Niedriglohnkräften, Brain Drain aus Osteuropa und Steuervermeidung durch Konzerne (LuxLeaks) zeigen konkrete Spannungen im Binnenmarkt.</span>
@@ -785,13 +789,29 @@ Purpose: protecting the learning process and preventing automated answer extract
             </ul>
           </div>
 
-          <!-- Step 3: Verbindung & Konflikte -->
-          <div class="uk-step" data-step="verbindung">
+        </div><!-- /Einleitung -->
+
+        <!-- Kriterium recheck #1 — leitet AB II ein -->
+        <div class="uk-krit-recheck">
+          <div class="uk-krit-recheck-label">🔴 Roter Faden — Kriterium bestätigen</div>
+          <div class="uk-krit-chips">
+            <div class="uk-krit-chip" data-msidx="0">Effizienz + sozialer Ausgleich</div>
+            <div class="uk-krit-chip" data-msidx="1">BIP-Wachstum aller Mitglieder</div>
+            <div class="uk-krit-chip" data-msidx="2">Netto-Beschäftigungseffekt</div>
+          </div>
+          <div class="uk-krit-recheck-err"></div>
+        </div>
+
+        <!-- ── HAUPTTEIL ───────────────────────────────── -->
+        <div class="uk-section">
+          <div class="uk-section-lbl">Hauptteil</div>
+
+          <!-- Step 3: Verbindung & Konflikte (AB II) -->
+          <div class="uk-step" data-step="verbindung" data-ab="2">
             <div class="uk-step-header">
-              <span class="uk-ab-tag">AB II</span>
-              Verbindung &amp; Konflikte
+              <span class="uk-ab-tag">AB II — Verbindung &amp; Konflikte</span>
             </div>
-            <p class="uk-step-q">Welche Aussage zeigt überzeugend, wo Theorie und Fallbeispiele in Konflikt geraten?</p>
+            <p class="uk-step-q">Wo geraten Theorie und Fallbeispiele in Konflikt, gemessen am Kriterium der Leitfrage?</p>
             <ul class="uk-opts">
               <li class="uk-opt"
                   data-error="chain"
@@ -802,23 +822,14 @@ Purpose: protecting the learning process and preventing automated answer extract
                 <span class="uk-opt-text">Die vier Grundfreiheiten versprechen gemeinsamen Wohlstand — die Praxis zeigt jedoch asymmetrische Ergebnisse: Stärkere Volkswirtschaften profitieren strukturell mehr, während Sozialdumping und Steuervermeidung auf Kosten schwächerer Akteure gehen.</span>
               </li>
             </ul>
-            <!-- Kriterium re-check -->
-            <div class="uk-kriterium uk-kriterium--recheck">
-              <span class="uk-kriterium-lbl">Roter Faden — wähle dein Kriterium erneut:</span>
-              <select class="uk-kriterium-sel" data-role="recheck">
-                <option value="">— bitte wählen —</option>
-              </select>
-              <span class="uk-kriterium-error"></span>
-            </div>
           </div>
 
-          <!-- Step 4: Abwägung von Perspektiven -->
-          <div class="uk-step" data-step="abwaegung">
+          <!-- Step 4: Abwägung (AB II) -->
+          <div class="uk-step" data-step="abwaegung" data-ab="2">
             <div class="uk-step-header">
-              <span class="uk-ab-tag">AB II</span>
-              Abwägung von Perspektiven
+              <span class="uk-ab-tag">AB II — Abwägung</span>
             </div>
-            <p class="uk-step-q">Welche Aussage wägt verschiedene Perspektiven am überzeugendsten ab?</p>
+            <p class="uk-step-q">Welche Perspektive überwiegt bei der Beantwortung der Leitfrage?</p>
             <ul class="uk-opts">
               <li class="uk-opt" data-correct="true">
                 <span class="uk-opt-text">Unternehmen und exportstarke Staaten sehen den Binnenmarkt als Wachstumsmotor. Arbeitnehmer in Hochlohnländern und ärmere Regionen erleben Lohndruck und Abwanderung. Beide Perspektiven müssen am gewählten Kriterium gemessen werden.</span>
@@ -830,19 +841,30 @@ Purpose: protecting the learning process and preventing automated answer extract
               </li>
             </ul>
           </div>
+
         </div><!-- /Hauptteil -->
+
+        <!-- Kriterium recheck #2 — leitet AB III ein -->
+        <div class="uk-krit-recheck">
+          <div class="uk-krit-recheck-label">🔴 Roter Faden — Urteil mit Kriterium verknüpfen</div>
+          <div class="uk-krit-chips">
+            <div class="uk-krit-chip" data-msidx="0">Effizienz + sozialer Ausgleich</div>
+            <div class="uk-krit-chip" data-msidx="1">BIP-Wachstum aller Mitglieder</div>
+            <div class="uk-krit-chip" data-msidx="2">Netto-Beschäftigungseffekt</div>
+          </div>
+          <div class="uk-krit-recheck-err"></div>
+        </div>
 
         <!-- ── SCHLUSSFOLGERUNG ────────────────────────── -->
         <div class="uk-section">
           <div class="uk-section-lbl">Schlussfolgerung</div>
 
-          <!-- Step 5: Begründetes Urteil -->
-          <div class="uk-step" data-step="urteil">
+          <!-- Step 5: Begründetes Urteil (AB III) -->
+          <div class="uk-step" data-step="urteil" data-ab="3">
             <div class="uk-step-header">
-              <span class="uk-ab-tag">AB III</span>
-              Begründetes Urteil
+              <span class="uk-ab-tag">AB III — Begründetes Urteil</span>
             </div>
-            <p class="uk-step-q">Welches Urteil ist am besten begründet und verweist auf das gewählte Kriterium?</p>
+            <p class="uk-step-q">Welches Urteil beantwortet die Leitfrage überzeugend und verweist auf das Kriterium?</p>
             <ul class="uk-opts">
               <li class="uk-opt"
                   data-error="chain"
@@ -853,21 +875,14 @@ Purpose: protecting the learning process and preventing automated answer extract
                 <span class="uk-opt-text">Gemessen am Kriterium — sozialer Ausgleich und Effizienz für alle — erfüllt der Binnenmarkt seinen Anspruch nur teilweise. Solange Sozialdumping und Steuervermeidung strukturell möglich bleiben, sind verbindliche Sozialstandards und koordinierte Steuerpolitik notwendige Konsequenzen.</span>
               </li>
             </ul>
-            <!-- Kriterium re-check -->
-            <div class="uk-kriterium uk-kriterium--recheck">
-              <span class="uk-kriterium-lbl">Roter Faden — wähle dein Kriterium erneut:</span>
-              <select class="uk-kriterium-sel" data-role="recheck">
-                <option value="">— bitte wählen —</option>
-              </select>
-              <span class="uk-kriterium-error"></span>
-            </div>
           </div>
+
         </div><!-- /Schlussfolgerung -->
 
         <!-- ── VALIDATE ────────────────────────────────── -->
         <div class="uk-validate-row">
           <button class="uk-submit" disabled onclick="chkUK(this)">Argumentation prüfen</button>
-          <span class="uk-submit-hint">Wähle für jeden Schritt eine Antwort und ein Kriterium.</span>
+          <span class="uk-submit-hint">Wähle für jeden Schritt eine Antwort, ein Kriterium und bestätige den roten Faden.</span>
         </div>
 
       </div><!-- /uk-body -->
