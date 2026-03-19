@@ -56,6 +56,24 @@
   --r-sm:      6px;
   --max-w:     960px;
   --gap:       1.5rem;
+
+  /* Methodology colors — fixed, not per-unit (Roter Faden / AB levels) */
+  --rf-acc:  #dc2626;
+  --rf-bg:   #fef2f2;
+  --rf-bdr:  #fca5a5;
+  --rf-txt:  #7f1d1d;
+
+  --ab1-acc: #1d4ed8;
+  --ab1-bg:  #eff6ff;
+  --ab1-bdr: #bfdbfe;
+
+  --ab2-acc: #7c3aed;
+  --ab2-bg:  #f5f3ff;
+  --ab2-bdr: #ddd6fe;
+
+  --ab3-acc: #16a34a;
+  --ab3-bg:  #f0fdf4;
+  --ab3-bdr: #bbf7d0;
 }
 
 /* ----------------------------------------------------------
@@ -2562,3 +2580,181 @@ strong.p-core::after {
 .uk-kriterium--recheck .uk-kriterium-lbl {
   color: var(--acc);
 }
+
+/* =====================================================
+   45. UK Block — Methodology AB coloring & Leitfrage/Kriterium redesign
+   Methodology colors are fixed (not per-unit accent).
+   ===================================================== */
+
+/* Leitfrage banner */
+.uk-leitfrage {
+  background: #1e293b;
+  padding: .9rem 1.1rem;
+  border-bottom: 3px solid var(--rf-acc);
+}
+.uk-leitfrage-label {
+  font-family: var(--ff-mono);
+  font-size: .58rem;
+  font-weight: 600;
+  color: #94a3b8;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  margin-bottom: .35rem;
+}
+.uk-leitfrage-text {
+  font-family: var(--ff-head);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+}
+
+/* Kriterium block — first encounter */
+.uk-krit-block {
+  background: var(--rf-bg);
+  border-bottom: 1px solid var(--rf-bdr);
+  padding: .8rem 1.1rem;
+}
+.uk-krit-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  font-family: var(--ff-mono);
+  font-size: .6rem;
+  font-weight: 600;
+  background: var(--rf-acc);
+  color: #fff;
+  padding: .18em .6em;
+  border-radius: 4px;
+  margin-bottom: .45rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.uk-krit-q {
+  font-family: var(--ff-head);
+  font-size: .87rem;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.35;
+  margin-bottom: .55rem;
+}
+.uk-krit-opts {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
+.uk-krit-opt {
+  display: flex;
+  align-items: flex-start;
+  gap: .55rem;
+  padding: .5rem .75rem;
+  border: 1.5px solid var(--rf-bdr);
+  border-radius: 6px;
+  background: rgba(255,255,255,.75);
+  font-size: .82rem;
+  color: #374151;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.uk-krit-opt.selected {
+  border-color: var(--rf-acc);
+  background: rgba(220,38,38,.07);
+}
+.uk-krit-opt.correct {
+  border-color: var(--rf-acc);
+  background: rgba(220,38,38,.12);
+  cursor: default;
+}
+.uk-krit-opt.wrong {
+  border-color: #fca5a5;
+  background: #fef2f2;
+  opacity: .6;
+  cursor: default;
+}
+.uk-krit-num {
+  font-family: var(--ff-mono);
+  font-size: .62rem;
+  font-weight: 600;
+  color: var(--rf-acc);
+  min-width: 1.2rem;
+  padding-top: .05rem;
+  flex-shrink: 0;
+}
+.uk-krit-opt-err {
+  display: none;
+  width: 100%;
+  font-family: var(--ff-mono);
+  font-size: .65rem;
+  font-weight: 600;
+  color: var(--rf-acc);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-top: .3rem;
+}
+.uk-krit-opt.wrong .uk-krit-opt-err {
+  display: block;
+}
+
+/* Kriterium recheck — compact chips */
+.uk-krit-recheck {
+  background: var(--rf-bg);
+  border-bottom: 1px solid var(--rf-bdr);
+  padding: .65rem 1.1rem;
+}
+.uk-krit-recheck-label {
+  font-family: var(--ff-mono);
+  font-size: .58rem;
+  font-weight: 600;
+  color: var(--rf-acc);
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  margin-bottom: .4rem;
+}
+.uk-krit-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+}
+.uk-krit-chip {
+  font-size: .75rem;
+  padding: .3em .75em;
+  border: 1.5px solid var(--rf-bdr);
+  border-radius: 99px;
+  background: rgba(255,255,255,.8);
+  color: var(--rf-txt);
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.uk-krit-chip.selected {
+  background: var(--rf-acc);
+  color: #fff;
+  border-color: var(--rf-acc);
+}
+.uk-krit-chip.wrong {
+  opacity: .5;
+  cursor: default;
+}
+.uk-krit-recheck-err {
+  display: none;
+  font-family: var(--ff-mono);
+  font-size: .65rem;
+  font-weight: 600;
+  color: var(--rf-acc);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  margin-top: .35rem;
+}
+
+/* Step AB-level coloring */
+.uk-step[data-ab="1"] { background: var(--ab1-bg); border-bottom: 1px solid var(--ab1-bdr); }
+.uk-step[data-ab="2"] { background: var(--ab2-bg); border-bottom: 1px solid var(--ab2-bdr); }
+.uk-step[data-ab="3"] { background: var(--ab3-bg); border-bottom: 1px solid var(--ab3-bdr); }
+
+.uk-step[data-ab="1"] .uk-ab-tag { background: var(--ab1-acc); color: #fff; }
+.uk-step[data-ab="2"] .uk-ab-tag { background: var(--ab2-acc); color: #fff; }
+.uk-step[data-ab="3"] .uk-ab-tag { background: var(--ab3-acc); color: #fff; }
+
+.uk-step[data-ab="1"] .uk-opts .uk-opt { border-color: var(--ab1-bdr); }
+.uk-step[data-ab="2"] .uk-opts .uk-opt { border-color: var(--ab2-bdr); }
+.uk-step[data-ab="3"] .uk-opts .uk-opt { border-color: var(--ab3-bdr); }
