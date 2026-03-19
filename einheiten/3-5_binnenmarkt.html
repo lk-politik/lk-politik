@@ -62,23 +62,31 @@ Purpose: protecting the learning process and preventing automated answer extract
     <h1>Der EU-Binnenmarkt und die vier Freiheiten</h1>
     <p class="sub">Was ist der Binnenmarkt, welche Freiheiten garantiert er, und welche Herausforderungen bringt er mit sich?</p>
     <div class="lz-list">
-      <span class="lz-pill">LZ1: Vier Freiheiten im Binnenmarkt erläutern</span>
-      <span class="lz-pill">LZ2: Vorteile des Binnenmarktes darlegen</span>
-      <span class="lz-pill">LZ3: Herausforderungen diskutieren</span>
-    </div>
-    <div style="margin-top:.75rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
-      <button class="btn btn-ghost btn-sm"
-              onclick="if(confirm('Fortschritt zurücksetzen?')){Progress.clear(CONF.id);location.reload();}">
-        ↺ Zurücksetzen
-      </button>
+      <div class="lz-pill">
+        <span class="lz-pill-id">LZ 1</span>
+        <span class="lz-pill-text">Die vier Grundfreiheiten des EU-Binnenmarkts erläutern und an Beispielen aus der Grenzregion Perl veranschaulichen</span>
+      </div>
+      <div class="lz-pill">
+        <span class="lz-pill-id">LZ 2</span>
+        <span class="lz-pill-text">Wirtschaftliche Vorteile des Binnenmarkts darlegen und mit Daten aus dem Fallmaterial belegen</span>
+      </div>
+      <div class="lz-pill">
+        <span class="lz-pill-id">LZ 3</span>
+        <span class="lz-pill-text">Herausforderungen des Binnenmarkts (Sozialdumping, Brain Drain, Steuerwettbewerb) diskutieren und bewerten</span>
+      </div>
     </div>
   </header>
 
   <!-- ===== Passwort-Feld ===== -->
-  <div class="pw-input" id="pw-wrap">
-    <div class="pw-input-wrap">
-      <input type="password" id="pw-field" placeholder="Passwort eingeben …">
-      <button class="btn btn-primary btn-sm" onclick="chkPw('pw-field','pw-hint')">Freischalten</button>
+  <div id="pw-wrap">
+    <div class="tool-row">
+      <span class="tool-label">Zugang</span>
+      <input class="tool-input" type="password" id="pw-field" placeholder="Passwort eingeben">
+      <button class="tool-btn-unlock" onclick="chkPw('pw-field','pw-hint')">Freischalten</button>
+      <button class="tool-btn-reset"
+              onclick="if(confirm('Fortschritt zurücksetzen?')){Progress.clear(CONF.id);location.reload();}">
+        ↺ Einheit zurücksetzen
+      </button>
     </div>
     <span class="pw-hint" id="pw-hint"></span>
   </div>
