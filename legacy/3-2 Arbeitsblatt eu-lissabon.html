@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arbeitsblatt – Die EU nach dem Vertrag von Lissabon</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;800&family=DM+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f0e8;--card:#fff;--inp:#faf8f4;--ink:#1a1a1a;--ink2:#4a4540;--ink3:#8a8278;--acc:#003399;--accL:#e8edf7;--gld:#c5960c;--gldL:#fdf6e3;--ok:#2d7a4f;--okB:#e8f5ee;--err:#b83232;--errB:#fdeaea;--brd:#d6cfc4;--brdL:#e8e2d8;--r:10px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+.page{max-width:920px;margin:0 auto;padding:40px 28px 80px}
+
+.wh{text-align:center;margin-bottom:44px;padding-bottom:32px;border-bottom:2px solid var(--brd);position:relative}
+.wh::after{content:'';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:60px;height:2px;background:var(--acc)}
+.wh .tag{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--acc);font-weight:600;margin-bottom:10px}
+.wh h1{font-family:'Fraunces',serif;font-size:clamp(24px,3.5vw,34px);font-weight:800;line-height:1.25;margin-bottom:8px}
+.wh .sub{font-size:15px;color:var(--ink2);max-width:640px;margin:0 auto}
+
+.pb{background:var(--card);border:1px solid var(--brdL);border-radius:var(--r);padding:14px 22px;margin-bottom:36px;display:flex;align-items:center;gap:16px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.pb .lbl{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink3);white-space:nowrap}
+.pb .track{flex:1;height:8px;background:var(--brdL);border-radius:4px;overflow:hidden}
+.pb .fill{height:100%;width:0%;background:linear-gradient(90deg,var(--acc),var(--gld));border-radius:4px;transition:width .6s}
+.pb .sc{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:var(--acc);min-width:48px;text-align:right}
+
+.auf{background:var(--card);border:1px solid var(--brdL);border-radius:var(--r);padding:30px;margin-bottom:28px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.auf:hover{box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.auf-h{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px}
+.auf-n{font-family:'Fraunces',serif;font-size:28px;font-weight:800;color:var(--acc);line-height:1;min-width:36px}
+.auf-m h2{font-family:'Fraunces',serif;font-size:18px;font-weight:600;margin-bottom:2px}
+.lz{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gld);font-weight:600;background:var(--gldL);padding:2px 8px;border-radius:4px;display:inline-block}
+.auf-i{font-size:14px;color:var(--ink2);margin-bottom:20px;line-height:1.7;padding-left:50px}
+.auf-body{padding-left:50px}
+
+.bank{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;padding:16px;background:var(--accL);border-radius:8px;border:1px dashed rgba(0,51,153,.2)}
+.bank.gb{background:var(--gldL);border-color:rgba(197,150,12,.3)}
+.chip{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;padding:5px 12px;background:var(--card);border:1px solid var(--brd);border-radius:6px;cursor:pointer;user-select:none;transition:all .2s;white-space:nowrap;display:inline-block}
+.chip:hover{border-color:var(--acc);box-shadow:0 2px 8px rgba(0,51,153,.08);transform:translateY(-1px)}
+.chip.used{opacity:.3;pointer-events:none;transform:none}
+.chip.sel{outline:2.5px solid var(--acc);outline-offset:1px;background:var(--accL)}
+
+.lp{font-size:14.5px;line-height:2.2;color:var(--ink2);margin-bottom:16px}
+.lp strong{color:var(--ink)}
+.ls{display:inline-block;min-width:140px;padding:3px 10px;border-bottom:2px dashed var(--brd);background:var(--inp);border-radius:4px 4px 0 0;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;color:var(--acc);text-align:center;cursor:pointer;transition:all .25s;vertical-align:baseline;min-height:26px;line-height:20px}
+.ls:empty::after{content:attr(data-nr);color:var(--ink3);font-size:11px}
+.ls:hover{border-color:var(--acc);background:var(--accL)}
+.ls.filled{border-bottom-style:solid;border-color:var(--acc);background:var(--accL)}
+.ls.ok{border-color:var(--ok)!important;background:var(--okB)!important;color:var(--ok)!important}
+.ls.bad{border-color:var(--err)!important;background:var(--errB)!important;color:var(--err)!important}
+
+.zg{display:grid;grid-template-columns:1fr 50px 1fr;gap:10px;align-items:start}
+.zcl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);text-align:center;padding-bottom:8px;border-bottom:1px solid var(--brdL);margin-bottom:6px}
+.zlist{display:flex;flex-direction:column;gap:8px}
+.zi{font-size:13px;padding:10px 14px;background:var(--inp);border:1.5px solid var(--brdL);border-radius:8px;cursor:pointer;transition:all .2s;line-height:1.5;position:relative}
+.zi:hover{border-color:var(--acc);box-shadow:0 2px 8px rgba(0,51,153,.08)}
+.zi.sel{border-color:var(--acc);background:var(--accL);box-shadow:0 0 0 2px rgba(0,51,153,.12)}
+.zi.matched{border-color:var(--gld);background:var(--gldL)}
+.zi.ok-m{border-color:var(--ok)!important;background:var(--okB)!important}
+.zi.bad-m{border-color:var(--err)!important;background:var(--errB)!important}
+.zi .mn{position:absolute;top:-8px;right:-8px;width:20px;height:20px;border-radius:50%;background:var(--gld);color:#fff;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.zarr{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding-top:30px;color:var(--brd);font-size:18px}
+
+/* Schaubild */
+.sbc{background:linear-gradient(135deg,#f8f6f1,#eee9df);border:1px solid var(--brd);border-radius:12px;padding:30px 20px;min-height:420px}
+.sb-r{display:flex;justify-content:center;margin-bottom:16px}
+.sb-mr{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:16px}
+.sb-br{display:flex;justify-content:center;gap:20px}
+.sb-fs{margin-top:24px;padding-top:20px;border-top:2px dashed var(--brd)}
+.sb-fl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);text-align:center;margin-bottom:14px}
+.sb-fr{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+.sbn{background:#fff;border:2px solid var(--brd);border-radius:10px;padding:12px 16px;text-align:center;min-width:130px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.sbn.sup{border-color:var(--acc)}.sbn.intg{border-color:var(--gld)}
+.sbn-i{font-size:22px;margin-bottom:4px}
+.sbn-l{font-family:'Fraunces',serif;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.sbn-s{font-size:11px;color:var(--ink3)}
+.ss{display:inline-block;min-width:90px;padding:3px 8px;border-bottom:2px dashed var(--brd);background:rgba(255,255,255,.7);border-radius:4px 4px 0 0;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;color:var(--acc);text-align:center;cursor:pointer;transition:all .2s;min-height:22px;line-height:16px}
+.ss:empty::after{content:'?';color:var(--ink3)}
+.ss:hover{border-color:var(--acc);background:rgba(0,51,153,.05)}
+.ss.filled{border-bottom-style:solid;border-color:var(--acc);background:var(--accL)}
+.ss.ok{border-color:var(--ok)!important;background:var(--okB)!important;color:var(--ok)!important}
+.ss.bad{border-color:var(--err)!important;background:var(--errB)!important;color:var(--err)!important}
+.sb-rl{font-size:10px;color:var(--ink3);text-align:center;margin:6px 0;font-family:'IBM Plex Mono',monospace;letter-spacing:1px}
+.sb-ar{font-size:20px;color:var(--ink3);flex-shrink:0}
+
+/* Urteil */
+.tc{background:var(--inp);border:1px solid var(--brdL);border-radius:8px;padding:18px 20px;margin-bottom:14px}
+.tt{font-family:'Fraunces',serif;font-size:15px;font-weight:600;font-style:italic;color:var(--ink);margin-bottom:12px;line-height:1.5}
+.tp{font-size:12px;color:var(--ink3);margin-bottom:10px}
+.uta{width:100%;min-height:120px;padding:12px 14px;border:1px solid var(--brdL);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.6;color:var(--ink);background:#fff;resize:vertical;transition:border-color .2s}
+.uta:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(0,51,153,.08)}
+.uta::placeholder{color:var(--ink3);font-style:italic}
+.ml{display:none;margin-top:12px;padding:14px 16px;background:var(--accL);border-radius:8px;border-left:3px solid var(--acc);font-size:13px;line-height:1.75;color:var(--ink2)}
+.ml strong{color:var(--ink)}
+.ml.vis{display:block}
+.ml-section{margin-bottom:10px}
+.ml-section:last-child{margin-bottom:0}
+.ml-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--acc);font-weight:600;margin-bottom:4px}
+
+.cbtn{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:10px 24px;border:2px solid var(--acc);border-radius:8px;background:var(--acc);color:#fff;cursor:pointer;transition:all .25s;margin-top:12px}
+.cbtn:hover{background:transparent;color:var(--acc)}
+.cbtn.ghost{background:transparent;color:var(--acc)}
+.cbtn.ghost:hover{background:var(--acc);color:#fff}
+.cbtn.small{font-size:10px;padding:6px 14px;letter-spacing:.5px}
+.cbtn.warn{border-color:var(--err);background:transparent;color:var(--err)}
+.cbtn.warn:hover{background:var(--err);color:#fff}
+.cbtn.retry{border-color:var(--gld);background:transparent;color:var(--gld);display:none}
+.cbtn.retry:hover{background:var(--gld);color:#fff}
+.cbtn.retry.vis{display:inline-block}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.ares{font-family:'IBM Plex Mono',monospace;font-size:12px;margin-top:12px;padding:8px 14px;border-radius:6px;display:none}
+.ares.vis{display:block}
+.ares.g{background:var(--okB);color:var(--ok)}
+.ares.p{background:var(--gldL);color:var(--gld)}
+.ares.b{background:var(--errB);color:var(--err)}
+
+.hilfe{font-size:12px;color:var(--ink3);font-style:italic;margin-top:4px;padding:8px 12px;background:rgba(0,51,153,.03);border-radius:6px;line-height:1.5}
+
+/* Kategorisierung (Aufgabe 4) */
+.kat-list{display:flex;flex-direction:column;gap:10px}
+.kat-item{display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--inp);border:1.5px solid var(--brdL);border-radius:8px;transition:border-color .2s}
+.kat-text{flex:1;font-size:13.5px;line-height:1.5;color:var(--ink2)}
+.kat-btns{display:flex;gap:6px;flex-shrink:0}
+.kat-btn{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;padding:6px 14px;border:1.5px solid var(--brd);border-radius:6px;background:#fff;cursor:pointer;transition:all .2s;white-space:nowrap}
+.kat-btn:hover{transform:translateY(-1px);box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.kat-btn.kat-d:hover{border-color:var(--ok);color:var(--ok)}
+.kat-btn.kat-e:hover{border-color:var(--gld);color:var(--gld)}
+.kat-btn.active-d{border-color:var(--ok);background:var(--okB);color:var(--ok)}
+.kat-btn.active-e{border-color:var(--gld);background:var(--gldL);color:var(--gld)}
+.kat-item.correct{border-color:var(--ok);background:var(--okB)}
+.kat-item.wrong{border-color:var(--err);background:var(--errB)}
+
+@media(max-width:700px){
+  .auf-i,.auf-body{padding-left:0}
+  .zg{grid-template-columns:1fr}.zarr{display:none}
+  .sb-mr{flex-direction:column;align-items:center}
+  .sb-fr{flex-direction:column}.sb-ar{transform:rotate(90deg)}
+  .kat-item{flex-direction:column;align-items:flex-start;gap:8px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="wh">
+    <div class="tag">Sek II Leistungskurs · Politik &amp; Wirtschaft</div>
+    <h1>Die EU nach dem Vertrag von Lissabon</h1>
+    <p class="sub">Bearbeite die folgenden fünf Aufgaben. Sie bauen aufeinander auf und helfen dir, die Organe der EU und die Veränderungen durch den Vertrag von Lissabon zu verstehen.</p>
+  </header>
+
+  <div class="pb">
+    <span class="lbl">Fortschritt</span>
+    <div class="track"><div class="fill" id="pFill"></div></div>
+    <span class="sc" id="pSc">0 / 31</span>
+    <button class="cbtn small warn" onclick="resetAll()">Alles zurücksetzen</button>
+  </div>
+
+  <!-- ========== AUFGABE 1: Wer ist wer? (Lernziel 1) ========== -->
+  <div class="auf" id="a1">
+    <div class="auf-h">
+      <div class="auf-n">01</div>
+      <div class="auf-m">
+        <h2>Wer ist wer? Die sieben EU-Organe</h2>
+        <span class="lz">Lernziel 1: Institutionen unterscheiden</span>
+      </div>
+    </div>
+    <p class="auf-i">Ordne jedem EU-Organ (links) die passende Kurzbeschreibung (rechts) zu. Klicke zuerst links, dann rechts. Klicke auf ein zugeordnetes Element, um die Zuordnung zu lösen.</p>
+    <div class="auf-body">
+      <div class="zg">
+        <div>
+          <div class="zcl">Organ</div>
+          <div class="zlist" id="z1L">
+            <div class="zi" data-id="ep" data-side="l" onclick="zClick(this,1)">Europäisches Parlament (EP)</div>
+            <div class="zi" data-id="er" data-side="l" onclick="zClick(this,1)">Europäischer Rat</div>
+            <div class="zi" data-id="rat" data-side="l" onclick="zClick(this,1)">Rat der EU</div>
+            <div class="zi" data-id="kom" data-side="l" onclick="zClick(this,1)">Europäische Kommission</div>
+            <div class="zi" data-id="eugh" data-side="l" onclick="zClick(this,1)">Gerichtshof der EU (EuGH)</div>
+            <div class="zi" data-id="erh" data-side="l" onclick="zClick(this,1)">Europäischer Rechnungshof</div>
+            <div class="zi" data-id="ezb" data-side="l" onclick="zClick(this,1)">Europäische Zentralbank (EZB)</div>
+          </div>
+        </div>
+        <div class="zarr"><span>⟷</span><span>⟷</span><span>⟷</span><span>⟷</span><span>⟷</span><span>⟷</span><span>⟷</span></div>
+        <div>
+          <div class="zcl">Beschreibung</div>
+          <div class="zlist" id="z1R">
+            <div class="zi" data-id="kom" data-side="r" onclick="zClick(this,1)">Hat das alleinige Recht, Gesetzesvorschläge einzubringen, und überwacht die Einhaltung des EU-Rechts</div>
+            <div class="zi" data-id="erh" data-side="r" onclick="zClick(this,1)">Prüft alle Einnahmen und Ausgaben der EU</div>
+            <div class="zi" data-id="ep" data-side="r" onclick="zClick(this,1)">Einziges direkt gewähltes EU-Organ, beschließt Gesetze gemeinsam mit dem Rat</div>
+            <div class="zi" data-id="ezb" data-side="r" onclick="zClick(this,1)">Sorgt für stabile Preise im Euroraum, unabhängig von der Politik</div>
+            <div class="zi" data-id="rat" data-side="r" onclick="zClick(this,1)">Minister der Mitgliedstaaten beschließen hier Gesetze gemeinsam mit dem EP</div>
+            <div class="zi" data-id="eugh" data-side="r" onclick="zClick(this,1)">Stellt sicher, dass EU-Recht in allen Mitgliedstaaten gleich angewendet wird</div>
+            <div class="zi" data-id="er" data-side="r" onclick="zClick(this,1)">Staats- und Regierungschefs legen die großen politischen Ziele fest, beschließen aber keine Gesetze</div>
+          </div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="cbtn" onclick="checkZ(1,7)">Überprüfen</button>
+        <button class="cbtn retry" id="retry1" onclick="retryZ(1,7)">Falsche nochmal</button>
+        <button class="cbtn ghost small" onclick="resetZ(1)">Zurücksetzen</button>
+      </div>
+      <div class="ares" id="r1"></div>
+    </div>
+  </div>
+
+  <!-- ========== AUFGABE 2: Gesetzgebung (Lernziel 2) ========== -->
+  <div class="auf" id="a2">
+    <div class="auf-h">
+      <div class="auf-n">02</div>
+      <div class="auf-m">
+        <h2>Wie entsteht ein EU-Gesetz?</h2>
+        <span class="lz">Lernziel 2: Gesetzgebungsverfahren verstehen</span>
+      </div>
+    </div>
+    <p class="auf-i">Vervollständige das Schaubild zum ordentlichen Gesetzgebungsverfahren. Klicke auf einen Begriff, dann auf das passende Feld. Klicke auf ein gefülltes Feld, um es zu leeren.</p>
+    <div class="auf-body">
+      <div class="bank gb" id="b2">
+        <span class="chip" onclick="selChip(this,'b2')">Kommission</span>
+        <span class="chip" onclick="selChip(this,'b2')">Vermittlungsausschuss</span>
+        <span class="chip" onclick="selChip(this,'b2')">EP und Rat</span>
+        <span class="chip" onclick="selChip(this,'b2')">alleiniges Initiativrecht</span>
+        <span class="chip" onclick="selChip(this,'b2')">Erste Lesung</span>
+        <span class="chip" onclick="selChip(this,'b2')">Zweite Lesung</span>
+        <span class="chip" onclick="selChip(this,'b2')">Dritte Lesung</span>
+        <span class="chip" onclick="selChip(this,'b2')">Gesetz tritt in Kraft</span>
+      </div>
+
+      <div class="sbc">
+        <div class="sb-r">
+          <div class="sbn sup">
+            <div class="sbn-i">📋</div>
+            <div class="sbn-l">Wer schlägt Gesetze vor?</div>
+            <div class="sbn-s"><span class="ss" data-a="Kommission" data-bank="b2" onclick="slotClick(this)"></span></div>
+            <div class="sbn-s" style="margin-top:4px">Grund: <span class="ss" data-a="alleiniges Initiativrecht" data-bank="b2" onclick="slotClick(this)" style="min-width:140px"></span></div>
+          </div>
+        </div>
+        <div class="sb-rl">▼ Gesetzesvorschlag ▼</div>
+        <div class="sb-r">
+          <div class="sbn">
+            <div class="sbn-l">Wer entscheidet gleichberechtigt?</div>
+            <div class="sbn-s"><span class="ss" data-a="EP und Rat" data-bank="b2" onclick="slotClick(this)" style="min-width:100px"></span></div>
+          </div>
+        </div>
+
+        <div class="sb-fs">
+          <div class="sb-fl">Ablauf in bis zu drei Lesungen</div>
+          <div class="sb-fr">
+            <div class="sbn" style="min-width:100px">
+              <div class="sbn-l"><span class="ss" data-a="Erste Lesung" data-bank="b2" onclick="slotClick(this)" style="min-width:80px"></span></div>
+              <div class="sbn-s">Standpunkte festlegen</div>
+            </div>
+            <span class="sb-ar">→</span>
+            <div class="sbn" style="min-width:100px">
+              <div class="sbn-l"><span class="ss" data-a="Zweite Lesung" data-bank="b2" onclick="slotClick(this)" style="min-width:80px"></span></div>
+              <div class="sbn-s">Änderungen?</div>
+            </div>
+            <span class="sb-ar">→</span>
+            <div class="sbn" style="min-width:100px">
+              <div class="sbn-l"><span class="ss" data-a="Vermittlungsausschuss" data-bank="b2" onclick="slotClick(this)" style="min-width:80px"></span></div>
+              <div class="sbn-s">Kompromiss finden</div>
+            </div>
+            <span class="sb-ar">→</span>
+            <div class="sbn" style="min-width:100px">
+              <div class="sbn-l"><span class="ss" data-a="Dritte Lesung" data-bank="b2" onclick="slotClick(this)" style="min-width:80px"></span></div>
+              <div class="sbn-s">Abstimmung</div>
+            </div>
+          </div>
+        </div>
+        <div class="sb-rl" style="margin-top:16px">▼ Wenn beide zustimmen ▼</div>
+        <div class="sb-br">
+          <div class="sbn" style="border-color:var(--ok)">
+            <div class="sbn-i">✅</div>
+            <div class="sbn-l"><span class="ss" data-a="Gesetz tritt in Kraft" data-bank="b2" onclick="slotClick(this)" style="min-width:110px"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="cbtn" onclick="checkSlots('a2','b2',8,'r2','retry2')">Überprüfen</button>
+        <button class="cbtn retry" id="retry2" onclick="retrySlots('a2','b2','r2','retry2')">Falsche nochmal</button>
+        <button class="cbtn ghost small" onclick="resetSlots('a2','b2','r2','retry2')">Zurücksetzen</button>
+      </div>
+      <div class="ares" id="r2"></div>
+    </div>
+  </div>
+
+  <!-- ========== AUFGABE 3: Lückentext Neuerungen (Lernziel 3) ========== -->
+  <div class="auf" id="a3">
+    <div class="auf-h">
+      <div class="auf-n">03</div>
+      <div class="auf-m">
+        <h2>Was hat der Vertrag von Lissabon verändert?</h2>
+        <span class="lz">Lernziel 3: Neuerungen kennen</span>
+      </div>
+    </div>
+    <p class="auf-i">Setze die passenden Begriffe in die Lücken ein. Klicke auf einen Begriff, dann auf die Lücke. Klicke auf eine gefüllte Lücke, um den Begriff zurückzugeben.</p>
+    <div class="auf-body">
+      <div class="bank" id="b3">
+        <span class="chip" onclick="selChip(this,'b3')">doppelte Mehrheit</span>
+        <span class="chip" onclick="selChip(this,'b3')">Bürgerinitiative</span>
+        <span class="chip" onclick="selChip(this,'b3')">ständiger Präsident</span>
+        <span class="chip" onclick="selChip(this,'b3')">Grundrechtecharta</span>
+        <span class="chip" onclick="selChip(this,'b3')">Mitentscheidung</span>
+        <span class="chip" onclick="selChip(this,'b3')">öffentlich</span>
+        <span class="chip" onclick="selChip(this,'b3')">Mehrheitsentscheidungen</span>
+        <span class="chip" onclick="selChip(this,'b3')">Hoher Vertreter</span>
+      </div>
+
+      <p class="lp"><strong>Demokratie:</strong> Das EP entscheidet jetzt in über 80 Bereichen im Verfahren der <span class="ls" data-a="Mitentscheidung" data-nr="(1)" data-bank="b3" onclick="slotClick(this)"></span> gleichberechtigt mit dem Rat über Gesetze. Bürger können erstmals über die Europäische <span class="ls" data-a="Bürgerinitiative" data-nr="(2)" data-bank="b3" onclick="slotClick(this)"></span> die Kommission auffordern, einen Vorschlag zu prüfen. Die <span class="ls" data-a="Grundrechtecharta" data-nr="(3)" data-bank="b3" onclick="slotClick(this)"></span> ist rechtsverbindlich geworden: EU-Bürger können ihre Grundrechte vor dem EuGH einklagen. Außerdem tagt der Rat bei Gesetzgebung jetzt <span class="ls" data-a="öffentlich" data-nr="(4)" data-bank="b3" onclick="slotClick(this)"></span>.</p>
+
+      <p class="lp"><strong>Effizienz:</strong> Im Rat der EU gilt die <span class="ls" data-a="doppelte Mehrheit" data-nr="(5)" data-bank="b3" onclick="slotClick(this)"></span> (55 % der Staaten, 65 % der Bevölkerung). In rund 40 weiteren Bereichen wurden Einstimmigkeit durch <span class="ls" data-a="Mehrheitsentscheidungen" data-nr="(6)" data-bank="b3" onclick="slotClick(this)"></span> ersetzt. Der Europäische Rat erhielt einen <span class="ls" data-a="ständiger Präsident" data-nr="(7)" data-bank="b3" onclick="slotClick(this)"></span> mit 2,5 Jahren Amtszeit statt wechselndem Vorsitz. Das neue Amt des <span class="ls" data-a="Hoher Vertreter" data-nr="(8)" data-bank="b3" onclick="slotClick(this)"></span> für Außen- und Sicherheitspolitik bündelt verschiedene Aufgaben, damit die EU außenpolitisch einheitlicher auftritt.</p>
+
+      <div class="btn-row">
+        <button class="cbtn" onclick="checkSlots('a3','b3',8,'r3','retry3')">Überprüfen</button>
+        <button class="cbtn retry" id="retry3" onclick="retrySlots('a3','b3','r3','retry3')">Falsche nochmal</button>
+        <button class="cbtn ghost small" onclick="resetSlots('a3','b3','r3','retry3')">Zurücksetzen</button>
+      </div>
+      <div class="ares" id="r3"></div>
+    </div>
+  </div>
+
+  <!-- ========== AUFGABE 4: Kategorisierung Demokratie/Effizienz (Lernziel 4) ========== -->
+  <div class="auf" id="a4">
+    <div class="auf-h">
+      <div class="auf-n">04</div>
+      <div class="auf-m">
+        <h2>Demokratie oder Effizienz?</h2>
+        <span class="lz">Lernziel 4: Neuerungen einordnen</span>
+      </div>
+    </div>
+    <p class="auf-i">Jede Neuerung des Vertrags von Lissabon stärkt entweder die <strong>Demokratie</strong> oder die <strong>Effizienz</strong> der EU. Klicke für jede Neuerung auf die passende Kategorie. Du kannst deine Wahl jederzeit ändern, indem du die andere Kategorie anklickst.</p>
+    <div class="auf-body">
+
+      <div class="kat-list" id="katList">
+        <div class="kat-item" data-correct="d">
+          <div class="kat-text">EP wird gleichberechtigter Gesetzgeber in über 80 Bereichen</div>
+          <div class="kat-btns">
+            <button class="kat-btn kat-d" onclick="katSel(this,'d')">🟢 Demokratie</button>
+            <button class="kat-btn kat-e" onclick="katSel(this,'e')">⚡ Effizienz</button>
+          </div>
+        </div>
+        <div class="kat-item" data-correct="e">
+          <div class="kat-text">Doppelte Mehrheit im Rat</div>
+          <div class="kat-btns">
+            <button class="kat-btn kat-d" onclick="katSel(this,'d')">🟢 Demokratie</button>
+            <button class="kat-btn kat-e" onclick="katSel(this,'e')">⚡ Effizienz</button>
+          </div>
+        </div>
+        <div class="kat-item" data-correct="d">
+          <div class="kat-text">Europäische Bürgerinitiative</div>
+          <div class="kat-btns">
+            <button class="kat-btn kat-d" onclick="katSel(this,'d')">🟢 Demokratie</button>
+            <button class="kat-btn kat-e" onclick="katSel(this,'e')">⚡ Effizienz</button>
+          </div>
+        </div>
+        <div class="kat-item" data-correct="e">
+          <div class="kat-text">Ständiger Präsident des Europäischen Rates</div>
+          <div class="kat-btns">
+            <button class="kat-btn kat-d" onclick="katSel(this,'d')">🟢 Demokratie</button>
+            <button class="kat-btn kat-e" onclick="katSel(this,'e')">⚡ Effizienz</button>
+          </div>
+        </div>
+        <div class="kat-item" data-correct="d">
+          <div class="kat-text">Grundrechtecharta wird verbindlich</div>
+          <div class="kat-btns">
+            <button class="kat-btn kat-d" onclick="katSel(this,'d')">🟢 Demokratie</button>
+            <button class="kat-btn kat-e" onclick="katSel(this,'e')">⚡ Effizienz</button>
+          </div>
+        </div>
+        <div class="kat-item" data-correct="e">
+          <div class="kat-text">Mehr Mehrheitsentscheidungen statt Einstimmigkeit</div>
+          <div class="kat-btns">
+            <button class="kat-btn kat-d" onclick="katSel(this,'d')">🟢 Demokratie</button>
+            <button class="kat-btn kat-e" onclick="katSel(this,'e')">⚡ Effizienz</button>
+          </div>
+        </div>
+        <div class="kat-item" data-correct="d">
+          <div class="kat-text">Nationale Parlamente können EU-Vorschläge prüfen</div>
+          <div class="kat-btns">
+            <button class="kat-btn kat-d" onclick="katSel(this,'d')">🟢 Demokratie</button>
+            <button class="kat-btn kat-e" onclick="katSel(this,'e')">⚡ Effizienz</button>
+          </div>
+        </div>
+        <div class="kat-item" data-correct="e">
+          <div class="kat-text">Hoher Vertreter für Außenpolitik bündelt Aufgaben</div>
+          <div class="kat-btns">
+            <button class="kat-btn kat-d" onclick="katSel(this,'d')">🟢 Demokratie</button>
+            <button class="kat-btn kat-e" onclick="katSel(this,'e')">⚡ Effizienz</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="cbtn" onclick="checkA4()">Überprüfen</button>
+        <button class="cbtn retry" id="retry4" onclick="retryA4()">Falsche nochmal</button>
+        <button class="cbtn ghost small" onclick="resetA4()">Zurücksetzen</button>
+      </div>
+      <div class="ares" id="r4"></div>
+    </div>
+  </div>
+
+  <!-- ========== AUFGABE 5: Reflexion (Lernziel 5) ========== -->
+  <div class="auf" id="a5">
+    <div class="auf-h">
+      <div class="auf-n">05</div>
+      <div class="auf-m">
+        <h2>Reflexion: Mehr Demokratie und Effizienz?</h2>
+        <span class="lz">Lernziel 5: Beurteilen und begründen</span>
+      </div>
+    </div>
+    <p class="auf-i">Beantworte die folgende Frage in einem zusammenhängenden Text. Nutze dabei die Informationen aus den vorherigen Aufgaben. Dein Text sollte eine Einleitung, einen Hauptteil und einen Schluss haben.</p>
+    <div class="auf-body">
+      <div class="tc">
+        <div class="tt">Hat der Vertrag von Lissabon die EU demokratischer und effizienter gemacht? Begründe deine Einschätzung mit konkreten Beispielen aus den Neuerungen des Vertrags.</div>
+        <div class="hilfe">
+          <strong>Aufbau deines Textes:</strong><br>
+          <strong>Einleitung:</strong> Greife die Frage auf und erkläre kurz, was der Vertrag von Lissabon ist und welche beiden Ziele er verfolgte.<br>
+          <strong>Hauptteil:</strong> Nenne konkrete Veränderungen, die der Vertrag gebracht hat, und erkläre, warum sie die Demokratie oder die Effizienz stärken. Gehe auch darauf ein, was weiterhin fehlt.<br>
+          <strong>Schluss:</strong> Formuliere ein Gesamturteil: Hat der Vertrag seine Ziele erreicht, teilweise erreicht oder nicht erreicht? Begründe.
+        </div>
+        <textarea class="uta" placeholder="Schreibe deinen Text hier ..."></textarea>
+        <button class="cbtn ghost small" onclick="togML(this)">Musterlösung einblenden</button>
+        <div class="ml">
+          <div class="ml-section">
+            <div class="ml-label">Einleitung (Wiedergabe)</div>
+            <p>Der Vertrag von Lissabon trat 2009 in Kraft und reformierte die Europäische Union. Er verfolgte zwei zentrale Ziele: Die EU sollte <strong>demokratischer</strong> werden, also näher an den Bürgern, und <strong>effizienter</strong>, also handlungsfähiger in ihren Entscheidungen.</p>
+          </div>
+          <div class="ml-section">
+            <div class="ml-label">Hauptteil (Analyse)</div>
+            <p>Im Bereich <strong>Demokratie</strong> hat der Vertrag Fortschritte gebracht. Das Europäische Parlament wurde gestärkt, weil es jetzt in über 80 Politikbereichen gleichberechtigt mit dem Rat über Gesetze entscheidet. Außerdem können Bürger über die Europäische Bürgerinitiative die Kommission auffordern, einen Gesetzesvorschlag zu prüfen. Die Grundrechtecharta ist verbindlich geworden, sodass Grundrechte einklagbar sind. Allerdings kann das EP weiterhin keine eigenen Gesetze vorschlagen, und die Bürgerinitiative verpflichtet die Kommission nicht zum Handeln. Zudem bleibt die Wahlbeteiligung bei Europawahlen niedrig.</p>
+            <p style="margin-top:8px">Im Bereich <strong>Effizienz</strong> vereinfacht die doppelte Mehrheit im Rat Entscheidungen. In vielen Bereichen reicht jetzt eine Mehrheit statt Einstimmigkeit, sodass einzelne Länder nicht mehr allein blockieren können. Der ständige Präsident des Europäischen Rates sorgt für mehr Stabilität. Allerdings gilt in wichtigen Bereichen wie der Außenpolitik und der Steuerpolitik weiterhin Einstimmigkeit, wodurch einzelne Staaten dort nach wie vor blockieren können.</p>
+          </div>
+          <div class="ml-section">
+            <div class="ml-label">Schluss (Beurteilung)</div>
+            <p>Der Vertrag von Lissabon hat die EU in beiden Bereichen <strong>teilweise verbessert</strong>. Die Demokratie wurde durch die Stärkung des Parlaments und die Bürgerinitiative gestärkt, die Effizienz durch einfachere Abstimmungsverfahren und mehr Stabilität in der Führung. Beide Ziele wurden jedoch nicht vollständig erreicht, da wichtige Einschränkungen bestehen bleiben: das fehlende Initiativrecht des Parlaments und die Einstimmigkeit in Schlüsselbereichen. Der Vertrag war ein Fortschritt, aber kein Abschluss der Reform.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* =======================================================================
+   STANDALONE INTERACTIVE WORKSHEET
+   ======================================================================= */
+
+var pts = 0;
+var maxPts = 31; // 7 + 8 + 8 + 8
+var scored = {};
+var selVal = null;
+var selBk = null;
+
+// Zuordnung state per task
+var zState = {};
+function getZ(n) {
+  if (!zState[n]) zState[n] = {selLeft:null, matches:{}, cnt:0, scored:false};
+  return zState[n];
+}
+
+// ===== CHIP SELECTION =====
+function selChip(el, bankId) {
+  if (el.classList.contains('used')) return;
+  if (el.classList.contains('sel')) { el.classList.remove('sel'); selVal=null; selBk=null; return; }
+  var chips = document.getElementById(bankId).getElementsByClassName('chip');
+  for (var i=0;i<chips.length;i++) chips[i].classList.remove('sel');
+  el.classList.add('sel');
+  selVal = el.textContent;
+  selBk = bankId;
+}
+
+// ===== SLOT CLICK (unified for .ls and .ss) =====
+function slotClick(slot) {
+  var bank = slot.getAttribute('data-bank');
+  var hasFill = slot.textContent.trim().length > 0;
+  var hasSel = selVal && selBk === bank;
+  if (hasFill && !hasSel) {
+    freeC(slot.textContent, bank);
+    slot.textContent = '';
+    slot.classList.remove('filled','ok','bad');
+    return;
+  }
+  if (hasSel) {
+    if (hasFill) freeC(slot.textContent, bank);
+    slot.textContent = selVal;
+    slot.classList.add('filled');
+    slot.classList.remove('ok','bad');
+    var chips = document.getElementById(bank).getElementsByClassName('chip');
+    for (var i=0;i<chips.length;i++) {
+      if (chips[i].textContent===selVal) { chips[i].classList.add('used'); chips[i].classList.remove('sel'); }
+    }
+    selVal=null; selBk=null;
+  }
+}
+function freeC(val, bankId) {
+  var chips = document.getElementById(bankId).getElementsByClassName('chip');
+  for (var i=0;i<chips.length;i++) { if (chips[i].textContent===val) chips[i].classList.remove('used'); }
+}
+
+// ===== GENERIC SLOT CHECK =====
+function checkSlots(aufId, bankId, total, resId, retryId) {
+  var key = aufId;
+  if (scored[key]) return;
+  var slots = document.querySelectorAll('#'+aufId+' .ls, #'+aufId+' .ss');
+  var c = 0;
+  for (var i=0;i<slots.length;i++) {
+    if (slots[i].textContent.trim()===slots[i].getAttribute('data-a')) { slots[i].classList.add('ok');slots[i].classList.remove('bad');c++; }
+    else { slots[i].classList.add('bad');slots[i].classList.remove('ok'); }
+  }
+  scored[key]=true; pts+=c;
+  showR(resId,c,total); updP();
+  if (c<total) document.getElementById(retryId).classList.add('vis');
+}
+function retrySlots(aufId, bankId, resId, retryId) {
+  var slots = document.querySelectorAll('#'+aufId+' .ls.bad, #'+aufId+' .ss.bad');
+  for (var i=0;i<slots.length;i++) {
+    freeC(slots[i].textContent, bankId);
+    slots[i].textContent=''; slots[i].classList.remove('filled','bad','ok');
+  }
+  delete scored[aufId];
+  document.getElementById(resId).className='ares';
+  document.getElementById(retryId).classList.remove('vis');
+  recalc();
+}
+function resetSlots(aufId, bankId, resId, retryId) {
+  var slots = document.querySelectorAll('#'+aufId+' .ls, #'+aufId+' .ss');
+  for (var i=0;i<slots.length;i++) {
+    if (slots[i].textContent) freeC(slots[i].textContent, bankId);
+    slots[i].textContent=''; slots[i].classList.remove('filled','ok','bad');
+  }
+  delete scored[aufId];
+  document.getElementById(resId).className='ares';
+  document.getElementById(retryId).classList.remove('vis');
+  recalc();
+}
+
+// ===== ZUORDNUNG (tasks 1 and generic) =====
+function zClick(el, taskNum) {
+  var z = getZ(taskNum);
+  var side = el.getAttribute('data-side');
+  var lId = 'z'+taskNum+'L';
+  if (el.classList.contains('matched')) {
+    var id = el.getAttribute('data-id');
+    if (side==='l') { unmatch(taskNum, id); }
+    else {
+      for (var k in z.matches) { if (z.matches[k] && z.matches[k].rightEl===el) { unmatch(taskNum,k); break; } }
+    }
+    return;
+  }
+  if (side==='l') {
+    if (el.classList.contains('sel')) { el.classList.remove('sel'); z.selLeft=null; return; }
+    var items = document.querySelectorAll('#'+lId+' .zi');
+    for (var i=0;i<items.length;i++) items[i].classList.remove('sel');
+    el.classList.add('sel');
+    z.selLeft = el;
+  } else if (side==='r' && z.selLeft) {
+    z.cnt++;
+    z.selLeft.classList.remove('sel');
+    z.selLeft.classList.add('matched');
+    el.classList.add('matched');
+    var b1=document.createElement('span');b1.className='mn';b1.textContent=z.cnt;z.selLeft.appendChild(b1);
+    var b2=document.createElement('span');b2.className='mn';b2.textContent=z.cnt;el.appendChild(b2);
+    z.matches[z.selLeft.getAttribute('data-id')]={rightEl:el,leftEl:z.selLeft,rightId:el.getAttribute('data-id'),num:z.cnt};
+    z.selLeft=null;
+  }
+}
+function unmatch(taskNum, leftId) {
+  var z=getZ(taskNum);
+  var p=z.matches[leftId]; if(!p) return;
+  p.leftEl.classList.remove('matched','ok-m','bad-m');
+  p.rightEl.classList.remove('ok-m','bad-m');
+  var m1=p.leftEl.querySelector('.mn');if(m1)m1.remove();
+  var m2=p.rightEl.querySelector('.mn');if(m2)m2.remove();
+  delete z.matches[leftId];
+}
+function checkZ(taskNum, total) {
+  var key='z'+taskNum;
+  if(scored[key]) return;
+  var z=getZ(taskNum);
+  var c=0;
+  var lId='z'+taskNum+'L';
+  var lefts=document.querySelectorAll('#'+lId+' .zi');
+  for(var i=0;i<lefts.length;i++){
+    var lid=lefts[i].getAttribute('data-id');
+    var m=z.matches[lid];
+    if(m){
+      var rIds=m.rightId.split(',');
+      if(rIds.indexOf(lid)!==-1){lefts[i].classList.add('ok-m');m.rightEl.classList.add('ok-m');c++;}
+      else{lefts[i].classList.add('bad-m');m.rightEl.classList.add('bad-m');}
+    } else { lefts[i].classList.add('bad-m'); }
+  }
+  scored[key]=true; pts+=c;
+  showR('r'+taskNum,c,total); updP();
+  if(c<total) document.getElementById('retry'+taskNum).classList.add('vis');
+}
+function retryZ(taskNum, total) {
+  var key='z'+taskNum;
+  var z=getZ(taskNum);
+  var lId='z'+taskNum+'L';
+  var toRm=[];
+  for(var k in z.matches){
+    var m=z.matches[k];
+    var rIds=m.rightId.split(',');
+    if(rIds.indexOf(k)===-1) toRm.push(k);
+  }
+  for(var i=0;i<toRm.length;i++) unmatch(taskNum,toRm[i]);
+  var all=document.querySelectorAll('#a'+taskNum+' .zi.bad-m');
+  for(var i=0;i<all.length;i++) all[i].classList.remove('bad-m');
+  delete scored[key];
+  document.getElementById('r'+taskNum).className='ares';
+  document.getElementById('retry'+taskNum).classList.remove('vis');
+  recalc();
+}
+function resetZ(taskNum) {
+  var z=getZ(taskNum);
+  var keys=Object.keys(z.matches);
+  for(var i=0;i<keys.length;i++) unmatch(taskNum,keys[i]);
+  var all=document.querySelectorAll('#a'+taskNum+' .zi');
+  for(var i=0;i<all.length;i++) all[i].classList.remove('sel','matched','ok-m','bad-m');
+  z.cnt=0; z.selLeft=null;
+  delete scored['z'+taskNum];
+  document.getElementById('r'+taskNum).className='ares';
+  document.getElementById('retry'+taskNum).classList.remove('vis');
+  recalc();
+}
+
+// ===== AUFGABE 4: Toggle-Kategorisierung =====
+function katSel(btn, val) {
+  var item = btn.closest('.kat-item');
+  if (!item) return;
+  var btns = item.querySelectorAll('.kat-btn');
+  for (var i=0;i<btns.length;i++) { btns[i].classList.remove('active-d','active-e'); }
+  btn.classList.add('active-'+val);
+  item.classList.remove('correct','wrong');
+}
+function checkA4() {
+  if (scored['a4']) return;
+  var items = document.querySelectorAll('#katList .kat-item');
+  var c = 0;
+  for (var i=0;i<items.length;i++) {
+    var correct = items[i].getAttribute('data-correct');
+    var activeBtn = items[i].querySelector('.kat-btn.active-d, .kat-btn.active-e');
+    var chosen = null;
+    if (activeBtn) {
+      if (activeBtn.classList.contains('active-d')) chosen='d';
+      else if (activeBtn.classList.contains('active-e')) chosen='e';
+    }
+    if (chosen===correct) { items[i].classList.add('correct');items[i].classList.remove('wrong');c++; }
+    else { items[i].classList.add('wrong');items[i].classList.remove('correct'); }
+  }
+  scored['a4']=true; pts+=c;
+  showR('r4',c,8); updP();
+  if (c<8) document.getElementById('retry4').classList.add('vis');
+}
+function retryA4() {
+  var items = document.querySelectorAll('#katList .kat-item.wrong');
+  for (var i=0;i<items.length;i++) {
+    items[i].classList.remove('wrong');
+    var btns=items[i].querySelectorAll('.kat-btn');
+    for(var j=0;j<btns.length;j++) btns[j].classList.remove('active-d','active-e');
+  }
+  delete scored['a4'];
+  document.getElementById('r4').className='ares';
+  document.getElementById('retry4').classList.remove('vis');
+  recalc();
+}
+function resetA4() {
+  var items = document.querySelectorAll('#katList .kat-item');
+  for (var i=0;i<items.length;i++) {
+    items[i].classList.remove('correct','wrong');
+    var btns=items[i].querySelectorAll('.kat-btn');
+    for(var j=0;j<btns.length;j++) btns[j].classList.remove('active-d','active-e');
+  }
+  delete scored['a4'];
+  document.getElementById('r4').className='ares';
+  document.getElementById('retry4').classList.remove('vis');
+  recalc();
+}
+
+// ===== MUSTERLÖSUNG =====
+function togML(btn) {
+  var ml=btn.nextElementSibling;
+  if(!ml)return;
+  if(ml.classList.contains('vis')){
+    ml.classList.remove('vis');
+    btn.textContent='Musterlösung einblenden';
+    return;
+  }
+  var pw=prompt('Passwort eingeben:');
+  if(!pw) return;
+  if(pw.trim()==='PO-LK'){
+    ml.classList.add('vis');
+    btn.textContent='Musterlösung ausblenden';
+  } else {
+    alert('Falsches Passwort.');
+  }
+}
+
+// ===== GLOBAL RESET =====
+function resetAll() {
+  if(!confirm('Alle Aufgaben zurücksetzen? Dein gesamter Fortschritt geht verloren.')) return;
+  resetZ(1); resetSlots('a2','b2','r2','retry2'); resetSlots('a3','b3','r3','retry3'); resetA4();
+  var ta=document.querySelectorAll('.uta');for(var i=0;i<ta.length;i++)ta[i].value='';
+  var ml=document.querySelectorAll('.ml');for(var i=0;i<ml.length;i++)ml[i].classList.remove('vis');
+  var mlB=document.querySelectorAll('.tc .cbtn.ghost');for(var i=0;i<mlB.length;i++)mlB[i].textContent='Musterlösung einblenden';
+}
+
+// ===== HELPERS =====
+function recalc() {
+  pts=0;
+  if(scored['z1']){var o=document.querySelectorAll('#z1L .zi.ok-m');pts+=o.length;}
+  if(scored['a2']){var o=document.querySelectorAll('#a2 .ss.ok, #a2 .ls.ok');pts+=o.length;}
+  if(scored['a3']){var o=document.querySelectorAll('#a3 .ls.ok');pts+=o.length;}
+  if(scored['a4']){var o=document.querySelectorAll('#katList .kat-item.correct');pts+=o.length;}
+  updP();
+}
+function showR(id,c,total){
+  var el=document.getElementById(id);if(!el)return;
+  var pct=c/total;
+  if(pct>=.8){el.className='ares vis g';el.textContent=c+' von '+total+' richtig. Sehr gut!';}
+  else if(pct>=.5){el.className='ares vis p';el.textContent=c+' von '+total+' richtig. Überarbeite die markierten Felder.';}
+  else{el.className='ares vis b';el.textContent=c+' von '+total+' richtig. Lies den Stoff nochmals durch.';}
+}
+function updP(){
+  var pct=Math.round((pts/maxPts)*100);
+  var f=document.getElementById('pFill');var s=document.getElementById('pSc');
+  if(f)f.style.width=pct+'%';
+  if(s)s.textContent=pts+' / '+maxPts;
+}
+</script>
+</body>
+</html>

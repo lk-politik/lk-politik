@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EU-Werkstatt – Mindestalter 16 für Social Media</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;800&family=DM+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f0e8;--card:#fff;--inp:#faf8f4;
+  --ink:#1a1a1a;--ink2:#4a4540;--ink3:#8a8278;
+  --acc:#7c3aed;--accL:#f3eeff;
+  --gld:#c5960c;--gldL:#fdf6e3;
+  --ok:#2d7a4f;--okB:#e8f5ee;
+  --err:#b83232;--errB:#fdeaea;
+  --brd:#d6cfc4;--brdL:#e8e2d8;
+  --supra:#2563eb;--supraL:#eff6ff;
+  --inter:#d97706;--interL:#fef9ee;
+  --natl:#059669;--natlL:#ecfdf5;
+  --r:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+.page{max-width:960px;margin:0 auto;padding:40px 28px 60px}
+
+.hdr{text-align:center;margin-bottom:40px;padding-bottom:28px;border-bottom:2px solid var(--brd);position:relative}
+.hdr::after{content:'';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:60px;height:2px;background:var(--acc)}
+.hdr .tag{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--acc);font-weight:600;margin-bottom:10px}
+.hdr h1{font-family:'Fraunces',serif;font-size:clamp(22px,3.5vw,32px);font-weight:800;line-height:1.25;margin-bottom:6px}
+.hdr .sub{font-size:14px;color:var(--ink2);max-width:700px;margin:0 auto;line-height:1.6}
+
+/* Sections */
+.sec{background:var(--card);border:1px solid var(--brdL);border-radius:var(--r);padding:24px 28px;margin-bottom:24px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.sec h2{font-family:'Fraunces',serif;font-size:18px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.sec h3{font-family:'Fraunces',serif;font-size:15px;font-weight:600;margin:16px 0 8px;color:var(--acc)}
+.sec p{font-size:14px;line-height:1.8;color:var(--ink2);margin-bottom:10px}
+.sec p:last-child{margin-bottom:0}
+.sec strong{color:var(--ink)}
+
+/* Vorschlag-Box */
+.vorschlag{background:linear-gradient(135deg,var(--accL),#f8f4ff);border:2px solid rgba(124,58,237,.25);border-radius:12px;padding:24px 28px;margin-bottom:24px;position:relative;overflow:hidden}
+.vorschlag::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--acc),var(--gld))}
+.vorschlag h2{font-family:'Fraunces',serif;font-size:18px;font-weight:800;color:var(--acc);margin-bottom:10px}
+.vorschlag p{font-size:14px;line-height:1.8;color:var(--ink2)}
+
+/* Zeitplan-Tabelle */
+.zeit-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+.zeit-table th{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);text-align:left;padding:8px 12px;border-bottom:2px solid var(--brd);background:var(--inp)}
+.zeit-table td{padding:10px 12px;border-bottom:1px solid var(--brdL);vertical-align:top;line-height:1.5}
+.zeit-table td:first-child{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--acc);white-space:nowrap;width:60px}
+.zeit-table tr:last-child td{border-bottom:none;font-weight:600}
+
+/* Rollen-Übersicht */
+.rollen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin:14px 0}
+.rolle-card{background:var(--inp);border:1.5px solid var(--brdL);border-radius:10px;padding:16px 18px;transition:border-color .2s}
+.rolle-card h4{font-family:'Fraunces',serif;font-size:14px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.rolle-card .r-emo{font-size:20px}
+.rolle-card .r-count{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink3);letter-spacing:1px}
+.rolle-card p{font-size:12px;color:var(--ink2);line-height:1.5;margin-top:6px}
+
+/* Phasen */
+.phase{background:var(--card);border:1px solid var(--brdL);border-radius:var(--r);margin-bottom:20px;overflow:hidden}
+.phase-hd{padding:16px 24px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--brdL)}
+.phase-num{font-family:'Fraunces',serif;font-size:22px;font-weight:800;color:var(--acc)}
+.phase-tt{font-family:'Fraunces',serif;font-size:16px;font-weight:600}
+.phase-time{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--gld);background:var(--gldL);padding:3px 10px;border-radius:4px}
+.phase-bd{padding:18px 24px}
+.phase-bd p{font-size:13px;line-height:1.7;color:var(--ink2);margin-bottom:8px}
+.phase-step{display:flex;gap:12px;margin-bottom:12px;padding:10px 14px;background:var(--inp);border-radius:8px;border-left:3px solid var(--acc)}
+.phase-step:last-child{margin-bottom:0}
+.phase-step .ps-who{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--acc);font-weight:600;white-space:nowrap;min-width:80px}
+.phase-step .ps-what{font-size:13px;color:var(--ink2);line-height:1.6}
+.phase-step .ps-what strong{color:var(--ink)}
+.phase-step .ps-time{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--gld);white-space:nowrap;font-weight:600}
+
+/* Abstimmungsbox */
+.abstimmung{background:var(--gldL);border:1px solid rgba(197,150,12,.3);border-radius:8px;padding:14px 18px;margin:10px 0;font-size:13px;line-height:1.6}
+.abstimmung strong{color:var(--ink)}
+
+/* Lehrkraft-Hinweis */
+.lk-hint{background:var(--gldL);border:1px solid rgba(197,150,12,.3);border-radius:8px;padding:12px 16px;margin:12px 0;font-size:12px;color:var(--ink2);line-height:1.6}
+.lk-hint strong{color:var(--gld)}
+
+/* Footer */
+.footer-sec{margin-top:50px;padding-top:24px;border-top:2px solid var(--brd)}
+.cpr{font-size:11px;color:var(--ink3);line-height:1.7;padding:16px;background:var(--card);border:1px solid var(--brdL);border-radius:8px}
+.cpr a{color:var(--acc)}
+
+/* ===== DRUCKBARE ROLLENKARTEN ===== */
+.print-section{display:none}
+@media print{
+  body{background:#fff}
+  .page > *:not(.print-section){display:none!important}
+  .print-section{display:block!important}
+  .pcard{border:2px solid #333;border-radius:14px;padding:20px 22px;margin:14px 0;page-break-inside:avoid;background:#fff}
+  .pcard-hd{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:10px;border-bottom:2px solid #ddd}
+  .pcard-hd .pc-emo{font-size:28px}
+  .pcard-hd .pc-name{font-family:'Fraunces',serif;font-size:18px;font-weight:700}
+  .pcard-hd .pc-land{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#888;margin-left:auto}
+  .pcard-body{font-size:13px;line-height:1.7;color:#333}
+  .pcard-body strong{color:#000}
+  .pcard-body .pc-section{margin-top:10px}
+  .pcard-body .pc-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#999;font-weight:600;margin-bottom:3px}
+  .pcard-body ul{margin:4px 0 0 18px}
+  .pcard-body li{margin-bottom:4px}
+  .pc-tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;border:1px solid}
+  .pc-tag.supra{color:#2563eb;border-color:#2563eb;background:#eff6ff}
+  .pc-tag.inter{color:#d97706;border-color:#d97706;background:#fef9ee}
+  .pc-tag.natl{color:#059669;border-color:#059669;background:#ecfdf5}
+  .pc-tag.presse{color:#7c3aed;border-color:#7c3aed;background:#f3eeff}
+  .page-break{page-break-before:always}
+}
+
+@media(max-width:700px){
+  .rollen-grid{grid-template-columns:1fr}
+  .phase-step{flex-direction:column;gap:4px}
+  .phase-step .ps-time{margin-left:0}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ================================================================
+     HEADER
+     ================================================================ -->
+<header class="hdr">
+  <div class="tag">Politik-Leistungskurs (GOS) · Einheit 3.4 · Aktivität</div>
+  <h1>🎲 EU-Werkstatt: Mindestalter 16 für Social Media</h1>
+  <p class="sub">Rollenbasierte Simulation zum Mehrebenensystem, Subsidiaritätsprinzip und Gesetzgebungsverfahren der EU. Für 16 Schüler, ca. 45 bis 50 Minuten.</p>
+</header>
+
+<!-- ================================================================
+     DER VORSCHLAG
+     ================================================================ -->
+<div class="vorschlag">
+  <h2>📄 Der Gesetzesvorschlag</h2>
+  <p>Die Europäische Kommission schlägt eine <strong>EU-Verordnung</strong> vor:</p>
+  <p style="font-family:'Fraunces',serif;font-size:15px;font-weight:600;color:var(--ink);padding:12px 16px;background:rgba(255,255,255,.6);border-radius:8px;margin:10px 0"><em>„Das Mindestalter für die Erstellung eines Nutzerkontos auf sozialen Netzwerken wird EU-weit auf 16 Jahre festgelegt. Plattformen wie TikTok, Instagram und Snapchat müssen das Alter durch eine technische Überprüfung sicherstellen (z. B. Ausweiskontrolle). Bei Verstoß drohen Geldbußen von bis zu 6 % des weltweiten Jahresumsatzes."</em></p>
+  <p><strong>Hintergrund:</strong> Die aktuelle EU-Datenschutzgrundverordnung (DSGVO) erlaubt den Mitgliedstaaten, das Mindestalter für die Nutzung sozialer Medien zwischen 13 und 16 Jahren selbst festzulegen. In Deutschland liegt es bei 16, in Frankreich bei 15, in Schweden und vielen anderen Ländern bei 13. Die Kommission will diese unterschiedlichen Regelungen vereinheitlichen.</p>
+  <p><strong>Rechtsgrundlage:</strong> Datenschutz und Binnenmarkt (EU-Zuständigkeit). Aber: Jugendschutz und Bildung sind traditionell Sache der Mitgliedstaaten.</p>
+</div>
+
+<!-- ================================================================
+     ROLLENÜBERSICHT
+     ================================================================ -->
+<div class="sec">
+  <h2>👥 Rollenverteilung (16 Schüler)</h2>
+  <div class="rollen-grid">
+    <div class="rolle-card" style="border-color:rgba(37,99,235,.3)">
+      <h4><span class="r-emo">⚔️🛡️</span> Europäische Kommission</h4>
+      <div class="r-count">2 Schüler · Supranational</div>
+      <p>Stellen den Vorschlag vor und verteidigen ihn. Ihr Ziel: die anderen überzeugen, dass eine EU-weite Regelung notwendig ist.</p>
+    </div>
+    <div class="rolle-card" style="border-color:rgba(37,99,235,.3)">
+      <h4><span class="r-emo">🗳️</span> Europäisches Parlament</h4>
+      <div class="r-count">4 Schüler · Supranational</div>
+      <p>Vertreten die Interessen der EU-Bürger. Diskutieren den Vorschlag, können Änderungen fordern. Stimmen am Ende ab (einfache Mehrheit).</p>
+    </div>
+    <div class="rolle-card" style="border-color:rgba(217,119,6,.3)">
+      <h4><span class="r-emo">📋</span> Rat der EU (Digitalminister)</h4>
+      <div class="r-count">4 Schüler · Intergouvernemental · je 1 Land</div>
+      <p>Vertreten jeweils ein Land (DE, FR, SE, PL). Verfolgen nationale Interessen. Stimmen am Ende mit doppelter Mehrheit ab.</p>
+    </div>
+    <div class="rolle-card" style="border-color:rgba(5,150,105,.3)">
+      <h4><span class="r-emo">🏛️</span> Nationale Parlamente</h4>
+      <div class="r-count">4 Schüler · National · je 1 Land</div>
+      <p>Prüfen, ob der Vorschlag das Subsidiaritätsprinzip einhält. Können gemeinsam eine "gelbe Karte" ziehen.</p>
+    </div>
+    <div class="rolle-card" style="border-color:rgba(124,58,237,.3)">
+      <h4><span class="r-emo">📰</span> Presse / Beobachter</h4>
+      <div class="r-count">2 Schüler</div>
+      <p>Beobachten den gesamten Ablauf. Stellen am Ende kritische Fragen und fassen das Ergebnis zusammen.</p>
+    </div>
+  </div>
+
+  <div class="lk-hint">
+    <strong>🔑 Hinweis für die Lehrkraft:</strong> Rat und Nationale Parlamente vertreten jeweils dasselbe Land (z. B. ein Schüler ist Digitalminister für Deutschland, ein anderer ist das deutsche Parlament). So entstehen 4 "Länderdelegationen" mit unterschiedlichen Positionen. Falls weniger als 16 Schüler anwesend sind: Presse auf 1 Person reduzieren, oder ein Land streichen.
+  </div>
+</div>
+
+<!-- ================================================================
+     ZEITPLAN
+     ================================================================ -->
+<div class="sec">
+  <h2>⏱️ Zeitplan (ca. 48 Minuten)</h2>
+  <table class="zeit-table">
+    <thead><tr><th>Zeit</th><th>Phase</th><th>Beschreibung</th></tr></thead>
+    <tbody>
+      <tr><td>5 Min</td><td><strong>Erklärung</strong></td><td>Lehrkraft erklärt Ablauf, verteilt Rollenkarten, klärt Fragen</td></tr>
+      <tr><td>8 Min</td><td><strong>Vorbereitung</strong></td><td>Gruppen lesen Rollenkarten, besprechen ihre Position, machen sich Notizen</td></tr>
+      <tr><td>12 Min</td><td><strong>Phase 1:</strong> Subsidiaritätsprüfung</td><td>Kommission stellt vor, nationale Parlamente beraten und stimmen über gelbe Karte ab</td></tr>
+      <tr><td>15 Min</td><td><strong>Phase 2:</strong> Gesetzgebung</td><td>Getrennte Beratung EP + Rat, dann Trilog-Verhandlung</td></tr>
+      <tr><td>8 Min</td><td><strong>Phase 3:</strong> Abstimmung + Plenum</td><td>EP und Rat stimmen ab, Presse fasst zusammen, Reflexion im Plenum</td></tr>
+      <tr><td><strong>~48</strong></td><td></td><td><strong>Gesamt</strong></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ================================================================
+     PHASE 1
+     ================================================================ -->
+<div class="phase">
+  <div class="phase-hd">
+    <span class="phase-num">1</span>
+    <span class="phase-tt">Vorstellung und Subsidiaritätsprüfung</span>
+    <span class="phase-time">12 Min</span>
+  </div>
+  <div class="phase-bd">
+    <div class="phase-step" style="border-color:var(--supra)">
+      <span class="ps-who">⚔️🛡️ Kommission</span>
+      <span class="ps-what">Stellt den Vorschlag dem Plenum vor: Was soll geregelt werden? Warum ist eine EU-weite Regelung besser als 27 verschiedene nationale Regelungen? <strong>Tipp:</strong> Verweist auf die DSGVO, grenzüberschreitende Plattformen und den Binnenmarkt.</span>
+      <span class="ps-time">3 Min</span>
+    </div>
+    <div class="phase-step" style="border-color:var(--natl)">
+      <span class="ps-who">🏛️ Nat. Parlamente</span>
+      <span class="ps-what">Beraten in der Vierergruppe: <strong>Verletzt der Vorschlag das Subsidiaritätsprinzip?</strong> Jedes Parlament überlegt aus der Sicht seines Landes. Können die Länder Jugendschutz besser selbst regeln? Oder ist eine gemeinsame Lösung nötig, weil Social Media keine Grenzen kennt?</span>
+      <span class="ps-time">5 Min</span>
+    </div>
+    <div class="phase-step" style="border-color:var(--natl)">
+      <span class="ps-who">🏛️ Abstimmung</span>
+      <span class="ps-what">Jedes nationale Parlament stimmt ab: <strong>"Gelbe Karte"</strong> (= Subsidiaritätsbedenken) oder <strong>"Keine Einwände"</strong>? Wenn mindestens 2 von 4 Parlamenten die gelbe Karte ziehen, muss die Kommission den Vorschlag überprüfen. Sie kann ihn beibehalten, ändern oder zurückziehen.</span>
+      <span class="ps-time">4 Min</span>
+    </div>
+
+    <div class="lk-hint">
+      <strong>🔑 Lehrkraft:</strong> Falls die gelbe Karte gezogen wird, entscheidet die Kommission kurz (30 Sekunden), ob sie den Vorschlag beibehält oder anpasst. Empfehlung: Beibehalten mit einer kurzen Begründung, damit Phase 2 weiterlaufen kann. In der echten EU ist die gelbe Karte bisher nur dreimal gezogen worden.
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     PHASE 2
+     ================================================================ -->
+<div class="phase">
+  <div class="phase-hd">
+    <span class="phase-num">2</span>
+    <span class="phase-tt">Gesetzgebungsverfahren (Erste Lesung + Trilog)</span>
+    <span class="phase-time">15 Min</span>
+  </div>
+  <div class="phase-bd">
+    <div class="phase-step" style="border-color:var(--supra)">
+      <span class="ps-who">🗳️ EP (getrennt)</span>
+      <span class="ps-what">Das EP berät als Gruppe: Soll der Vorschlag so angenommen werden? Oder fordern sie Änderungen? Zum Beispiel: Alter auf 14 senken? Eltern-Zustimmung statt Verbot? Ausnahmen für Bildungsplattformen? <strong>Formuliert maximal 2 konkrete Änderungswünsche.</strong></span>
+      <span class="ps-time">6 Min</span>
+    </div>
+    <div class="phase-step" style="border-color:var(--inter)">
+      <span class="ps-who">📋 Rat (getrennt)</span>
+      <span class="ps-what">Die 4 Digitalminister beraten gleichzeitig: Jedes Land legt seinen Standpunkt fest. Welche Länder unterstützen den Vorschlag? Welche wollen Änderungen? <strong>Formuliert maximal 2 konkrete Änderungswünsche.</strong></span>
+      <span class="ps-time">6 Min</span>
+    </div>
+    <div class="phase-step" style="border-color:var(--gld)">
+      <span class="ps-who">🤝 Trilog</span>
+      <span class="ps-what"><strong>Je 1 Vertreter</strong> von EP, Rat und Kommission verhandeln vor dem Plenum einen Kompromiss. Die restlichen Gruppenmitglieder dürfen kurze Zwischenrufe machen. Ziel: Ein Kompromisstext, dem beide Seiten zustimmen können.</span>
+      <span class="ps-time">6 Min</span>
+    </div>
+    <div class="phase-step" style="border-color:var(--supra)">
+      <span class="ps-who">⚔️🛡️ Kommission</span>
+      <span class="ps-what">Nimmt kurz Stellung zum Kompromiss: Ist er akzeptabel? Wurden die Kernziele des Vorschlags gewahrt?</span>
+      <span class="ps-time">3 Min</span>
+    </div>
+
+    <div class="lk-hint">
+      <strong>🔑 Lehrkraft:</strong> Während EP und Rat getrennt beraten, gehe zwischen den Gruppen hin und her und hilf, falls Gruppen feststecken. Die Presse-Gruppe kann sich in dieser Phase frei bewegen und bei beiden Beratungen zuhören (wie echte Journalisten).
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     PHASE 3
+     ================================================================ -->
+<div class="phase">
+  <div class="phase-hd">
+    <span class="phase-num">3</span>
+    <span class="phase-tt">Abstimmung und Plenum</span>
+    <span class="phase-time">8 Min</span>
+  </div>
+  <div class="phase-bd">
+    <div class="phase-step" style="border-color:var(--supra)">
+      <span class="ps-who">🗳️ EP</span>
+      <span class="ps-what">Abstimmung über den Kompromiss: <strong>Einfache Mehrheit</strong> (3 von 4 Stimmen reichen).</span>
+      <span class="ps-time">1 Min</span>
+    </div>
+    <div class="phase-step" style="border-color:var(--inter)">
+      <span class="ps-who">📋 Rat</span>
+      <span class="ps-what">Abstimmung mit <strong>doppelter Mehrheit</strong> (siehe Kasten unten). Jedes Land stimmt einzeln ab.</span>
+      <span class="ps-time">2 Min</span>
+    </div>
+
+    <div class="abstimmung">
+      <strong>📊 Doppelte Mehrheit im Rat (vereinfacht für 4 Länder):</strong><br>
+      Mindestens <strong>3 von 4 Ländern</strong> müssen zustimmen (= 75 %, erfüllt die 55 %-Regel).<br>
+      Diese Länder müssen zusammen mindestens <strong>65 % der vertretenen Bevölkerung</strong> repräsentieren.<br><br>
+      <strong>Bevölkerungszahlen:</strong><br>
+      🇩🇪 Deutschland: 84 Mio (42 %) · 🇫🇷 Frankreich: 68 Mio (34 %) · 🇵🇱 Polen: 38 Mio (19 %) · 🇸🇪 Schweden: 10 Mio (5 %)<br>
+      <strong>Gesamt: ~200 Mio.</strong> 65 % davon = 130 Mio.<br><br>
+      <em>Beispiel: Wenn DE + FR + PL zustimmen (84+68+38 = 190 Mio = 95 %) ✓ Angenommen.<br>
+      Wenn DE + SE + PL zustimmen (84+10+38 = 132 Mio = 66 %) ✓ Knapp angenommen.<br>
+      Wenn FR + SE + PL zustimmen (68+10+38 = 116 Mio = 58 %) ✗ Bevölkerung reicht nicht (unter 65 %).</em>
+    </div>
+
+    <div class="phase-step" style="border-color:var(--acc)">
+      <span class="ps-who">📰 Presse</span>
+      <span class="ps-what">Fasst das Ergebnis in 1 bis 2 Minuten zusammen: Was wurde beschlossen (oder warum ist es gescheitert)? Welche Argumente waren am stärksten? Wurde die Subsidiarität gewahrt?</span>
+      <span class="ps-time">2 Min</span>
+    </div>
+    <div class="phase-step" style="border-color:var(--acc)">
+      <span class="ps-who">🎤 Plenum</span>
+      <span class="ps-what">Kurze Reflexion (alle zusammen): <strong>Welche Ebenen des Mehrebenensystems waren an diesem Verfahren beteiligt?</strong> Ordnet gemeinsam zu: supranational (Kommission, EP), intergouvernemental (Rat), national (Parlamente, Umsetzung). Welche Ebene hatte den meisten Einfluss?</span>
+      <span class="ps-time">3 Min</span>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     BRÜCKE ZU DEN EINHEITEN
+     ================================================================ -->
+<div class="sec">
+  <h2>🔗 Brücke zu den bisherigen Einheiten</h2>
+  <p>In dieser Simulation kommen alle Themen der letzten drei Einheiten zusammen:</p>
+  <table class="zeit-table">
+    <thead><tr><th>Einheit</th><th>Thema</th><th>Wo es in der Simulation vorkommt</th></tr></thead>
+    <tbody>
+      <tr><td>3.2</td><td>EU-Organe und ihre Rollen</td><td>Die Schüler spielen die Organe selbst: Kommission schlägt vor, EP und Rat entscheiden, Parlamente kontrollieren.</td></tr>
+      <tr><td>3.3</td><td>Gesetzgebungsverfahren</td><td>Phase 2 bildet das ordentliche Gesetzgebungsverfahren ab: Erste Lesung, Trilog, Abstimmung mit doppelter Mehrheit.</td></tr>
+      <tr><td>3.4</td><td>Mehrebenensystem + Subsidiarität</td><td>Phase 1 prüft die Subsidiarität. Phase 3 ordnet die Ebenen zu. Die Schüler erleben, wie supranationale und intergouvernementale Ebene zusammenwirken.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ================================================================
+     COPYRIGHT
+     ================================================================ -->
+<div class="footer-sec">
+  <div class="cpr">
+    © 2026 Deutsch-Luxemburgisches Schengen-Lyzeum Perl (SLP).<br>
+    Erstellt von R. Chani, Fachschaft Gesellschaftswissenschaften, Politik-Leistungskurs (GOS).<br>
+    Erstellt unter Verwendung öffentlich zugänglicher Quellen.<br>
+    Lizenziert unter <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de" target="_blank" rel="noopener">Creative Commons BY-NC-SA 4.0</a>.
+  </div>
+</div>
+
+<!-- ================================================================
+     DRUCKBARE ROLLENKARTEN (nur beim Drucken sichtbar)
+     ================================================================ -->
+<div class="print-section">
+
+  <div style="text-align:center;margin-bottom:24px">
+    <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:800">EU-Werkstatt: Rollenkarten</div>
+    <div style="font-size:12px;color:#666;margin-top:4px">Mindestalter 16 für Social Media · Einheit 3.4</div>
+  </div>
+
+  <!-- KOMMISSION -->
+  <div class="pcard">
+    <div class="pcard-hd">
+      <span class="pc-emo">⚔️🛡️</span>
+      <span class="pc-name">Europäische Kommission</span>
+      <span class="pc-tag supra">Supranational</span>
+    </div>
+    <div class="pcard-body">
+      <p><strong>Eure Rolle:</strong> Ihr habt den Gesetzesvorschlag erarbeitet und müsst ihn verteidigen. Nur die Kommission darf Gesetzesvorschläge einbringen (alleiniges Initiativrecht). Ihr vertretet das Gesamtinteresse der EU, nicht einzelne Länder.</p>
+      <div class="pc-section">
+        <div class="pc-label">Eure Aufgaben</div>
+        <ul>
+          <li><strong>Phase 1:</strong> Stellt den Vorschlag vor (3 Min). Erklärt, was geregelt wird und warum die EU zuständig ist.</li>
+          <li><strong>Phase 2:</strong> Nehmt am Trilog teil und nehmt Stellung zu den Änderungswünschen von EP und Rat.</li>
+          <li><strong>Phase 3:</strong> Bewertet den Kompromiss.</li>
+        </ul>
+      </div>
+      <div class="pc-section">
+        <div class="pc-label">Argumente für euch</div>
+        <ul>
+          <li>Social-Media-Plattformen wie TikTok und Instagram sind in allen EU-Ländern gleich. 27 verschiedene Altersgrenzen machen keinen Sinn.</li>
+          <li>Datenschutz ist bereits EU-Zuständigkeit (DSGVO). Der Vorschlag baut darauf auf.</li>
+          <li>Kinder und Jugendliche brauchen einheitlichen Schutz, egal ob sie in Schweden oder Polen leben.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- EP -->
+  <div class="pcard">
+    <div class="pcard-hd">
+      <span class="pc-emo">🗳️</span>
+      <span class="pc-name">Europäisches Parlament</span>
+      <span class="pc-tag supra">Supranational</span>
+    </div>
+    <div class="pcard-body">
+      <p><strong>Eure Rolle:</strong> Ihr seid direkt von den Bürgern der EU gewählt und vertretet deren Interessen. Ihr entscheidet gleichberechtigt mit dem Rat über dieses Gesetz.</p>
+      <div class="pc-section">
+        <div class="pc-label">Eure Aufgaben</div>
+        <ul>
+          <li><strong>Phase 2:</strong> Beratet als Gruppe: Unterstützt ihr den Vorschlag? Wollt ihr Änderungen? Formuliert maximal 2 Änderungswünsche. Schickt dann 1 Person in den Trilog.</li>
+          <li><strong>Phase 3:</strong> Stimmt ab (einfache Mehrheit: 3 von 4 = angenommen).</li>
+        </ul>
+      </div>
+      <div class="pc-section">
+        <div class="pc-label">Denkanstöße</div>
+        <ul>
+          <li>Jugendschutz ist wichtig. Aber schränkt ein Verbot die Freiheit junger Menschen zu stark ein?</li>
+          <li>Ist 16 das richtige Alter? Oder wäre 14 mit Zustimmung der Eltern besser?</li>
+          <li>Wie realistisch ist eine Ausweiskontrolle bei TikTok? Ist das ein Eingriff in die Privatsphäre?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- RAT: DEUTSCHLAND -->
+  <div class="pcard page-break">
+    <div class="pcard-hd">
+      <span class="pc-emo">📋</span>
+      <span class="pc-name">Rat der EU: Digitalminister</span>
+      <span class="pc-land">🇩🇪 Deutschland · 84 Mio Einwohner (42 %)</span>
+      <span class="pc-tag inter">Intergouvernemental</span>
+    </div>
+    <div class="pcard-body">
+      <p><strong>Eure Rolle:</strong> Ihr seid der deutsche Digitalminister im Rat der EU. Ihr vertretet die Interessen Deutschlands.</p>
+      <div class="pc-section">
+        <div class="pc-label">Position Deutschlands</div>
+        <p>Deutschland hat das Mindestalter bereits auf <strong>16 Jahre</strong> festgelegt (DSGVO-Umsetzung). Eine EU-weite Regelung auf 16 entspricht also der deutschen Position. <strong>Ihr unterstützt den Vorschlag grundsätzlich.</strong> Allerdings wollt ihr sicherstellen, dass die technische Umsetzung (Ausweiskontrolle) den Datenschutz nicht untergräbt.</p>
+      </div>
+      <div class="pc-section">
+        <div class="pc-label">Abstimmung (Phase 3)</div>
+        <p>Im Rat gilt die <strong>doppelte Mehrheit</strong>: Mind. 3 von 4 Ländern + 65 % der Bevölkerung. Deutschland hat mit 84 Mio die meiste Bevölkerung. Ohne Deutschland kann die 65 %-Hürde kaum erreicht werden.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- RAT: FRANKREICH -->
+  <div class="pcard">
+    <div class="pcard-hd">
+      <span class="pc-emo">📋</span>
+      <span class="pc-name">Rat der EU: Digitalminister</span>
+      <span class="pc-land">🇫🇷 Frankreich · 68 Mio Einwohner (34 %)</span>
+      <span class="pc-tag inter">Intergouvernemental</span>
+    </div>
+    <div class="pcard-body">
+      <p><strong>Eure Rolle:</strong> Ihr seid der französische Digitalminister im Rat der EU. Ihr vertretet die Interessen Frankreichs.</p>
+      <div class="pc-section">
+        <div class="pc-label">Position Frankreichs</div>
+        <p>Frankreich hat 2024 ein <strong>eigenes Gesetz zum Schutz von Minderjährigen</strong> in sozialen Netzwerken verabschiedet (Mindestalter 15, mit Zustimmung der Eltern). <strong>Ihr seid skeptisch gegenüber dem EU-Vorschlag</strong>, weil ihr euren eigenen Weg beibehalten wollt. Ein EU-weites Alter von 16 würde euer nationales Gesetz überschreiben.</p>
+      </div>
+      <div class="pc-section">
+        <div class="pc-label">Abstimmung (Phase 3)</div>
+        <p>Frankreich hat 68 Mio Einwohner. Zusammen mit Deutschland (84 Mio) kommt ihr auf 76 % der Bevölkerung. Wenn ihr beide dagegen stimmt, scheitert der Vorschlag fast sicher.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- RAT: SCHWEDEN -->
+  <div class="pcard">
+    <div class="pcard-hd">
+      <span class="pc-emo">📋</span>
+      <span class="pc-name">Rat der EU: Digitalminister</span>
+      <span class="pc-land">🇸🇪 Schweden · 10 Mio Einwohner (5 %)</span>
+      <span class="pc-tag inter">Intergouvernemental</span>
+    </div>
+    <div class="pcard-body">
+      <p><strong>Eure Rolle:</strong> Ihr seid der schwedische Digitalminister im Rat der EU. Ihr vertretet die Interessen Schwedens.</p>
+      <div class="pc-section">
+        <div class="pc-label">Position Schwedens</div>
+        <p>Schweden setzt das Mindestalter bei <strong>13 Jahren</strong> an und vertraut auf <strong>Medienkompetenz und Bildung</strong> statt auf Verbote. <strong>Ihr lehnt den Vorschlag ab.</strong> Ein Verbot löst das Problem nicht, sondern treibt junge Menschen auf unkontrollierte Plattformen. Außerdem ist Jugendschutz Sache der Mitgliedstaaten.</p>
+      </div>
+      <div class="pc-section">
+        <div class="pc-label">Abstimmung (Phase 3)</div>
+        <p>Schweden ist mit 10 Mio das kleinste Land in der Runde. Selbst wenn ihr gegen den Vorschlag stimmt, reicht das allein nicht aus, um ihn zu blockieren. Aber eure Stimme zählt: Ohne euch sind nur 3 Länder übrig.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- RAT: POLEN -->
+  <div class="pcard page-break">
+    <div class="pcard-hd">
+      <span class="pc-emo">📋</span>
+      <span class="pc-name">Rat der EU: Digitalminister</span>
+      <span class="pc-land">🇵🇱 Polen · 38 Mio Einwohner (19 %)</span>
+      <span class="pc-tag inter">Intergouvernemental</span>
+    </div>
+    <div class="pcard-body">
+      <p><strong>Eure Rolle:</strong> Ihr seid der polnische Digitalminister im Rat der EU. Ihr vertretet die Interessen Polens.</p>
+      <div class="pc-section">
+        <div class="pc-label">Position Polens</div>
+        <p>Polen befürwortet einen <strong>starken Jugendschutz</strong> und findet das Mindestalter 16 grundsätzlich richtig. <strong>Aber:</strong> Polen will, dass die Mitgliedstaaten bei der Umsetzung Spielraum behalten, zum Beispiel bei der Art der Altersüberprüfung. Eine starre EU-Verordnung geht euch zu weit. Ihr wärt offener für eine Richtlinie (die den Ländern mehr Freiheit bei der Umsetzung lässt).</p>
+      </div>
+      <div class="pc-section">
+        <div class="pc-label">Abstimmung (Phase 3)</div>
+        <p>Polen hat 38 Mio Einwohner. Eure Stimme kann den Unterschied machen: Ohne euch fehlt wahrscheinlich die 65 %-Hürde bei der Bevölkerung.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- NATIONALE PARLAMENTE: DE -->
+  <div class="pcard">
+    <div class="pcard-hd">
+      <span class="pc-emo">🏛️</span>
+      <span class="pc-name">Nationales Parlament</span>
+      <span class="pc-land">🇩🇪 Deutscher Bundestag</span>
+      <span class="pc-tag natl">National</span>
+    </div>
+    <div class="pcard-body">
+      <p><strong>Eure Rolle:</strong> Ihr seid Abgeordnete des Bundestags. In Phase 1 prüft ihr, ob der EU-Vorschlag das <strong>Subsidiaritätsprinzip</strong> einhält.</p>
+      <div class="pc-section">
+        <div class="pc-label">Das Subsidiaritätsprinzip</div>
+        <p>Die EU soll nur dann entscheiden, wenn die einzelnen Länder das Problem nicht selbst genauso gut lösen können.</p>
+      </div>
+      <div class="pc-section">
+        <div class="pc-label">Eure Prüffragen</div>
+        <ul>
+          <li>Können wir in Deutschland den Jugendschutz im Internet selbst genauso gut regeln? (Wir haben bereits Mindestalter 16.)</li>
+          <li>Oder braucht es eine gemeinsame Lösung, weil TikTok und Instagram keine Ländergrenzen kennen?</li>
+          <li><strong>Eure Entscheidung:</strong> Gelbe Karte ziehen (= Subsidiaritätsbedenken) oder keine Einwände?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- NATIONALE PARLAMENTE: FR -->
+  <div class="pcard">
+    <div class="pcard-hd">
+      <span class="pc-emo">🏛️</span>
+      <span class="pc-name">Nationales Parlament</span>
+      <span class="pc-land">🇫🇷 Assemblée nationale (Frankreich)</span>
+      <span class="pc-tag natl">National</span>
+    </div>
+    <div class="pcard-body">
+      <p><strong>Eure Rolle:</strong> Ihr seid Abgeordnete der französischen Nationalversammlung. In Phase 1 prüft ihr das Subsidiaritätsprinzip.</p>
+      <div class="pc-section">
+        <div class="pc-label">Eure Prüffragen</div>
+        <ul>
+          <li>Frankreich hat 2024 bereits ein eigenes Gesetz zum Schutz Minderjähriger in sozialen Netzwerken verabschiedet. Wird dieses Gesetz jetzt von der EU überschrieben?</li>
+          <li>Ist es gerecht, dass die EU eine Lösung vorschreibt, obwohl Frankreich schon eine eigene hat?</li>
+          <li><strong>Eure Entscheidung:</strong> Gelbe Karte ziehen oder keine Einwände?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- NATIONALE PARLAMENTE: SE -->
+  <div class="pcard page-break">
+    <div class="pcard-hd">
+      <span class="pc-emo">🏛️</span>
+      <span class="pc-name">Nationales Parlament</span>
+      <span class="pc-land">🇸🇪 Riksdag (Schweden)</span>
+      <span class="pc-tag natl">National</span>
+    </div>
+    <div class="pcard-body">
+      <p><strong>Eure Rolle:</strong> Ihr seid Abgeordnete des schwedischen Riksdag. In Phase 1 prüft ihr das Subsidiaritätsprinzip.</p>
+      <div class="pc-section">
+        <div class="pc-label">Eure Prüffragen</div>
+        <ul>
+          <li>Schweden setzt auf Medienkompetenz statt Verbote. Unser Ansatz funktioniert. Warum sollte die EU uns zwingen, einen anderen Weg zu gehen?</li>
+          <li>Jugendschutz und Bildung sind Sache der Mitgliedstaaten. Darf die EU hier eingreifen?</li>
+          <li><strong>Eure Entscheidung:</strong> Gelbe Karte ziehen oder keine Einwände?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- NATIONALE PARLAMENTE: PL -->
+  <div class="pcard">
+    <div class="pcard-hd">
+      <span class="pc-emo">🏛️</span>
+      <span class="pc-name">Nationales Parlament</span>
+      <span class="pc-land">🇵🇱 Sejm (Polen)</span>
+      <span class="pc-tag natl">National</span>
+    </div>
+    <div class="pcard-body">
+      <p><strong>Eure Rolle:</strong> Ihr seid Abgeordnete des polnischen Sejm. In Phase 1 prüft ihr das Subsidiaritätsprinzip.</p>
+      <div class="pc-section">
+        <div class="pc-label">Eure Prüffragen</div>
+        <ul>
+          <li>Polen will starken Jugendschutz. In der Sache unterstützt ihr das Ziel. Aber muss das wirklich die EU regeln?</li>
+          <li>Eine Verordnung lässt den Mitgliedstaaten keinen Spielraum. Wäre eine Richtlinie (bei der jedes Land die Umsetzung selbst gestaltet) nicht besser?</li>
+          <li><strong>Eure Entscheidung:</strong> Gelbe Karte ziehen oder keine Einwände?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRESSE -->
+  <div class="pcard">
+    <div class="pcard-hd">
+      <span class="pc-emo">📰</span>
+      <span class="pc-name">Presse / Beobachter</span>
+      <span class="pc-tag presse">Beobachterrolle</span>
+    </div>
+    <div class="pcard-body">
+      <p><strong>Eure Rolle:</strong> Ihr seid Journalisten. Ihr beobachtet den gesamten Ablauf und berichtet am Ende.</p>
+      <div class="pc-section">
+        <div class="pc-label">Eure Aufgaben</div>
+        <ul>
+          <li><strong>Phase 1:</strong> Beobachtet die Subsidiaritätsprüfung. Notiert: Welche Parlamente ziehen die gelbe Karte und warum?</li>
+          <li><strong>Phase 2:</strong> Bewegt euch frei zwischen EP und Rat. Hört zu und notiert die wichtigsten Argumente und Änderungswünsche.</li>
+          <li><strong>Phase 3:</strong> Fasst das Ergebnis zusammen (2 Min). Beantwortet: Was wurde beschlossen? Welche Kompromisse wurden gemacht? War die Subsidiarität gewahrt?</li>
+        </ul>
+      </div>
+      <div class="pc-section">
+        <div class="pc-label">Kritische Fragen (optional)</div>
+        <ul>
+          <li>Ist ein Verbot wirklich der beste Weg, Jugendliche zu schützen?</li>
+          <li>Wer kontrolliert eigentlich, ob TikTok die Ausweiskontrolle wirklich durchführt?</li>
+          <li>Was passiert mit Jugendlichen unter 16, die Social Media für Schulprojekte brauchen?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div>
+</body>
+</html>

@@ -96,17 +96,17 @@ The Urteilskompetenz (UK) block uses a 3-stage sequential reveal. Students compl
 
 | Stage | Label | Contents |
 |-------|-------|----------|
-| 1 | Einleitung | AB3: Kriterium + AB1: Theorie |
-| 2 | Hauptteil | AB3: Kriterium Recheck + AB1: Fallmaterial + AB2: Analyse + AB2: Abwägung |
-| 3 | Schlussfolgerung | AB3: Kriterium Recheck + AB3: Urteil |
+| 1 | Einleitung | Kriterium selection + AB I steps (combined) |
+| 2 | Hauptteil | AB II steps |
+| 3 | Schlussfolgerung | AB III step |
 
-Each stage gates student progression but is not tied to a single AB level. Stage 1 combines the evaluative standard (AB3 Kriterium) with theoretical framing (AB1 Theorie). Stage 2 opens with a Roter Faden Recheck, then works through material (AB1 Fallmaterial), connects theory to evidence (AB2 Analyse), and weighs perspectives (AB2 Abwägung). Stage 3 repeats the Recheck and closes with a reasoned judgment (AB3 Urteil). Stage headers use stage-name labels only, without a single AB-level color tag, because each stage spans multiple AB levels.
+Kriterium is part of Einleitung because selecting the evaluative standard is the first step of contextualizing the question — not a separate meta-task.
 
 ### State machine
 
 **Active stage**: full content visible, options clickable
-**Completed stage**: collapses to a single summary row (`✓  Einleitung  |  Kriterium: ✓`), muted styling
-**Locked stage**: shown as a muted row (`🔒  Hauptteil  |  Beantworte zuerst die Einleitung`), `opacity: .4`, `pointer-events: none`
+**Completed stage**: collapses to a single summary row (`✓  AB I — Einleitung  |  Kriterium: [selected text]`), muted styling
+**Locked stage**: shown as a muted row (`🔒  Hauptteil (AB II)  |  Beantworte zuerst die Einleitung`), `opacity: .4`, `pointer-events: none`
 
 A **Recheck chip group** (Roter Faden) appears between Einleitung and Hauptteil, and between Hauptteil and Schlussfolgerung. The chip matching the student's chosen Kriterium is pre-selected. Students must confirm the same Kriterium before proceeding — this reinforces the red thread through the argument.
 
@@ -136,17 +136,13 @@ Wrong options must represent **specific, learnable error types** — not random 
 
 | Error type | Description | Example |
 |------------|-------------|---------|
-| **Richtig aber irrelevant 1** | Factually correct but doesn't address the Kriterium | Correct fact about the single market that doesn't speak to efficiency + social balance |
-| **Richtig aber unstrukturiert** | Factually correct but wrong step | 
-| **Unsachlichkeit** | Facts are wrongly stated, represented or interpreted (not objectively) | 
-| **Sachwissen Schwächen** | Theoretical elements have been confused, omitted, are vague or wrong |
-  **Zusammenhang nicht klar / Kette unterbrochen** | Statements are missing justifications or are not part of the ongoing chain of argument (could also be only the second sentence within the option)|
+| **Richtig aber irrelevant** | Factually correct but doesn't address the Kriterium | Correct fact about the single market that doesn't speak to efficiency + social balance |
 | **Werturteil ohne Analyse** | Value judgment stated as if it were analysis | "Der Binnenmarkt ist eindeutig unfair" without argument |
 | **Einseitig** | Only covers one perspective, ignores the other | Presents only employer/exporter view, ignores labor perspective |
 | **Deskriptiv statt analytisch** | Describes what exists instead of evaluating it against the Kriterium | Lists the four freedoms without connecting to the evaluative standard |
 | **Übergeneralisierung** | Sweeping claim not supported by material | "Der Binnenmarkt schadet strukturell allen schwächeren Ländern" |
 
-**Rotation rule:** Each wrong option within a single UK block must use a different error type from the taxonomy. The rotation can start at any point in the list, but no two steps in the same exercise may share an error type. This ensures students encounter varied, distinct mistake patterns throughout one exercise rather than the same flaw repeated.
+Each step's wrong option should use a different error type so students encounter the full range across a UK block.
 
 ### Implementation notes
 

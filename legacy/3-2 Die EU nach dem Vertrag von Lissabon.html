@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lösung – Die EU nach dem Vertrag von Lissabon</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a1628;
+  --mid: #162544;
+  --blue: #003399;
+  --gold: #FFCC00;
+  --txt: #f0f4ff;
+  --txt2: #94a3c8;
+  --txt3: #5a6f96;
+  --card: rgba(22,37,68,0.7);
+  --brd: rgba(255,204,0,0.15);
+  --ep: #2563eb; --rat: #7c3aed; --kom: #dc2626; --er: #0891b2;
+  --eugh: #059669; --erh: #d97706; --ezb: #be185d;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden}
+.bgp{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 80% 50% at 20% 10%,rgba(0,51,153,.25),transparent),radial-gradient(ellipse 60% 40% at 80% 80%,rgba(255,204,0,.06),transparent)}
+.ct{position:relative;z-index:2;max-width:1400px;margin:0 auto;padding:40px 30px 60px}
+
+.hd{text-align:center;margin-bottom:50px}
+.hd .lab{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;opacity:.8}
+.hd h1{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,46px);font-weight:900;background:linear-gradient(135deg,var(--txt),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.2;margin-bottom:10px}
+.hd .sub{font-size:15px;color:var(--txt2);font-weight:300;max-width:720px;margin:0 auto;line-height:1.6}
+.hd .sub strong{color:var(--gold);font-weight:600}
+
+/* Info boxes */
+.ib{background:linear-gradient(135deg,var(--mid),rgba(0,51,153,.3));border:1px solid var(--brd);border-radius:14px;padding:28px 32px;margin-bottom:44px;position:relative;overflow:hidden}
+.ib::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--gold),var(--blue))}
+.ib h2{font-family:'Playfair Display',serif;font-size:20px;color:var(--gold);margin-bottom:14px}
+.ib p{font-size:14.5px;line-height:1.85;color:var(--txt2);margin-bottom:10px}
+.ib p:last-child{margin-bottom:0}
+.hl{color:var(--txt);font-weight:600}
+
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:18px}
+.fact{background:rgba(0,0,0,.2);border-radius:8px;padding:14px 16px;border-left:3px solid var(--gold)}
+.fact .fl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-bottom:4px}
+.fact .fv{font-size:14px;font-weight:600;color:var(--txt)}
+
+/* Timeline */
+.tl{display:flex;flex-wrap:wrap;gap:0;margin-top:22px;position:relative;padding-top:30px}
+.tl::before{content:'';position:absolute;top:6px;left:0;right:0;height:2px;background:rgba(255,204,0,.15)}
+.tl-i{flex:1;min-width:110px;text-align:center;position:relative;padding-top:0}
+.tl-d{width:12px;height:12px;border-radius:50%;background:var(--gold);position:absolute;top:-24px;left:50%;transform:translateX(-50%);box-shadow:0 0 10px rgba(255,204,0,.4)}
+.tl-y{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--gold);margin-bottom:2px}
+.tl-t{font-size:11px;color:var(--txt2);line-height:1.4}
+
+/* Section titles */
+.st{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--txt);margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.st .ic{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ss{font-size:14px;color:var(--txt3);margin-bottom:28px;padding-left:48px}
+
+/* Organ cards */
+.og{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:22px;margin-bottom:50px}
+.oc{background:var(--card);border:1px solid var(--brd);border-radius:14px;overflow:hidden;backdrop-filter:blur(10px);transition:transform .3s,box-shadow .3s}
+.oc:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.oc-h{padding:20px 24px 16px;display:flex;align-items:flex-start;gap:14px;border-bottom:1px solid rgba(255,255,255,.05)}
+.oc-ic{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.oc-t h3{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;line-height:1.3}
+.oc-t .os{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;margin-top:3px}
+.oc-b{padding:16px 24px 20px}
+
+/* Steckbrief */
+.sb{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;padding:10px 14px;background:rgba(0,0,0,.15);border-radius:8px}
+.sb-i{display:flex;gap:6px;align-items:baseline;font-size:12px}
+.sb-i .sl{color:var(--txt3);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
+.sb-i .sv{color:var(--txt);font-weight:600}
+
+.of{margin-bottom:14px}.of:last-child{margin-bottom:0}
+.ofl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-bottom:5px}
+.ofv{font-size:13.5px;line-height:1.7;color:var(--txt2)}
+.ofv strong{color:var(--txt);font-weight:600}
+.tr{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.tg{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;border:1px solid}
+
+/* Color themes */
+.o-ep .oc-ic{background:rgba(37,99,235,.2)}.o-ep .os,.o-ep .tg{color:var(--ep);border-color:rgba(37,99,235,.3)}.o-ep h3{color:#60a5fa}
+.o-rat .oc-ic{background:rgba(124,58,237,.2)}.o-rat .os,.o-rat .tg{color:var(--rat);border-color:rgba(124,58,237,.3)}.o-rat h3{color:#a78bfa}
+.o-kom .oc-ic{background:rgba(220,38,38,.2)}.o-kom .os,.o-kom .tg{color:var(--kom);border-color:rgba(220,38,38,.3)}.o-kom h3{color:#f87171}
+.o-er .oc-ic{background:rgba(8,145,178,.2)}.o-er .os,.o-er .tg{color:var(--er);border-color:rgba(8,145,178,.3)}.o-er h3{color:#22d3ee}
+.o-eugh .oc-ic{background:rgba(5,150,105,.2)}.o-eugh .os,.o-eugh .tg{color:var(--eugh);border-color:rgba(5,150,105,.3)}.o-eugh h3{color:#34d399}
+.o-erh .oc-ic{background:rgba(217,119,6,.2)}.o-erh .os,.o-erh .tg{color:var(--erh);border-color:rgba(217,119,6,.3)}.o-erh h3{color:#fbbf24}
+.o-ezb .oc-ic{background:rgba(190,24,93,.2)}.o-ezb .os,.o-ezb .tg{color:var(--ezb);border-color:rgba(190,24,93,.3)}.o-ezb h3{color:#f472b6}
+
+/* Flow */
+.fb{background:var(--card);border:1px solid var(--brd);border-radius:14px;padding:30px;backdrop-filter:blur(10px);margin-bottom:50px}
+.fr{display:flex;align-items:stretch;gap:0;overflow-x:auto}
+.fs{flex:1;min-width:155px;text-align:center;padding:20px 12px;position:relative}
+.fs:not(:last-child)::after{content:'→';position:absolute;right:-8px;top:50%;transform:translateY(-50%);font-size:24px;color:var(--gold);z-index:3}
+.fn{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--txt3);margin-bottom:8px}
+.fi{font-size:28px;margin-bottom:8px}
+.fl2{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--txt);margin-bottom:6px}
+.fd{font-size:12px;color:var(--txt2);line-height:1.6}
+.fa{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;padding:3px 10px;border-radius:20px;display:inline-block;margin-top:8px}
+.a-k{background:rgba(220,38,38,.15);color:#f87171}
+.a-b{background:rgba(255,204,0,.12);color:var(--gold)}
+
+/* Demokratie/Effizienz */
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:50px}
+.dc{background:var(--card);border:1px solid var(--brd);border-radius:14px;padding:24px;backdrop-filter:blur(10px)}
+.dc h4{font-family:'Playfair Display',serif;font-size:16px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.dc h4 .em{font-size:20px}
+.di{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start}
+.di:last-child{margin-bottom:0}
+.dm{width:8px;height:8px;border-radius:50%;margin-top:6px;flex-shrink:0}
+.mg{background:#34d399;box-shadow:0 0 8px rgba(52,211,153,.4)}
+.my{background:#fbbf24;box-shadow:0 0 8px rgba(251,191,36,.4)}
+.mr{background:#f87171;box-shadow:0 0 8px rgba(248,113,113,.4)}
+.dt{font-size:13px;line-height:1.65;color:var(--txt2)}
+.dt strong{color:var(--txt);font-weight:600}
+
+.fn2{text-align:center;font-size:12px;color:var(--txt3);margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,.05)}
+
+@media(max-width:860px){
+  .og{grid-template-columns:1fr}
+  .dg{grid-template-columns:1fr}
+  .fr{flex-direction:column}
+  .fs:not(:last-child)::after{content:'↓';right:auto;bottom:-8px;top:auto;left:50%;transform:translateX(-50%)}
+  .sb{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="bgp"></div>
+<div class="ct">
+
+  <!-- HEADER -->
+  <header class="hd">
+    <div class="lab">Lösungsvisualisierung · Politik &amp; Wirtschaft</div>
+    <h1>Die EU nach dem Vertrag von Lissabon</h1>
+    <p class="sub">Wer sind die Organe der EU? Was tun sie? Wie arbeiten sie zusammen? Und hat der Vertrag von Lissabon die EU <strong>demokratischer und effizienter</strong> gemacht?</p>
+  </header>
+
+  <!-- EINFÜHRUNG -->
+  <section class="ib">
+    <h2>Wie ist die EU entstanden und warum gibt es den Vertrag von Lissabon?</h2>
+    <p>
+      Die Europäische Union (EU) ist ein Zusammenschluss von heute <span class="hl">27 europäischen Staaten</span>. Seit ihrer Gründung wurde die EU durch mehrere Verträge weiterentwickelt. Jeder Vertrag ist nach der Stadt benannt, in der er unterzeichnet wurde:
+    </p>
+
+    <div class="tl">
+      <div class="tl-i"><div class="tl-d"></div><div class="tl-y">1992</div><div class="tl-t">Vertrag von<br><strong>Maastricht</strong><br><span style="font-size:10px;color:var(--txt3)">Gründung der EU</span></div></div>
+      <div class="tl-i"><div class="tl-d"></div><div class="tl-y">1997</div><div class="tl-t">Vertrag von<br><strong>Amsterdam</strong></div></div>
+      <div class="tl-i"><div class="tl-d"></div><div class="tl-y">2001</div><div class="tl-t">Vertrag von<br><strong>Nizza</strong></div></div>
+      <div class="tl-i"><div class="tl-d"></div><div class="tl-y">2005</div><div class="tl-t">Verfassungsvertrag<br><span style="font-size:10px;color:var(--txt3)">gescheitert</span></div></div>
+      <div class="tl-i"><div class="tl-d" style="width:16px;height:16px;box-shadow:0 0 16px rgba(255,204,0,.6)"></div><div class="tl-y">2007/09</div><div class="tl-t"><strong>Vertrag von<br>Lissabon</strong></div></div>
+    </div>
+
+    <p style="margin-top:20px">
+      Der <span class="hl">Vertrag von Lissabon</span> wurde am <span class="hl">13. Dezember 2007</span> unterzeichnet und trat am <span class="hl">1. Dezember 2009</span> in Kraft. Er wurde notwendig, weil ein geplanter Verfassungsvertrag 2005 in Volksabstimmungen in Frankreich und den Niederlanden gescheitert war. Trotzdem wollte man die EU reformieren, um sie demokratischer und handlungsfähiger zu machen.
+    </p>
+    <p>
+      Durch den Vertrag von Lissabon erhielt die EU erstmals eine eigene <span class="hl">Rechtspersönlichkeit</span>. Das bedeutet: Die EU kann seitdem als eigenständige Organisation Verträge mit anderen Staaten abschließen und vor Gericht auftreten. Außerdem wurde die <span class="hl">Grundrechtecharta</span> rechtsverbindlich. Die darin enthaltenen Grundrechte (z. B. Meinungsfreiheit, Datenschutz) gelten seitdem verbindlich für alle EU-Organe und können von Bürgern eingeklagt werden.
+    </p>
+
+    <div class="facts" style="margin-top:18px">
+      <div class="fact"><div class="fl">Unterzeichnung</div><div class="fv">13. Dezember 2007, Lissabon</div></div>
+      <div class="fact"><div class="fl">Inkrafttreten</div><div class="fv">1. Dezember 2009</div></div>
+      <div class="fact"><div class="fl">Zentrale Neuerung</div><div class="fv">Rechtspersönlichkeit der EU</div></div>
+      <div class="fact"><div class="fl">Mitgliedstaaten</div><div class="fv">27 Staaten</div></div>
+    </div>
+  </section>
+
+  <!-- LERNZIEL 1 & 2: ORGANE -->
+  <div class="st"><div class="ic" style="background:rgba(255,204,0,.15)">🏛️</div>Die sieben Organe der EU</div>
+  <div class="ss">Der Vertrag von Lissabon legt fest, dass die EU sieben Organe hat. Jedes Organ hat eigene Aufgaben, eigene Mitglieder und einen festen Sitz.</div>
+
+  <div class="og">
+
+    <!-- EP -->
+    <div class="oc o-ep">
+      <div class="oc-h">
+        <div class="oc-ic">🗳️</div>
+        <div class="oc-t"><h3>Europäisches Parlament (EP)</h3><div class="os">Gesetzgebung &amp; Kontrolle</div></div>
+      </div>
+      <div class="oc-b">
+        <div class="sb">
+          <div class="sb-i"><span class="sl">Sitz</span><span class="sv">Straßburg / Brüssel</span></div>
+          <div class="sb-i"><span class="sl">Präsidentin</span><span class="sv">Roberta Metsola (Malta)</span></div>
+          <div class="sb-i"><span class="sl">Mitglieder</span><span class="sv">max. 705 Abgeordnete + Präsident</span></div>
+          <div class="sb-i"><span class="sl">Nächste Wahl</span><span class="sv">2029</span></div>
+        </div>
+        <div class="of"><div class="ofl">Wer sitzt dort?</div>
+          <div class="ofv">Die Abgeordneten werden alle 5 Jahre <strong>direkt von den Bürgern</strong> der EU gewählt. Das EP ist damit das einzige EU-Organ, das direkt vom Volk gewählt wird. Größere Länder haben mehr Sitze als kleinere, aber kleinere Länder bekommen im Verhältnis zu ihrer Einwohnerzahl mehr Sitze. So hat jedes Land eine faire Vertretung. Dieses Prinzip heißt <strong>degressive Proportionalität</strong>. Pro Land gibt es mindestens 6 und höchstens 96 Sitze.</div>
+        </div>
+        <div class="of"><div class="ofl">Was macht das EP?</div>
+          <div class="ofv">Das EP beschließt <strong>gemeinsam mit dem Rat der EU Gesetze</strong> und entscheidet über den <strong>Haushalt</strong> (also wie viel Geld die EU wofür ausgibt). Außerdem <strong>kontrolliert</strong> es die Europäische Kommission: Es kann ihr das Misstrauen aussprechen und wählt den Kommissionspräsidenten.</div>
+        </div>
+        <div class="of"><div class="ofl">Was hat der Vertrag von Lissabon verändert?</div>
+          <div class="tr"><span class="tg">Mitentscheidung wird Regelverfahren</span><span class="tg">EP wählt Kommissionspräsidenten</span><span class="tg">Volle Haushaltshoheit</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Europäischer Rat -->
+    <div class="oc o-er">
+      <div class="oc-h">
+        <div class="oc-ic">👑</div>
+        <div class="oc-t"><h3>Europäischer Rat</h3><div class="os">Politische Richtung</div></div>
+      </div>
+      <div class="oc-b">
+        <div class="sb">
+          <div class="sb-i"><span class="sl">Sitz</span><span class="sv">Brüssel</span></div>
+          <div class="sb-i"><span class="sl">Präsident</span><span class="sv">António Costa (Portugal)</span></div>
+          <div class="sb-i"><span class="sl">Mitglieder</span><span class="sv">27 Staats- und Regierungschefs</span></div>
+          <div class="sb-i"><span class="sl">Tagung</span><span class="sv">mindestens 4× pro Jahr</span></div>
+        </div>
+        <div class="of"><div class="ofl">Wer sitzt dort?</div>
+          <div class="ofv">Die <strong>Staats- und Regierungschefs</strong> aller 27 Mitgliedstaaten. Für Deutschland sitzt dort also der Bundeskanzler, für Frankreich der Präsident. Dazu kommen der Präsident des Europäischen Rates und der Präsident der Europäischen Kommission.</div>
+        </div>
+        <div class="of"><div class="ofl">Was macht er?</div>
+          <div class="ofv">Der Europäische Rat legt die <strong>großen politischen Ziele</strong> der EU fest. Er entscheidet zum Beispiel über die Aufnahme neuer Mitgliedstaaten oder über die grundsätzliche Ausrichtung der EU. Wichtig: Der Europäische Rat beschließt <strong>keine Gesetze</strong>.</div>
+        </div>
+        <div class="of"><div class="ofl">Was hat der Vertrag von Lissabon verändert?</div>
+          <div class="tr"><span class="tg">Ständiger Präsident (neu geschaffen)</span><span class="tg">Offiziell als EU-Organ anerkannt</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rat der EU -->
+    <div class="oc o-rat">
+      <div class="oc-h">
+        <div class="oc-ic">⚖️</div>
+        <div class="oc-t"><h3>Rat der Europäischen Union</h3><div class="os">Gesetzgebung &amp; Koordination</div></div>
+      </div>
+      <div class="oc-b">
+        <div class="sb">
+          <div class="sb-i"><span class="sl">Sitz</span><span class="sv">Brüssel</span></div>
+          <div class="sb-i"><span class="sl">Vorsitz</span><span class="sv">Zypern (1. Halbjahr 2026)</span></div>
+          <div class="sb-i"><span class="sl">Mitglieder</span><span class="sv">27 Minister (1 pro Land)</span></div>
+          <div class="sb-i"><span class="sl">Vorsitz wechselt</span><span class="sv">alle 6 Monate</span></div>
+        </div>
+        <div class="of"><div class="ofl">Wer sitzt dort?</div>
+          <div class="ofv">Je <strong>ein Minister pro Mitgliedstaat</strong>. Welcher Minister kommt, hängt vom Thema ab: Bei Finanzfragen tagt der Rat mit den Finanzministern, bei Umweltthemen mit den Umweltministern. Den Vorsitz übernimmt abwechselnd ein anderes Land, und zwar alle 6 Monate.</div>
+        </div>
+        <div class="of"><div class="ofl">Was macht er?</div>
+          <div class="ofv">Der Rat beschließt <strong>gemeinsam mit dem EP Gesetze</strong> und entscheidet mit über den <strong>Haushalt</strong>. Er koordiniert außerdem die Wirtschaftspolitik der Mitgliedstaaten und schließt internationale Abkommen ab.</div>
+        </div>
+        <div class="of"><div class="ofl">Wie wird abgestimmt? (Neuerung durch Lissabon)</div>
+          <div class="ofv">Seit dem Vertrag von Lissabon gilt die <strong>doppelte Mehrheit</strong>: Ein Gesetz wird angenommen, wenn mindestens <strong>55 % der Mitgliedstaaten</strong> zustimmen, die zusammen mindestens <strong>65 % der EU-Bevölkerung</strong> vertreten. Dieses System ist einfacher und transparenter als die alte Stimmgewichtung aus dem Vertrag von Nizza.</div>
+        </div>
+        <div class="of"><div class="ofl">Was hat der Vertrag von Lissabon verändert?</div>
+          <div class="tr"><span class="tg">Doppelte Mehrheit</span><span class="tg">Mehr Mehrheitsentscheidungen</span><span class="tg">Öffentliche Beratung bei Gesetzen</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kommission -->
+    <div class="oc o-kom">
+      <div class="oc-h">
+        <div class="oc-ic">📋</div>
+        <div class="oc-t"><h3>Europäische Kommission</h3><div class="os">Exekutive &amp; Gesetzesinitiative</div></div>
+      </div>
+      <div class="oc-b">
+        <div class="sb">
+          <div class="sb-i"><span class="sl">Sitz</span><span class="sv">Brüssel</span></div>
+          <div class="sb-i"><span class="sl">Präsidentin</span><span class="sv">Ursula von der Leyen (DE)</span></div>
+          <div class="sb-i"><span class="sl">Mitglieder</span><span class="sv">27 Kommissare (1 pro Land)</span></div>
+          <div class="sb-i"><span class="sl">Amtszeit</span><span class="sv">5 Jahre (2024 bis 2029)</span></div>
+        </div>
+        <div class="of"><div class="ofl">Wer sitzt dort?</div>
+          <div class="ofv"><strong>Ein Kommissar pro Mitgliedstaat</strong>, darunter der Präsident der Kommission und der Hohe Vertreter für Außen- und Sicherheitspolitik (der zugleich Vizepräsident ist). Der Kommissionspräsident wird vom Europäischen Rat vorgeschlagen und anschließend vom EP gewählt.</div>
+        </div>
+        <div class="of"><div class="ofl">Was macht sie?</div>
+          <div class="ofv">Die Kommission hat das <strong>alleinige Initiativrecht</strong>: Nur sie darf Gesetzesvorschläge einbringen. Kein anderes Organ kann von sich aus ein Gesetz vorschlagen. Die Kommission wird deshalb auch <strong>„Hüterin der Verträge"</strong> genannt, denn sie überwacht, dass alle Mitgliedstaaten sich an das EU-Recht halten. Außerdem führt sie den Haushalt der EU aus und vertritt die EU nach außen.</div>
+        </div>
+        <div class="of"><div class="ofl">Was hat der Vertrag von Lissabon verändert?</div>
+          <div class="tr"><span class="tg">EP-Wahlergebnis wird bei Wahl des Präsidenten berücksichtigt</span><span class="tg">Europäische Bürgerinitiative (neu)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EuGH -->
+    <div class="oc o-eugh">
+      <div class="oc-h">
+        <div class="oc-ic">⚔️</div>
+        <div class="oc-t"><h3>Gerichtshof der EU (EuGH)</h3><div class="os">Rechtsprechung</div></div>
+      </div>
+      <div class="oc-b">
+        <div class="sb">
+          <div class="sb-i"><span class="sl">Sitz</span><span class="sv">Luxemburg</span></div>
+          <div class="sb-i"><span class="sl">Präsident</span><span class="sv">Koen Lenaerts (Belgien)</span></div>
+          <div class="sb-i"><span class="sl">Richter</span><span class="sv">27 (1 pro Mitgliedstaat)</span></div>
+          <div class="sb-i"><span class="sl">Amtszeit</span><span class="sv">6 Jahre</span></div>
+        </div>
+        <div class="of"><div class="ofl">Wer sitzt dort?</div>
+          <div class="ofv"><strong>Ein Richter pro Mitgliedstaat</strong>, ernannt von den nationalen Regierungen. Der EuGH besteht aus zwei Teilen: dem Gerichtshof (höchste Instanz) und dem Gericht.</div>
+        </div>
+        <div class="of"><div class="ofl">Was macht er?</div>
+          <div class="ofv">Der EuGH stellt sicher, dass das <strong>EU-Recht in allen Mitgliedstaaten gleich verstanden und angewendet</strong> wird. Wenn zum Beispiel ein Mitgliedstaat gegen EU-Recht verstößt oder ein nationales Gericht eine Frage zum EU-Recht hat, entscheidet der EuGH.</div>
+        </div>
+        <div class="of"><div class="ofl">Was hat der Vertrag von Lissabon verändert?</div>
+          <div class="tr"><span class="tg">Grundrechtecharta als Prüfungsmaßstab</span><span class="tg">Erweiterte Zuständigkeit</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rechnungshof -->
+    <div class="oc o-erh">
+      <div class="oc-h">
+        <div class="oc-ic">🔍</div>
+        <div class="oc-t"><h3>Europäischer Rechnungshof</h3><div class="os">Finanzkontrolle</div></div>
+      </div>
+      <div class="oc-b">
+        <div class="sb">
+          <div class="sb-i"><span class="sl">Sitz</span><span class="sv">Luxemburg</span></div>
+          <div class="sb-i"><span class="sl">Präsident</span><span class="sv">Tony Murphy (Irland)</span></div>
+          <div class="sb-i"><span class="sl">Mitglieder</span><span class="sv">27 (1 pro Mitgliedstaat)</span></div>
+          <div class="sb-i"><span class="sl">Amtszeit</span><span class="sv">6 Jahre</span></div>
+        </div>
+        <div class="of"><div class="ofl">Was macht er?</div>
+          <div class="ofv">Der Rechnungshof prüft alle <strong>Einnahmen und Ausgaben</strong> der EU. Er kontrolliert, ob das Geld der europäischen Steuerzahler ordnungsgemäß und sinnvoll ausgegeben wird. Jedes Jahr veröffentlicht er einen Bericht, der dem EP und dem Rat bei der Haushaltskontrolle hilft.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EZB -->
+    <div class="oc o-ezb">
+      <div class="oc-h">
+        <div class="oc-ic">💶</div>
+        <div class="oc-t"><h3>Europäische Zentralbank (EZB)</h3><div class="os">Währungspolitik</div></div>
+      </div>
+      <div class="oc-b">
+        <div class="sb">
+          <div class="sb-i"><span class="sl">Sitz</span><span class="sv">Frankfurt am Main</span></div>
+          <div class="sb-i"><span class="sl">Präsidentin</span><span class="sv">Christine Lagarde (Frankreich)</span></div>
+          <div class="sb-i"><span class="sl">Direktorium</span><span class="sv">6 Mitglieder</span></div>
+          <div class="sb-i"><span class="sl">Amtszeit</span><span class="sv">8 Jahre, nicht verlängerbar</span></div>
+        </div>
+        <div class="of"><div class="ofl">Was macht sie?</div>
+          <div class="ofv">Die EZB sorgt dafür, dass die <strong>Preise im Euroraum stabil</strong> bleiben. Das ist ihr wichtigstes Ziel. Sie legt die <strong>Geldpolitik</strong> fest (z. B. wie hoch die Zinsen sind), gibt den Euro aus und überwacht Banken. Die EZB ist <strong>unabhängig</strong>: Kein Politiker und keine Regierung darf ihr vorschreiben, was sie tun soll. Durch den Vertrag von Lissabon wurde die EZB offiziell als EU-Organ anerkannt.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- LERNZIEL 2: GESETZGEBUNG -->
+  <section>
+    <div class="st"><div class="ic" style="background:rgba(255,204,0,.15)">📜</div>Wie entsteht ein EU-Gesetz?</div>
+    <div class="ss">Das ordentliche Gesetzgebungsverfahren ist seit dem Vertrag von Lissabon das Regelverfahren. Das EP und der Rat der EU entscheiden dabei gleichberechtigt.</div>
+
+    <div class="fb">
+      <div class="fr">
+        <div class="fs">
+          <div class="fn">Schritt 01</div>
+          <div class="fi">📋</div>
+          <div class="fl2">Vorschlag</div>
+          <div class="fd">Die Kommission legt einen Gesetzesvorschlag vor. Nur sie hat dieses Recht (alleiniges Initiativrecht). Bürger können sie über die Europäische Bürgerinitiative auffordern, einen Vorschlag zu machen.</div>
+          <span class="fa a-k">Kommission</span>
+        </div>
+        <div class="fs">
+          <div class="fn">Schritt 02</div>
+          <div class="fi">🗳️</div>
+          <div class="fl2">Erste Lesung</div>
+          <div class="fd">Das EP und der Rat prüfen den Vorschlag. Wenn beide zustimmen, ist das Gesetz beschlossen. Wenn nicht, legen beide ihren Standpunkt fest.</div>
+          <span class="fa a-b">EP + Rat</span>
+        </div>
+        <div class="fs">
+          <div class="fn">Schritt 03</div>
+          <div class="fi">🔄</div>
+          <div class="fl2">Zweite Lesung</div>
+          <div class="fd">Das EP kann den Standpunkt des Rates annehmen, ablehnen oder Änderungen vorschlagen. Auch der Rat nimmt erneut Stellung.</div>
+          <span class="fa a-b">EP + Rat</span>
+        </div>
+        <div class="fs">
+          <div class="fn">Schritt 04</div>
+          <div class="fi">🤝</div>
+          <div class="fl2">Vermittlung</div>
+          <div class="fd">Falls es keine Einigung gibt, verhandeln Vertreter von EP und Rat gemeinsam einen Kompromiss. Scheitert auch das, ist der Gesetzesvorschlag gescheitert.</div>
+          <span class="fa a-b">Vermittlung</span>
+        </div>
+        <div class="fs">
+          <div class="fn">Schritt 05</div>
+          <div class="fi">✅</div>
+          <div class="fl2">Dritte Lesung</div>
+          <div class="fd">EP und Rat stimmen über den Kompromiss ab. Nur wenn beide zustimmen, wird der Vorschlag zum Gesetz.</div>
+          <span class="fa a-b">EP + Rat</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LERNZIEL 3 & 4: DEMOKRATIE UND EFFIZIENZ -->
+  <section>
+    <div class="st"><div class="ic" style="background:rgba(52,211,153,.15)">✊</div>Was hat der Vertrag von Lissabon verändert?</div>
+    <div class="ss">Der Vertrag sollte die EU demokratischer und effizienter machen. Hier sind die wichtigsten Veränderungen.</div>
+
+    <div class="dg">
+      <div class="dc">
+        <h4><span class="em">🟢</span> Mehr Demokratie</h4>
+        <div class="di"><div class="dm mg"></div>
+          <div class="dt"><strong>Stärkeres Parlament:</strong> Das EP entscheidet jetzt in über 80 Politikbereichen gleichberechtigt mit dem Rat über Gesetze. Vorher durfte es in vielen Bereichen nur seine Meinung sagen, ohne mitentscheiden zu können.</div>
+        </div>
+        <div class="di"><div class="dm mg"></div>
+          <div class="dt"><strong>Europäische Bürgerinitiative:</strong> Zum ersten Mal können Bürger selbst etwas anstoßen: Wenn 1 Million Menschen aus mindestens 7 EU-Ländern unterschreiben, muss die Kommission sich mit dem Vorschlag beschäftigen.</div>
+        </div>
+        <div class="di"><div class="dm mg"></div>
+          <div class="dt"><strong>Nationale Parlamente können mitreden:</strong> Die Parlamente der Mitgliedstaaten (z. B. der Bundestag) können frühzeitig prüfen, ob ein EU-Gesetzesvorschlag wirklich auf EU-Ebene geregelt werden muss oder ob das besser in den einzelnen Ländern geschehen sollte (Subsidiaritätsprinzip).</div>
+        </div>
+        <div class="di"><div class="dm mg"></div>
+          <div class="dt"><strong>Grundrechtecharta wird verbindlich:</strong> Die Grundrechte der EU-Bürger (z. B. Meinungsfreiheit, Recht auf Datenschutz) sind jetzt einklagbar. Der EuGH kann prüfen, ob EU-Organe diese Rechte einhalten.</div>
+        </div>
+        <div class="di"><div class="dm mg"></div>
+          <div class="dt"><strong>Öffentliche Ratsberatungen:</strong> Wenn der Rat über Gesetze berät, tagt er jetzt öffentlich. Vorher fanden diese Beratungen hinter verschlossenen Türen statt.</div>
+        </div>
+      </div>
+
+      <div class="dc">
+        <h4><span class="em">⚡</span> Mehr Effizienz</h4>
+        <div class="di"><div class="dm mg"></div>
+          <div class="dt"><strong>Doppelte Mehrheit im Rat:</strong> Das neue Abstimmungssystem (55 % der Staaten, 65 % der Bevölkerung) ist einfacher zu verstehen und ermöglicht schnellere Entscheidungen als das alte System aus dem Vertrag von Nizza.</div>
+        </div>
+        <div class="di"><div class="dm mg"></div>
+          <div class="dt"><strong>Weniger Blockaden:</strong> In rund 40 weiteren Politikbereichen reicht jetzt eine Mehrheit statt Einstimmigkeit. Das bedeutet: Ein einzelnes Land kann dort nicht mehr allein alles blockieren.</div>
+        </div>
+        <div class="di"><div class="dm mg"></div>
+          <div class="dt"><strong>Fester Präsident des Europäischen Rates:</strong> Vorher wechselte der Vorsitz alle 6 Monate. Jetzt gibt es einen festen Präsidenten für 2,5 Jahre. Das gibt der EU mehr Stabilität und Kontinuität in der politischen Führung.</div>
+        </div>
+        <div class="di"><div class="dm mg"></div>
+          <div class="dt"><strong>Hoher Vertreter für Außenpolitik:</strong> Ein neues Amt, das verschiedene bisherige Aufgaben bündelt. So soll die EU in der Außenpolitik einheitlicher auftreten und mit einer Stimme sprechen.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LERNZIEL 4 & 5: DEFIZITE -->
+  <section>
+    <div class="st"><div class="ic" style="background:rgba(248,113,113,.15)">⚠️</div>Was bleibt trotzdem problematisch?</div>
+    <div class="ss">Nicht alle Probleme wurden gelöst. Bei einer Beurteilung müssen auch die fortbestehenden Schwächen berücksichtigt werden.</div>
+
+    <div class="dg">
+      <div class="dc">
+        <h4><span class="em">🔴</span> Demokratie: Was fehlt noch?</h4>
+        <div class="di"><div class="dm mr"></div>
+          <div class="dt"><strong>EP kann keine Gesetze einbringen:</strong> Obwohl das EP direkt von den Bürgern gewählt wird, darf es keine eigenen Gesetzesvorschläge machen. Dieses Recht hat allein die Kommission, die nicht direkt gewählt wird.</div>
+        </div>
+        <div class="di"><div class="dm mr"></div>
+          <div class="dt"><strong>Bürgerinitiative ist unverbindlich:</strong> Die Kommission muss den Vorschlag der Bürger nur „prüfen". Sie ist nicht verpflichtet, daraus ein Gesetz zu machen.</div>
+        </div>
+        <div class="di"><div class="dm my"></div>
+          <div class="dt"><strong>Wenige Menschen gehen zur Europawahl:</strong> Bei der Europawahl 2024 lag die Wahlbeteiligung bei nur rund 51 %. Wenn so wenige Menschen wählen gehen, hat das direkt gewählte Parlament eine schwächere Legitimation.</div>
+        </div>
+      </div>
+
+      <div class="dc">
+        <h4><span class="em">🟡</span> Effizienz: Was fehlt noch?</h4>
+        <div class="di"><div class="dm my"></div>
+          <div class="dt"><strong>Einstimmigkeit in wichtigen Bereichen:</strong> In der Außenpolitik, der Steuerpolitik und bei Vertragsänderungen müssen immer noch alle 27 Staaten zustimmen. Ein einziges Land kann dort alles blockieren.</div>
+        </div>
+        <div class="di"><div class="dm my"></div>
+          <div class="dt"><strong>Viele verschiedene Verfahren:</strong> Neben dem ordentlichen Gesetzgebungsverfahren gibt es weiterhin zahlreiche Sonderverfahren. Das macht das System unübersichtlich und schwer verständlich.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LERNZIEL 5: FAZIT -->
+  <section class="ib">
+    <h2>Fazit: Hat der Vertrag von Lissabon mehr Demokratie und Effizienz geschaffen?</h2>
+    <p>
+      Der Vertrag von Lissabon hat die EU <span class="hl">in beiden Bereichen verbessert, aber nicht alle Probleme gelöst</span>.
+    </p>
+    <p>
+      <span class="hl">Demokratie:</span> Das EP wurde deutlich gestärkt und entscheidet jetzt in den meisten Bereichen gleichberechtigt mit dem Rat über Gesetze. Die Grundrechtecharta ist verbindlich geworden und Bürger können erstmals über die Bürgerinitiative Vorschläge anstoßen. Gleichzeitig fehlt dem EP weiterhin das Recht, selbst Gesetze vorzuschlagen. Die Bürgerinitiative ist unverbindlich. Und die niedrige Wahlbeteiligung schwächt die Legitimation des Parlaments.
+    </p>
+    <p>
+      <span class="hl">Effizienz:</span> Die doppelte Mehrheit vereinfacht Entscheidungen im Rat und der feste Präsident des Europäischen Rates sorgt für mehr Stabilität. Allerdings gilt in Schlüsselbereichen wie der Außenpolitik weiterhin Einstimmigkeit, sodass einzelne Länder Entscheidungen blockieren können.
+    </p>
+    <p>
+      Insgesamt zeigt sich, dass der Vertrag Fortschritte gebracht hat, aber ein Grundproblem weiterhin besteht: Die EU muss immer wieder einen Mittelweg finden zwischen <span class="hl">gemeinsamen Entscheidungen auf EU-Ebene</span> (Fachbegriff: supranational) und dem Wunsch der einzelnen Mitgliedstaaten, <span class="hl">selbst über ihre Angelegenheiten zu bestimmen</span> (Fachbegriff: intergouvernemental). Der Vertrag von Lissabon hat diesen Mittelweg verschoben, aber nicht endgültig festgelegt.
+    </p>
+  </section>
+
+  <div class="fn2">Lösungsvisualisierung · Vertrag von Lissabon (2007/2009) · Stand: März 2026</div>
+
+</div>
+</body>
+</html>

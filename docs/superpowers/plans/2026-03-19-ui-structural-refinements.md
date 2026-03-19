@@ -255,7 +255,7 @@ New CSS classes for the 3-stage reveal: stage wrapper, locked state, done state,
   }
   .uk-stage-tag {
     font-family: var(--ff-mono); font-size: .6rem; font-weight: 700;
-    color: #fff; padding: .18em .55em; border-radius: 4px;
+    color: #fff; background: var(--ink3); padding: .18em .55em; border-radius: 4px;
     letter-spacing: .05em; text-transform: uppercase; white-space: nowrap;
   }
   .uk-stage-tag[data-ab="1"] { background: var(--ab1-acc); }
@@ -819,11 +819,11 @@ Replace the existing UK block HTML with the 3-stage sequential structure. Stage 
         <div class="uk-leitfrage-text">Überwiegen die Vorteile des EU-Binnenmarkts seine sozialen Kosten?</div>
       </div>
 
-      <!-- ── STAGE 1: Einleitung (Kriterium + AB I) ──────── -->
+      <!-- ── STAGE 1: Einleitung (Kriterium + AB1 Theorie) ── -->
       <div class="uk-stage" data-stage="1">
         <div class="uk-stage-header">
-          <span class="uk-stage-tag" data-ab="1">AB I</span>
-          <span class="uk-stage-title">Einleitung: Kontext, Kriterium und Material</span>
+          <span class="uk-stage-tag">Einleitung</span>
+          <span class="uk-stage-title">Kriterium und theoretischer Kontext</span>
         </div>
 
         <!-- Kriterium -->
@@ -863,29 +863,11 @@ Replace the existing UK block HTML with the 3-stage sequential structure. Stage 
           <ul class="uk-opts">
             <li class="uk-opt"
                 data-error="step"
-                data-errtext="Du beschreibst Fallbeispiele aus der Praxis. Diese gehören in Schritt 2 (Material und Fall). Der theoretische Kontext beschreibt, was Theorie und Normen sagen.">
+                data-errtext="Du beschreibst Fallbeispiele aus der Praxis. Diese gehören in den Hauptteil, unter Fallmaterial. Der theoretische Kontext beschreibt, was Theorie und Normen sagen.">
               <span class="uk-opt-text">Sozialdumping, Brain Drain und Steuerwettbewerb zeigen, dass der Binnenmarkt in der Praxis asymmetrisch wirkt und nicht alle Mitglieder gleich profitieren.</span>
             </li>
             <li class="uk-opt" data-correct="true">
               <span class="uk-opt-text">Der Binnenmarkt basiert auf den vier Grundfreiheiten. Er ist ein Regelwerk für wirtschaftliche Integration, das durch einheitliche Standards gemeinsamen Wohlstand sichern soll.</span>
-            </li>
-          </ul>
-        </div>
-
-        <!-- AB I Step 2: Material und Fall -->
-        <div class="uk-step" data-step="fall" data-ab="1">
-          <div class="uk-step-header">
-            <span class="uk-ab-tag">AB I: Material und Fall</span>
-          </div>
-          <p class="uk-step-q">Welche Aussage gibt die Fallbeispiele sachlich wieder, die für die Leitfrage relevant sind?</p>
-          <ul class="uk-opts">
-            <li class="uk-opt" data-correct="true">
-              <span class="uk-opt-text">Sozialdumping durch Entsendung von Niedriglohnkräften, Brain Drain aus Osteuropa und Steuervermeidung durch Konzerne (LuxLeaks) zeigen konkrete Spannungen im Binnenmarkt.</span>
-            </li>
-            <li class="uk-opt"
-                data-error="level"
-                data-errtext="Du formulierst bereits ein Urteil über den Binnenmarkt. Hier sollen die Fallbeispiele zunächst sachlich dargestellt werden. Das Urteil kommt erst in der Schlussfolgerung.">
-              <span class="uk-opt-text">Der Binnenmarkt schadet strukturell den schwächeren EU-Ländern und Arbeitnehmern in Hochlohnländern. Eine Reform ist unvermeidlich.</span>
             </li>
           </ul>
         </div>
@@ -901,15 +883,15 @@ Replace the existing UK block HTML with the 3-stage sequential structure. Stage 
       <!-- Stage 1 summary (shown when stage 1 complete) -->
       <div class="uk-stage-summary" data-stage="1">
         <span class="uk-stage-summary-check">✓</span>
-        <span class="uk-stage-summary-label">AB I — Einleitung</span>
+        <span class="uk-stage-summary-label">Einleitung</span>
         <span class="uk-stage-summary-krit">Kriterium ✓</span>
       </div>
 
-      <!-- ── STAGE 2: Hauptteil (Recheck #1 + AB II) ─────── -->
+      <!-- ── STAGE 2: Hauptteil (Recheck + AB1 Fall + AB2) ── -->
       <div class="uk-stage uk-stage-locked" data-stage="2">
         <div class="uk-stage-header">
-          <span class="uk-stage-tag" data-ab="2">AB II</span>
-          <span class="uk-stage-title">Hauptteil: Verbindung, Konflikte und Abwägung</span>
+          <span class="uk-stage-tag">Hauptteil</span>
+          <span class="uk-stage-title">Fallmaterial, Analyse und Abwägung</span>
         </div>
 
         <!-- Recheck #1 -->
@@ -921,6 +903,24 @@ Replace the existing UK block HTML with the 3-stage sequential structure. Stage 
             <div class="uk-krit-chip" data-msidx="2">Netto-Beschäftigungseffekt</div>
           </div>
           <div class="uk-krit-recheck-err"></div>
+        </div>
+
+        <!-- AB I Step 2: Fallmaterial -->
+        <div class="uk-step" data-step="fall" data-ab="1">
+          <div class="uk-step-header">
+            <span class="uk-ab-tag">AB I: Material und Fall</span>
+          </div>
+          <p class="uk-step-q">Welche Aussage gibt die Fallbeispiele sachlich wieder, die für die Leitfrage relevant sind?</p>
+          <ul class="uk-opts">
+            <li class="uk-opt" data-correct="true">
+              <span class="uk-opt-text">Sozialdumping durch Entsendung von Niedriglohnkräften, Brain Drain aus Osteuropa und Steuervermeidung durch Konzerne (LuxLeaks) zeigen konkrete Spannungen im Binnenmarkt.</span>
+            </li>
+            <li class="uk-opt"
+                data-error="level"
+                data-errtext="Du formulierst bereits ein Urteil über den Binnenmarkt. Hier sollen die Fallbeispiele zunächst sachlich dargestellt werden. Das Urteil kommt erst in der Schlussfolgerung.">
+              <span class="uk-opt-text">Der Binnenmarkt schadet strukturell den schwächeren EU-Ländern und Arbeitnehmern in Hochlohnländern. Eine Reform ist unvermeidlich.</span>
+            </li>
+          </ul>
         </div>
 
         <!-- AB II Step 3: Verbindung und Konflikte -->
@@ -970,14 +970,14 @@ Replace the existing UK block HTML with the 3-stage sequential structure. Stage 
       <!-- Stage 2 summary -->
       <div class="uk-stage-summary" data-stage="2">
         <span class="uk-stage-summary-check">✓</span>
-        <span class="uk-stage-summary-label">AB II — Hauptteil</span>
+        <span class="uk-stage-summary-label">Hauptteil</span>
       </div>
 
-      <!-- ── STAGE 3: Schlussfolgerung (Recheck #2 + AB III) -->
+      <!-- ── STAGE 3: Schlussfolgerung (Recheck #2 + AB3 Urteil) -->
       <div class="uk-stage uk-stage-locked" data-stage="3">
         <div class="uk-stage-header">
-          <span class="uk-stage-tag" data-ab="3">AB III</span>
-          <span class="uk-stage-title">Schlussfolgerung: Begründetes Urteil</span>
+          <span class="uk-stage-tag">Schlussfolgerung</span>
+          <span class="uk-stage-title">Begründetes Urteil</span>
         </div>
 
         <!-- Recheck #2 -->
@@ -1026,13 +1026,13 @@ Replace the existing UK block HTML with the 3-stage sequential structure. Stage 
   Open unit in browser. Work through the entire UK block:
 
   1. Stage 1 visible, stages 2 and 3 muted/blurred.
-  2. Select Kriterium option A (correct). Both AB I options now need selection before "Weiter" enables.
-  3. Select one option in each AB I step. "Weiter zum Hauptteil" button enables.
-  4. Click "Weiter". Stage 1 collapses (display:none). Summary row appears: "✓  AB I — Einleitung  |  Kriterium ✓". Stage 2 unlocks (no longer blurred).
-  5. In stage 2: recheck chip matching Kriterium A is pre-selected. Select one option per AB II step. "Weiter" enables.
-  6. Click "Weiter". Stage 2 collapses. Summary row appears. Stage 3 unlocks.
-  7. In stage 3: recheck chip pre-selected. Select AB III option. "Abschließen" enables.
-  8. Click "Abschließen". Block gets `.uk-complete`.
+  2. Select Kriterium option A (correct). The one Theorie step now needs selection before "Weiter" enables.
+  3. Select one option in the Theorie step. "Weiter zum Hauptteil" button enables.
+  4. Click "Weiter". Stage 1 collapses (display:none). Summary row appears: "✓  Einleitung  |  Kriterium ✓". Stage 2 unlocks (no longer blurred).
+  5. In stage 2: recheck chip matching Kriterium A is pre-selected. Select one option in each of the three AB steps (Fallmaterial, Verbindung, Abwägung). "Weiter" enables.
+  6. Click "Weiter". Stage 2 collapses. Summary row "✓  Hauptteil" appears. Stage 3 unlocks.
+  7. In stage 3: recheck chip pre-selected. Select AB III Urteil option. "Argumentation abschließen" enables.
+  8. Click "Argumentation abschließen". Block gets `.uk-complete`.
 
 - [ ] **Step 4: Error path tests**
 

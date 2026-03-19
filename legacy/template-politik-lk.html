@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{EINHEIT_TITEL}} – Politik-LK</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;800&family=DM+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f0e8;--card:#fff;--inp:#faf8f4;
+  --ink:#1a1a1a;--ink2:#4a4540;--ink3:#8a8278;
+  --acc:#003399;--accL:#e8edf7;--accG:rgba(0,51,153,.08);
+  --gld:#c5960c;--gldL:#fdf6e3;
+  --ok:#2d7a4f;--okB:#e8f5ee;
+  --err:#b83232;--errB:#fdeaea;
+  --brd:#d6cfc4;--brdL:#e8e2d8;
+  --mat:#6366f1;--matL:#eef2ff;--matB:rgba(99,102,241,.15);
+  --sw:#0891b2;--swL:#ecfeff;--swB:rgba(8,145,178,.12);
+  --r:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+.page{max-width:960px;margin:0 auto;padding:40px 28px 60px}
+
+/* ===== HEADER ===== */
+.hdr{text-align:center;margin-bottom:40px;padding-bottom:28px;border-bottom:2px solid var(--brd);position:relative}
+.hdr::after{content:'';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:60px;height:2px;background:var(--acc)}
+.hdr .tag{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--acc);font-weight:600;margin-bottom:10px}
+.hdr h1{font-family:'Fraunces',serif;font-size:clamp(22px,3.5vw,32px);font-weight:800;line-height:1.25;margin-bottom:6px}
+.hdr .sub{font-size:14px;color:var(--ink2);max-width:640px;margin:0 auto;line-height:1.6}
+.hdr .lz-list{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.lz-pill{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;font-weight:600}
+.lz-pill.exam{background:var(--accL);color:var(--acc);border:1px solid rgba(0,51,153,.2)}
+.lz-pill.context{background:var(--gldL);color:var(--gld);border:1px solid rgba(197,150,12,.2)}
+
+/* ===== PROGRESS ===== */
+.gpb{background:var(--card);border:1px solid var(--brdL);border-radius:var(--r);padding:14px 22px;margin-bottom:32px;display:flex;align-items:center;gap:16px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.gpb .lbl{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink3);white-space:nowrap}
+.gpb .track{flex:1;height:8px;background:var(--brdL);border-radius:4px;overflow:hidden}
+.gpb .fill{height:100%;width:0%;background:linear-gradient(90deg,var(--acc),var(--gld));border-radius:4px;transition:width .6s}
+.gpb .sc{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:var(--acc);min-width:100px;text-align:right}
+
+/* ===== SECTION DIVIDER ===== */
+.sdiv{text-align:center;margin:40px 0 28px;position:relative}
+.sdiv::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:var(--brd)}
+.sdiv span{position:relative;background:var(--bg);padding:0 20px;font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--acc)}
+
+/* ===== SACHWISSEN BLOCK ===== */
+.sw-block{background:var(--card);border:1px solid var(--brdL);border-radius:var(--r);margin-bottom:24px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06);transition:opacity .4s,transform .4s}
+.sw-block.locked{opacity:.3;pointer-events:none;filter:blur(2px);transform:scale(.98)}
+.sw-block.unlocking{animation:unlockPulse .6s ease-out}
+@keyframes unlockPulse{0%{opacity:.3;transform:scale(.98)}50%{box-shadow:0 0 30px var(--accG)}100%{opacity:1;transform:scale(1)}}
+
+.sw-header{padding:20px 24px 14px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--brdL)}
+.sw-marker{font-size:11px;font-family:'IBM Plex Mono',monospace;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:4px;white-space:nowrap}
+.sw-marker.sachwissen{background:var(--swB);color:var(--sw)}
+.sw-marker.material{background:var(--matB);color:var(--mat)}
+.sw-title{font-family:'Fraunces',serif;font-size:16px;font-weight:600;color:var(--ink)}
+.sw-exam{font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--acc);background:var(--accL);padding:2px 8px;border-radius:4px;margin-left:auto;white-space:nowrap}
+
+.sw-body{padding:20px 24px}
+.sw-body p{font-size:14px;line-height:1.8;color:var(--ink2);margin-bottom:12px}
+.sw-body p:last-child{margin-bottom:0}
+.sw-body p strong{color:var(--ink);font-weight:600}
+.sw-body .term{color:var(--sw);font-weight:600}
+
+/* ===== QUIZ GATE ===== */
+.quiz-gate{background:var(--inp);border:1px solid var(--brdL);border-radius:var(--r);margin-bottom:24px;overflow:hidden;transition:opacity .4s}
+.quiz-gate.locked{opacity:.3;pointer-events:none;filter:blur(2px)}
+.quiz-gate.completed{border-color:var(--ok);background:var(--okB)}
+
+.qg-header{padding:16px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--brdL);background:rgba(0,0,0,.02)}
+.qg-icon{font-size:18px}
+.qg-title{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:var(--ink2);letter-spacing:1px;text-transform:uppercase}
+.qg-status{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;padding:3px 10px;border-radius:4px}
+.qg-status.pending{background:var(--gldL);color:var(--gld)}
+.qg-status.done{background:var(--okB);color:var(--ok)}
+
+.qg-body{padding:20px}
+.q-item{margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--brdL)}
+.q-item:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.q-num{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink3);letter-spacing:1px;margin-bottom:4px}
+.q-text{font-size:13.5px;color:var(--ink);font-weight:500;margin-bottom:10px;line-height:1.6}
+
+/* MC options */
+.mc-opts{display:flex;flex-direction:column;gap:6px}
+.mc-opt{display:flex;align-items:center;gap:10px;padding:8px 14px;border:1.5px solid var(--brdL);border-radius:8px;cursor:pointer;transition:all .2s;font-size:13px;color:var(--ink2)}
+.mc-opt:hover{border-color:var(--acc);background:var(--accL)}
+.mc-opt.selected{border-color:var(--acc);background:var(--accL);color:var(--acc);font-weight:500}
+.mc-opt.correct{border-color:var(--ok)!important;background:var(--okB)!important;color:var(--ok)!important}
+.mc-opt.wrong{border-color:var(--err)!important;background:var(--errB)!important;color:var(--err)!important}
+.mc-radio{width:16px;height:16px;border:2px solid var(--brd);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.mc-opt.selected .mc-radio{border-color:var(--acc)}
+.mc-opt.selected .mc-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:var(--acc)}
+
+/* Text input */
+.q-input{font-family:'IBM Plex Mono',monospace;font-size:13px;padding:8px 14px;border:1.5px solid var(--brdL);border-radius:8px;width:100%;max-width:400px;transition:border-color .2s;background:var(--card)}
+.q-input:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px var(--accG)}
+.q-input.correct{border-color:var(--ok);background:var(--okB);color:var(--ok)}
+.q-input.wrong{border-color:var(--err);background:var(--errB);color:var(--err)}
+
+/* Ordering */
+.order-list{display:flex;flex-direction:column;gap:6px}
+.order-item{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--card);border:1.5px solid var(--brdL);border-radius:8px;cursor:grab;transition:all .2s;font-size:13px}
+.order-item:hover{border-color:var(--acc)}
+.order-item.selected{border-color:var(--acc);background:var(--accL);box-shadow:0 0 0 2px rgba(0,51,153,.1)}
+.order-item.correct{border-color:var(--ok)!important;background:var(--okB)!important}
+.order-item.wrong{border-color:var(--err)!important;background:var(--errB)!important}
+.order-num{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--ink3);min-width:20px}
+.order-arrows{display:flex;gap:4px;margin-left:auto}
+.order-arr{width:24px;height:24px;border:1px solid var(--brd);border-radius:4px;background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all .2s}
+.order-arr:hover{border-color:var(--acc);background:var(--accL)}
+
+/* Matching (quiz version, compact) */
+.qmatch-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.qmatch-item{padding:8px 12px;border:1.5px solid var(--brdL);border-radius:8px;cursor:pointer;font-size:12px;text-align:center;transition:all .2s;background:var(--card)}
+.qmatch-item:hover{border-color:var(--acc)}
+.qmatch-item.sel{border-color:var(--acc);background:var(--accL)}
+.qmatch-item.matched{border-color:var(--gld);background:var(--gldL)}
+.qmatch-item.correct{border-color:var(--ok)!important;background:var(--okB)!important}
+.qmatch-item.wrong{border-color:var(--err)!important;background:var(--errB)!important}
+
+.q-feedback{font-family:'IBM Plex Mono',monospace;font-size:11px;margin-top:6px;padding:4px 10px;border-radius:4px;display:none}
+.q-feedback.vis{display:inline-block}
+.q-feedback.ok{background:var(--okB);color:var(--ok)}
+.q-feedback.err{background:var(--errB);color:var(--err)}
+
+.qg-check-row{display:flex;gap:10px;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--brdL)}
+.qg-result{font-family:'IBM Plex Mono',monospace;font-size:12px;padding:6px 14px;border-radius:6px;display:none}
+.qg-result.vis{display:inline-block}
+.qg-result.pass{background:var(--okB);color:var(--ok)}
+.qg-result.fail{background:var(--errB);color:var(--err)}
+
+/* ===== ARBEITSBLATT SECTION ===== */
+.ab-section{transition:opacity .4s,transform .4s}
+.ab-section.locked{opacity:.2;pointer-events:none;filter:blur(3px)}
+.ab-locked-msg{text-align:center;padding:40px 20px;color:var(--ink3);font-style:italic}
+
+.auf{background:var(--card);border:1px solid var(--brdL);border-radius:var(--r);padding:28px;margin-bottom:24px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.auf:hover{box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.auf-h{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px}
+.auf-n{font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--acc);line-height:1;min-width:34px}
+.auf-m h2{font-family:'Fraunces',serif;font-size:17px;font-weight:600;margin-bottom:4px}
+.auf-tags{display:flex;gap:6px;flex-wrap:wrap}
+.lz-tag{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:4px;font-weight:600;background:var(--gldL);color:var(--gld)}
+.lz-tag.exam{background:var(--accL);color:var(--acc)}
+.auf-i{font-size:14px;color:var(--ink2);margin-bottom:18px;line-height:1.7;padding-left:48px}
+.auf-body{padding-left:48px}
+
+/* Aufgaben-Material (directly with task) */
+.task-mat{background:var(--matL);border:1px solid rgba(99,102,241,.2);border-radius:8px;padding:16px 18px;margin-bottom:18px;position:relative}
+.task-mat::before{content:'📎 Material';position:absolute;top:-10px;left:14px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mat);font-weight:600;background:var(--matL);padding:0 6px}
+.task-mat p{font-size:13px;line-height:1.7;color:var(--ink2);margin-bottom:8px}
+.task-mat p:last-child{margin-bottom:0}
+
+/* Reuse all interaction styles from previous worksheets */
+.bank{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;padding:14px;background:var(--accL);border-radius:8px;border:1px dashed rgba(0,51,153,.2)}
+.bank.gb{background:var(--gldL);border-color:rgba(197,150,12,.3)}
+.chip{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;padding:5px 12px;background:var(--card);border:1px solid var(--brd);border-radius:6px;cursor:pointer;user-select:none;transition:all .2s;white-space:nowrap}
+.chip:hover{border-color:var(--acc);box-shadow:0 2px 8px var(--accG);transform:translateY(-1px)}
+.chip.used{opacity:.3;pointer-events:none}.chip.sel{outline:2.5px solid var(--acc);outline-offset:1px;background:var(--accL)}
+
+.ls{display:inline-block;min-width:120px;padding:3px 10px;border-bottom:2px dashed var(--brd);background:var(--inp);border-radius:4px 4px 0 0;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;color:var(--acc);text-align:center;cursor:pointer;transition:all .2s;vertical-align:baseline;min-height:26px;line-height:20px}
+.ls:empty::after{content:attr(data-nr);color:var(--ink3);font-size:11px}
+.ls:hover{border-color:var(--acc);background:var(--accL)}
+.ls.filled{border-bottom-style:solid;border-color:var(--acc);background:var(--accL)}
+.ls.ok{border-color:var(--ok)!important;background:var(--okB)!important;color:var(--ok)!important}
+.ls.bad{border-color:var(--err)!important;background:var(--errB)!important;color:var(--err)!important}
+
+.ss{display:inline-block;min-width:90px;padding:3px 8px;border-bottom:2px dashed var(--brd);background:rgba(255,255,255,.7);border-radius:4px 4px 0 0;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;color:var(--acc);text-align:center;cursor:pointer;transition:all .2s;min-height:22px;line-height:16px}
+.ss:empty::after{content:'?';color:var(--ink3)}
+.ss:hover{border-color:var(--acc);background:rgba(0,51,153,.05)}
+.ss.filled{border-bottom-style:solid;border-color:var(--acc);background:var(--accL)}
+.ss.ok{border-color:var(--ok)!important;background:var(--okB)!important;color:var(--ok)!important}
+.ss.bad{border-color:var(--err)!important;background:var(--errB)!important;color:var(--err)!important}
+
+.lp{font-size:14px;line-height:2.2;color:var(--ink2);margin-bottom:14px}
+.lp strong{color:var(--ink)}
+
+/* Zuordnung */
+.zg{display:grid;grid-template-columns:1fr 40px 1fr;gap:10px;align-items:start}
+.zcl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);text-align:center;padding-bottom:6px;border-bottom:1px solid var(--brdL);margin-bottom:6px}
+.zlist{display:flex;flex-direction:column;gap:8px}
+.zi{font-size:13px;padding:10px 14px;background:var(--inp);border:1.5px solid var(--brdL);border-radius:8px;cursor:pointer;transition:all .2s;line-height:1.5;position:relative}
+.zi:hover{border-color:var(--acc)}
+.zi.sel{border-color:var(--acc);background:var(--accL)}
+.zi.matched{border-color:var(--gld);background:var(--gldL)}
+.zi.ok-m{border-color:var(--ok)!important;background:var(--okB)!important}
+.zi.bad-m{border-color:var(--err)!important;background:var(--errB)!important}
+.zi .mn{position:absolute;top:-8px;right:-8px;width:20px;height:20px;border-radius:50%;background:var(--gld);color:#fff;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.zarr{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding-top:28px;color:var(--brd);font-size:16px}
+
+/* Kategorisierung */
+.kat-list{display:flex;flex-direction:column;gap:10px}
+.kat-item{display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--inp);border:1.5px solid var(--brdL);border-radius:8px;transition:border-color .2s}
+.kat-text{flex:1;font-size:13px;line-height:1.5;color:var(--ink2)}
+.kat-btns{display:flex;gap:6px;flex-shrink:0}
+.kat-btn{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;padding:6px 14px;border:1.5px solid var(--brd);border-radius:6px;background:#fff;cursor:pointer;transition:all .2s;white-space:nowrap}
+.kat-btn:hover{transform:translateY(-1px)}
+.kat-item.correct{border-color:var(--ok);background:var(--okB)}
+.kat-item.wrong{border-color:var(--err);background:var(--errB)}
+
+/* Freitext / Urteil */
+.uta{width:100%;min-height:120px;padding:12px 14px;border:1px solid var(--brdL);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.6;color:var(--ink);background:#fff;resize:vertical}
+.uta:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px var(--accG)}
+.uta::placeholder{color:var(--ink3);font-style:italic}
+.ml{display:none;margin-top:12px;padding:14px 16px;background:var(--accL);border-radius:8px;border-left:3px solid var(--acc);font-size:13px;line-height:1.75;color:var(--ink2)}
+.ml.vis{display:block}
+.ml strong{color:var(--ink)}
+.ml-section{margin-bottom:10px}.ml-section:last-child{margin-bottom:0}
+.ml-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--acc);font-weight:600;margin-bottom:4px}
+.hilfe{font-size:12px;color:var(--ink3);font-style:italic;margin-top:4px;padding:8px 12px;background:rgba(0,51,153,.03);border-radius:6px;line-height:1.5}
+
+/* Buttons */
+.cbtn{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:10px 22px;border:2px solid var(--acc);border-radius:8px;background:var(--acc);color:#fff;cursor:pointer;transition:all .25s}
+.cbtn:hover{background:transparent;color:var(--acc)}
+.cbtn.ghost{background:transparent;color:var(--acc)}.cbtn.ghost:hover{background:var(--acc);color:#fff}
+.cbtn.small{font-size:10px;padding:6px 14px;letter-spacing:.5px}
+.cbtn.warn{border-color:var(--err);background:transparent;color:var(--err)}.cbtn.warn:hover{background:var(--err);color:#fff}
+.cbtn.retry{border-color:var(--gld);background:transparent;color:var(--gld);display:none}.cbtn.retry:hover{background:var(--gld);color:#fff}.cbtn.retry.vis{display:inline-block}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.ares{font-family:'IBM Plex Mono',monospace;font-size:12px;margin-top:12px;padding:8px 14px;border-radius:6px;display:none}
+.ares.vis{display:block}.ares.g{background:var(--okB);color:var(--ok)}.ares.p{background:var(--gldL);color:var(--gld)}.ares.b{background:var(--errB);color:var(--err)}
+
+/* ===== SOURCES / COPYRIGHT ===== */
+.footer-section{margin-top:50px;padding-top:24px;border-top:2px solid var(--brd)}
+.footer-section h3{font-family:'Fraunces',serif;font-size:15px;font-weight:600;margin-bottom:12px;color:var(--ink)}
+.source-list{list-style:none;margin-bottom:24px}
+.source-list li{font-size:12px;color:var(--ink2);margin-bottom:6px;padding-left:16px;position:relative;line-height:1.5}
+.source-list li::before{content:'→';position:absolute;left:0;color:var(--ink3)}
+.source-list a{color:var(--acc);text-decoration:none}
+.source-list a:hover{text-decoration:underline}
+.copyright{font-size:11px;color:var(--ink3);line-height:1.7;padding:16px;background:var(--card);border:1px solid var(--brdL);border-radius:8px}
+.copyright a{color:var(--acc)}
+
+@media(max-width:700px){
+  .auf-i,.auf-body{padding-left:0}
+  .zg{grid-template-columns:1fr}.zarr{display:none}
+  .kat-item{flex-direction:column;align-items:flex-start;gap:8px}
+  .qmatch-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ================================================================
+       HEADER
+       Fill in: EINHEIT_TITEL, EINHEIT_NR, LERNZIELE
+       ================================================================ -->
+  <header class="hdr">
+    <div class="tag">Politik-Leistungskurs (GOS) · Einheit {{NR}}</div>
+    <h1>{{EINHEIT_TITEL}}</h1>
+    <p class="sub">{{EINHEIT_BESCHREIBUNG}}</p>
+    <div class="lz-list">
+      <!-- exam = prüfungsrelevant, context = Kontextwissen -->
+      <span class="lz-pill exam">🎯 Lernziel 1: {{LZ1}}</span>
+      <span class="lz-pill exam">🎯 Lernziel 2: {{LZ2}}</span>
+      <!-- add more as needed -->
+    </div>
+  </header>
+
+  <!-- Global progress -->
+  <div class="gpb">
+    <span class="lbl">Sachwissen</span>
+    <div class="track"><div class="fill" id="swFill"></div></div>
+    <span class="sc" id="swSc">Block 0 / {{TOTAL_BLOCKS}}</span>
+  </div>
+
+  <!-- ================================================================
+       SACHWISSEN-STRECKE (Bereich A)
+       Each sw-block + quiz-gate pair. Blocks after #1 start as .locked.
+       ================================================================ -->
+
+  <!-- BLOCK 1 (always unlocked) -->
+  <div class="sw-block" id="sw1">
+    <div class="sw-header">
+      <span class="sw-marker sachwissen">📘 Sachwissen</span>
+      <span class="sw-title">{{BLOCK_1_TITLE}}</span>
+      <span class="sw-exam">Klausurrelevant</span>
+    </div>
+    <div class="sw-body">
+      <p>{{BLOCK_1_CONTENT}}</p>
+      <!-- Use <strong> for key terms, <span class="term"> for Fachbegriffe -->
+    </div>
+  </div>
+
+  <!-- QUIZ GATE 1 -->
+  <div class="quiz-gate" id="qg1">
+    <div class="qg-header">
+      <span class="qg-icon">🔓</span>
+      <span class="qg-title">Verständnischeck Block 1</span>
+      <span class="qg-status pending" id="qg1status">Offen</span>
+    </div>
+    <div class="qg-body">
+
+      <!-- Question 1: Multiple Choice -->
+      <div class="q-item" id="q1_1">
+        <div class="q-num">Frage 1 von {{N}}</div>
+        <div class="q-text">{{QUESTION_TEXT}}</div>
+        <div class="mc-opts" data-correct="b">
+          <div class="mc-opt" onclick="mcSel(this)"><span class="mc-radio"></span>{{Option A}}</div>
+          <div class="mc-opt" data-val="b" onclick="mcSel(this)"><span class="mc-radio"></span>{{Option B (correct)}}</div>
+          <div class="mc-opt" onclick="mcSel(this)"><span class="mc-radio"></span>{{Option C}}</div>
+        </div>
+        <div class="q-feedback" id="q1_1fb"></div>
+      </div>
+
+      <!-- Question 2: Text input -->
+      <div class="q-item" id="q1_2">
+        <div class="q-num">Frage 2 von {{N}}</div>
+        <div class="q-text">{{QUESTION_TEXT}}</div>
+        <input type="text" class="q-input" data-answers="{{answer1}}|{{answer2}}" placeholder="Antwort eingeben..." id="q1_2input">
+        <div class="q-feedback" id="q1_2fb"></div>
+      </div>
+
+      <!-- Question 3: Ordering -->
+      <div class="q-item" id="q1_3">
+        <div class="q-num">Frage 3 von {{N}}</div>
+        <div class="q-text">{{QUESTION_TEXT: Bringe in die richtige Reihenfolge.}}</div>
+        <div class="order-list" id="q1_3order" data-correct="{{id1,id2,id3,id4}}">
+          <!-- items will be in shuffled order -->
+          <div class="order-item" data-oid="{{id}}" onclick="orderSel(this)">
+            <span class="order-num">1</span>
+            <span>{{Item text}}</span>
+            <div class="order-arrows">
+              <span class="order-arr" onclick="event.stopPropagation();orderMove(this,-1)">▲</span>
+              <span class="order-arr" onclick="event.stopPropagation();orderMove(this,1)">▼</span>
+            </div>
+          </div>
+          <!-- repeat for each item -->
+        </div>
+        <div class="q-feedback" id="q1_3fb"></div>
+      </div>
+
+      <div class="qg-check-row">
+        <button class="cbtn small" onclick="checkQuiz(1)">Überprüfen</button>
+        <button class="cbtn small ghost" onclick="resetQuiz(1)">Zurücksetzen</button>
+        <span class="qg-result" id="qg1result"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCK 2 (starts locked) -->
+  <div class="sw-block locked" id="sw2">
+    <div class="sw-header">
+      <span class="sw-marker material">📎 Material</span>
+      <span class="sw-title">{{BLOCK_2_TITLE: e.g. Fallbeispiel}}</span>
+    </div>
+    <div class="sw-body">
+      <p>{{BLOCK_2_CONTENT}}</p>
+    </div>
+  </div>
+
+  <!-- QUIZ GATE 2 (starts locked) -->
+  <div class="quiz-gate locked" id="qg2">
+    <!-- same structure as qg1, different question types -->
+  </div>
+
+  <!-- Repeat pattern for blocks 3, 4, ... -->
+
+  <!-- ================================================================
+       ARBEITSBLATT (Bereich B) - locked until all quiz gates passed
+       ================================================================ -->
+  <div class="sdiv"><span>📝 Arbeitsblatt</span></div>
+
+  <div class="ab-section" id="abSection">
+    <!-- When locked: -->
+    <div class="ab-locked-msg" id="abLock">
+      🔒 Das Arbeitsblatt wird freigeschaltet, sobald du alle Sachwissen-Blöcke durchgearbeitet hast.
+    </div>
+
+    <!-- When unlocked, these become visible: -->
+    <div id="abContent" style="display:none">
+
+      <!-- Progress for Arbeitsblatt -->
+      <div class="gpb" style="margin-bottom:28px">
+        <span class="lbl">Aufgaben</span>
+        <div class="track"><div class="fill" id="abFill"></div></div>
+        <span class="sc" id="abSc">0 / {{TOTAL_POINTS}}</span>
+        <button class="cbtn small warn" onclick="resetAllAB()">Zurücksetzen</button>
+      </div>
+
+      <!-- AUFGABE 1 (example with task-material) -->
+      <div class="auf" id="auf1">
+        <div class="auf-h">
+          <div class="auf-n">01</div>
+          <div class="auf-m">
+            <h2>{{AUFGABE_TITLE}}</h2>
+            <div class="auf-tags">
+              <span class="lz-tag exam">🎯 Lernziel 1</span>
+              <span class="lz-tag">Klausurrelevant</span>
+            </div>
+          </div>
+        </div>
+        <p class="auf-i">{{AUFGABE_INSTRUCTION}}</p>
+        <div class="auf-body">
+
+          <!-- Task-Material: shown directly with the task -->
+          <div class="task-mat">
+            <p>{{MATERIAL_CONTENT: e.g. Fallbeispiel, Quelle, Zitat}}</p>
+          </div>
+
+          <!-- Task interaction goes here -->
+          <!-- (use any combination of: bank+slots, zuordnung, kat-list, schaubild, freitext) -->
+
+          <div class="btn-row">
+            <button class="cbtn" onclick="{{CHECK_FUNCTION}}">Überprüfen</button>
+            <button class="cbtn retry" id="retry_auf1" onclick="{{RETRY_FUNCTION}}">Falsche nochmal</button>
+            <button class="cbtn ghost small" onclick="{{RESET_FUNCTION}}">Zurücksetzen</button>
+          </div>
+          <div class="ares" id="r_auf1"></div>
+        </div>
+      </div>
+
+      <!-- AUFGABE N: Reflexion (example) -->
+      <div class="auf" id="aufN">
+        <div class="auf-h">
+          <div class="auf-n">{{N}}</div>
+          <div class="auf-m">
+            <h2>{{REFLEXION_TITLE}}</h2>
+            <div class="auf-tags">
+              <span class="lz-tag exam">🎯 Lernziel {{N}}</span>
+              <span class="lz-tag">Klausurrelevant</span>
+            </div>
+          </div>
+        </div>
+        <p class="auf-i">{{REFLEXION_INSTRUCTION}}</p>
+        <div class="auf-body">
+          <div class="task-mat">
+            <p>{{MATERIAL_FOR_REFLEXION}}</p>
+          </div>
+          <div class="hilfe">
+            <strong>Aufbau deines Textes:</strong><br>
+            <strong>Einleitung:</strong> {{HINT_EINLEITUNG}}<br>
+            <strong>Hauptteil:</strong> {{HINT_HAUPTTEIL}}<br>
+            <strong>Schluss:</strong> {{HINT_SCHLUSS}}
+          </div>
+          <textarea class="uta" placeholder="Schreibe deinen Text hier ..."></textarea>
+          <button class="cbtn ghost small" onclick="togML(this)" style="margin-top:12px">Musterlösung einblenden</button>
+          <div class="ml">
+            <div class="ml-section">
+              <div class="ml-label">Einleitung (Wiedergabe)</div>
+              <p>{{MUSTER_EINLEITUNG}}</p>
+            </div>
+            <div class="ml-section">
+              <div class="ml-label">Hauptteil (Analyse)</div>
+              <p>{{MUSTER_HAUPTTEIL}}</p>
+            </div>
+            <div class="ml-section">
+              <div class="ml-label">Schluss (Beurteilung)</div>
+              <p>{{MUSTER_SCHLUSS}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /abContent -->
+  </div><!-- /abSection -->
+
+  <!-- ================================================================
+       SOURCES & COPYRIGHT
+       ================================================================ -->
+  <div class="footer-section">
+    <h3>Quellenverzeichnis</h3>
+    <ul class="source-list">
+      <li><a href="{{URL}}" target="_blank" rel="noopener">{{SOURCE_TITLE}}</a> – {{SOURCE_DESCRIPTION}}</li>
+      <!-- repeat -->
+    </ul>
+
+    <div class="copyright">
+      © 2026 Deutsch-Luxemburgisches Schengen-Lyzeum Perl (SLP).<br>
+      Erstellt von R. Chani, Fachschaft Gesellschaftswissenschaften, Politik-Leistungskurs (GOS).<br>
+      Erstellt unter Verwendung öffentlich zugänglicher Quellen.<br>
+      Lizenziert unter <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de" target="_blank" rel="noopener">Creative Commons BY-NC-SA 4.0</a>.
+    </div>
+  </div>
+
+</div>
+
+<!-- ================================================================
+     ENGINE SCRIPT
+     All mechanics: quiz gates, progressive unlock, task interactions,
+     password-protected Musterlösung, progress tracking.
+     ================================================================ -->
+<script>
+/* =======================================================================
+   TEMPLATE ENGINE v1.0
+   Deutsch-Luxemburgisches Schengen-Lyzeum Perl
+   ======================================================================= */
+
+// ===== CONFIGURATION (set per Einheit) =====
+var CONFIG = {
+  totalBlocks: 2,       // number of sw-blocks
+  totalQuizGates: 2,    // number of quiz-gates
+  abTotalPoints: 0,     // set when filling in Aufgaben
+  password: 'PO-LK'
+};
+
+// ===== STATE =====
+var quizPassed = {};    // qg1: true/false, qg2: true/false
+var abPts = 0;
+var abScored = {};
+
+// ===== QUIZ ENGINE =====
+
+// Multiple Choice
+function mcSel(opt) {
+  var container = opt.parentNode;
+  var opts = container.querySelectorAll('.mc-opt');
+  for (var i=0;i<opts.length;i++) opts[i].classList.remove('selected');
+  opt.classList.add('selected');
+}
+
+// Order: move item up or down
+function orderMove(arrow, dir) {
+  var item = arrow.closest('.order-item');
+  var list = item.parentNode;
+  var items = list.querySelectorAll('.order-item');
+  var idx = Array.prototype.indexOf.call(items, item);
+  if (dir === -1 && idx > 0) {
+    list.insertBefore(item, items[idx-1]);
+  } else if (dir === 1 && idx < items.length-1) {
+    list.insertBefore(items[idx+1], item);
+  }
+  renumberOrder(list);
+}
+function orderSel(item) {
+  var list = item.parentNode;
+  var prev = list.querySelector('.order-item.selected');
+  if (prev && prev !== item) {
+    // swap positions
+    var parent = prev.parentNode;
+    var prevNext = prev.nextSibling;
+    var itemNext = item.nextSibling;
+    if (prevNext === item) {
+      parent.insertBefore(item, prev);
+    } else if (itemNext === prev) {
+      parent.insertBefore(prev, item);
+    } else {
+      parent.insertBefore(item, prevNext);
+      parent.insertBefore(prev, itemNext);
+    }
+    prev.classList.remove('selected');
+    renumberOrder(parent);
+  } else {
+    item.classList.toggle('selected');
+  }
+}
+function renumberOrder(list) {
+  var items = list.querySelectorAll('.order-item');
+  for (var i=0;i<items.length;i++) {
+    var num = items[i].querySelector('.order-num');
+    if (num) num.textContent = (i+1);
+  }
+}
+
+// Matching (quiz compact version)
+var qmatchState = {};
+function qmatchSel(el, qid) {
+  if (!qmatchState[qid]) qmatchState[qid] = {first:null};
+  var s = qmatchState[qid];
+  if (el.classList.contains('matched')) return;
+  if (!s.first) {
+    el.classList.add('sel');
+    s.first = el;
+  } else {
+    if (s.first === el) { el.classList.remove('sel'); s.first=null; return; }
+    s.first.classList.remove('sel');
+    s.first.classList.add('matched');
+    el.classList.add('matched');
+    s.first.setAttribute('data-paired', el.getAttribute('data-mid'));
+    el.setAttribute('data-paired', s.first.getAttribute('data-mid'));
+    s.first = null;
+  }
+}
+
+// Check a quiz gate
+function checkQuiz(gateNum) {
+  var key = 'qg'+gateNum;
+  if (quizPassed[key]) return;
+
+  var gate = document.getElementById(key);
+  var questions = gate.querySelectorAll('.q-item');
+  var allCorrect = true;
+
+  for (var i=0;i<questions.length;i++) {
+    var q = questions[i];
+    var fb = q.querySelector('.q-feedback');
+    var correct = false;
+
+    // MC
+    var mc = q.querySelector('.mc-opts');
+    if (mc) {
+      var correctVal = mc.getAttribute('data-correct');
+      var selected = mc.querySelector('.mc-opt.selected');
+      if (selected) {
+        var val = selected.getAttribute('data-val') || '';
+        correct = (val === correctVal);
+        var allOpts = mc.querySelectorAll('.mc-opt');
+        for (var j=0;j<allOpts.length;j++) {
+          allOpts[j].classList.remove('correct','wrong');
+          if (allOpts[j].getAttribute('data-val')===correctVal) allOpts[j].classList.add('correct');
+          else if (allOpts[j].classList.contains('selected')) allOpts[j].classList.add('wrong');
+        }
+      }
+    }
+
+    // Text input
+    var inp = q.querySelector('.q-input');
+    if (inp) {
+      var answers = (inp.getAttribute('data-answers')||'').split('|');
+      var userVal = inp.value.trim().toLowerCase();
+      correct = false;
+      for (var j=0;j<answers.length;j++) {
+        if (userVal === answers[j].trim().toLowerCase()) { correct=true; break; }
+      }
+      inp.classList.remove('correct','wrong');
+      inp.classList.add(correct ? 'correct' : 'wrong');
+    }
+
+    // Ordering
+    var orderList = q.querySelector('.order-list');
+    if (orderList) {
+      var correctOrder = (orderList.getAttribute('data-correct')||'').split(',');
+      var items = orderList.querySelectorAll('.order-item');
+      correct = true;
+      for (var j=0;j<items.length;j++) {
+        items[j].classList.remove('correct','wrong');
+        if (items[j].getAttribute('data-oid')===correctOrder[j]) {
+          items[j].classList.add('correct');
+        } else {
+          items[j].classList.add('wrong');
+          correct = false;
+        }
+      }
+    }
+
+    // Matching
+    var matchGrid = q.querySelector('.qmatch-grid');
+    if (matchGrid) {
+      var mitems = matchGrid.querySelectorAll('.qmatch-item');
+      correct = true;
+      for (var j=0;j<mitems.length;j++) {
+        var mid = mitems[j].getAttribute('data-mid');
+        var paired = mitems[j].getAttribute('data-paired');
+        var expected = mitems[j].getAttribute('data-match');
+        mitems[j].classList.remove('correct','wrong');
+        if (paired === expected) { mitems[j].classList.add('correct'); }
+        else { mitems[j].classList.add('wrong'); correct=false; }
+      }
+    }
+
+    if (fb) {
+      fb.classList.add('vis');
+      fb.classList.remove('ok','err');
+      fb.classList.add(correct?'ok':'err');
+      fb.textContent = correct ? '✓ Richtig' : '✗ Nicht richtig, versuche es nochmal.';
+    }
+
+    if (!correct) allCorrect = false;
+  }
+
+  var result = document.getElementById(key+'result');
+  if (result) {
+    result.classList.add('vis');
+    if (allCorrect) {
+      result.className = 'qg-result vis pass';
+      result.textContent = '✓ Alle richtig! Nächster Block freigeschaltet.';
+      quizPassed[key] = true;
+      gate.classList.add('completed');
+      var status = document.getElementById(key+'status');
+      if (status) { status.className='qg-status done'; status.textContent='Bestanden'; }
+      unlockNext(gateNum);
+    } else {
+      result.className = 'qg-result vis fail';
+      result.textContent = 'Noch nicht alle richtig. Korrigiere die markierten Fragen.';
+    }
+  }
+}
+
+function resetQuiz(gateNum) {
+  var key = 'qg'+gateNum;
+  if (quizPassed[key]) return; // don't reset passed gates
+  var gate = document.getElementById(key);
+  // Reset MC
+  var mcopts = gate.querySelectorAll('.mc-opt');
+  for(var i=0;i<mcopts.length;i++) mcopts[i].classList.remove('selected','correct','wrong');
+  // Reset inputs
+  var inps = gate.querySelectorAll('.q-input');
+  for(var i=0;i<inps.length;i++){inps[i].value='';inps[i].classList.remove('correct','wrong');}
+  // Reset ordering
+  var oitems = gate.querySelectorAll('.order-item');
+  for(var i=0;i<oitems.length;i++) oitems[i].classList.remove('correct','wrong','selected');
+  // Reset matching
+  var mitems = gate.querySelectorAll('.qmatch-item');
+  for(var i=0;i<mitems.length;i++){mitems[i].classList.remove('sel','matched','correct','wrong');mitems[i].removeAttribute('data-paired');}
+  // Reset feedback
+  var fbs = gate.querySelectorAll('.q-feedback');
+  for(var i=0;i<fbs.length;i++){fbs[i].classList.remove('vis','ok','err');fbs[i].textContent='';}
+  var result = document.getElementById(key+'result');
+  if(result){result.classList.remove('vis');result.textContent='';}
+}
+
+// ===== PROGRESSIVE UNLOCK =====
+function unlockNext(completedGateNum) {
+  var nextBlock = document.getElementById('sw'+(completedGateNum+1));
+  var nextGate = document.getElementById('qg'+(completedGateNum+1));
+  if (nextBlock) { nextBlock.classList.remove('locked'); nextBlock.classList.add('unlocking'); }
+  if (nextGate) { nextGate.classList.remove('locked'); }
+
+  // Update progress
+  var passed = 0;
+  for (var k in quizPassed) { if (quizPassed[k]) passed++; }
+  var pct = Math.round((passed/CONFIG.totalQuizGates)*100);
+  var f = document.getElementById('swFill');
+  var s = document.getElementById('swSc');
+  if(f) f.style.width = pct+'%';
+  if(s) s.textContent = 'Block '+passed+' / '+CONFIG.totalQuizGates;
+
+  // If all passed, unlock Arbeitsblatt
+  if (passed >= CONFIG.totalQuizGates) {
+    var abLock = document.getElementById('abLock');
+    var abContent = document.getElementById('abContent');
+    if(abLock) abLock.style.display='none';
+    if(abContent) abContent.style.display='block';
+    var abSec = document.getElementById('abSection');
+    if(abSec) abSec.classList.remove('locked');
+  }
+}
+
+// ===== ARBEITSBLATT ENGINE =====
+// (reuse all functions from previous worksheets: selChip, slotClick, freeC,
+//  checkSlots, retrySlots, resetSlots, zClick, unmatch, checkZ, retryZ, resetZ,
+//  katSel, checkKat, retryKat, resetKat, togML, showR, updAbP)
+
+var selVal=null, selBk=null;
+var zState={};
+function getZ(n){if(!zState[n])zState[n]={selLeft:null,matches:{},cnt:0};return zState[n];}
+
+function selChip(el,bankId){
+  if(el.classList.contains('used'))return;
+  if(el.classList.contains('sel')){el.classList.remove('sel');selVal=null;selBk=null;return;}
+  var chips=document.getElementById(bankId).getElementsByClassName('chip');
+  for(var i=0;i<chips.length;i++)chips[i].classList.remove('sel');
+  el.classList.add('sel');selVal=el.textContent;selBk=bankId;
+}
+function slotClick(slot){
+  var bank=slot.getAttribute('data-bank');
+  var hasFill=slot.textContent.trim().length>0;
+  var hasSel=selVal&&selBk===bank;
+  if(hasFill&&!hasSel){freeC(slot.textContent,bank);slot.textContent='';slot.classList.remove('filled','ok','bad');return;}
+  if(hasSel){if(hasFill)freeC(slot.textContent,bank);slot.textContent=selVal;slot.classList.add('filled');slot.classList.remove('ok','bad');
+  var chips=document.getElementById(bank).getElementsByClassName('chip');
+  for(var i=0;i<chips.length;i++){if(chips[i].textContent===selVal){chips[i].classList.add('used');chips[i].classList.remove('sel');}}
+  selVal=null;selBk=null;}
+}
+function freeC(val,bankId){var chips=document.getElementById(bankId).getElementsByClassName('chip');for(var i=0;i<chips.length;i++){if(chips[i].textContent===val)chips[i].classList.remove('used');}}
+
+function checkSlots(aufId,bankId,total,resId,retryId){
+  if(abScored[aufId])return;var slots=document.querySelectorAll('#'+aufId+' .ls, #'+aufId+' .ss');var c=0;
+  for(var i=0;i<slots.length;i++){if(slots[i].textContent.trim()===slots[i].getAttribute('data-a')){slots[i].classList.add('ok');slots[i].classList.remove('bad');c++;}else{slots[i].classList.add('bad');slots[i].classList.remove('ok');}}
+  abScored[aufId]=true;abPts+=c;showR(resId,c,total);updAbP();if(c<total)document.getElementById(retryId).classList.add('vis');
+}
+function retrySlots(aufId,bankId,resId,retryId){
+  var slots=document.querySelectorAll('#'+aufId+' .ls.bad, #'+aufId+' .ss.bad');
+  for(var i=0;i<slots.length;i++){freeC(slots[i].textContent,bankId);slots[i].textContent='';slots[i].classList.remove('filled','bad','ok');}
+  delete abScored[aufId];document.getElementById(resId).className='ares';document.getElementById(retryId).classList.remove('vis');recalcAB();
+}
+function resetSlots(aufId,bankId,resId,retryId){
+  var slots=document.querySelectorAll('#'+aufId+' .ls, #'+aufId+' .ss');
+  for(var i=0;i<slots.length;i++){if(slots[i].textContent)freeC(slots[i].textContent,bankId);slots[i].textContent='';slots[i].classList.remove('filled','ok','bad');}
+  delete abScored[aufId];document.getElementById(resId).className='ares';document.getElementById(retryId).classList.remove('vis');recalcAB();
+}
+
+function zClick(el,taskNum){
+  var z=getZ(taskNum);var side=el.getAttribute('data-side');var lId='z'+taskNum+'L';
+  if(el.classList.contains('matched')){var id=el.getAttribute('data-id');if(side==='l'){unmatch(taskNum,id);}else{for(var k in z.matches){if(z.matches[k]&&z.matches[k].rightEl===el){unmatch(taskNum,k);break;}}}return;}
+  if(side==='l'){if(el.classList.contains('sel')){el.classList.remove('sel');z.selLeft=null;return;}var items=document.querySelectorAll('#'+lId+' .zi');for(var i=0;i<items.length;i++)items[i].classList.remove('sel');el.classList.add('sel');z.selLeft=el;}
+  else if(side==='r'&&z.selLeft){z.cnt++;z.selLeft.classList.remove('sel');z.selLeft.classList.add('matched');el.classList.add('matched');
+  var b1=document.createElement('span');b1.className='mn';b1.textContent=z.cnt;z.selLeft.appendChild(b1);var b2=document.createElement('span');b2.className='mn';b2.textContent=z.cnt;el.appendChild(b2);
+  z.matches[z.selLeft.getAttribute('data-id')]={rightEl:el,leftEl:z.selLeft,rightId:el.getAttribute('data-id'),num:z.cnt};z.selLeft=null;}
+}
+function unmatch(taskNum,leftId){var z=getZ(taskNum);var p=z.matches[leftId];if(!p)return;p.leftEl.classList.remove('matched','ok-m','bad-m');p.rightEl.classList.remove('ok-m','bad-m');var m1=p.leftEl.querySelector('.mn');if(m1)m1.remove();var m2=p.rightEl.querySelector('.mn');if(m2)m2.remove();delete z.matches[leftId];}
+function checkZ(taskNum,total,resId,retryId){
+  var key='zt'+taskNum;if(abScored[key])return;var z=getZ(taskNum);var c=0;var lefts=document.querySelectorAll('#z'+taskNum+'L .zi');
+  for(var i=0;i<lefts.length;i++){var lid=lefts[i].getAttribute('data-id');var m=z.matches[lid];if(m){var rIds=m.rightId.split(',');if(rIds.indexOf(lid)!==-1){lefts[i].classList.add('ok-m');m.rightEl.classList.add('ok-m');c++;}else{lefts[i].classList.add('bad-m');m.rightEl.classList.add('bad-m');}}else{lefts[i].classList.add('bad-m');}}
+  abScored[key]=true;abPts+=c;showR(resId,c,total);updAbP();if(c<total)document.getElementById(retryId).classList.add('vis');
+}
+function resetZ(taskNum,resId,retryId){
+  var z=getZ(taskNum);var keys=Object.keys(z.matches);for(var i=0;i<keys.length;i++)unmatch(taskNum,keys[i]);
+  var all=document.querySelectorAll('#a_z'+taskNum+' .zi, #z'+taskNum+'L .zi, #z'+taskNum+'R .zi');for(var i=0;i<all.length;i++)all[i].classList.remove('sel','matched','ok-m','bad-m');
+  z.cnt=0;z.selLeft=null;delete abScored['zt'+taskNum];if(resId)document.getElementById(resId).className='ares';if(retryId)document.getElementById(retryId).classList.remove('vis');recalcAB();
+}
+
+function katSel(btn,val){var item=btn.closest('.kat-item');if(!item)return;var btns=item.querySelectorAll('.kat-btn');for(var i=0;i<btns.length;i++)btns[i].classList.remove('active-d','active-e');btn.classList.add('active-'+val);item.classList.remove('correct','wrong');}
+function checkKat(listId,total,resId,retryId){
+  var key=listId;if(abScored[key])return;var items=document.querySelectorAll('#'+listId+' .kat-item');var c=0;
+  for(var i=0;i<items.length;i++){var correct=items[i].getAttribute('data-correct');var ab=items[i].querySelector('.kat-btn.active-d, .kat-btn.active-e');var chosen=null;if(ab){chosen=ab.classList.contains('active-d')?'d':'e';}
+  if(chosen===correct){items[i].classList.add('correct');items[i].classList.remove('wrong');c++;}else{items[i].classList.add('wrong');items[i].classList.remove('correct');}}
+  abScored[key]=true;abPts+=c;showR(resId,c,total);updAbP();if(c<total)document.getElementById(retryId).classList.add('vis');
+}
+function resetKat(listId,resId,retryId){
+  var items=document.querySelectorAll('#'+listId+' .kat-item');
+  for(var i=0;i<items.length;i++){items[i].classList.remove('correct','wrong');var btns=items[i].querySelectorAll('.kat-btn');for(var j=0;j<btns.length;j++)btns[j].classList.remove('active-d','active-e');}
+  delete abScored[listId];document.getElementById(resId).className='ares';document.getElementById(retryId).classList.remove('vis');recalcAB();
+}
+
+// Musterlösung (password protected)
+function togML(btn){
+  var ml=btn.nextElementSibling;if(!ml)return;
+  if(ml.classList.contains('vis')){ml.classList.remove('vis');btn.textContent='Musterlösung einblenden';return;}
+  var pw=prompt('Passwort eingeben:');if(!pw)return;
+  if(pw.trim()===CONFIG.password){ml.classList.add('vis');btn.textContent='Musterlösung ausblenden';}
+  else{alert('Falsches Passwort.');}
+}
+
+// Helpers
+function recalcAB(){
+  abPts=0;
+  // Count all correct items across all scored tasks
+  var okSlots=document.querySelectorAll('#abContent .ls.ok, #abContent .ss.ok');abPts+=okSlots.length;
+  var okZ=document.querySelectorAll('#abContent .zi.ok-m[data-side="l"]');abPts+=okZ.length;
+  var okK=document.querySelectorAll('#abContent .kat-item.correct');abPts+=okK.length;
+  updAbP();
+}
+function showR(id,c,total){var el=document.getElementById(id);if(!el)return;var pct=c/total;
+  if(pct>=.8){el.className='ares vis g';el.textContent=c+' von '+total+' richtig. Sehr gut!';}
+  else if(pct>=.5){el.className='ares vis p';el.textContent=c+' von '+total+' richtig. Überarbeite die markierten Felder.';}
+  else{el.className='ares vis b';el.textContent=c+' von '+total+' richtig. Lies den Stoff nochmals durch.';}
+}
+function updAbP(){
+  var pct=CONFIG.abTotalPoints>0?Math.round((abPts/CONFIG.abTotalPoints)*100):0;
+  var f=document.getElementById('abFill');var s=document.getElementById('abSc');
+  if(f)f.style.width=pct+'%';if(s)s.textContent=abPts+' / '+CONFIG.abTotalPoints;
+}
+function resetAllAB(){
+  if(!confirm('Alle Aufgaben zurücksetzen?'))return;
+  // Reset all interactions in abContent
+  var chips=document.querySelectorAll('#abContent .chip');for(var i=0;i<chips.length;i++)chips[i].classList.remove('used','sel');
+  var slots=document.querySelectorAll('#abContent .ls, #abContent .ss');for(var i=0;i<slots.length;i++){slots[i].textContent='';slots[i].classList.remove('filled','ok','bad');}
+  var zis=document.querySelectorAll('#abContent .zi');for(var i=0;i<zis.length;i++){zis[i].classList.remove('sel','matched','ok-m','bad-m');var mn=zis[i].querySelector('.mn');if(mn)mn.remove();}
+  var kats=document.querySelectorAll('#abContent .kat-item');for(var i=0;i<kats.length;i++){kats[i].classList.remove('correct','wrong');var kb=kats[i].querySelectorAll('.kat-btn');for(var j=0;j<kb.length;j++)kb[j].classList.remove('active-d','active-e');}
+  var tas=document.querySelectorAll('#abContent .uta');for(var i=0;i<tas.length;i++)tas[i].value='';
+  var mls=document.querySelectorAll('#abContent .ml');for(var i=0;i<mls.length;i++)mls[i].classList.remove('vis');
+  var mlBs=document.querySelectorAll('#abContent .cbtn.ghost');for(var i=0;i<mlBs.length;i++)mlBs[i].textContent='Musterlösung einblenden';
+  var ress=document.querySelectorAll('#abContent .ares');for(var i=0;i<ress.length;i++)ress[i].className='ares';
+  var retries=document.querySelectorAll('#abContent .cbtn.retry');for(var i=0;i<retries.length;i++)retries[i].classList.remove('vis');
+  abScored={};abPts=0;zState={};updAbP();
+}
+</script>
+</body>
+</html>
