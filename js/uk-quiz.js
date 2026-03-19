@@ -246,11 +246,8 @@
       return;
     }
 
-    /* Stage passed — collapse and unlock next */
+    /* Stage passed — show compact done view */
     stage.classList.add('uk-stage-done');
-
-    var summaryRow = block.querySelector('.uk-stage-summary[data-stage="' + stageNum + '"]');
-    if (summaryRow) summaryRow.style.display = 'flex';
 
     var nextNum = stageNum + 1;
     var nextStage = block.querySelector('.uk-stage[data-stage="' + nextNum + '"]');
