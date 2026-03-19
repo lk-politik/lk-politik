@@ -545,22 +545,41 @@ code, .mono {
 
 /* Lehrkraft-Notiz innerhalb .einstieg (und allgemein) */
 .lk-note {
-  background: var(--gold-l);
-  border: 1px solid #e8c96a;
+  background: transparent;
+  border: 1px dashed var(--border);
   border-radius: var(--r-sm);
-  padding: .75rem 1rem;
+  padding: .4rem .75rem;
   margin-top: .75rem;
-  font-size: .875rem;
-  color: #7a5c00;
+  font-size: .72rem;
+  color: var(--ink3);
+  line-height: 1.55;
 }
 
 .lk-note strong {
   font-family: var(--ff-mono);
-  font-size: .75rem;
+  font-size: .62rem;
   text-transform: uppercase;
   letter-spacing: .06em;
   display: block;
-  margin-bottom: .3rem;
+  margin-bottom: .2rem;
+  color: var(--ink3);
+}
+
+/* Lehrkraft-Infobox: dezente Variante von aufloesung-box */
+.aufloesung-box.lk-hint {
+  background: transparent;
+  border: 1px dashed var(--border);
+  border-left: 1px dashed var(--border);
+  padding: .5rem .85rem;
+}
+.aufloesung-box.lk-hint .aufloesung-box-head {
+  color: var(--ink3);
+  font-size: .65rem;
+}
+.aufloesung-box.lk-hint p {
+  font-size: .75rem;
+  color: var(--ink3);
+  margin-top: .3rem;
 }
 
 /* Beispiel-Box */
