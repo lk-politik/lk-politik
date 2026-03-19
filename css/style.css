@@ -1294,6 +1294,39 @@ code, .mono {
 
 .pw-input.master .pw-label { color: var(--gold); }
 
+/* Tool row (password + reset — ghost inline style) */
+.tool-row {
+  display: flex; align-items: center; gap: .45rem;
+  padding: .5rem 0; margin-top: .6rem;
+  opacity: .7; transition: opacity .2s;
+}
+.tool-row:hover { opacity: 1; }
+.tool-label {
+  font-family: var(--ff-mono); font-size: .6rem; font-weight: 600;
+  color: var(--ink3); letter-spacing: .07em; text-transform: uppercase;
+  white-space: nowrap; flex-shrink: 0;
+}
+.tool-input {
+  font-family: var(--ff-mono); font-size: .78rem;
+  background: transparent; border: none;
+  border-bottom: 1.5px solid var(--border);
+  padding: .2em .35em; flex: 1; min-width: 100px;
+  color: var(--ink); outline: none;
+}
+.tool-input:focus { border-bottom-color: var(--acc); }
+.tool-btn-unlock {
+  font-family: var(--ff-mono); font-size: .65rem; font-weight: 600;
+  background: transparent; border: 1px solid var(--border); color: var(--ink2);
+  padding: .25em .65em; border-radius: 4px; cursor: pointer; white-space: nowrap;
+}
+.tool-btn-unlock:hover { border-color: var(--acc); color: var(--acc); }
+.tool-btn-reset {
+  font-family: var(--ff-mono); font-size: .65rem;
+  background: transparent; border: none; color: var(--ink3);
+  cursor: pointer; padding: .25em .3em; white-space: nowrap;
+}
+.tool-btn-reset:hover { color: var(--ink2); }
+
 /* ----------------------------------------------------------
    21. Bild-Container (.img-container)
    ---------------------------------------------------------- */
