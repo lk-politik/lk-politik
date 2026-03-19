@@ -2840,3 +2840,65 @@ strong.p-core::after {
 .uk-step[data-ab="1"] .uk-opts .uk-opt { border-color: var(--ab1-bdr); }
 .uk-step[data-ab="2"] .uk-opts .uk-opt { border-color: var(--ab2-bdr); }
 .uk-step[data-ab="3"] .uk-opts .uk-opt { border-color: var(--ab3-bdr); }
+
+/* =====================================================
+   46. UK — Sequential stage reveal
+   ===================================================== */
+
+.uk-stage { border-top: 1px solid var(--border); }
+.uk-stage.uk-stage-locked {
+  opacity: .15; pointer-events: none;
+  filter: blur(2px); transform: scale(.99);
+  transition: opacity .3s, filter .3s, transform .3s;
+}
+.uk-stage.uk-stage-done { display: none; }
+
+.uk-stage-header {
+  display: flex; align-items: center; gap: .6rem;
+  padding: .55rem 1.1rem; border-bottom: 1px solid var(--border);
+  background: #f8fafc;
+}
+.uk-stage-tag {
+  font-family: var(--ff-mono); font-size: .6rem; font-weight: 700;
+  color: #fff; background: var(--ink3); padding: .18em .55em; border-radius: 4px;
+  letter-spacing: .05em; text-transform: uppercase; white-space: nowrap;
+}
+.uk-stage-tag[data-ab="1"] { background: var(--ab1-acc); }
+.uk-stage-tag[data-ab="2"] { background: var(--ab2-acc); }
+.uk-stage-tag[data-ab="3"] { background: var(--ab3-acc); }
+.uk-stage-title {
+  font-family: var(--ff-head); font-size: .82rem; font-weight: 600;
+  color: var(--ink2);
+}
+
+.uk-stage-footer {
+  padding: .65rem 1.1rem; border-top: 1px solid var(--border);
+  display: flex; justify-content: flex-end;
+}
+.uk-stage-submit {
+  font-family: var(--ff-mono); font-size: .72rem; font-weight: 600;
+  background: var(--acc); color: #fff;
+  border: none; border-radius: 6px;
+  padding: .4em 1.1em; cursor: pointer; letter-spacing: .03em;
+  transition: opacity .15s;
+}
+.uk-stage-submit:disabled { opacity: .35; cursor: default; }
+.uk-stage-submit:not(:disabled):hover { opacity: .88; }
+
+/* Summary row shown when stage is done */
+.uk-stage-summary {
+  display: none; align-items: center; gap: .6rem;
+  padding: .5rem 1.1rem; background: #f8fafc;
+  border-top: 1px solid var(--border);
+}
+.uk-stage-summary-check {
+  font-size: .85rem; color: var(--ab3-acc); flex-shrink: 0;
+}
+.uk-stage-summary-label {
+  font-family: var(--ff-mono); font-size: .65rem; font-weight: 600;
+  color: var(--ink3); letter-spacing: .05em; text-transform: uppercase;
+}
+.uk-stage-summary-krit {
+  font-family: var(--ff-mono); font-size: .65rem;
+  color: var(--ink3); margin-left: auto;
+}
