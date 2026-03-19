@@ -66,8 +66,11 @@ Purpose: protecting the learning process and preventing automated answer extract
       <span class="lz-pill">LZ2: Vorteile des Binnenmarktes darlegen</span>
       <span class="lz-pill">LZ3: Herausforderungen diskutieren</span>
     </div>
-    <div style="margin-top:.75rem">
-      <button class="prio-toggle-btn">◇ Prüfungsrelevanz anzeigen</button>
+    <div style="margin-top:.75rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+      <button class="btn btn-ghost btn-sm"
+              onclick="if(confirm('Fortschritt zurücksetzen?')){Progress.clear(CONF.id);location.reload();}">
+        ↺ Zurücksetzen
+      </button>
     </div>
   </header>
 
@@ -94,62 +97,82 @@ Purpose: protecting the learning process and preventing automated answer extract
   <!-- ================================================================
        EINSTIEG
        ================================================================ -->
-  <div class="einstieg">
-    <h2>🚀 Einstieg: Dein Alltag im Binnenmarkt</h2>
-
-    <div class="lk-note">
-      <strong>Hinweis Lehrkraft</strong>
-      Starten Sie die Stunde mit diesen Alltagsbeispielen aus der Grenzregion Perl/Schengen.
-      Lesen Sie die Beispiele vor und lassen Sie die Schüler gemeinsam überlegen, welche der vier
-      Freiheiten jeweils dahintersteckt. Die vier Begriffe (Warenverkehr, Personenverkehr,
-      Dienstleistungsverkehr, Kapitalverkehr) können an die Tafel geschrieben werden.
+  <div class="einstieg" id="einstieg">
+    <div class="einstieg-header" onclick="toggleEinstieg()">
+      <span class="einstieg-badge">EINSTIEG</span>
+      <span class="einstieg-title">🚀 Einstieg: Dein Alltag im Binnenmarkt</span>
+      <span class="einstieg-status-pill" id="einstieg-status">Offen</span>
+      <span class="einstieg-chevron">▾</span>
     </div>
+    <div class="einstieg-body" id="einstieg-body">
 
-    <p><strong>Stellt euch folgende Situationen vor. Alle passieren hier in Perl und Umgebung, jeden Tag:</strong></p>
+      <div class="lk-note">
+        <strong>Hinweis Lehrkraft</strong>
+        Starten Sie die Stunde mit diesen Alltagsbeispielen aus der Grenzregion Perl/Schengen.
+        Die Schüler ordnen jeder Situation eine der vier Freiheiten zu und klicken auf den
+        entsprechenden Chip. Erst wenn alle vier richtig sind, erscheint die Bestätigung.
+      </div>
 
-    <div class="example">
-      <strong>Situation 1:</strong> Ihr lebt in Deutschland und eure Eltern arbeiten in Luxemburg.
-      Jeden Morgen fahren sie über die Grenze, ohne angehalten zu werden. Niemand kontrolliert
-      ihren Pass oder fragt nach einer Arbeitserlaubnis.<br>
-      <em>→ Welche Freiheit steckt dahinter?</em>
+      <p style="margin-top:.75rem"><strong>Ordne jeder Situation die richtige EU-Freiheit zu:</strong></p>
+
+      <div class="einstieg-card" data-sit="1" data-answer="person">
+        <strong>Situation 1:</strong> Ihr lebt in Deutschland und eure Eltern arbeiten in Luxemburg.
+        Jeden Morgen fahren sie über die Grenze, ohne angehalten zu werden. Niemand kontrolliert
+        ihren Pass oder fragt nach einer Arbeitserlaubnis.
+        <div class="einstieg-chips">
+          <button class="e-chip" data-v="ware"   onclick="selEinstieg(this, 1)">🛒 Warenverkehr</button>
+          <button class="e-chip" data-v="person" onclick="selEinstieg(this, 1)">🚶 Personenverkehr</button>
+          <button class="e-chip" data-v="dienst" onclick="selEinstieg(this, 1)">🔧 Dienstleistungsverkehr</button>
+          <button class="e-chip" data-v="kapital" onclick="selEinstieg(this, 1)">💶 Kapitalverkehr</button>
+        </div>
+      </div>
+
+      <div class="einstieg-card" data-sit="2" data-answer="ware">
+        <strong>Situation 2:</strong> Ihr fahrt mit euren Eltern nach Luxemburg zum Tanken, weil das
+        Benzin dort günstiger ist. Oder ihr kauft beim Supermarkt in Frankreich Lebensmittel, die es
+        im deutschen Supermarkt nicht gibt. Ihr bringt alles einfach mit nach Hause. Kein Zoll, keine
+        Kontrolle.
+        <div class="einstieg-chips">
+          <button class="e-chip" data-v="ware"   onclick="selEinstieg(this, 2)">🛒 Warenverkehr</button>
+          <button class="e-chip" data-v="person" onclick="selEinstieg(this, 2)">🚶 Personenverkehr</button>
+          <button class="e-chip" data-v="dienst" onclick="selEinstieg(this, 2)">🔧 Dienstleistungsverkehr</button>
+          <button class="e-chip" data-v="kapital" onclick="selEinstieg(this, 2)">💶 Kapitalverkehr</button>
+        </div>
+      </div>
+
+      <div class="einstieg-card" data-sit="3" data-answer="dienst">
+        <strong>Situation 3:</strong> Ein deutscher Handwerker renoviert eine Wohnung in Luxemburg.
+        Er darf das, ohne dort eine eigene Firma gründen zu müssen. Und er ist günstiger als ein
+        luxemburgischer Handwerker, weil die Lohnkosten in Deutschland niedriger sind.
+        <div class="einstieg-chips">
+          <button class="e-chip" data-v="ware"   onclick="selEinstieg(this, 3)">🛒 Warenverkehr</button>
+          <button class="e-chip" data-v="person" onclick="selEinstieg(this, 3)">🚶 Personenverkehr</button>
+          <button class="e-chip" data-v="dienst" onclick="selEinstieg(this, 3)">🔧 Dienstleistungsverkehr</button>
+          <button class="e-chip" data-v="kapital" onclick="selEinstieg(this, 3)">💶 Kapitalverkehr</button>
+        </div>
+      </div>
+
+      <div class="einstieg-card" data-sit="4" data-answer="kapital">
+        <strong>Situation 4:</strong> Eure Eltern arbeiten in Luxemburg, aber ihr Gehalt wird auf
+        ein deutsches Bankkonto überwiesen. Das Geld fließt automatisch über die Grenze, ohne
+        Gebühren und ohne Genehmigung.
+        <div class="einstieg-chips">
+          <button class="e-chip" data-v="ware"   onclick="selEinstieg(this, 4)">🛒 Warenverkehr</button>
+          <button class="e-chip" data-v="person" onclick="selEinstieg(this, 4)">🚶 Personenverkehr</button>
+          <button class="e-chip" data-v="dienst" onclick="selEinstieg(this, 4)">🔧 Dienstleistungsverkehr</button>
+          <button class="e-chip" data-v="kapital" onclick="selEinstieg(this, 4)">💶 Kapitalverkehr</button>
+        </div>
+      </div>
+
+      <div style="margin-top:1rem;padding-top:.75rem;border-top:1px solid rgba(0,0,0,.08)">
+        <button class="btn btn-primary btn-sm" id="einstieg-btn" onclick="chkEinstieg()" disabled>Prüfen →</button>
+      </div>
+
+    </div><!-- /.einstieg-body -->
+    <div class="einstieg-retry" id="einstieg-retry">
+      <a href="#" onclick="retryEinstieg(); return false">↺ Nochmal ansehen</a>
     </div>
-
-    <div class="example">
-      <strong>Situation 2:</strong> Ihr fahrt mit euren Eltern nach Luxemburg zum Tanken, weil das
-      Benzin dort günstiger ist. Oder ihr kauft beim Supermarkt in Frankreich Lebensmittel, die es
-      im deutschen Supermarkt nicht gibt. Ihr bringt alles einfach mit nach Hause. Kein Zoll, keine
-      Kontrolle.<br>
-      <em>→ Welche Freiheit steckt dahinter?</em>
-    </div>
-
-    <div class="example">
-      <strong>Situation 3:</strong> Ein deutscher Handwerker renoviert eine Wohnung in Luxemburg.
-      Er darf das, ohne dort eine eigene Firma gründen zu müssen. Und er ist günstiger als ein
-      luxemburgischer Handwerker, weil die Lohnkosten in Deutschland niedriger sind.<br>
-      <em>→ Welche Freiheit steckt dahinter?</em>
-    </div>
-
-    <div class="example">
-      <strong>Situation 4:</strong> Eure Eltern arbeiten in Luxemburg, aber ihr Gehalt wird auf
-      ein deutsches Bankkonto überwiesen. Das Geld fließt automatisch über die Grenze, ohne
-      Gebühren und ohne Genehmigung.<br>
-      <em>→ Welche Freiheit steckt dahinter?</em>
-    </div>
-
-    <!-- Auflösung: NUR mit Passwort sichtbar -->
-    <div class="aufloesung-box" style="margin-top:.75rem">
-      <div class="aufloesung-box-head">&#10003; Auflösung</div>
-      <p>
-        <strong>Situation 1 = Freier Personenverkehr</strong> ·
-        <strong>Situation 2 = Freier Warenverkehr</strong> ·
-        <strong>Situation 3 = Freier Dienstleistungsverkehr</strong> ·
-        <strong>Situation 4 = Freier Kapitalverkehr</strong>
-      </p>
-      <p>Diese vier Freiheiten sind das Fundament des EU-Binnenmarktes. In dieser Einheit erfahrt
-      ihr, wie sie entstanden sind, was sie genau bedeuten und welche Probleme sie mit sich
-      bringen.</p>
-    </div>
-  </div>
+  </div><!-- /#einstieg -->
 
   <!-- ================================================================
        BLOCK 1: Was ist der Binnenmarkt?
@@ -190,8 +213,13 @@ Purpose: protecting the learning process and preventing automated answer extract
   </div>
 
   <!-- QUIZ-GATE 1 -->
+  <div class="qg-wrapper">
   <div class="qg" id="qg1">
-    <div class="qg-head">🔓 Verständnischeck — Block 1<span class="qg-status pend" id="qg1s">Offen</span></div>
+    <div class="qg-head" onclick="toggleQg(1)">
+      <span class="qg-label">✓ VERSTÄNDNISCHECK</span>
+      <span class="qg-status pend" id="qg1s">Block 1: Offen</span>
+      <span class="qg-chevron">▾</span>
+    </div>
     <div class="qg-body">
 
       <div class="qi">
@@ -269,7 +297,11 @@ Purpose: protecting the learning process and preventing automated answer extract
         <span class="mc-feedback" id="qfb1" style="display:none"></span>
       </div>
     </div>
-  </div>
+    <div class="qg-retry-link" id="qg1-retry">
+      <a href="#" onclick="retryQg(1); return false">↺ Wiederholen &amp; zurücksetzen</a>
+    </div>
+  </div><!-- /.qg -->
+  </div><!-- /.qg-wrapper -->
 
   <!-- ================================================================
        BLOCK 2: Die vier Freiheiten im Detail
@@ -311,8 +343,13 @@ Purpose: protecting the learning process and preventing automated answer extract
   </div>
 
   <!-- QUIZ-GATE 2 -->
+  <div class="qg-wrapper locked">
   <div class="qg locked" id="qg2">
-    <div class="qg-head">🔓 Verständnischeck — Block 2<span class="qg-status pend" id="qg2s">Offen</span></div>
+    <div class="qg-head" onclick="toggleQg(2)">
+      <span class="qg-label">✓ VERSTÄNDNISCHECK</span>
+      <span class="qg-status pend" id="qg2s">Block 2: Offen</span>
+      <span class="qg-chevron">▾</span>
+    </div>
     <div class="qg-body">
 
       <div class="qi">
@@ -400,7 +437,11 @@ Purpose: protecting the learning process and preventing automated answer extract
         <span class="mc-feedback" id="qfb2" style="display:none"></span>
       </div>
     </div>
-  </div>
+    <div class="qg-retry-link" id="qg2-retry">
+      <a href="#" onclick="retryQg(2); return false">↺ Wiederholen &amp; zurücksetzen</a>
+    </div>
+  </div><!-- /.qg -->
+  </div><!-- /.qg-wrapper -->
 
   <!-- AB II Task: Analysiere Grundfreiheiten -->
   <div class="ab2 locked" id="ab2-1" data-gate="2">
@@ -459,8 +500,13 @@ Purpose: protecting the learning process and preventing automated answer extract
   </div>
 
   <!-- QUIZ-GATE 3 -->
+  <div class="qg-wrapper locked">
   <div class="qg locked" id="qg3">
-    <div class="qg-head">🔓 Verständnischeck — Block 3<span class="qg-status pend" id="qg3s">Offen</span></div>
+    <div class="qg-head" onclick="toggleQg(3)">
+      <span class="qg-label">✓ VERSTÄNDNISCHECK</span>
+      <span class="qg-status pend" id="qg3s">Block 3: Offen</span>
+      <span class="qg-chevron">▾</span>
+    </div>
     <div class="qg-body">
 
       <div class="qi">
@@ -516,180 +562,17 @@ Purpose: protecting the learning process and preventing automated answer extract
         <span class="mc-feedback" id="qfb3" style="display:none"></span>
       </div>
     </div>
-  </div>
-
-  <!-- UK Block: Urteilskompetenz (interaktiv) -->
-  <div class="uk locked" id="uk1" data-gate="3" data-uk="pairs">
-    <div class="uk-head">
-      <span class="op-badge" data-op="beurteilen">beurteilen · AB III</span>
-      Urteilskompetenz — Binnenmarkt
+    <div class="qg-retry-link" id="qg3-retry">
+      <a href="#" onclick="retryQg(3); return false">↺ Wiederholen &amp; zurücksetzen</a>
     </div>
-    <div class="uk-body">
+  </div><!-- /.qg -->
+  </div><!-- /.qg-wrapper -->
 
-      <!-- ── EINLEITUNG ──────────────────────────────── -->
-      <div class="uk-section">
-        <div class="uk-section-lbl">Einleitung</div>
-
-        <!-- Step 1: Theoretischer Kontext + Kriterium -->
-        <div class="uk-step" data-step="kontext">
-          <div class="uk-step-header">
-            <span class="uk-ab-tag">AB I</span>
-            Theoretischer Kontext
-          </div>
-          <p class="uk-step-q">Welche Aussage beschreibt den theoretischen Rahmen des Binnenmarkts?</p>
-          <ul class="uk-opts">
-            <li class="uk-opt"
-                data-error="step"
-                data-errtext="Du beschreibst hier Fallbeispiele aus der Praxis — die gehören in 'Material &amp; Fall'. Der theoretische Kontext beschreibt, was Theorie und Normen sagen.">
-              <span class="uk-opt-text">Sozialdumping, Brain Drain und Steuerwettbewerb zeigen, dass der Binnenmarkt in der Praxis asymmetrisch wirkt und nicht alle Mitglieder gleich profitieren.</span>
-            </li>
-            <li class="uk-opt" data-correct="true">
-              <span class="uk-opt-text">Der Binnenmarkt basiert auf den vier Grundfreiheiten — er ist ein Regelwerk für wirtschaftliche Integration, das durch einheitliche Standards gemeinsamen Wohlstand sichern soll.</span>
-            </li>
-          </ul>
-
-          <!-- Inline Kriterium dropdown -->
-          <div class="uk-kriterium">
-            <span class="uk-kriterium-lbl">Kriterium (Maßstab / Rahmen):</span>
-            <select class="uk-kriterium-sel" data-role="main">
-              <option value="">— bitte wählen —</option>
-              <option data-correct="true" data-msidx="1"
-                      data-errtext="">
-                Sichert der Binnenmarkt Effizienz und sozialen Ausgleich für alle Mitglieder?
-              </option>
-              <option data-error="vague" data-msidx="2"
-                      data-errtext="Zu allgemein — diese Frage benennt kein Kriterium, an dem du Vor- und Nachteile messen kannst.">
-                Überwiegen die Vorteile des Binnenmarkts seine Nachteile?
-              </option>
-              <option data-correct="true" data-msidx="3"
-                      data-errtext="">
-                Schützt der Binnenmarkt die sozialen Grundrechte aller EU-Bürger?
-              </option>
-              <option data-error="verdict" data-msidx="4"
-                      data-errtext="Diese Frage antizipiert das Urteil — du setzt eine nötige Reform voraus, bevor du analysiert hast.">
-                Muss der Binnenmarkt grundlegend reformiert werden?
-              </option>
-            </select>
-            <span class="uk-kriterium-error"></span>
-          </div>
-        </div>
-      </div><!-- /Einleitung -->
-
-      <!-- ── HAUPTTEIL ───────────────────────────────── -->
-      <div class="uk-section">
-        <div class="uk-section-lbl">Hauptteil</div>
-
-        <!-- Step 2: Material & Fall -->
-        <div class="uk-step" data-step="fall">
-          <div class="uk-step-header">
-            <span class="uk-ab-tag">AB I</span>
-            Material &amp; Fall
-          </div>
-          <p class="uk-step-q">Welche Aussage gibt die Fallbeispiele aus dem Sachwissen sachlich wieder?</p>
-          <ul class="uk-opts">
-            <li class="uk-opt" data-correct="true">
-              <span class="uk-opt-text">Sozialdumping durch Entsendung von Niedriglohnkräften, Brain Drain aus Osteuropa und Steuervermeidung durch Konzerne (LuxLeaks) zeigen konkrete Spannungen im Binnenmarkt.</span>
-            </li>
-            <li class="uk-opt"
-                data-error="level"
-                data-errtext="Du formulierst bereits ein Urteil über den Binnenmarkt. Hier sollen zunächst die Fallbeispiele sachlich dargestellt werden — das Urteil kommt in der Schlussfolgerung.">
-              <span class="uk-opt-text">Der Binnenmarkt schadet strukturell den schwächeren EU-Ländern und Arbeitnehmern in Hochlohnländern — eine Reform ist unvermeidlich.</span>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Step 3: Verbindung & Konflikte -->
-        <div class="uk-step" data-step="verbindung">
-          <div class="uk-step-header">
-            <span class="uk-ab-tag">AB II</span>
-            Verbindung &amp; Konflikte
-          </div>
-          <p class="uk-step-q">Welche Aussage zeigt überzeugend, wo Theorie und Fallbeispiele in Konflikt geraten?</p>
-          <ul class="uk-opts">
-            <li class="uk-opt"
-                data-error="chain"
-                data-errtext="Du listest Sachverhalte nebeneinander, ohne den Widerspruch zu benennen. Zeige, wo Anspruch und Wirklichkeit auseinanderfallen.">
-              <span class="uk-opt-text">Der Binnenmarkt hat die vier Grundfreiheiten geschaffen. Gleichzeitig entstehen Probleme wie Sozialdumping, Brain Drain und Steuerwettbewerb.</span>
-            </li>
-            <li class="uk-opt" data-correct="true">
-              <span class="uk-opt-text">Die vier Grundfreiheiten versprechen gemeinsamen Wohlstand — die Praxis zeigt jedoch asymmetrische Ergebnisse: Stärkere Volkswirtschaften profitieren strukturell mehr, während Sozialdumping und Steuervermeidung auf Kosten schwächerer Akteure gehen.</span>
-            </li>
-          </ul>
-          <!-- Kriterium re-check -->
-          <div class="uk-kriterium uk-kriterium--recheck">
-            <span class="uk-kriterium-lbl">Roter Faden — wähle dein Kriterium erneut:</span>
-            <select class="uk-kriterium-sel" data-role="recheck">
-              <option value="">— bitte wählen —</option>
-            </select>
-            <span class="uk-kriterium-error"></span>
-          </div>
-        </div>
-
-        <!-- Step 4: Abwägung von Perspektiven -->
-        <div class="uk-step" data-step="abwaegung">
-          <div class="uk-step-header">
-            <span class="uk-ab-tag">AB II</span>
-            Abwägung von Perspektiven
-          </div>
-          <p class="uk-step-q">Welche Aussage wägt verschiedene Perspektiven am überzeugendsten ab?</p>
-          <ul class="uk-opts">
-            <li class="uk-opt" data-correct="true">
-              <span class="uk-opt-text">Unternehmen und exportstarke Staaten sehen den Binnenmarkt als Wachstumsmotor. Arbeitnehmer in Hochlohnländern und ärmere Regionen erleben Lohndruck und Abwanderung. Beide Perspektiven müssen am gewählten Kriterium gemessen werden.</span>
-            </li>
-            <li class="uk-opt"
-                data-error="sided"
-                data-errtext="Du berücksichtigst nur eine Seite. Eine Abwägung zeigt, wie verschiedene Akteure dieselbe Realität unterschiedlich erleben und bewerten.">
-              <span class="uk-opt-text">Der Binnenmarkt belastet Arbeitnehmer in allen EU-Ländern durch Lohndruck und verschlechterte Arbeitsbedingungen — das überwiegt die wirtschaftlichen Vorteile deutlich.</span>
-            </li>
-          </ul>
-        </div>
-      </div><!-- /Hauptteil -->
-
-      <!-- ── SCHLUSSFOLGERUNG ────────────────────────── -->
-      <div class="uk-section">
-        <div class="uk-section-lbl">Schlussfolgerung</div>
-
-        <!-- Step 5: Begründetes Urteil -->
-        <div class="uk-step" data-step="urteil">
-          <div class="uk-step-header">
-            <span class="uk-ab-tag">AB III</span>
-            Begründetes Urteil
-          </div>
-          <p class="uk-step-q">Welches Urteil ist am besten begründet und verweist auf das gewählte Kriterium?</p>
-          <ul class="uk-opts">
-            <li class="uk-opt"
-                data-error="chain"
-                data-errtext="Das Urteil ist inhaltlich nachvollziehbar, verweist aber nicht auf das Kriterium aus der Einleitung. Das Urteil muss aus dem Kriterium folgen — das ist der rote Faden.">
-              <span class="uk-opt-text">Der Binnenmarkt hat Stärken und Schwächen. Insgesamt überwiegen die wirtschaftlichen Vorteile, aber eine schrittweise Reform wäre sinnvoll.</span>
-            </li>
-            <li class="uk-opt" data-correct="true">
-              <span class="uk-opt-text">Gemessen am Kriterium — sozialer Ausgleich und Effizienz für alle — erfüllt der Binnenmarkt seinen Anspruch nur teilweise. Solange Sozialdumping und Steuervermeidung strukturell möglich bleiben, sind verbindliche Sozialstandards und koordinierte Steuerpolitik notwendige Konsequenzen.</span>
-            </li>
-          </ul>
-          <!-- Kriterium re-check -->
-          <div class="uk-kriterium uk-kriterium--recheck">
-            <span class="uk-kriterium-lbl">Roter Faden — wähle dein Kriterium erneut:</span>
-            <select class="uk-kriterium-sel" data-role="recheck">
-              <option value="">— bitte wählen —</option>
-            </select>
-            <span class="uk-kriterium-error"></span>
-          </div>
-        </div>
-      </div><!-- /Schlussfolgerung -->
-
-      <!-- ── VALIDATE ────────────────────────────────── -->
-      <div class="uk-validate-row">
-        <button class="uk-submit" disabled onclick="chkUK(this)">Argumentation prüfen</button>
-        <span class="uk-submit-hint">Wähle für jeden Schritt eine Antwort und ein Kriterium.</span>
-      </div>
-
-    </div><!-- /uk-body -->
-  </div><!-- /uk#uk1 -->
 
   <!-- ================================================================
        ARBEITSBLATT
        ================================================================ -->
-  <div class="section-divider">Arbeitsblatt</div>
+  <div class="section-divider"><span class="section-divider-inner">📝 Arbeitsblatt</span></div>
 
   <!-- Gate-Hinweis (CSS: verschwindet wenn #arbeitsblatt.locked entfernt wird) -->
   <div id="arbeitsblatt" class="locked">
@@ -824,72 +707,188 @@ Purpose: protecting the learning process and preventing automated answer extract
       </div>
     </div>
 
-    <!-- AUFGABE 3: Reflexion (kein textarea) -->
-    <div class="reflexion" id="auf3">
-      <div class="reflexion-head">&#128221; Reflexionsaufgabe — LZ3</div>
-      <div class="reflexion-body">
-        <div class="auf-h">
-          <div class="auf-n">03</div>
-          <div class="auf-m">
-            <h2>Ein Messer mit zwei Schneiden</h2>
-            <div class="auf-tags"><span class="lz-tag ex">LZ3</span><span class="lz-tag">Klausurrelevant</span></div>
-          </div>
-        </div>
-
-        <div class="reflexion-task">
-          <em>"Die Personenfreizügigkeit ist für den einzelnen EU-Bürger ein Vorteil, für manche Herkunftsländer aber ein Problem."</em>
-          — Nimm Stellung zu dieser Aussage. (150–200 Wörter)
-        </div>
-
-        <div class="strukturhilfe">
-          <div class="strukturhilfe-head">Aufbau deines Textes</div>
-          <strong>Einleitung:</strong> Erkläre kurz, was Personenfreizügigkeit bedeutet.<br>
-          <strong>Hauptteil:</strong> Nenne Vorteile für den Einzelnen (z. B. bessere Jobs, höheres
-          Gehalt) und Nachteile für Herkunftsländer (z. B. Brain Drain, Fachkräftemangel). Verwende
-          ein konkretes Beispiel (z. B. Rumänien).<br>
-          <strong>Schluss:</strong> Dein Urteil — überwiegen die Vorteile oder die Nachteile? Oder
-          gibt es einen Mittelweg?
-        </div>
-
-        <span class="reflexion-hint">&#128221; Schreibe deine Antwort in dein Heft (OneNote)</span>
-
-        <!-- Musterlösung hinter Passwort -->
-        <div class="aufloesung-box" style="margin-top:.75rem">
-          <div class="aufloesung-box-head">&#10003; Musterlösung</div>
-          <p><strong>Einleitung:</strong> Die Personenfreizügigkeit ist eine der vier Grundfreiheiten
-          des EU-Binnenmarktes. Sie erlaubt jedem EU-Bürger, in einem anderen Mitgliedstaat zu leben,
-          zu arbeiten und zu studieren, ohne eine Genehmigung zu brauchen.</p>
-          <p><strong>Hauptteil:</strong> Für den Einzelnen ist diese Freiheit ein klarer Vorteil. Wer
-          in seinem Heimatland keine gute Arbeit findet oder schlecht verdient, kann in ein anderes
-          EU-Land ziehen und dort besser bezahlt werden. Für das Herkunftsland entsteht dadurch
-          allerdings ein Problem: der sogenannte Brain Drain. Rumänien hat seit dem EU-Beitritt 2007
-          Millionen Einwohner verloren, darunter viele Ärzte und Ingenieure. Das Gesundheitssystem
-          leidet unter Personalmangel, Dörfer stehen leer, und die Bevölkerung überaltert. Die
-          Ausbildung dieser Fachkräfte wurde von rumänischen Steuerzahlern bezahlt, aber der
-          wirtschaftliche Nutzen fließt nach Westeuropa.</p>
-          <p><strong>Schluss:</strong> Die Personenfreizügigkeit hat sowohl Vorteile als auch Nachteile.
-          Ein Mittelweg wäre, wenn die EU stärker in die wirtschaftliche Entwicklung der ärmeren
-          Mitgliedstaaten investiert, damit die Menschen nicht auswandern müssen. Denn eine Freiheit,
-          die nur einer Seite nutzt, ist auf Dauer nicht gerecht.</p>
-        </div>
+    <!-- AUFGABE 3: Urteilskompetenz (interaktiv) -->
+    <div class="uk" id="uk1" data-uk="pairs">
+      <div class="uk-head">
+        <span class="op-badge" data-op="beurteilen">beurteilen · AB III</span>
+        Urteilskompetenz — Binnenmarkt
       </div>
-    </div>
+      <div class="uk-body">
+
+        <!-- ── EINLEITUNG ──────────────────────────────── -->
+        <div class="uk-section">
+          <div class="uk-section-lbl">Einleitung</div>
+
+          <!-- Step 1: Theoretischer Kontext + Kriterium -->
+          <div class="uk-step" data-step="kontext">
+            <div class="uk-step-header">
+              <span class="uk-ab-tag">AB I</span>
+              Theoretischer Kontext
+            </div>
+            <p class="uk-step-q">Welche Aussage beschreibt den theoretischen Rahmen des Binnenmarkts?</p>
+            <ul class="uk-opts">
+              <li class="uk-opt"
+                  data-error="step"
+                  data-errtext="Du beschreibst hier Fallbeispiele aus der Praxis — die gehören in 'Material &amp; Fall'. Der theoretische Kontext beschreibt, was Theorie und Normen sagen.">
+                <span class="uk-opt-text">Sozialdumping, Brain Drain und Steuerwettbewerb zeigen, dass der Binnenmarkt in der Praxis asymmetrisch wirkt und nicht alle Mitglieder gleich profitieren.</span>
+              </li>
+              <li class="uk-opt" data-correct="true">
+                <span class="uk-opt-text">Der Binnenmarkt basiert auf den vier Grundfreiheiten — er ist ein Regelwerk für wirtschaftliche Integration, das durch einheitliche Standards gemeinsamen Wohlstand sichern soll.</span>
+              </li>
+            </ul>
+
+            <!-- Inline Kriterium dropdown -->
+            <div class="uk-kriterium">
+              <span class="uk-kriterium-lbl">Kriterium (Maßstab / Rahmen):</span>
+              <select class="uk-kriterium-sel" data-role="main">
+                <option value="">— bitte wählen —</option>
+                <option data-correct="true" data-msidx="1" data-errtext="">
+                  Sichert der Binnenmarkt Effizienz und sozialen Ausgleich für alle Mitglieder?
+                </option>
+                <option data-error="vague" data-msidx="2"
+                        data-errtext="Zu allgemein — diese Frage benennt kein Kriterium, an dem du Vor- und Nachteile messen kannst.">
+                  Überwiegen die Vorteile des Binnenmarkts seine Nachteile?
+                </option>
+                <option data-correct="true" data-msidx="3" data-errtext="">
+                  Schützt der Binnenmarkt die sozialen Grundrechte aller EU-Bürger?
+                </option>
+                <option data-error="verdict" data-msidx="4"
+                        data-errtext="Diese Frage antizipiert das Urteil — du setzt eine nötige Reform voraus, bevor du analysiert hast.">
+                  Muss der Binnenmarkt grundlegend reformiert werden?
+                </option>
+              </select>
+              <span class="uk-kriterium-error"></span>
+            </div>
+          </div>
+        </div><!-- /Einleitung -->
+
+        <!-- ── HAUPTTEIL ───────────────────────────────── -->
+        <div class="uk-section">
+          <div class="uk-section-lbl">Hauptteil</div>
+
+          <!-- Step 2: Material & Fall -->
+          <div class="uk-step" data-step="fall">
+            <div class="uk-step-header">
+              <span class="uk-ab-tag">AB I</span>
+              Material &amp; Fall
+            </div>
+            <p class="uk-step-q">Welche Aussage gibt die Fallbeispiele aus dem Sachwissen sachlich wieder?</p>
+            <ul class="uk-opts">
+              <li class="uk-opt" data-correct="true">
+                <span class="uk-opt-text">Sozialdumping durch Entsendung von Niedriglohnkräften, Brain Drain aus Osteuropa und Steuervermeidung durch Konzerne (LuxLeaks) zeigen konkrete Spannungen im Binnenmarkt.</span>
+              </li>
+              <li class="uk-opt"
+                  data-error="level"
+                  data-errtext="Du formulierst bereits ein Urteil über den Binnenmarkt. Hier sollen zunächst die Fallbeispiele sachlich dargestellt werden — das Urteil kommt in der Schlussfolgerung.">
+                <span class="uk-opt-text">Der Binnenmarkt schadet strukturell den schwächeren EU-Ländern und Arbeitnehmern in Hochlohnländern — eine Reform ist unvermeidlich.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Step 3: Verbindung & Konflikte -->
+          <div class="uk-step" data-step="verbindung">
+            <div class="uk-step-header">
+              <span class="uk-ab-tag">AB II</span>
+              Verbindung &amp; Konflikte
+            </div>
+            <p class="uk-step-q">Welche Aussage zeigt überzeugend, wo Theorie und Fallbeispiele in Konflikt geraten?</p>
+            <ul class="uk-opts">
+              <li class="uk-opt"
+                  data-error="chain"
+                  data-errtext="Du listest Sachverhalte nebeneinander, ohne den Widerspruch zu benennen. Zeige, wo Anspruch und Wirklichkeit auseinanderfallen.">
+                <span class="uk-opt-text">Der Binnenmarkt hat die vier Grundfreiheiten geschaffen. Gleichzeitig entstehen Probleme wie Sozialdumping, Brain Drain und Steuerwettbewerb.</span>
+              </li>
+              <li class="uk-opt" data-correct="true">
+                <span class="uk-opt-text">Die vier Grundfreiheiten versprechen gemeinsamen Wohlstand — die Praxis zeigt jedoch asymmetrische Ergebnisse: Stärkere Volkswirtschaften profitieren strukturell mehr, während Sozialdumping und Steuervermeidung auf Kosten schwächerer Akteure gehen.</span>
+              </li>
+            </ul>
+            <!-- Kriterium re-check -->
+            <div class="uk-kriterium uk-kriterium--recheck">
+              <span class="uk-kriterium-lbl">Roter Faden — wähle dein Kriterium erneut:</span>
+              <select class="uk-kriterium-sel" data-role="recheck">
+                <option value="">— bitte wählen —</option>
+              </select>
+              <span class="uk-kriterium-error"></span>
+            </div>
+          </div>
+
+          <!-- Step 4: Abwägung von Perspektiven -->
+          <div class="uk-step" data-step="abwaegung">
+            <div class="uk-step-header">
+              <span class="uk-ab-tag">AB II</span>
+              Abwägung von Perspektiven
+            </div>
+            <p class="uk-step-q">Welche Aussage wägt verschiedene Perspektiven am überzeugendsten ab?</p>
+            <ul class="uk-opts">
+              <li class="uk-opt" data-correct="true">
+                <span class="uk-opt-text">Unternehmen und exportstarke Staaten sehen den Binnenmarkt als Wachstumsmotor. Arbeitnehmer in Hochlohnländern und ärmere Regionen erleben Lohndruck und Abwanderung. Beide Perspektiven müssen am gewählten Kriterium gemessen werden.</span>
+              </li>
+              <li class="uk-opt"
+                  data-error="sided"
+                  data-errtext="Du berücksichtigst nur eine Seite. Eine Abwägung zeigt, wie verschiedene Akteure dieselbe Realität unterschiedlich erleben und bewerten.">
+                <span class="uk-opt-text">Der Binnenmarkt belastet Arbeitnehmer in allen EU-Ländern durch Lohndruck und verschlechterte Arbeitsbedingungen — das überwiegt die wirtschaftlichen Vorteile deutlich.</span>
+              </li>
+            </ul>
+          </div>
+        </div><!-- /Hauptteil -->
+
+        <!-- ── SCHLUSSFOLGERUNG ────────────────────────── -->
+        <div class="uk-section">
+          <div class="uk-section-lbl">Schlussfolgerung</div>
+
+          <!-- Step 5: Begründetes Urteil -->
+          <div class="uk-step" data-step="urteil">
+            <div class="uk-step-header">
+              <span class="uk-ab-tag">AB III</span>
+              Begründetes Urteil
+            </div>
+            <p class="uk-step-q">Welches Urteil ist am besten begründet und verweist auf das gewählte Kriterium?</p>
+            <ul class="uk-opts">
+              <li class="uk-opt"
+                  data-error="chain"
+                  data-errtext="Das Urteil ist inhaltlich nachvollziehbar, verweist aber nicht auf das Kriterium aus der Einleitung. Das Urteil muss aus dem Kriterium folgen — das ist der rote Faden.">
+                <span class="uk-opt-text">Der Binnenmarkt hat Stärken und Schwächen. Insgesamt überwiegen die wirtschaftlichen Vorteile, aber eine schrittweise Reform wäre sinnvoll.</span>
+              </li>
+              <li class="uk-opt" data-correct="true">
+                <span class="uk-opt-text">Gemessen am Kriterium — sozialer Ausgleich und Effizienz für alle — erfüllt der Binnenmarkt seinen Anspruch nur teilweise. Solange Sozialdumping und Steuervermeidung strukturell möglich bleiben, sind verbindliche Sozialstandards und koordinierte Steuerpolitik notwendige Konsequenzen.</span>
+              </li>
+            </ul>
+            <!-- Kriterium re-check -->
+            <div class="uk-kriterium uk-kriterium--recheck">
+              <span class="uk-kriterium-lbl">Roter Faden — wähle dein Kriterium erneut:</span>
+              <select class="uk-kriterium-sel" data-role="recheck">
+                <option value="">— bitte wählen —</option>
+              </select>
+              <span class="uk-kriterium-error"></span>
+            </div>
+          </div>
+        </div><!-- /Schlussfolgerung -->
+
+        <!-- ── VALIDATE ────────────────────────────────── -->
+        <div class="uk-validate-row">
+          <button class="uk-submit" disabled onclick="chkUK(this)">Argumentation prüfen</button>
+          <span class="uk-submit-hint">Wähle für jeden Schritt eine Antwort und ein Kriterium.</span>
+        </div>
+
+      </div><!-- /uk-body -->
+    </div><!-- /uk#uk1 -->
 
   </div><!-- /#arbeitsblatt -->
 
   <!-- ================================================================
        GRUPPENARBEIT: Fallstudien
        ================================================================ -->
-  <div class="section-divider">Gruppenarbeit</div>
+  <div class="section-divider"><span class="section-divider-inner">Gruppenarbeit</span></div>
 
   <!-- Ablauf (immer sichtbar) -->
   <div class="ablauf-box">
     <div class="ablauf-box-head">&#9670; Ablauf</div>
     <div class="ablauf-meta">
       <span class="ablauf-tag">4 Gruppen à 4 Schüler</span>
-      <span class="ablauf-tag">Arbeitszeit: 15 min</span>
+      <span class="ablauf-tag">Gruppenarbeit: 15 min</span>
       <span class="ablauf-tag">Präsentation: 3 min / Gruppe</span>
       <span class="ablauf-tag">Diskussion: 10 min</span>
+      <span class="ablauf-tag">Gesamt: ca. 45–50 Min</span>
     </div>
   </div>
 
@@ -951,7 +950,7 @@ Purpose: protecting the learning process and preventing automated answer extract
   <!-- ================================================================
        QUELLEN & FOOTER
        ================================================================ -->
-  <div class="section-divider">Quellenverzeichnis</div>
+  <div class="section-divider"><span class="section-divider-inner">Quellenverzeichnis</span></div>
 
   <div class="card">
     <ul class="src-list">
