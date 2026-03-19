@@ -720,39 +720,46 @@ Purpose: protecting the learning process and preventing automated answer extract
     </div>
 
     <!-- AUFGABE 3: Urteilskompetenz (interaktiv) -->
-    <div class="uk" id="uk1" data-uk="pairs">
-      <div class="uk-head">
-        <span class="op-badge" data-op="beurteilen">beurteilen · AB III</span>
-        Urteilskompetenz — Binnenmarkt
-      </div>
-      <div class="uk-body">
+  <div class="uk" id="uk1" data-uk="pairs">
+    <div class="uk-head">
+      <span class="op-badge" data-op="beurteilen">beurteilen · AB III</span>
+      Urteilskompetenz — Binnenmarkt
+    </div>
+    <div class="uk-body">
 
-        <!-- Leitfrage banner -->
-        <div class="uk-leitfrage">
-          <div class="uk-leitfrage-label">Leitfrage</div>
-          <div class="uk-leitfrage-text">Überwiegen die Vorteile des EU-Binnenmarkts seine sozialen Kosten?</div>
+      <!-- Leitfrage banner -->
+      <div class="uk-leitfrage">
+        <div class="uk-leitfrage-label">Leitfrage</div>
+        <div class="uk-leitfrage-text">Überwiegen die Vorteile des EU-Binnenmarkts seine sozialen Kosten?</div>
+      </div>
+
+      <!-- ── STAGE 1: Einleitung (Kriterium + AB1 Theorie) ── -->
+      <div class="uk-stage" data-stage="1">
+        <div class="uk-stage-header">
+          <span class="uk-stage-tag">Einleitung</span>
+          <span class="uk-stage-title">Kriterium und theoretischer Kontext</span>
         </div>
 
-        <!-- Kriterium — erste Begegnung, volle Karten -->
+        <!-- Kriterium -->
         <div class="uk-krit-block">
-          <span class="uk-krit-tag">🔴 Kriterium — Maßstab festlegen</span>
+          <span class="uk-krit-tag">Kriterium festlegen</span>
           <div class="uk-krit-q">Welcher Maßstab ist geeignet, um die Leitfrage zu beantworten?</div>
           <div class="uk-krit-opts">
-            <div class="uk-krit-opt" data-msidx="0" data-correct="true"  data-error="" data-errtext=""
+            <div class="uk-krit-opt" data-msidx="0" data-correct="true" data-error="" data-errtext=""
                  onclick="selKrit(this)">
               <span class="uk-krit-num">A</span>
               Sichert der Binnenmarkt Effizienz und sozialen Ausgleich für alle Mitglieder?
               <span class="uk-krit-opt-err"></span>
             </div>
             <div class="uk-krit-opt" data-msidx="1" data-correct="false" data-error="sided"
-                 data-errtext="Dieser Maßstab erfasst nur die Wachstumsperspektive — soziale Konsequenzen bleiben außen vor."
+                 data-errtext="Dieser Maßstab erfasst nur die Wachstumsperspektive. Soziale Konsequenzen bleiben außen vor."
                  onclick="selKrit(this)">
               <span class="uk-krit-num">B</span>
               Fördert der Binnenmarkt gleichmäßiges BIP-Wachstum in allen Mitgliedstaaten?
               <span class="uk-krit-opt-err"></span>
             </div>
             <div class="uk-krit-opt" data-msidx="2" data-correct="false" data-error="vague"
-                 data-errtext="Ein Beschäftigungsmaßstab greift zu kurz — er ignoriert Lohnentwicklung, soziale Standards und Verteilungswirkungen."
+                 data-errtext="Ein Beschäftigungsmaßstab greift zu kurz. Er ignoriert Lohnentwicklung, soziale Standards und Verteilungswirkungen."
                  onclick="selKrit(this)">
               <span class="uk-krit-num">C</span>
               Schafft der Binnenmarkt per Saldo mehr Arbeitsplätze als er verdrängt?
@@ -761,144 +768,171 @@ Purpose: protecting the learning process and preventing automated answer extract
           </div>
         </div>
 
-        <!-- ── EINLEITUNG ──────────────────────────────── -->
-        <div class="uk-section">
-          <div class="uk-section-lbl">Einleitung</div>
-
-          <!-- Step 1: Theoretischer Kontext (AB I) -->
-          <div class="uk-step" data-step="kontext" data-ab="1">
-            <div class="uk-step-header">
-              <span class="uk-ab-tag">AB I — Theoretischer Kontext</span>
-            </div>
-            <p class="uk-step-q">Welche theoretische Grundlage hilft, die Leitfrage einzuordnen?</p>
-            <ul class="uk-opts">
-              <li class="uk-opt"
-                  data-error="step"
-                  data-errtext="Du beschreibst hier Fallbeispiele aus der Praxis — die gehören in 'Material &amp; Fall'. Der theoretische Kontext beschreibt, was Theorie und Normen sagen.">
-                <span class="uk-opt-text">Sozialdumping, Brain Drain und Steuerwettbewerb zeigen, dass der Binnenmarkt in der Praxis asymmetrisch wirkt und nicht alle Mitglieder gleich profitieren.</span>
-              </li>
-              <li class="uk-opt" data-correct="true">
-                <span class="uk-opt-text">Der Binnenmarkt basiert auf den vier Grundfreiheiten — er ist ein Regelwerk für wirtschaftliche Integration, das durch einheitliche Standards gemeinsamen Wohlstand sichern soll.</span>
-              </li>
-            </ul>
+        <!-- AB I Step 1: Theoretischer Kontext -->
+        <div class="uk-step" data-step="kontext" data-ab="1">
+          <div class="uk-step-header">
+            <span class="uk-ab-tag">AB I: Theoretischer Kontext</span>
           </div>
+          <p class="uk-step-q">Welche theoretische Grundlage hilft, die Leitfrage einzuordnen?</p>
+          <ul class="uk-opts">
+            <li class="uk-opt"
+                data-error="step"
+                data-errtext="Du beschreibst Fallbeispiele aus der Praxis. Diese gehören in den Hauptteil, unter Fallmaterial. Der theoretische Kontext beschreibt, was Theorie und Normen sagen.">
+              <span class="uk-opt-text">Sozialdumping, Brain Drain und Steuerwettbewerb zeigen, dass der Binnenmarkt in der Praxis asymmetrisch wirkt und nicht alle Mitglieder gleich profitieren.</span>
+            </li>
+            <li class="uk-opt" data-correct="true">
+              <span class="uk-opt-text">Der Binnenmarkt basiert auf den vier Grundfreiheiten. Er ist ein Regelwerk für wirtschaftliche Integration, das durch einheitliche Standards gemeinsamen Wohlstand sichern soll.</span>
+            </li>
+          </ul>
+        </div>
 
-          <!-- Step 2: Material & Fall (AB I) -->
-          <div class="uk-step" data-step="fall" data-ab="1">
-            <div class="uk-step-header">
-              <span class="uk-ab-tag">AB I — Material &amp; Fall</span>
-            </div>
-            <p class="uk-step-q">Welche Aussage gibt die Fallbeispiele sachlich wieder, die für die Leitfrage relevant sind?</p>
-            <ul class="uk-opts">
-              <li class="uk-opt" data-correct="true">
-                <span class="uk-opt-text">Sozialdumping durch Entsendung von Niedriglohnkräften, Brain Drain aus Osteuropa und Steuervermeidung durch Konzerne (LuxLeaks) zeigen konkrete Spannungen im Binnenmarkt.</span>
-              </li>
-              <li class="uk-opt"
-                  data-error="level"
-                  data-errtext="Du formulierst bereits ein Urteil über den Binnenmarkt. Hier sollen zunächst die Fallbeispiele sachlich dargestellt werden — das Urteil kommt in der Schlussfolgerung.">
-                <span class="uk-opt-text">Der Binnenmarkt schadet strukturell den schwächeren EU-Ländern und Arbeitnehmern in Hochlohnländern — eine Reform ist unvermeidlich.</span>
-              </li>
-            </ul>
-          </div>
+        <!-- Stage 1 proceed -->
+        <div class="uk-stage-footer">
+          <button class="uk-stage-submit" disabled onclick="submitStage(this, 1)">
+            Weiter zum Hauptteil
+          </button>
+        </div>
+      </div><!-- /Stage 1 -->
 
-        </div><!-- /Einleitung -->
+      <!-- Stage 1 summary (shown when stage 1 complete) -->
+      <div class="uk-stage-summary" data-stage="1">
+        <span class="uk-stage-summary-check">✓</span>
+        <span class="uk-stage-summary-label">Einleitung</span>
+        <span class="uk-stage-summary-krit">Kriterium ✓</span>
+      </div>
 
-        <!-- Kriterium recheck #1 — leitet AB II ein -->
+      <!-- ── STAGE 2: Hauptteil (Recheck + AB1 Fall + AB2) ── -->
+      <div class="uk-stage uk-stage-locked" data-stage="2">
+        <div class="uk-stage-header">
+          <span class="uk-stage-tag">Hauptteil</span>
+          <span class="uk-stage-title">Fallmaterial, Analyse und Abwägung</span>
+        </div>
+
+        <!-- Recheck #1 -->
         <div class="uk-krit-recheck">
-          <div class="uk-krit-recheck-label">🔴 Roter Faden — Kriterium bestätigen</div>
+          <div class="uk-krit-recheck-label">Roter Faden: Kriterium bestätigen</div>
           <div class="uk-krit-chips">
-            <div class="uk-krit-chip" data-msidx="0">Effizienz + sozialer Ausgleich</div>
+            <div class="uk-krit-chip" data-msidx="0">Effizienz und sozialer Ausgleich</div>
             <div class="uk-krit-chip" data-msidx="1">BIP-Wachstum aller Mitglieder</div>
             <div class="uk-krit-chip" data-msidx="2">Netto-Beschäftigungseffekt</div>
           </div>
           <div class="uk-krit-recheck-err"></div>
         </div>
 
-        <!-- ── HAUPTTEIL ───────────────────────────────── -->
-        <div class="uk-section">
-          <div class="uk-section-lbl">Hauptteil</div>
-
-          <!-- Step 3: Verbindung & Konflikte (AB II) -->
-          <div class="uk-step" data-step="verbindung" data-ab="2">
-            <div class="uk-step-header">
-              <span class="uk-ab-tag">AB II — Verbindung &amp; Konflikte</span>
-            </div>
-            <p class="uk-step-q">Wo geraten Theorie und Fallbeispiele in Konflikt, gemessen am Kriterium der Leitfrage?</p>
-            <ul class="uk-opts">
-              <li class="uk-opt"
-                  data-error="chain"
-                  data-errtext="Du listest Sachverhalte nebeneinander, ohne den Widerspruch zu benennen. Zeige, wo Anspruch und Wirklichkeit auseinanderfallen.">
-                <span class="uk-opt-text">Der Binnenmarkt hat die vier Grundfreiheiten geschaffen. Gleichzeitig entstehen Probleme wie Sozialdumping, Brain Drain und Steuerwettbewerb.</span>
-              </li>
-              <li class="uk-opt" data-correct="true">
-                <span class="uk-opt-text">Die vier Grundfreiheiten versprechen gemeinsamen Wohlstand — die Praxis zeigt jedoch asymmetrische Ergebnisse: Stärkere Volkswirtschaften profitieren strukturell mehr, während Sozialdumping und Steuervermeidung auf Kosten schwächerer Akteure gehen.</span>
-              </li>
-            </ul>
+        <!-- AB I Step 2: Fallmaterial -->
+        <div class="uk-step" data-step="fall" data-ab="1">
+          <div class="uk-step-header">
+            <span class="uk-ab-tag">AB I: Material und Fall</span>
           </div>
+          <p class="uk-step-q">Welche Aussage gibt die Fallbeispiele sachlich wieder, die für die Leitfrage relevant sind?</p>
+          <ul class="uk-opts">
+            <li class="uk-opt" data-correct="true">
+              <span class="uk-opt-text">Sozialdumping durch Entsendung von Niedriglohnkräften, Brain Drain aus Osteuropa und Steuervermeidung durch Konzerne (LuxLeaks) zeigen konkrete Spannungen im Binnenmarkt.</span>
+            </li>
+            <li class="uk-opt"
+                data-error="level"
+                data-errtext="Du formulierst bereits ein Urteil über den Binnenmarkt. Hier sollen die Fallbeispiele zunächst sachlich dargestellt werden. Das Urteil kommt erst in der Schlussfolgerung.">
+              <span class="uk-opt-text">Der Binnenmarkt schadet strukturell den schwächeren EU-Ländern und Arbeitnehmern in Hochlohnländern. Eine Reform ist unvermeidlich.</span>
+            </li>
+          </ul>
+        </div>
 
-          <!-- Step 4: Abwägung (AB II) -->
-          <div class="uk-step" data-step="abwaegung" data-ab="2">
-            <div class="uk-step-header">
-              <span class="uk-ab-tag">AB II — Abwägung</span>
-            </div>
-            <p class="uk-step-q">Welche Perspektive überwiegt bei der Beantwortung der Leitfrage?</p>
-            <ul class="uk-opts">
-              <li class="uk-opt" data-correct="true">
-                <span class="uk-opt-text">Unternehmen und exportstarke Staaten sehen den Binnenmarkt als Wachstumsmotor. Arbeitnehmer in Hochlohnländern und ärmere Regionen erleben Lohndruck und Abwanderung. Beide Perspektiven müssen am gewählten Kriterium gemessen werden.</span>
-              </li>
-              <li class="uk-opt"
-                  data-error="sided"
-                  data-errtext="Du berücksichtigst nur eine Seite. Eine Abwägung zeigt, wie verschiedene Akteure dieselbe Realität unterschiedlich erleben und bewerten.">
-                <span class="uk-opt-text">Der Binnenmarkt belastet Arbeitnehmer in allen EU-Ländern durch Lohndruck und verschlechterte Arbeitsbedingungen — das überwiegt die wirtschaftlichen Vorteile deutlich.</span>
-              </li>
-            </ul>
+        <!-- AB II Step 3: Verbindung und Konflikte -->
+        <div class="uk-step" data-step="verbindung" data-ab="2">
+          <div class="uk-step-header">
+            <span class="uk-ab-tag">AB II: Verbindung und Konflikte</span>
           </div>
+          <p class="uk-step-q">Wo geraten Theorie und Fallbeispiele in Konflikt, gemessen am Kriterium der Leitfrage?</p>
+          <ul class="uk-opts">
+            <li class="uk-opt"
+                data-error="chain"
+                data-errtext="Du listest Sachverhalte nebeneinander, ohne den Widerspruch zu benennen. Zeige, wo Anspruch und Wirklichkeit auseinanderfallen.">
+              <span class="uk-opt-text">Der Binnenmarkt hat die vier Grundfreiheiten geschaffen. Gleichzeitig entstehen Probleme wie Sozialdumping, Brain Drain und Steuerwettbewerb.</span>
+            </li>
+            <li class="uk-opt" data-correct="true">
+              <span class="uk-opt-text">Die vier Grundfreiheiten versprechen gemeinsamen Wohlstand, die Praxis zeigt jedoch asymmetrische Ergebnisse. Stärkere Volkswirtschaften profitieren strukturell mehr, während Sozialdumping und Steuervermeidung auf Kosten schwächerer Akteure gehen.</span>
+            </li>
+          </ul>
+        </div>
 
-        </div><!-- /Hauptteil -->
+        <!-- AB II Step 4: Abwägung -->
+        <div class="uk-step" data-step="abwaegung" data-ab="2">
+          <div class="uk-step-header">
+            <span class="uk-ab-tag">AB II: Abwägung</span>
+          </div>
+          <p class="uk-step-q">Welche Perspektive überwiegt bei der Beantwortung der Leitfrage?</p>
+          <ul class="uk-opts">
+            <li class="uk-opt" data-correct="true">
+              <span class="uk-opt-text">Unternehmen und exportstarke Staaten sehen den Binnenmarkt als Wachstumsmotor. Arbeitnehmer in Hochlohnländern und ärmere Regionen erleben dagegen Lohndruck und Abwanderung, sodass beide Perspektiven am gewählten Kriterium gemessen werden müssen.</span>
+            </li>
+            <li class="uk-opt"
+                data-error="sided"
+                data-errtext="Du berücksichtigst nur eine Seite. Eine Abwägung zeigt, wie verschiedene Akteure dieselbe Realität unterschiedlich erleben und bewerten.">
+              <span class="uk-opt-text">Der Binnenmarkt belastet Arbeitnehmer in allen EU-Ländern durch Lohndruck und verschlechterte Arbeitsbedingungen, sodass die wirtschaftlichen Vorteile eindeutig überwiegen.</span>
+            </li>
+          </ul>
+        </div>
 
-        <!-- Kriterium recheck #2 — leitet AB III ein -->
+        <!-- Stage 2 proceed -->
+        <div class="uk-stage-footer">
+          <button class="uk-stage-submit" disabled onclick="submitStage(this, 2)">
+            Weiter zur Schlussfolgerung
+          </button>
+        </div>
+      </div><!-- /Stage 2 -->
+
+      <!-- Stage 2 summary -->
+      <div class="uk-stage-summary" data-stage="2">
+        <span class="uk-stage-summary-check">✓</span>
+        <span class="uk-stage-summary-label">Hauptteil</span>
+      </div>
+
+      <!-- ── STAGE 3: Schlussfolgerung (Recheck #2 + AB3 Urteil) -->
+      <div class="uk-stage uk-stage-locked" data-stage="3">
+        <div class="uk-stage-header">
+          <span class="uk-stage-tag">Schlussfolgerung</span>
+          <span class="uk-stage-title">Begründetes Urteil</span>
+        </div>
+
+        <!-- Recheck #2 -->
         <div class="uk-krit-recheck">
-          <div class="uk-krit-recheck-label">🔴 Roter Faden — Urteil mit Kriterium verknüpfen</div>
+          <div class="uk-krit-recheck-label">Roter Faden: Urteil mit Kriterium verknüpfen</div>
           <div class="uk-krit-chips">
-            <div class="uk-krit-chip" data-msidx="0">Effizienz + sozialer Ausgleich</div>
+            <div class="uk-krit-chip" data-msidx="0">Effizienz und sozialer Ausgleich</div>
             <div class="uk-krit-chip" data-msidx="1">BIP-Wachstum aller Mitglieder</div>
             <div class="uk-krit-chip" data-msidx="2">Netto-Beschäftigungseffekt</div>
           </div>
           <div class="uk-krit-recheck-err"></div>
         </div>
 
-        <!-- ── SCHLUSSFOLGERUNG ────────────────────────── -->
-        <div class="uk-section">
-          <div class="uk-section-lbl">Schlussfolgerung</div>
-
-          <!-- Step 5: Begründetes Urteil (AB III) -->
-          <div class="uk-step" data-step="urteil" data-ab="3">
-            <div class="uk-step-header">
-              <span class="uk-ab-tag">AB III — Begründetes Urteil</span>
-            </div>
-            <p class="uk-step-q">Welches Urteil beantwortet die Leitfrage überzeugend und verweist auf das Kriterium?</p>
-            <ul class="uk-opts">
-              <li class="uk-opt"
-                  data-error="chain"
-                  data-errtext="Das Urteil ist inhaltlich nachvollziehbar, verweist aber nicht auf das Kriterium aus der Einleitung. Das Urteil muss aus dem Kriterium folgen — das ist der rote Faden.">
-                <span class="uk-opt-text">Der Binnenmarkt hat Stärken und Schwächen. Insgesamt überwiegen die wirtschaftlichen Vorteile, aber eine schrittweise Reform wäre sinnvoll.</span>
-              </li>
-              <li class="uk-opt" data-correct="true">
-                <span class="uk-opt-text">Gemessen am Kriterium — sozialer Ausgleich und Effizienz für alle — erfüllt der Binnenmarkt seinen Anspruch nur teilweise. Solange Sozialdumping und Steuervermeidung strukturell möglich bleiben, sind verbindliche Sozialstandards und koordinierte Steuerpolitik notwendige Konsequenzen.</span>
-              </li>
-            </ul>
+        <!-- AB III Step 5: Begründetes Urteil -->
+        <div class="uk-step" data-step="urteil" data-ab="3">
+          <div class="uk-step-header">
+            <span class="uk-ab-tag">AB III: Begründetes Urteil</span>
           </div>
-
-        </div><!-- /Schlussfolgerung -->
-
-        <!-- ── VALIDATE ────────────────────────────────── -->
-        <div class="uk-validate-row">
-          <button class="uk-submit" disabled onclick="chkUK(this)">Argumentation prüfen</button>
-          <span class="uk-submit-hint">Wähle für jeden Schritt eine Antwort, ein Kriterium und bestätige den roten Faden.</span>
+          <p class="uk-step-q">Welches Urteil beantwortet die Leitfrage überzeugend und verweist auf das Kriterium?</p>
+          <ul class="uk-opts">
+            <li class="uk-opt"
+                data-error="chain"
+                data-errtext="Das Urteil ist inhaltlich nachvollziehbar, verweist aber nicht auf das Kriterium aus der Einleitung. Das Urteil muss aus dem Kriterium folgen: das ist der rote Faden.">
+              <span class="uk-opt-text">Der Binnenmarkt hat Stärken und Schwächen. Insgesamt überwiegen die wirtschaftlichen Vorteile, aber eine schrittweise Reform wäre sinnvoll.</span>
+            </li>
+            <li class="uk-opt" data-correct="true">
+              <span class="uk-opt-text">Gemessen am Kriterium, sozialer Ausgleich und Effizienz für alle, erfüllt der Binnenmarkt seinen Anspruch nur teilweise. Solange Sozialdumping und Steuervermeidung strukturell möglich bleiben, sind verbindliche Sozialstandards und koordinierte Steuerpolitik notwendige Konsequenzen.</span>
+            </li>
+          </ul>
         </div>
 
-      </div><!-- /uk-body -->
-    </div><!-- /uk#uk1 -->
+        <!-- Stage 3 proceed (final) -->
+        <div class="uk-stage-footer">
+          <button class="uk-stage-submit" disabled onclick="submitStage(this, 3)">
+            Argumentation abschließen
+          </button>
+        </div>
+      </div><!-- /Stage 3 -->
+
+    </div><!-- /uk-body -->
+  </div><!-- /uk#uk1 -->
 
   </div><!-- /#arbeitsblatt -->
 
