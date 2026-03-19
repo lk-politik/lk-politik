@@ -1,0 +1,186 @@
+# UI Structural Refinements — Design Spec
+
+## Goal
+
+Apply four cross-unit structural improvements to all Politik-LK digital units before content rework: LZ block redesign, password/reset tool row, Aufgabe card tag layout, and UK sequential flow.
+
+## Scope
+
+All improvements apply globally across all units (3.1–3.20) via shared `css/style.css` and `js/` files. Unit 3.5 (Binnenmarkt) is the reference unit for testing; once validated there, changes propagate via shared assets.
+
+---
+
+## 1. LZ Block Redesign
+
+### At Top of Unit (full-text display)
+
+Each Lernziel is displayed as a pill/card with two zones:
+- **Left zone**: solid accent-color background (`var(--acc)`) with `LZ X` in white monospace, bold, larger text — visually prominent, not just a label
+- **Right zone**: full Lernziel text (operator + object + context), light accent background, body font
+
+The accent color (`var(--acc)`) adapts automatically per chapter (blue for EU chapter 3.x, changes for other chapters). No hardcoded colors in the LZ block HTML.
+
+### In Card Headers (abbreviated form)
+
+When referenced inside a Wissenskarte or Aufgabe card header (right side, left of Klausur badge), the LZ is shown as a two-part chip:
+- Solid accent background pill: `LZ X` (monospace, bold)
+- Adjacent lighter zone: short form = **operator + direct object only**, authored manually per LZ, max ~4 words (monospace, smaller). Example: "Grundfreiheiten erläutern" for LZ 1. This short form is a fixed string per LZ, not auto-truncated. The short form is written inline as the text content of `.lz-chip-text` in the HTML — no JS config, no `data-` attribute.
+
+Both zones are inline-flex, no gap, unified border-radius — appears as one connected unit.
+
+### Implementation notes
+
+- New CSS classes: `.lz-block` (unit top), `.lz-pill`, `.lz-pill-id`, `.lz-pill-text`; `.lz-chip` (card header), `.lz-chip-id`, `.lz-chip-text`
+- All LZ HTML in unit files updated to new structure
+- `var(--acc)` already exists per chapter — no new tokens needed
+
+---
+
+## 2. Password + Reset Tool Row
+
+### Layout
+
+Single horizontal row inside the unit's tool/access area, replacing the current separate password section:
+
+```
+Zugang   [password input ············]   [Freischalten]   [↺ Einheit zurücksetzen]
+```
+
+- `Zugang` label: monospace, small, uppercase, muted — `var(--ink3)`
+- Password input: borderless except bottom border, monospace, transparent background, `flex: 1`
+- Freischalten button: ghost style, `border: 1px solid var(--border)`, no fill
+- Reset button: no border, no background, monospace, muted — appears as plain text link
+- Entire row: `opacity: .7`, transitions to `opacity: 1` on hover
+- No card/box wrapping the row — it sits inline within the unit header area
+
+### Implementation notes
+
+- New CSS classes: `.tool-row`, `.tool-label`, `.tool-input`, `.tool-btn-unlock`, `.tool-btn-reset`
+- Replace existing password UI in all unit HTML files
+- Reset functionality (`js/engine.js` `resetUnit()`) unchanged — just the button's DOM location changes. `resetUnit()` clears localStorage for the current unit only (unit-scoped, not page-scoped), so moving the button does not change its scope.
+
+---
+
+## 3. Aufgabe Card Header Layout
+
+### Current problem
+
+Number, title, and tags are stacked (tags under title), size hierarchy is inconsistent, title doesn't align vertically with number.
+
+### New layout
+
+Single-row header: `[01]  [Title text ···················]  [LZ chip]  [Klausur]`
+
+- All elements: `align-items: center` — vertically centered on the same baseline
+- Number: monospace, `1.25rem`, `font-weight: 800`, accent color
+- Title: Fraunces serif, `1.05rem`, `font-weight: 700`, `var(--ink)`, `flex: 1`
+- Tags (LZ chip + Klausur badge): `flex-shrink: 0`, right-aligned, gap `.35rem`
+- Body text: `0.85rem`, smaller than title — hierarchy preserved
+- Mock-exercise / fill-in content inside body: `0.82rem`, slightly smaller still
+
+### Implementation notes
+
+- New CSS classes: `.auf`, `.auf-head`, `.auf-num`, `.auf-title`, `.auf-tags`, `.auf-body`
+- Replaces `.auf-cur-*` / `.auf-new-*` naming used during brainstorming
+- All Aufgabe cards in unit HTML files updated to new structure
+
+---
+
+## 4. UK Sequential Flow
+
+### Overview
+
+The Urteilskompetenz (UK) block uses a 3-stage sequential reveal. Students complete one stage before the next unlocks. This prevents students from jumping to the conclusion before building the argument.
+
+### Stages
+
+| Stage | Label | Contents |
+|-------|-------|----------|
+| 1 | Einleitung | Kriterium selection + AB I steps (combined) |
+| 2 | Hauptteil | AB II steps |
+| 3 | Schlussfolgerung | AB III step |
+
+Kriterium is part of Einleitung because selecting the evaluative standard is the first step of contextualizing the question — not a separate meta-task.
+
+### State machine
+
+**Active stage**: full content visible, options clickable
+**Completed stage**: collapses to a single summary row (`✓  AB I — Einleitung  |  Kriterium: ✓`), muted styling
+**Locked stage**: shown as a muted row (`🔒  Hauptteil (AB II)  |  Beantworte zuerst die Einleitung`), `opacity: .4`, `pointer-events: none`
+
+A **Recheck chip group** (Roter Faden) appears between Einleitung and Hauptteil, and between Hauptteil and Schlussfolgerung. The chip matching the student's chosen Kriterium is pre-selected. Students must confirm the same Kriterium before proceeding — this reinforces the red thread through the argument.
+
+**Recheck interaction states:**
+- **No chip selected**: proceed button disabled
+- **Correct chip selected** (matches `_kritIdx`): proceed button enabled
+- **Wrong chip selected**: proceed button disabled; error message shown below the chip group ("Dieser Maßstab stimmt nicht mit deiner Wahl überein — überprüfe dein Kriterium."); error and disabled state clear when student re-selects
+
+**Stage completion trigger:** A stage is complete when the student clicks the stage's submit/proceed button AND the submission is validated as correct. The validation rules differ by content type within a stage:
+- **Kriterium selection**: the selected option must match `data-correct="true"` — wrong selection blocks advancement and shows an error
+- **AB step options**: each step must have *any* selection (no correct/wrong — these are structured reflection prompts, not tested knowledge). A step with no selection blocks the proceed button; selecting either option is acceptable.
+
+Merely selecting options without clicking submit does not advance the stage.
+
+### Answer option format
+
+Each step presents 2 answer options. Each option is **exactly 2 sentences**:
+
+- **Sentence 1**: the substantive claim or analysis
+- **Sentence 2**: elaboration, example, or justification
+
+Two-sentence structure is required because single-sentence options are too thin for exam-level evaluation tasks — students need to practice reading and assessing arguments with explanation, not just bare claims.
+
+### Error type taxonomy
+
+Wrong options must represent **specific, learnable error types** — not random wrong answers. This turns wrong options into implicit learning content.
+
+| Error type | Description | Example |
+|------------|-------------|---------|
+| **Richtig aber irrelevant 1** | Factually correct but doesn't address the Kriterium | Correct fact about the single market that doesn't speak to efficiency + social balance |
+| **Richtig aber unstrukturiert** | Factually correct but wrong step | 
+| **Unsachlichkeit** | Facts are wrongly stated, represented or interpreted (not objectively) | 
+| **Sachwissen Schwächen** | Theoretical elements have been confused, omitted, are vague or wrong |
+  **Zusammenhang nicht klar / Kette unterbrochen** | Statements are missing justifications or are not part of the ongoing chain of argument (could also be only the second sentence within the option)|
+| **Werturteil ohne Analyse** | Value judgment stated as if it were analysis | "Der Binnenmarkt ist eindeutig unfair" without argument |
+| **Einseitig** | Only covers one perspective, ignores the other | Presents only employer/exporter view, ignores labor perspective |
+| **Deskriptiv statt analytisch** | Describes what exists instead of evaluating it against the Kriterium | Lists the four freedoms without connecting to the evaluative standard |
+| **Übergeneralisierung** | Sweeping claim not supported by material | "Der Binnenmarkt schadet strukturell allen schwächeren Ländern" |
+
+**Rotation rule:** Each wrong option within a single UK block must use a different error type from the taxonomy. The rotation can start at any point in the list, but no two steps in the same exercise may share an error type. This ensures students encounter varied, distinct mistake patterns throughout one exercise rather than the same flaw repeated.
+
+### Implementation notes
+
+- Stage reveal managed by `js/uk-quiz.js` (existing file) — extend `_initBlock` to track stage completion and unlock next stage
+- Locked stage CSS: reuse `.qg-wrapper.locked` pattern (opacity + pointer-events) or new dedicated class `.uk-stage.locked`
+- Completed stage collapse: toggle `.uk-stage.done` class, which hides content and shows summary row
+- Recheck chips: existing `.uk-krit-chip` / `.uk-krit-recheck` pattern, pre-populate selected state from `_kritIdx`
+- All UK HTML in unit files updated to 3-stage structure
+
+---
+
+## CSS Token Summary
+
+No new tokens required. All new components use:
+- `var(--acc)`, `var(--accL)`, `var(--accB)` — chapter accent (already per-chapter)
+- `var(--rf-acc)`, `var(--ab1-acc)`, `var(--ab2-acc)`, `var(--ab3-acc)` — methodology colors. **Dependency:** added to `css/style.css` in the 2026-03-18 plan. Confirm they exist in `:root` before writing UK sequential flow CSS; add them if missing.
+- `var(--ink)`, `var(--ink2)`, `var(--ink3)`, `var(--border)` — existing neutrals
+
+---
+
+## Files Affected
+
+| File | Change |
+|------|--------|
+| `css/style.css` | New classes for all 4 areas |
+| `js/uk-quiz.js` | Stage unlock logic, recheck pre-select |
+| `einheiten/3-5_binnenmarkt.html` | Reference unit — all 4 areas applied first |
+| `einheiten/3-*.html` (all others) | Same 4 areas applied after 3.5 validated |
+
+---
+
+## Success Criteria
+
+- LZ block in unit top shows full text with prominent `LZ X` identifier; in card headers shows abbreviated two-part chip
+- Password + reset lives on a single ghost row; row fades until hover
+- Aufgabe card header is single row with centered elements; tags right-aligned
+- UK block reveals one stage at a time; completed stages collapse; locked stages are muted; Recheck chips enforce Kriterium consistency; wrong options represent named error types
