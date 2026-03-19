@@ -79,8 +79,10 @@
         var recheck = chip.closest('.uk-krit-recheck');
         if (!recheck) return;
         recheck.querySelectorAll('.uk-krit-chip').forEach(function (c) {
-          c.classList.remove('selected');
+          c.classList.remove('selected', 'wrong');
         });
+        var rErr = recheck.querySelector('.uk-krit-recheck-err');
+        if (rErr) { rErr.textContent = ''; rErr.style.display = 'none'; }
         chip.classList.add('selected');
         _kritIdx = chip.getAttribute('data-msidx');
         _checkAllSelected(block);
