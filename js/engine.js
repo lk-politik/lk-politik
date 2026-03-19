@@ -178,6 +178,16 @@
     var saved = Progress.load(CONF.id);
     if (!saved) return;
 
+    /* Restore Einstieg passed state — must come before saved.unlocked check */
+    if (saved.einstieg) {
+      var einstieg = document.getElementById('einstieg');
+      if (einstieg) {
+        einstieg.setAttribute('data-state', 'passed');
+        var pill = document.getElementById('einstieg-status');
+        if (pill) pill.textContent = 'Bestanden';
+      }
+    }
+
     if (saved.unlocked) {
       _unlockAll();
       /* Passwort-Felder verstecken */
@@ -193,10 +203,28 @@
         if (saved.gates[key]) {
           var nr = parseInt(key.replace('qg', ''), 10);
           qgPass[nr] = true;
-          var gate = document.getElementById(key);
-          if (gate) gate.setAttribute('data-passed', '1');
+          /* NOTE: _saveGates stores qgPass with integer keys.
+             After JSON round-trip these become string keys like "1", "2".
+             Use 'qg' + nr to construct the correct element ID. */
+          var gateId = 'qg' + nr;
+          var gate = document.getElementById(gateId);
+          if (gate) {
+            gate.setAttribute('data-passed', '1');
+            gate.setAttribute('data-state', 'passed');
+            var pill = document.getElementById(gateId + 's');
+            if (pill) {
+              pill.textContent = 'Block ' + nr + ': Bestanden';
+              pill.className = 'qg-status pass';
+            }
+          }
           /* Nächsten Block freischalten ohne Animation */
           _unlockBlock(nr, false);
+          /* Also unlock the .qg-wrapper for the next gate (no animation on restore) */
+          var restoredGate = document.getElementById('qg' + (nr + 1));
+          if (restoredGate) {
+            var restoredWrapper = restoredGate.closest('.qg-wrapper');
+            if (restoredWrapper) restoredWrapper.classList.remove('locked');
+          }
         }
       });
     }
@@ -369,6 +397,13 @@
     /* -- Bei vollem Erfolg: Gate bestanden -- */
     if (correct === total && total > 0) {
       gate.setAttribute('data-passed', '1');
+      gate.setAttribute('data-state', 'passed');
+      /* Update status pill to "Block N: Bestanden" */
+      var pill = document.getElementById('qg' + gateNr + 's');
+      if (pill) {
+        pill.textContent = 'Block ' + gateNr + ': Bestanden';
+        pill.className = 'qg-status pass';
+      }
       qgPass[gateNr] = true;
       _saveGates();
       unlk(gateNr);
@@ -407,6 +442,64 @@
     var fbEl = document.getElementById('qfb' + gateNr);
     if (fbEl) { fbEl.style.display = 'none'; fbEl.textContent = ''; }
   };
+
+  /* --------------------------------------------------------
+     toggleQg(gateNr) — Collapse/expand a passed QG panel
+     passed  → retry  (expand, reset answers)
+     retry   → passed (collapse)
+     open    → no-op  (cannot collapse before passing)
+  -------------------------------------------------------- */
+  window.toggleQg = function (gateNr) {
+    var gate = document.getElementById('qg' + gateNr);
+    if (!gate) return;
+    var state = gate.getAttribute('data-state') || 'open';
+    if (state === 'passed') {
+      _resetQgForRetry(gateNr, gate);
+      gate.setAttribute('data-state', 'retry');
+    } else if (state === 'retry') {
+      /* Spec: "Chevron closes immediately — no obligation to re-answer." */
+      gate.setAttribute('data-state', 'passed');
+    }
+    /* state === 'open': no-op — cannot collapse before passing */
+  };
+
+  /* --------------------------------------------------------
+     retryQg(gateNr) — Expand from the retry link (same as
+     clicking the header in passed state)
+  -------------------------------------------------------- */
+  window.retryQg = function (gateNr) {
+    var gate = document.getElementById('qg' + gateNr);
+    if (!gate) return;
+    var state = gate.getAttribute('data-state') || 'open';
+    if (state === 'passed') {
+      _resetQgForRetry(gateNr, gate);
+      gate.setAttribute('data-state', 'retry');
+    }
+  };
+
+  /* Resets answers inside a QG (bypasses qgPass guard — gate stays passed).
+     Known limitation: .olist DOM order is NOT restored. The engine never
+     stores original item order, so shuffled ordering tasks will show the
+     student's last arrangement. This matches existing rstQ behaviour.
+     qgPass[gateNr] and data-passed are NOT cleared — gate stays unlocked. */
+  function _resetQgForRetry(gateNr, gate) {
+    gate.querySelectorAll('.mco input').forEach(function (inp) {
+      inp.checked = false;
+      var item = inp.closest('.mco');
+      if (item) item.classList.remove('selected', 'correct', 'wrong');
+    });
+    gate.querySelectorAll('.qinp input, .qinp textarea').forEach(function (inp) {
+      inp.value = '';
+      inp.style.borderColor = '';
+      var fb = inp.closest('.qinp') ? inp.closest('.qinp').querySelector('.qinp-feedback') : null;
+      if (fb) { fb.className = 'qinp-feedback'; fb.textContent = ''; }
+    });
+    gate.querySelectorAll('.oitem').forEach(function (item) {
+      item.classList.remove('correct', 'wrong');
+    });
+    var fbEl = document.getElementById('qfb' + gateNr);
+    if (fbEl) { fbEl.style.display = 'none'; fbEl.textContent = ''; }
+  }
 
   /* --------------------------------------------------------
      unlk(gateNr) — Nächsten Block & Gate freischalten
@@ -457,6 +550,15 @@
       if (animate) {
         nextGate.classList.add('unlocking');
         setTimeout(function () { nextGate.classList.remove('unlocking'); }, 600);
+      }
+      /* Also unlock the .qg-wrapper parent (added in visual redesign) */
+      var wrapper = nextGate.closest('.qg-wrapper');
+      if (wrapper) {
+        wrapper.classList.remove('locked');
+        if (animate) {
+          wrapper.classList.add('unlocking');
+          setTimeout(function () { wrapper.classList.remove('unlocking'); }, 600);
+        }
       }
     }
   }
@@ -914,6 +1016,134 @@
   /* ==========================================================
      INIT — beim Laden der Seite
      ========================================================== */
+  /* ==========================================================
+     EINSTIEG-ENGINE
+     Chip-based check for the Einstieg entry block.
+     ========================================================== */
+
+  var _einstiegSel = {};  /* { sitNr: value } — selected chip per situation */
+
+  /**
+   * selEinstieg(btn, sitNr)
+   * Select a freedom chip for a situation card.
+   * Only one chip active per card at a time.
+   * Enables the submit button once all 4 situations are answered.
+   */
+  window.selEinstieg = function (btn, sitNr) {
+    var card = btn.closest('.einstieg-card');
+    if (!card) return;
+
+    /* Deselect other chips in this card */
+    card.querySelectorAll('.e-chip').forEach(function (b) {
+      b.classList.remove('selected', 'correct', 'wrong');
+    });
+    btn.classList.add('selected');
+    _einstiegSel[sitNr] = btn.getAttribute('data-v');
+
+    /* Enable submit once all cards answered */
+    var allCards = document.querySelectorAll('.einstieg-card');
+    var allAnswered = allCards.length > 0;
+    for (var _i = 0; _i < allCards.length; _i++) {
+      if (!_einstiegSel[allCards[_i].getAttribute('data-sit')]) {
+        allAnswered = false;
+        break;
+      }
+    }
+    var submitBtn = document.getElementById('einstieg-btn');
+    if (submitBtn) submitBtn.disabled = !allAnswered;
+  };
+
+  /**
+   * chkEinstieg()
+   * Validate all chip selections against data-answer on each card.
+   * On all-correct: set data-state="passed", persist, update pill.
+   * On wrong: show per-chip correct/wrong colours, leave open.
+   */
+  window.chkEinstieg = function () {
+    var einstieg = document.getElementById('einstieg');
+    if (!einstieg) return;
+
+    var cards      = einstieg.querySelectorAll('.einstieg-card');
+    var allCorrect = true;
+
+    cards.forEach(function (card) {
+      var sitNr    = card.getAttribute('data-sit');
+      var expected = card.getAttribute('data-answer');
+      var given    = _einstiegSel[sitNr];
+
+      /* Reset chip states */
+      card.querySelectorAll('.e-chip').forEach(function (b) {
+        b.classList.remove('correct', 'wrong');
+      });
+
+      if (given) {
+        var selChip = card.querySelector('.e-chip[data-v="' + given + '"]');
+        if (given === expected) {
+          if (selChip) selChip.classList.add('correct');
+        } else {
+          if (selChip) selChip.classList.add('wrong');
+          allCorrect = false;
+        }
+      } else {
+        allCorrect = false;
+      }
+    });
+
+    if (allCorrect) {
+      einstieg.setAttribute('data-state', 'passed');
+      var pill = document.getElementById('einstieg-status');
+      if (pill) pill.textContent = 'Bestanden';
+      /* Persist Einstieg pass */
+      if (typeof CONF !== 'undefined') {
+        var existing = Progress.load(CONF.id) || {};
+        existing.einstieg = true;
+        Progress.save(CONF.id, existing);
+      }
+    }
+  };
+
+  /**
+   * toggleEinstieg()
+   * Called by clicking the Einstieg header.
+   * passed     → re-opened  (expand + reset answers; pill stays "Bestanden")
+   * re-opened  → passed     (collapse)
+   * open       → no-op      (cannot collapse before passing)
+   */
+  window.toggleEinstieg = function () {
+    var einstieg = document.getElementById('einstieg');
+    if (!einstieg) return;
+    var state = einstieg.getAttribute('data-state') || 'open';
+    if (state === 'passed') {
+      _resetEinstiegAnswers(einstieg);
+      einstieg.setAttribute('data-state', 're-opened');
+    } else if (state === 're-opened') {
+      einstieg.setAttribute('data-state', 'passed');
+    }
+  };
+
+  /**
+   * retryEinstieg()
+   * Called by the "↺ Nochmal ansehen" link in the retry strip.
+   */
+  window.retryEinstieg = function () {
+    var einstieg = document.getElementById('einstieg');
+    if (!einstieg) return;
+    var state = einstieg.getAttribute('data-state') || 'open';
+    if (state === 'passed') {
+      _resetEinstiegAnswers(einstieg);
+      einstieg.setAttribute('data-state', 're-opened');
+    }
+  };
+
+  function _resetEinstiegAnswers(einstieg) {
+    _einstiegSel = {};
+    einstieg.querySelectorAll('.e-chip').forEach(function (b) {
+      b.classList.remove('selected', 'correct', 'wrong');
+    });
+    var btn = document.getElementById('einstieg-btn');
+    if (btn) btn.disabled = true;
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     /* Zustand aus localStorage wiederherstellen */
     _restoreState();
