@@ -45,6 +45,7 @@
   --acc:       #3b6fa0;
   --accL:      #e8f0f8;
   --accG:      rgba(59, 111, 160, 0.08);
+  --accB:      rgba(0,0,0,.12);
 
   /* Typografie */
   --ff-head:   'Fraunces', Georgia, serif;
@@ -1894,12 +1895,49 @@ code, .mono {
 .auf-tags { display: flex; gap: 6px; flex-wrap: wrap; }
 .auf-i { font-size: .9rem; color: var(--ink2); margin-bottom: 1rem; line-height: 1.7; padding-left: 3rem; }
 
-/* Lernziel-Pills */
-.lz-list { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; margin-top: .9rem; }
+/* Lernziel-Pills (unit header — full text, two-zone) */
+.lz-list { display: flex; flex-direction: column; gap: .55rem; margin-top: .9rem; }
 .lz-pill {
-  font-family: var(--ff-mono); font-size: .68rem; letter-spacing: .05em;
-  text-transform: uppercase; padding: 4px 12px; border-radius: 99px; font-weight: 600;
-  background: var(--accL); color: var(--acc); border: 1px solid rgba(0,0,0,.08);
+  display: inline-flex; align-items: stretch; border-radius: 6px;
+  overflow: hidden; align-self: flex-start;
+  border: 1px solid rgba(0,0,0,.08);
+}
+.lz-pill-id {
+  font-family: var(--ff-mono); font-size: .72rem; font-weight: 700;
+  background: var(--acc); color: #fff;
+  padding: .3em .7em; letter-spacing: .04em; white-space: nowrap;
+  display: flex; align-items: center;
+}
+.lz-pill-text {
+  font-family: var(--ff-body); font-size: .8rem;
+  background: var(--accL); color: var(--ink2);
+  padding: .3em .75em; line-height: 1.4;
+}
+
+/* Lernziel-Chip (card headers — abbreviated, two-zone) */
+.lz-chip {
+  display: inline-flex; align-items: stretch; border-radius: 4px;
+  overflow: hidden; border: 1px solid var(--accB);
+}
+.lz-chip-id {
+  font-family: var(--ff-mono); font-size: .6rem; font-weight: 700;
+  background: var(--acc); color: #fff;
+  padding: .2em .45em; letter-spacing: .04em;
+  display: flex; align-items: center;
+}
+.lz-chip-text {
+  font-family: var(--ff-mono); font-size: .6rem; font-weight: 500;
+  background: var(--accL); color: var(--acc);
+  padding: .2em .5em;
+  display: flex; align-items: center;
+}
+
+/* Klausur badge (replaces .lz-tag) */
+.klausur-tag {
+  font-family: var(--ff-mono); font-size: .6rem; font-weight: 600;
+  padding: .18em .55em; border-radius: 4px; letter-spacing: .04em;
+  background: var(--gold-l); color: var(--gold);
+  border: 1px solid rgba(146,64,14,.15); white-space: nowrap;
 }
 .lz-tag { font-family: var(--ff-mono); font-size: .68rem; letter-spacing: .05em; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; font-weight: 600; background: var(--gold-l); color: var(--gold); }
 .lz-tag.ex { background: var(--accL); color: var(--acc); }
