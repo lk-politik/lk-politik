@@ -2352,9 +2352,8 @@ code, .mono {
 
 .sw[data-p="core"] .sw-head::after {
   content: 'Prüfung';
-  position: absolute;
-  top: 0;
-  right: 0;
+  flex-shrink: 0;
+  align-self: center;
   background: var(--acc);
   color: #fff;
   font-family: var(--ff-mono);
@@ -2363,7 +2362,7 @@ code, .mono {
   letter-spacing: .06em;
   text-transform: uppercase;
   padding: .2em .65em;
-  border-radius: 0 var(--r) 0 6px;
+  border-radius: 4px;
 }
 
 /* Context: muted treatment — always active */
