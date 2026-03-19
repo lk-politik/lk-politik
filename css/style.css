@@ -33,6 +33,7 @@
   --gold-l:    #fef9ec;
   --ok:        #2d7a4f;
   --ok-l:      #eaf4ee;
+  --ok-border: #a5d4b8;
   --err:       #b83232;
   --err-l:     #fbeaea;
 
@@ -286,7 +287,7 @@ code, .mono {
 /* Block title — serif, warm, inviting */
 .sw-title {
   font-family: var(--ff-head);
-  font-size: 1rem;
+  font-size: 0.92rem;
   font-weight: 600;
   color: var(--ink);
   line-height: 1.25;
@@ -344,47 +345,184 @@ code, .mono {
 }
 
 /* ----------------------------------------------------------
-   9. Einstieg-Box (.einstieg)
+   9. Einstieg-Box (.einstieg) — collapsible accent block
    ---------------------------------------------------------- */
+
 .einstieg {
-  background: var(--card);
   border: 2px solid var(--acc);
   border-radius: var(--r);
-  padding: 1.75rem 1.5rem 1.5rem;
   margin-bottom: var(--gap);
-  box-shadow: 0 1px 3px rgba(0,0,0,.05);
+  overflow: hidden;
+  transition: border-color .2s;
 }
 
-/* Fraunces heading inside einstieg — warm, inviting entry point */
-.einstieg h2 {
+/* Header strip: full accent background */
+.einstieg-header {
+  background: var(--acc);
+  padding: .85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.einstieg-header:hover {
+  filter: brightness(1.05);
+}
+
+/* "EINSTIEG" mono badge */
+.einstieg-badge {
+  font-family: var(--ff-mono);
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  background: rgba(255,255,255,.18);
+  color: #fff;
+  padding: .18em .6em;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+/* Fraunces title in header */
+.einstieg-title {
   font-family: var(--ff-head);
   font-size: 1.2rem;
   font-weight: 700;
-  color: var(--acc);
-  margin-top: 0;
-  margin-bottom: .9rem;
-  line-height: 1.3;
+  color: #fff;
+  line-height: 1.25;
+  flex: 1;
 }
 
-.einstieg p {
+/* Status pill: Offen / Bestanden */
+.einstieg-status-pill {
+  font-family: var(--ff-mono);
+  font-size: .68rem;
+  font-weight: 600;
+  padding: .18em .6em;
+  border-radius: 4px;
+  background: rgba(255,255,255,.15);
+  color: #fff;
+  flex-shrink: 0;
+}
+
+/* Chevron */
+.einstieg-chevron {
+  color: rgba(255,255,255,.7);
+  font-size: .8rem;
+  flex-shrink: 0;
+}
+
+/* Body: soft accent tint */
+.einstieg-body {
+  background: var(--accL);
+  padding: 1.25rem 1.5rem;
+}
+
+.einstieg-body > p {
   font-size: .9rem;
   color: var(--ink2);
   line-height: 1.75;
+  margin-bottom: .75rem;
 }
 
-/* Fallback for legacy mono label */
-.einstieg-head {
-  font-family: var(--ff-mono);
-  font-size: .75rem;
-  font-weight: 500;
-  color: var(--gold);
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  margin-bottom: .75rem;
-  display: flex;
-  align-items: center;
-  gap: .4rem;
+/* Inner situation cards: semi-transparent white on the tint */
+/* Note: rgba(var(--acc), 0.18) is invalid CSS — use color-mix instead */
+.einstieg-card {
+  background: rgba(255,255,255,.7);
+  border: 1px solid color-mix(in srgb, var(--acc) 18%, transparent);
+  border-radius: var(--r-sm);
+  padding: .85rem 1rem;
+  margin-top: .75rem;
+  font-size: .9rem;
+  color: var(--ink2);
+  line-height: 1.65;
 }
+
+/* Freedom selection chips */
+.einstieg-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-top: .6rem;
+}
+
+.e-chip {
+  font-family: var(--ff-mono);
+  font-size: .7rem;
+  font-weight: 500;
+  padding: .28em .8em;
+  border: 1.5px solid var(--border);
+  border-radius: 99px;
+  background: rgba(255,255,255,.8);
+  color: var(--ink2);
+  cursor: pointer;
+  transition: border-color .15s, background .15s, color .15s;
+}
+
+.e-chip:hover {
+  border-color: var(--acc);
+  background: #fff;
+}
+
+.e-chip.selected {
+  border-color: var(--acc);
+  background: var(--acc);
+  color: #fff;
+}
+
+.e-chip.correct {
+  border-color: var(--ok);
+  background: var(--ok);
+  color: #fff;
+}
+
+.e-chip.wrong {
+  border-color: var(--err);
+  background: var(--err-l);
+  color: var(--err);
+}
+
+/* Retry strip — visible below header when passed */
+.einstieg-retry {
+  display: none;
+  padding: .5rem 1.25rem .75rem;
+  background: var(--ok-l);
+  font-size: .8rem;
+}
+
+/* --- Passed state --- */
+.einstieg[data-state="passed"] {
+  border-color: var(--ok-border);
+}
+
+.einstieg[data-state="passed"] .einstieg-header {
+  background: var(--ok);
+}
+
+.einstieg[data-state="passed"] .einstieg-body {
+  display: none;
+}
+
+.einstieg[data-state="passed"] .einstieg-retry {
+  display: block;
+}
+
+/* --- Re-opened state (still passed, body visible, answers reset) --- */
+.einstieg[data-state="re-opened"] {
+  border-color: var(--ok-border);
+}
+
+.einstieg[data-state="re-opened"] .einstieg-header {
+  background: var(--ok);
+}
+
+.einstieg[data-state="re-opened"] .einstieg-retry {
+  display: none;
+}
+
+/* .lk-note and .lk-note strong — UNCHANGED from existing rules below */
 
 /* Lehrkraft-Notiz innerhalb .einstieg (und allgemein) */
 .lk-note {
@@ -410,25 +548,13 @@ code, .mono {
 .example {
   background: var(--input-bg);
   border: 1px solid var(--border);
+  border-left: 2px solid color-mix(in srgb, var(--acc) 30%, transparent);
   border-radius: var(--r-sm);
-  padding: .75rem 1rem;
+  padding: .75rem 1rem .75rem 1.25rem;
   margin-top: .75rem;
   font-size: .9rem;
-  font-style: italic;
   color: var(--ink2);
-}
-
-.example::before {
-  content: "Beispiel: ";
-  font-style: normal;
-  font-weight: 600;
-  font-size: .8rem;
-  font-family: var(--ff-mono);
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  color: var(--ink3);
-  display: block;
-  margin-bottom: .3rem;
+  line-height: 1.7;
 }
 
 /* ----------------------------------------------------------
@@ -563,6 +689,8 @@ code, .mono {
   display: flex;
   align-items: center;
   gap: .5rem;
+  cursor: pointer;
+  user-select: none;
 }
 
 /* Status badge inside gate header */
@@ -597,8 +725,9 @@ code, .mono {
 }
 
 .qi-t {
-  font-size: .875rem;
-  font-weight: 500;
+  font-family: var(--ff-head);
+  font-size: 0.85rem;
+  font-weight: 600;
   color: var(--ink);
   line-height: 1.55;
   margin-bottom: .6rem;
@@ -615,6 +744,124 @@ code, .mono {
   font-size: 2rem;
   margin-bottom: .75rem;
   display: block;
+}
+
+/* Breathing room between completed check and next knowledge block */
+.qg-wrapper + .sw {
+  margin-top: 1.75rem;
+}
+
+/* Tight coupling: QG visually sub-part of the SW block above */
+.sw + .qg-wrapper {
+  margin-top: 0.5rem;
+}
+
+/* ----------------------------------------------------------
+   QG hierarchy wrapper — indent + connector line
+   ---------------------------------------------------------- */
+
+/* Creates visible subordination to SW block above */
+.qg-wrapper {
+  position: relative;
+  padding-left: 1.1rem;
+  margin-bottom: var(--gap);
+}
+
+/* Fading vertical accent line connecting QG to SW above */
+.qg-wrapper::before {
+  content: '';
+  position: absolute;
+  left: 0.45rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--acc) 60%, transparent);
+}
+
+/* QG inside wrapper loses its own bottom margin (wrapper handles spacing) */
+.qg-wrapper .qg {
+  margin-bottom: 0;
+  border-radius: var(--r-sm);
+}
+
+/* ----------------------------------------------------------
+   QG states — passed / retry
+   ---------------------------------------------------------- */
+
+/* Passed and retry: green border + background */
+.qg[data-state="passed"],
+.qg[data-state="retry"] {
+  border-color: var(--ok-border);
+  background: var(--ok-l);
+}
+
+.qg[data-state="passed"] .qg-head,
+.qg[data-state="retry"] .qg-head {
+  background: var(--ok-l);
+  border-bottom-color: var(--ok-border);
+}
+
+/* Passed: body hidden (collapsed strip) */
+.qg[data-state="passed"] .qg-body {
+  display: none;
+}
+
+/* Retry link — visible only in passed or retry state */
+.qg-retry-link {
+  display: none;
+}
+
+.qg[data-state="passed"] .qg-retry-link,
+.qg[data-state="retry"] .qg-retry-link {
+  display: block;
+  text-align: right;
+  padding: 0.4rem 0.75rem 0.5rem;
+  font-size: 0.75rem;
+  color: var(--ok);
+  cursor: pointer;
+  font-family: var(--ff-mono);
+}
+
+/* ----------------------------------------------------------
+   QG header element font overrides
+   ---------------------------------------------------------- */
+
+.qg-label {
+  font-family: var(--ff-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--sw);
+  letter-spacing: 0.03em;
+}
+
+.qg-chevron {
+  font-size: 0.75rem;
+  color: var(--ink3);
+  margin-left: auto;
+  transition: transform 0.2s;
+}
+
+.qg[data-state="passed"] .qg-chevron,
+.qg[data-state="retry"] .qg-chevron {
+  color: var(--ok);
+}
+
+.qg-status {
+  font-family: var(--ff-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+}
+
+.qg-status.pend {
+  background: var(--gold-l);
+  color: var(--gold);
+}
+
+.qg-status.pass {
+  background: var(--ok-l);
+  color: var(--ok);
 }
 
 /* ----------------------------------------------------------
@@ -653,7 +900,7 @@ code, .mono {
   border: 1.5px solid var(--border-l);
   border-radius: var(--r-sm);
   padding: .55rem .9rem;
-  font-size: .875rem;
+  font-size: 0.77rem;
   color: var(--ink2);
   cursor: pointer;
   transition: border-color .15s, background .15s;
@@ -767,7 +1014,8 @@ code, .mono {
   background: var(--input-bg);
   border: 1.5px solid var(--border);
   border-radius: var(--r-sm);
-  padding: .7rem 1rem;
+  padding: .35rem .75rem;
+  font-size: .82rem;
   cursor: grab;
   transition: border-color .15s, box-shadow .15s;
   touch-action: none; /* iPad drag support */
@@ -1119,32 +1367,31 @@ code, .mono {
    24. Divider / Abschnitt-Trenner
    ---------------------------------------------------------- */
 .section-divider {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin: 2.5rem 0 1.75rem;
-  text-align: center;
   position: relative;
+  text-align: center;
+  margin: 2rem 0 1.5rem;
 }
 
-/* The label text — Fraunces serif for warmth */
-.section-divider span {
-  font-family: var(--ff-head);
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--acc);
-  white-space: nowrap;
+.section-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--acc) 20%, var(--acc) 80%, transparent);
+  transform: translateY(-50%);
+}
+
+.section-divider-inner {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
   background: var(--bg);
   padding: 0 1rem;
-}
-
-.section-divider::before,
-.section-divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
+  font-family: var(--ff-head);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--acc);
 }
 
 /* ----------------------------------------------------------
@@ -1385,7 +1632,7 @@ code, .mono {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: .7rem;
+  font-size: .65rem;
   transition: border-color .15s, background .15s;
 }
 .oab:hover { border-color: var(--acc); background: var(--accL); }
@@ -1620,7 +1867,7 @@ code, .mono {
 .qi { margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-l); }
 .qi:last-of-type { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
 .qi-n { font-family: var(--ff-mono); font-size: .7rem; color: var(--ink3); letter-spacing: .05em; margin-bottom: .3rem; }
-.qi-t { font-size: .9rem; font-weight: 500; margin-bottom: .6rem; line-height: 1.55; }
+.qi-t { font-family: var(--ff-head); font-size: 0.85rem; font-weight: 600; color: var(--ink); line-height: 1.55; margin-bottom: .6rem; }
 
 /* Aufgaben-Kopfzeile */
 .auf-n { font-family: var(--ff-head); font-size: 1.6rem; font-weight: 800; color: var(--acc); line-height: 1; min-width: 2rem; }
@@ -1651,6 +1898,7 @@ code, .mono {
 @keyframes unlockP { 0%{opacity:.18;transform:scale(.98)} 60%{box-shadow:0 0 40px var(--accG)} 100%{opacity:1;transform:scale(1)} }
 #arbeitsblatt:not(.locked) .ab-gate-msg { display: none; }
 .sw.locked    { opacity: .15; pointer-events: none; filter: blur(3px); transform: scale(.98); }
+.qg-wrapper.locked { opacity: .15; pointer-events: none; filter: blur(3px); transform: scale(.98); }
 .sw.unlocking { animation: unlockP .7s ease-out; }
 
 /* Gate passed state */
@@ -1958,40 +2206,50 @@ code, .mono {
 /* =====================================================
    41. Knowledge Priority System
    data-p="core|imp|ctx" on .sw blocks
-   Toggle activated by .prio-active on body
-   Off by default — no visual change until toggled
+   Always-on — no toggle, no body class needed
    ===================================================== */
 
-/* Core: amber diamond marker before sw-head */
-body.prio-active .sw[data-p="core"] .sw-head::before {
-  content: '◆ ';
-  color: var(--acc);
-  font-size: .7rem;
-  font-family: var(--ff-mono);
-  margin-right: .2em;
+/* Core: corner ribbon "Prüfung" on sw-head */
+.sw[data-p="core"] {
+  position: relative;
 }
 
-/* Context: muted treatment */
-body.prio-active .sw[data-p="ctx"] .sw-head {
+.sw[data-p="core"] .sw-head::after {
+  content: 'Prüfung';
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: var(--acc);
+  color: #fff;
+  font-family: var(--ff-mono);
+  font-size: .58rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: .2em .65em;
+  border-radius: 0 var(--r) 0 6px;
+}
+
+/* Context: muted treatment — always active */
+.sw[data-p="ctx"] .sw-head {
   opacity: .55;
 }
 
-body.prio-active .sw[data-p="ctx"] .sw-body {
+.sw[data-p="ctx"] .sw-body {
   opacity: .65;
 }
 
-body.prio-active .sw[data-p="ctx"] {
+.sw[data-p="ctx"] {
   border-left-color: var(--border);
 }
 
 /* Term-level core override (class="p-core" on <strong>) */
 .p-core {
-  /* Same as .sw strong but explicit for term-level override */
   color: var(--acc);
   font-weight: 600;
 }
 
-body.prio-active strong.p-core::after {
+strong.p-core::after {
   content: ' ◆';
   font-size: .6rem;
   vertical-align: super;
@@ -2000,35 +2258,6 @@ body.prio-active strong.p-core::after {
   font-weight: 700;
 }
 
-/* Priority toggle button */
-.prio-toggle-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: .4rem;
-  font-family: var(--ff-mono);
-  font-size: .7rem;
-  font-weight: 600;
-  color: var(--ink3);
-  background: none;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: .25em .65em;
-  cursor: pointer;
-  transition: all .15s;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-}
-
-.prio-toggle-btn:hover {
-  border-color: var(--acc);
-  color: var(--acc);
-}
-
-body.prio-active .prio-toggle-btn {
-  background: var(--accG);
-  border-color: var(--acc);
-  color: var(--acc);
-}
 
 /* =====================================================
    42. Fachbegriff Inline Tooltip (.fb, .fb-tooltip)

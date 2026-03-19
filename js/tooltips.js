@@ -1,6 +1,6 @@
 /* ==========================================================
    Politik-LK — tooltips.js
-   Operator badge tooltips · Fachbegriff popovers · Priority toggle
+   Operator badge tooltips · Fachbegriff popovers
    Requires: css/style.css sections 40-42
    Load after engine.js in unit HTML files.
    ========================================================== */
@@ -152,36 +152,12 @@
     });
   }
 
-  /* ── Priority toggle ────────────────────────────────────── */
-
-  function _initPriorityToggle() {
-    var btn = document.querySelector('.prio-toggle-btn');
-    if (!btn) return;
-
-    // Get unit id from CONF if available (set by unit HTML)
-    var unitId = (typeof CONF !== 'undefined' && CONF.id) ? CONF.id : 'global';
-    var storageKey = 'plk_prio_' + unitId;
-
-    // Restore previous state
-    if (localStorage.getItem(storageKey) === '1') {
-      document.body.classList.add('prio-active');
-      btn.textContent = '\u25c6 Pr\u00fcfungsrelevanz aktiv';
-    }
-
-    btn.addEventListener('click', function () {
-      var active = document.body.classList.toggle('prio-active');
-      localStorage.setItem(storageKey, active ? '1' : '0');
-      btn.textContent = active ? '\u25c6 Pr\u00fcfungsrelevanz aktiv' : '\u25c7 Pr\u00fcfungsrelevanz anzeigen';
-    });
-  }
-
   /* ── Init ───────────────────────────────────────────────── */
 
   document.addEventListener('DOMContentLoaded', function () {
     _loadData();
     _initOpBadges();
     _initFbTerms();
-    _initPriorityToggle();
 
     // Close tooltips on outside click
     document.addEventListener('click', function (e) {
