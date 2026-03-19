@@ -1,3 +1,25 @@
+# Index Page Redesign Implementation Plan
+
+> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Rewrite `index.html` to replace the AB-Leitfaden + card grid + Lehrkraft dashboard with a chapter accordion that shows only existing units and unlocks them sequentially.
+
+**Architecture:** All changes in `index.html` only. CSS inline, JS inline, no new files. Reuses `js/progress.js` (`Progress.load(id)`). Removes `engine.js` from this page. ES5 throughout.
+
+**Tech Stack:** HTML5, inline CSS3, ES5 JavaScript, localStorage via `Progress` API.
+
+---
+
+### Task 1: Rewrite index.html
+
+**Files:**
+- Modify: `index.html` (full rewrite)
+
+- [ ] **Step 1: Replace index.html with the new implementation**
+
+Write the following complete file to `index.html`:
+
+```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -160,33 +182,33 @@ var SECTIONS = [
     id: 'methodik',
     label: 'Methodik',
     units: [
-      { id: 'M-1', num: 'M.1', title: 'AB I — Wissen zeigen',              href: 'einheiten/m-1_ab1.html', status: 'pending', color: null },
+      { id: 'M-1', num: 'M.1', title: 'AB I — Wissen zeigen',             href: 'einheiten/m-1_ab1.html', status: 'pending', color: null },
       { id: 'M-2', num: 'M.2', title: 'AB II — Analysieren und Einordnen', href: 'einheiten/m-2_ab2.html', status: 'pending', color: null },
-      { id: 'M-3', num: 'M.3', title: 'AB III — Politisch urteilen',        href: 'einheiten/m-3_ab3.html', status: 'pending', color: null }
+      { id: 'M-3', num: 'M.3', title: 'AB III — Politisch urteilen',       href: 'einheiten/m-3_ab3.html', status: 'pending', color: null }
     ]
   },
   {
     id: 'kap3',
     label: 'Kapitel 3 — Die Europäische Union',
     units: [
-      { id: '3-2',  num: '3.2',  title: 'Die EU nach dem Vertrag von Lissabon',          href: 'einheiten/3-2_lissabon.html',         status: 'pending', color: null },
-      { id: '3-3',  num: '3.3',  title: 'Gesetzgebung in der EU',                         href: 'einheiten/3-3_gesetzgebung.html',      status: 'pending', color: null },
-      { id: '3-4',  num: '3.4',  title: 'Das Mehrebenensystem der EU',                    href: 'einheiten/3-4_mehrebenensystem.html',  status: 'pending', color: null },
-      { id: '3-5',  num: '3.5',  title: 'Der Binnenmarkt und die vier Freiheiten',        href: 'einheiten/3-5_binnenmarkt.html',       status: 'active',  color: '#b45309' },
-      { id: '3-6',  num: '3.6',  title: 'Stufen der wirtschaftlichen Integration',        href: 'einheiten/3-6_integration.html',       status: 'pending', color: null },
-      { id: '3-7',  num: '3.7',  title: 'Die Eurozone',                                   href: 'einheiten/3-7_eurozone.html',          status: 'pending', color: null },
-      { id: '3-8',  num: '3.8',  title: 'EZB und Stabilitätskriterien',                   href: 'einheiten/3-8_ezb.html',               status: 'pending', color: null },
-      { id: '3-9',  num: '3.9',  title: 'Reform der Währungsunion',                       href: 'einheiten/3-9_reform.html',            status: 'pending', color: null },
-      { id: '3-10', num: '3.10', title: 'GASP und ESVP',                                  href: 'einheiten/3-10_gasp.html',             status: 'pending', color: null },
-      { id: '3-11', num: '3.11', title: 'Die Hohe Vertreterin',                           href: 'einheiten/3-11_hohe-vertreterin.html', status: 'pending', color: null },
-      { id: '3-12', num: '3.12', title: 'Standpunkte zur Asylpolitik',                    href: 'einheiten/3-12_asyl.html',             status: 'pending', color: null },
-      { id: '3-13', num: '3.13', title: 'Rechtliche Grundlagen der Asylpolitik',          href: 'einheiten/3-13_recht.html',            status: 'pending', color: null },
-      { id: '3-14', num: '3.14', title: 'EU-Erweiterung',                                 href: 'einheiten/3-14_erweiterung.html',      status: 'pending', color: null },
-      { id: '3-15', num: '3.15', title: 'Kopenhagener Kriterien und Beitrittskandidaten', href: 'einheiten/3-15_kopenhagen.html',       status: 'pending', color: null },
-      { id: '3-16', num: '3.16', title: 'EU-Austritt',                                    href: 'einheiten/3-16_austritt.html',         status: 'pending', color: null },
-      { id: '3-18', num: '3.18', title: 'Brexit: Großbritannien und die EU',              href: 'einheiten/3-18_brexit.html',           status: 'pending', color: null },
-      { id: '3-19', num: '3.19', title: 'Bundesstaat, Staatenbund oder Staatenverbund?',  href: 'einheiten/3-19_integration.html',      status: 'pending', color: null },
-      { id: '3-20', num: '3.20', title: 'Differenzierte Integration',                     href: 'einheiten/3-20_differenziert.html',    status: 'pending', color: null }
+      { id: '3-2',  num: '3.2',  title: 'Die EU nach dem Vertrag von Lissabon',         href: 'einheiten/3-2_lissabon.html',         status: 'pending', color: null },
+      { id: '3-3',  num: '3.3',  title: 'Gesetzgebung in der EU',                        href: 'einheiten/3-3_gesetzgebung.html',      status: 'pending', color: null },
+      { id: '3-4',  num: '3.4',  title: 'Das Mehrebenensystem der EU',                   href: 'einheiten/3-4_mehrebenensystem.html',  status: 'pending', color: null },
+      { id: '3-5',  num: '3.5',  title: 'Der Binnenmarkt und die vier Freiheiten',       href: 'einheiten/3-5_binnenmarkt.html',       status: 'active',  color: '#b45309' },
+      { id: '3-6',  num: '3.6',  title: 'Stufen der wirtschaftlichen Integration',       href: 'einheiten/3-6_integration.html',       status: 'pending', color: null },
+      { id: '3-7',  num: '3.7',  title: 'Die Eurozone',                                  href: 'einheiten/3-7_eurozone.html',          status: 'pending', color: null },
+      { id: '3-8',  num: '3.8',  title: 'EZB und Stabilitätskriterien',                  href: 'einheiten/3-8_ezb.html',               status: 'pending', color: null },
+      { id: '3-9',  num: '3.9',  title: 'Reform der Währungsunion',                      href: 'einheiten/3-9_reform.html',            status: 'pending', color: null },
+      { id: '3-10', num: '3.10', title: 'GASP und ESVP',                                 href: 'einheiten/3-10_gasp.html',             status: 'pending', color: null },
+      { id: '3-11', num: '3.11', title: 'Die Hohe Vertreterin',                          href: 'einheiten/3-11_hohe-vertreterin.html', status: 'pending', color: null },
+      { id: '3-12', num: '3.12', title: 'Standpunkte zur Asylpolitik',                   href: 'einheiten/3-12_asyl.html',             status: 'pending', color: null },
+      { id: '3-13', num: '3.13', title: 'Rechtliche Grundlagen der Asylpolitik',         href: 'einheiten/3-13_recht.html',            status: 'pending', color: null },
+      { id: '3-14', num: '3.14', title: 'EU-Erweiterung',                                href: 'einheiten/3-14_erweiterung.html',      status: 'pending', color: null },
+      { id: '3-15', num: '3.15', title: 'Kopenhagener Kriterien und Beitrittskandidaten',href: 'einheiten/3-15_kopenhagen.html',       status: 'pending', color: null },
+      { id: '3-16', num: '3.16', title: 'EU-Austritt',                                   href: 'einheiten/3-16_austritt.html',         status: 'pending', color: null },
+      { id: '3-18', num: '3.18', title: 'Brexit: Großbritannien und die EU',             href: 'einheiten/3-18_brexit.html',           status: 'pending', color: null },
+      { id: '3-19', num: '3.19', title: 'Bundesstaat, Staatenbund oder Staatenverbund?', href: 'einheiten/3-19_integration.html',      status: 'pending', color: null },
+      { id: '3-20', num: '3.20', title: 'Differenzierte Integration',                    href: 'einheiten/3-20_differenziert.html',    status: 'pending', color: null }
     ]
   }
 ];
@@ -246,7 +268,7 @@ function _renderAll() {
     /* Chapter aggregate */
     var chSum = 0;
     rendered.forEach(function (u) { chSum += _calcPct(u.id); });
-    var chPct  = Math.round(chSum / rendered.length);
+    var chPct = Math.round(chSum / rendered.length);
     var chColor = (rendered.length === 1 && rendered[0].color) ? rendered[0].color : 'var(--acc)';
     var unitWord = rendered.length === 1 ? 'Einheit' : 'Einheiten';
 
@@ -287,7 +309,7 @@ function _renderAll() {
           '<span class="unit-title">' + u.title + '</span>' +
           '<div class="unit-prog">' +
             '<div class="prog-bar"><div class="prog-bar-fill" style="width:0%"></div></div>' +
-            '<span class="unit-prog-pct">&#8212;</span>' +
+            '<span class="unit-prog-pct">—</span>' +
           '</div>' +
           '<span class="unit-lock">&#128274;</span>';
       } else {
@@ -319,3 +341,22 @@ document.addEventListener('DOMContentLoaded', _renderAll);
 </script>
 </body>
 </html>
+```
+
+- [ ] **Step 2: Verify in browser**
+
+Open `index.html` locally. Confirm:
+- Header shows school name + title
+- Global progress bar renders at 0 % (no localStorage data)
+- Kapitel 3 accordion opens by default, shows unit 3.5 as clickable with progress bar
+- Clicking 3.5 navigates to `einheiten/3-5_binnenmarkt.html`
+- Methodik chapter does not appear (no active units)
+- No AB-Leitfaden section, no Lehrkraft section
+
+- [ ] **Step 3: Commit and push**
+
+```bash
+git add index.html
+git commit -m "feat: replace index with chapter accordion + sequential unlock"
+git push
+```
