@@ -1081,6 +1081,8 @@ code, .mono {
   margin-bottom: var(--gap);
 }
 
+/* LEGACY — Aufgabe card v1 classes (.auf-head/.auf-num). Replaced by .auf-h/.auf-n/.auf-title in v2.
+   Keep until all units are migrated. Do not remove prematurely. */
 .auf-head {
   background: var(--accG);
   border-bottom: 1px solid var(--border);
@@ -1237,6 +1239,8 @@ code, .mono {
 /* ----------------------------------------------------------
    20. Passwort-Eingabe (.pw-input)
    ---------------------------------------------------------- */
+/* LEGACY — pw-input card v1 style. Replaced by .tool-row in v2.
+   Keep until all units are migrated to the ghost tool row. */
 .pw-input {
   margin-bottom: var(--gap);
 }
