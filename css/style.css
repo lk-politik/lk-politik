@@ -1973,7 +1973,7 @@ code, .mono {
   color: var(--ink); flex: 1; margin: 0; line-height: 1.3;
 }
 .auf-tags { display: flex; align-items: center; gap: .35rem; flex-shrink: 0; }
-.auf-i { font-family: var(--ff-head); font-size: .9rem; font-weight: 600; color: var(--ink); padding: .75rem 1.1rem 0; margin-bottom: .75rem; line-height: 1.55; }
+.auf-i { font-family: var(--ff-head); font-size: .9rem; font-weight: 600; color: var(--ink); padding: .85rem 1.1rem 0; margin-bottom: .4rem; line-height: 1.55; }
 
 /* Lernziel-Pills (unit header — full text, two-zone) */
 .lz-list { display: flex; flex-direction: column; gap: .55rem; margin-top: .9rem; }
