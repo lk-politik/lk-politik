@@ -9,25 +9,43 @@
   'use strict';
 
   /* ── Shared state ──────────────────────────────────────── */
-  var _operators  = null;  // Loaded from /data/operators.json
-  var _glossary   = null;  // Loaded from /data/glossary.json
+  var _operators  = null;  // Loaded from data/operators.json
+  var _glossary   = null;  // Loaded from data/glossary.json
   var _activeTooltip = null;  // Currently visible tooltip element
+
+  /* ── Base path (resolve from script src: …/js/tooltips.js → …/) ── */
+  var _base = (function () {
+    var s = document.currentScript;
+    if (s && s.src) return s.src.replace(/js\/tooltips\.js.*$/i, '');
+    // Fallback: guess from document location
+    var p = location.pathname;
+    if (p.indexOf('/einheiten/') !== -1) return '../';
+    return './';
+  })();
 
   /* ── Data loading ──────────────────────────────────────── */
 
   function _fetchJSON(path, cb) {
-    fetch(path)
-      .then(function (r) {
-        if (!r.ok) throw new Error('HTTP ' + r.status + ' — ' + path);
-        return r.json();
-      })
-      .then(cb)
-      .catch(function (e) { console.warn('[tooltips.js]', e); });
+    var url = /^https?:|^\//.test(path) ? path : _base + path;
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.onload = function () {
+      if (xhr.status === 200 || (xhr.status === 0 && xhr.responseText)) {
+        try { cb(JSON.parse(xhr.responseText)); }
+        catch (e) { console.warn('[tooltips.js] parse error', e); }
+      }
+    };
+    xhr.onerror = function () { console.warn('[tooltips.js] failed to load', url); };
+    xhr.send();
   }
 
   function _loadData() {
-    _fetchJSON('/data/operators.json', function (data) { _operators = data; });
-    _fetchJSON('/data/glossary.json',  function (data) { _glossary  = data; });
+    /* Prefer script-injected globals (work on file:// protocol) */
+    if (window._PLK_OPERATORS) { _operators = window._PLK_OPERATORS; }
+    else { _fetchJSON('data/operators.json', function (data) { _operators = data; }); }
+
+    if (window._PLK_GLOSSARY) { _glossary = window._PLK_GLOSSARY; }
+    else { _fetchJSON('data/glossary.json',  function (data) { _glossary  = data; }); }
   }
 
   function _opByName(name) {

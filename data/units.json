@@ -7,17 +7,17 @@
     "format": "arc",
     "lehrplan": "SK 3.2 / UK 3.2",
     "accent": "#2d5986",
-    "status": "pending"
+    "status": "active"
   },
   {
     "id": "3-3",
     "num": "3.3",
-    "title": "Organe und Institutionen der EU",
+    "title": "Gesetzgebung in der EU und in Deutschland",
     "chapter": 3,
     "format": "arc",
     "lehrplan": "SK 3.3 / UK 3.3",
     "accent": "#2d5986",
-    "status": "pending"
+    "status": "active"
   },
   {
     "id": "3-4",
@@ -37,6 +37,6 @@
     "format": "arc",
     "lehrplan": "SK 3.5 / UK 3.5",
     "accent": "#b45309",
-    "status": "active"
+    "status": "pending"
   }
 ]

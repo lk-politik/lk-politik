@@ -71,12 +71,8 @@
       el.classList.add('selected');
       _kritIdx = el.getAttribute('data-msidx');
 
-      /* Pre-select matching chip in all recheck blocks */
-      block.querySelectorAll('.uk-krit-recheck').forEach(function (recheck) {
-        recheck.querySelectorAll('.uk-krit-chip').forEach(function (chip) {
-          chip.classList.toggle('selected', chip.getAttribute('data-msidx') === _kritIdx);
-        });
-      });
+      /* Recheck chips are NOT pre-selected — students must confirm
+         their Kriterium independently in each subsequent stage. */
 
       _checkStageReady(block);
     };
@@ -92,7 +88,9 @@
         var rErr = recheck.querySelector('.uk-krit-recheck-err');
         if (rErr) { rErr.textContent = ''; rErr.style.display = 'none'; }
         chip.classList.add('selected');
-        _kritIdx = chip.getAttribute('data-msidx');
+        /* Do NOT update _kritIdx here — it is set only by selKrit
+           in stage 1.  The recheck chip is validated against that
+           stored value so students must recall their original choice. */
         _checkStageReady(block);
       });
     });

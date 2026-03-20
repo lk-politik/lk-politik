@@ -1579,7 +1579,8 @@ code, .mono {
 }
 .chip:active { cursor: grabbing; }
 .chip.used { opacity: .3; pointer-events: none; }
-.chip.sel  { background: var(--acc); color: #fff; }
+.chip.sel,
+.chip.selected { background: var(--acc); color: #fff; }
 
 /* Inline Lückentext-Slot (span inside running text) */
 .ls {
@@ -1786,7 +1787,8 @@ code, .mono {
   gap: .5rem;
 }
 .zi:hover    { border-color: var(--acc); background: var(--accL); }
-.zi.sel      { border-color: var(--acc); background: var(--accL); }
+.zi.sel,
+.zi.selected { border-color: var(--acc); background: var(--accL); }
 .zi.matched  { border-color: var(--ink3); background: var(--bg); opacity: .6; cursor: default; }
 .zi.ok-m     { border-color: var(--ok);  background: var(--ok-l); cursor: default; }
 .zi.bad-m    { border-color: var(--err); background: var(--err-l); cursor: default; }

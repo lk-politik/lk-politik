@@ -55,15 +55,6 @@ var _PLK_GLOSSARY = [
     "cat": "Prinzip"
   },
   {
-    "term": "LuxLeaks",
-    "def": "Enthüllungsskandal (2014): Luxemburg hatte geheime Steuerdeals mit über 300 Unternehmen geschlossen, die effektive Steuersätze unter 1 % ermöglichten — ein Beispiel für schädlichen Steuerwettbewerb innerhalb der EU.",
-    "units": [
-      "3-5"
-    ],
-    "chapter": 3,
-    "cat": "Ereignis"
-  },
-  {
     "term": "Entsenderichtlinie",
     "def": "EU-Richtlinie, die Mindestarbeitsbedingungen (u.a. Mindestlohn des Gastlandes) für Arbeitnehmer festlegt, die vorübergehend in einen anderen EU-Staat entsandt werden.",
     "units": [
@@ -79,7 +70,7 @@ var _PLK_GLOSSARY = [
       "3-3"
     ],
     "chapter": 3,
-    "cat": "Prozess"
+    "cat": "Verfahren"
   },
   {
     "term": "Initiativrecht",
@@ -89,7 +80,7 @@ var _PLK_GLOSSARY = [
       "3-3"
     ],
     "chapter": 3,
-    "cat": "Konzept"
+    "cat": "Befugnis"
   },
   {
     "term": "Trilog",
@@ -98,7 +89,7 @@ var _PLK_GLOSSARY = [
       "3-3"
     ],
     "chapter": 3,
-    "cat": "Prozess"
+    "cat": "Verfahren"
   },
   {
     "term": "Richtlinie",
@@ -216,7 +207,7 @@ var _PLK_GLOSSARY = [
       "3-2"
     ],
     "chapter": 3,
-    "cat": "Konzept"
+    "cat": "Verfahren"
   },
   {
     "term": "Europäische Bürgerinitiative",
@@ -234,7 +225,7 @@ var _PLK_GLOSSARY = [
       "3-2"
     ],
     "chapter": 3,
-    "cat": "Konzept"
+    "cat": "Prinzip"
   },
   {
     "term": "Grundrechtecharta",
@@ -244,6 +235,24 @@ var _PLK_GLOSSARY = [
     ],
     "chapter": 3,
     "cat": "Rechtsakt"
+  },
+  {
+    "term": "qualifizierte Mehrheit",
+    "def": "Im Lehrplan verwendeter Begriff für die Doppelte Mehrheit: 55 % der Mitgliedstaaten (mind. 15) und 65 % der EU-Bevölkerung müssen zustimmen. Seit dem Vertrag von Lissabon das Standard-Abstimmungsverfahren im Rat der EU.",
+    "units": [
+      "3-2"
+    ],
+    "chapter": 3,
+    "cat": "Verfahren"
+  },
+  {
+    "term": "Kommissionspräsident",
+    "def": "Leiter der Europäischen Kommission. Wird vom Europäischen Rat unter Berücksichtigung des EP-Wahlergebnisses vorgeschlagen und vom Europäischen Parlament gewählt. Bestimmt die politischen Leitlinien der Kommission und repräsentiert die EU auf internationaler Ebene. Aktuell: Ursula von der Leyen (seit 2019).",
+    "units": [
+      "3-2"
+    ],
+    "chapter": 3,
+    "cat": "Posten"
   },
   {
     "term": "Hoher Vertreter für Außen- und Sicherheitspolitik",

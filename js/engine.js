@@ -244,6 +244,18 @@
       });
     }
 
+    /* Wenn alle Gates bestanden → Arbeitsblatt freischalten */
+    if (typeof CONF !== 'undefined') {
+      var allRestored = true;
+      for (var rg = 1; rg <= CONF.gates; rg++) {
+        if (!qgPass[rg]) { allRestored = false; break; }
+      }
+      if (allRestored) {
+        var abEl = document.getElementById('arbeitsblatt');
+        if (abEl) abEl.classList.remove('locked');
+      }
+    }
+
     _updateProgressBar();
   }
 
