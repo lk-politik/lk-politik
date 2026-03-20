@@ -174,7 +174,7 @@ var SECTIONS = [
     label: 'Kapitel 3 — Die Europäische Union',
     units: [
       { id: '3-2',  num: '3.2',  title: 'Die EU nach dem Vertrag von Lissabon',          href: 'einheiten/3-2_lissabon.html',         status: 'active',  color: '#2d5986' },
-      { id: '3-3',  num: '3.3',  title: 'Gesetzgebung in der EU und in Deutschland',        href: 'einheiten/3-3_gesetzgebung.html',      status: 'active',  color: '#2d5986' },
+      { id: '3-3',  num: '3.3',  title: 'Gesetzgebung in der EU und in Deutschland',        href: 'einheiten/3-3_gesetzgebung.html',      status: 'active',  color: '#2d5986', freeUnlock: true },
       { id: '3-4',  num: '3.4',  title: 'Das Mehrebenensystem der EU',                    href: 'einheiten/3-4_mehrebenensystem.html',  status: 'pending', color: null },
       { id: '3-5',  num: '3.5',  title: 'Der Binnenmarkt und die vier Freiheiten',        href: 'einheiten/3-5_binnenmarkt.html',       status: 'pending', color: '#b45309' },
       { id: '3-6',  num: '3.6',  title: 'Stufen der wirtschaftlichen Integration',        href: 'einheiten/3-6_integration.html',       status: 'pending', color: null },
@@ -278,7 +278,7 @@ function _renderAll() {
     /* Unit rows */
     var ul = document.getElementById('ul-' + sec.id);
     rendered.forEach(function (u, idx) {
-      var locked = idx > 0 && !_isComplete(rendered[idx - 1].id);
+      var locked = idx > 0 && !u.freeUnlock && !_isComplete(rendered[idx - 1].id);
       var pct    = _calcPct(u.id);
       var barClr = u.color ? u.color : 'var(--acc)';
       var row;
