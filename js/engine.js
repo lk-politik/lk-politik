@@ -194,6 +194,7 @@
       document.querySelectorAll('.pw-input').forEach(function (el) {
         el.style.display = 'none';
       });
+      _restoreAbState(saved);
       return;
     }
 
@@ -211,6 +212,9 @@
           if (gate) {
             gate.setAttribute('data-passed', '1');
             gate.setAttribute('data-state', 'passed');
+            if (saved.gateAnswers && saved.gateAnswers[nr]) {
+              _restoreGateAnswers(nr, gate, saved.gateAnswers[nr]);
+            }
             var pill = document.getElementById(gateId + 's');
             if (pill) {
               pill.textContent = 'Block ' + nr + ': Bestanden';
@@ -257,6 +261,7 @@
     }
 
     _updateProgressBar();
+    _restoreAbState(saved);
   }
 
   /* ==========================================================
@@ -368,7 +373,9 @@
       var val     = inp.value.trim().toLowerCase();
       var fb      = inp.closest('.qinp') ? inp.closest('.qinp').querySelector('.qinp-feedback') : null;
 
-      if (answers.indexOf(val) !== -1) {
+      /* Accept if any keyword appears anywhere in the student's answer */
+      var isCorrect = val.length > 0 && answers.some(function (a) { return val.indexOf(a) !== -1; });
+      if (isCorrect) {
         correct++;
         inp.style.borderColor = 'var(--ok)';
         if (fb) { fb.className = 'qinp-feedback ok'; fb.textContent = '✓ Richtig'; }
@@ -418,6 +425,7 @@
       }
       qgPass[gateNr] = true;
       _saveGates();
+      _saveGateAnswers(gateNr, gate);
       unlk(gateNr);
     }
   };
@@ -457,19 +465,23 @@
 
   /* --------------------------------------------------------
      toggleQg(gateNr) — Collapse/expand a passed QG panel
-     passed  → retry  (expand, reset answers)
-     retry   → passed (collapse)
-     open    → no-op  (cannot collapse before passing)
+     passed       → passed-open  (expand, keep answers — view only)
+     passed-open  → passed       (collapse)
+     retry        → passed       (collapse)
+     open         → no-op        (cannot collapse before passing)
+     Only retryQg() / the retry link resets answers.
   -------------------------------------------------------- */
   window.toggleQg = function (gateNr) {
     var gate = document.getElementById('qg' + gateNr);
     if (!gate) return;
     var state = gate.getAttribute('data-state') || 'open';
     if (state === 'passed') {
-      _resetQgForRetry(gateNr, gate);
-      gate.setAttribute('data-state', 'retry');
+      /* Expand to view saved answers — no reset */
+      gate.setAttribute('data-state', 'passed-open');
+    } else if (state === 'passed-open') {
+      /* Collapse back */
+      gate.setAttribute('data-state', 'passed');
     } else if (state === 'retry') {
-      /* Spec: "Chevron closes immediately — no obligation to re-answer." */
       gate.setAttribute('data-state', 'passed');
     }
     /* state === 'open': no-op — cannot collapse before passing */
@@ -483,7 +495,7 @@
     var gate = document.getElementById('qg' + gateNr);
     if (!gate) return;
     var state = gate.getAttribute('data-state') || 'open';
-    if (state === 'passed') {
+    if (state === 'passed' || state === 'passed-open') {
       _resetQgForRetry(gateNr, gate);
       gate.setAttribute('data-state', 'retry');
     }
@@ -602,6 +614,71 @@
     Progress.save(CONF.id, existing);
   }
 
+  /* Saves answer snapshot for a passed gate so they can be restored on reload */
+  function _saveGateAnswers(gateNr, gate) {
+    if (typeof CONF === 'undefined') return;
+    var snapshot = {};
+
+    /* Text input values */
+    var qinpValues = [];
+    gate.querySelectorAll('.qinp input[data-answers], .qinp textarea[data-answers]').forEach(function (inp) {
+      qinpValues.push(inp.value);
+    });
+    if (qinpValues.length) snapshot.qinpValues = qinpValues;
+
+    /* Which radio/checkbox was checked per group */
+    var mcChecked = {};
+    var mcGroups = {};
+    gate.querySelectorAll('.mco input[type="radio"], .mco input[type="checkbox"]').forEach(function (inp) {
+      if (!mcGroups[inp.name]) mcGroups[inp.name] = [];
+      mcGroups[inp.name].push(inp);
+    });
+    Object.keys(mcGroups).forEach(function (name) {
+      mcGroups[name].forEach(function (inp, idx) {
+        if (inp.checked) mcChecked[name] = idx;
+      });
+    });
+    if (Object.keys(mcChecked).length) snapshot.mcChecked = mcChecked;
+
+    var existing = Progress.load(CONF.id) || {};
+    if (!existing.gateAnswers) existing.gateAnswers = {};
+    existing.gateAnswers[gateNr] = snapshot;
+    Progress.save(CONF.id, existing);
+  }
+
+  /* Restores answer visuals for a passed gate (gate was 100% correct) */
+  function _restoreGateAnswers(gateNr, gate, snapshot) {
+    if (!snapshot) return;
+
+    /* Restore text inputs — green border since gate was passed (all correct) */
+    if (snapshot.qinpValues) {
+      var inputs = Array.from(gate.querySelectorAll('.qinp input[data-answers], .qinp textarea[data-answers]'));
+      snapshot.qinpValues.forEach(function (val, i) {
+        if (!inputs[i] || !val) return;
+        inputs[i].value = val;
+        inputs[i].style.borderColor = 'var(--ok)';
+        var fb = inputs[i].closest('.qinp') ? inputs[i].closest('.qinp').querySelector('.qinp-feedback') : null;
+        if (fb) { fb.className = 'qinp-feedback ok'; fb.textContent = '✓ Richtig'; }
+      });
+    }
+
+    /* Restore MC selections — correct class since gate was passed */
+    if (snapshot.mcChecked) {
+      var mcGroups = {};
+      gate.querySelectorAll('.mco input[type="radio"], .mco input[type="checkbox"]').forEach(function (inp) {
+        if (!mcGroups[inp.name]) mcGroups[inp.name] = [];
+        mcGroups[inp.name].push(inp);
+      });
+      Object.keys(snapshot.mcChecked).forEach(function (name) {
+        var idx = snapshot.mcChecked[name];
+        if (!mcGroups[name] || !mcGroups[name][idx]) return;
+        mcGroups[name][idx].checked = true;
+        var item = mcGroups[name][idx].closest('.mco');
+        if (item) item.classList.add('selected', 'correct');
+      });
+    }
+  }
+
   /* ==========================================================
      ARBEITSBLATT-ENGINE
      ========================================================== */
@@ -709,6 +786,7 @@
     if (retry) retry.style.display = correct < total ? 'inline-flex' : 'none';
 
     upAB();
+    _saveAbState();
   };
 
   /**
@@ -852,6 +930,7 @@
     abScores[aufgabeId] = correct;
     shR(aufgabeId + '-result', correct, total);
     upAB();
+    _saveAbState();
   };
 
   /** retZ(taskNr, aufgabeId) — Nur falsche Zuordnungen zurücksetzen */
@@ -912,6 +991,7 @@
     abScores[aufgabeId] = correct;
     shR(aufgabeId + '-result', correct, total);
     upAB();
+    _saveAbState();
   };
 
   /** retK(aufgabeId) — Nur falsche Kategorien zurücksetzen */
@@ -982,6 +1062,138 @@
     }, 0);
   };
 
+  /* --------------------------------------------------------
+     ARBEITSBLATT — Persistenz (save / restore)
+  -------------------------------------------------------- */
+
+  /**
+   * _saveAbState()
+   * Speichert Slots, Kategorisierungen, Zuordnungen und Texteingaben in localStorage.
+   * Wird nach jedem Prüfen und bei Texteingabe (debounced) aufgerufen.
+   */
+  function _saveAbState() {
+    if (typeof CONF === 'undefined') return;
+    var ab = document.getElementById('arbeitsblatt');
+    if (!ab || ab.classList.contains('locked')) return;
+
+    var state = {};
+
+    /* Text inputs and textareas with ID */
+    state.texts = {};
+    ab.querySelectorAll('input[type="text"][id], textarea[id]').forEach(function (el) {
+      state.texts[el.id] = el.value;
+    });
+    /* Textareas without ID — save by index */
+    ab.querySelectorAll('textarea:not([id])').forEach(function (el, i) {
+      if (el.value) state.texts['__ta_' + i] = el.value;
+    });
+
+    /* Slot state: values in DOM order per .auf[id] container */
+    state.slots = {};
+    ab.querySelectorAll('.auf[id]').forEach(function (container) {
+      var vals = [];
+      var hasContent = false;
+      container.querySelectorAll('.slot').forEach(function (slot) {
+        var v = slot.getAttribute('data-v') || null;
+        vals.push(v);
+        if (v) hasContent = true;
+      });
+      if (hasContent) state.slots[container.id] = vals;
+    });
+
+    /* Kategorisierung */
+    state.kSel = {};
+    Object.keys(_kSel).forEach(function (k) { state.kSel[k] = _kSel[k]; });
+
+    /* Zuordnung */
+    state.zMap = {};
+    Object.keys(_zMap).forEach(function (k) {
+      state.zMap[k] = {};
+      Object.keys(_zMap[k]).forEach(function (l) { state.zMap[k][l] = _zMap[k][l]; });
+    });
+
+    var existing = Progress.load(CONF.id) || {};
+    existing.ab = state;
+    Progress.save(CONF.id, existing);
+  }
+
+  /**
+   * _restoreAbState(saved)
+   * Stellt Arbeitsblatt-Eingaben aus localStorage wieder her.
+   * Wird in _restoreState() nach dem AB-Unlock aufgerufen.
+   */
+  function _restoreAbState(saved) {
+    if (!saved || !saved.ab) return;
+    var ab = document.getElementById('arbeitsblatt');
+    if (!ab || ab.classList.contains('locked')) return;
+    var state = saved.ab;
+
+    /* Restore text inputs and textareas */
+    if (state.texts) {
+      ab.querySelectorAll('input[type="text"][id], textarea[id]').forEach(function (el) {
+        if (state.texts[el.id] !== undefined) el.value = state.texts[el.id];
+      });
+      ab.querySelectorAll('textarea:not([id])').forEach(function (el, i) {
+        var key = '__ta_' + i;
+        if (state.texts[key]) el.value = state.texts[key];
+      });
+    }
+
+    /* Restore chip-slot state */
+    if (state.slots) {
+      Object.keys(state.slots).forEach(function (aufId) {
+        var container = document.getElementById(aufId);
+        if (!container) return;
+        var slots = container.querySelectorAll('.slot');
+        state.slots[aufId].forEach(function (val, i) {
+          if (!val || !slots[i]) return;
+          slots[i].textContent = val;
+          slots[i].setAttribute('data-v', val);
+          slots[i].classList.add('filled');
+          /* Mark chip as used in bank */
+          var bankId = slots[i].getAttribute('data-bank');
+          if (bankId) {
+            var bank = document.getElementById(bankId);
+            if (bank) {
+              var chip = bank.querySelector('.chip[data-v="' + val + '"]:not([data-used="1"])');
+              if (chip) { chip.classList.add('used'); chip.setAttribute('data-used', '1'); }
+            }
+          }
+        });
+      });
+    }
+
+    /* Restore kategorisierung selections */
+    if (state.kSel) {
+      Object.keys(state.kSel).forEach(function (itemId) {
+        _kSel[itemId] = state.kSel[itemId];
+        var item = ab.querySelector('.k-item[data-id="' + itemId + '"]');
+        if (!item) return;
+        var val = state.kSel[itemId];
+        item.querySelectorAll('.k-btn').forEach(function (btn) {
+          btn.classList.remove('selected');
+          var m = (btn.getAttribute('onclick') || '').match(/kS\s*\(this\s*,\s*'([^']+)'\)/);
+          if (m && m[1] === val) btn.classList.add('selected');
+        });
+      });
+    }
+
+    /* Restore zuordnung mappings */
+    if (state.zMap) {
+      Object.keys(state.zMap).forEach(function (taskNr) {
+        if (!_zMap[taskNr]) _zMap[taskNr] = {};
+        Object.keys(state.zMap[taskNr]).forEach(function (leftId) {
+          var rightId = state.zMap[taskNr][leftId];
+          _zMap[taskNr][leftId] = rightId;
+          var leftEl = ab.querySelector('[data-task="' + taskNr + '"][data-z="l"][data-id="' + leftId + '"]');
+          var rightEl = ab.querySelector('[data-task="' + taskNr + '"][data-z="r"][data-id="' + rightId + '"]');
+          if (leftEl) { leftEl.classList.add('matched'); _zVisConn(taskNr, leftId, rightId); }
+          if (rightEl) rightEl.classList.add('matched');
+        });
+      });
+    }
+  }
+
   /**
    * rstAllAB()
    * Gesamtes Arbeitsblatt zurücksetzen (nach Bestätigung).
@@ -1023,6 +1235,7 @@
     ab.querySelectorAll('.z-badge').forEach(function (el) { el.textContent = ''; });
 
     upAB();
+    _saveAbState();
   };
 
   /* ==========================================================
@@ -1177,6 +1390,33 @@
     document.querySelectorAll('.olist').forEach(function (list) {
       oRenum(list);
     });
+
+    /* Auto-save Arbeitsblatt text inputs / textareas on change */
+    var _abSaveTimer = null;
+    document.addEventListener('input', function (e) {
+      var ab = document.getElementById('arbeitsblatt');
+      if (ab && !ab.classList.contains('locked') && ab.contains(e.target)) {
+        clearTimeout(_abSaveTimer);
+        _abSaveTimer = setTimeout(_saveAbState, 800);
+      }
+    });
   });
+
+  /**
+   * saveAB(hintId)
+   * Speichert Arbeitsblatt-Eingaben explizit (z.B. über Speichern-Button).
+   * Zeigt kurz eine Bestätigung an falls hintId angegeben.
+   */
+  window.saveAB = function (hintId) {
+    _saveAbState();
+    if (hintId) {
+      var hint = document.getElementById(hintId);
+      if (hint) {
+        hint.textContent = 'Gespeichert';
+        hint.style.color = 'var(--ok)';
+        setTimeout(function () { hint.textContent = ''; }, 2000);
+      }
+    }
+  };
 
 })();

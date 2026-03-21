@@ -777,7 +777,11 @@ Purpose: protecting the learning process and preventing automated answer extract
             während in Deutschland der Bundestag den Bundesrat in vielen Fällen überstimmen kann.
             Welches System ist "demokratischer"?
           </p>
-          <textarea style="width:100%;min-height:120px;padding:.75rem;border:1px solid var(--border-l);border-radius:8px;font-family:var(--ff-body);font-size:.9rem;line-height:1.6;color:var(--ink);background:#fff;resize:vertical" placeholder="Schreibe deine Antwort hier …"></textarea>
+          <textarea id="auf3-antwort" style="width:100%;min-height:120px;padding:.75rem;border:1px solid var(--border-l);border-radius:8px;font-family:var(--ff-body);font-size:.9rem;line-height:1.6;color:var(--ink);background:#fff;resize:vertical" placeholder="Schreibe deine Antwort hier …"></textarea>
+          <div style="margin-top:.5rem;display:flex;align-items:center;gap:.75rem">
+            <button class="btn btn-ghost btn-sm" onclick="saveAB('auf3-save-hint')">Antwort speichern</button>
+            <span id="auf3-save-hint" style="font-size:.78rem;font-family:var(--ff-mono)"></span>
+          </div>
         </div>
 
         <!-- Musterlösung (nur für Lehrkraft sichtbar) -->

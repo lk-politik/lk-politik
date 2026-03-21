@@ -839,14 +839,16 @@ code, .mono {
    QG states — passed / retry
    ---------------------------------------------------------- */
 
-/* Passed and retry: green border + background */
+/* Passed, passed-open and retry: green border + background */
 .qg[data-state="passed"],
+.qg[data-state="passed-open"],
 .qg[data-state="retry"] {
   border-color: var(--ok-border);
   background: var(--ok-l);
 }
 
 .qg[data-state="passed"] .qg-head,
+.qg[data-state="passed-open"] .qg-head,
 .qg[data-state="retry"] .qg-head {
   background: var(--ok-l);
   border-bottom-color: var(--ok-border);
@@ -857,12 +859,18 @@ code, .mono {
   display: none;
 }
 
-/* Retry link — visible only in passed or retry state */
+/* Passed-open: body visible, showing saved answers */
+.qg[data-state="passed-open"] .qg-body {
+  display: block;
+}
+
+/* Retry link — visible only in passed, passed-open or retry state */
 .qg-retry-link {
   display: none;
 }
 
 .qg[data-state="passed"] .qg-retry-link,
+.qg[data-state="passed-open"] .qg-retry-link,
 .qg[data-state="retry"] .qg-retry-link {
   display: block;
   text-align: right;
@@ -893,6 +901,7 @@ code, .mono {
 }
 
 .qg[data-state="passed"] .qg-chevron,
+.qg[data-state="passed-open"] .qg-chevron,
 .qg[data-state="retry"] .qg-chevron {
   color: var(--ok);
 }
