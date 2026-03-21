@@ -1428,9 +1428,10 @@
     });
     var btn = document.getElementById('einstieg-btn');
     if (btn) btn.disabled = true;
-    /* Shuffle chip order within each card so students can't memorise position */
+    /* Shuffle chip order within each card so students can't memorise position.
+       Skip containers marked data-no-shuffle (e.g. hierarchy exercises). */
     einstieg.querySelectorAll('.einstieg-chips').forEach(function (chips) {
-      _shuffleChildren(chips);
+      if (!chips.hasAttribute('data-no-shuffle')) _shuffleChildren(chips);
     });
   }
 
