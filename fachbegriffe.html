@@ -250,7 +250,18 @@ span.fb-unit-chip.locked { color: var(--ink3); border-color: var(--border); }
   function _buildFilters(data) {
     var catSet = {};
     data.forEach(function (g) { if (g.cat) catSet[g.cat] = true; });
-    var cats = Object.keys(catSet).sort();
+    /* Ordered by colour spectrum: navy → blue → light-blue → teal →
+       light-green → green → grey → gold → black → silver            */
+    var CAT_ORDER = [
+      'Vertrag', 'Institution', 'Posten',
+      'Verfahren', 'Instrument', 'Befugnis',
+      'Rechtsakt', 'Integrationsstufe', 'Phänomen', 'Prinzip'
+    ];
+    var cats = CAT_ORDER.filter(function (c) { return catSet[c]; });
+    /* Append any unknown categories not in the ordered list */
+    Object.keys(catSet).forEach(function (c) {
+      if (cats.indexOf(c) === -1) cats.push(c);
+    });
     cats.forEach(function (cat) {
       var color = _catColor(cat);
       var btn = document.createElement('button');
