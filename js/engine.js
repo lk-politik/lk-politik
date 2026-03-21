@@ -185,6 +185,15 @@
         einstieg.setAttribute('data-state', 'passed');
         var pill = document.getElementById('einstieg-status');
         if (pill) pill.textContent = 'Bestanden';
+        /* Restore chip selections so correct answers are visible when opened */
+        if (saved.einstiegSel) {
+          _einstiegSel = saved.einstiegSel;
+          Object.keys(saved.einstiegSel).forEach(function (sitNr) {
+            var val = saved.einstiegSel[sitNr];
+            var chip = einstieg.querySelector('.einstieg-card[data-sit="' + sitNr + '"] .e-chip[data-v="' + val + '"]');
+            if (chip) chip.classList.add('correct');
+          });
+        }
       }
     }
 
@@ -696,6 +705,14 @@
         if (item) item.classList.add('selected', 'correct');
       });
     }
+
+    /* Restore overall feedback box ("✓ Alle Antworten richtig!") */
+    var fbEl = document.getElementById('qfb' + gateNr);
+    if (fbEl) {
+      fbEl.style.display = 'block';
+      fbEl.className = 'mc-feedback ok';
+      fbEl.textContent = '✓ Alle Antworten richtig!';
+    }
   }
 
   /* ==========================================================
@@ -763,6 +780,7 @@
         slot.classList.remove('filled', 'correct', 'wrong');
       }
     }
+    _scheduleAbSave();
   };
 
   /**
@@ -896,6 +914,7 @@
       el.classList.add('matched');
       _zSel[taskNr] = null;
       _zVisConn(taskNr, leftId, rightId);
+      _scheduleAbSave();
     }
   };
 
@@ -975,6 +994,15 @@
 
   var _kSel = {};  /* { itemId: value } */
 
+  /* Auto-save timer — IIFE-scoped so slCl/kS/zCl can trigger debounced saves */
+  var _abSaveTimer = null;
+  function _scheduleAbSave() {
+    var ab = document.getElementById('arbeitsblatt');
+    if (!ab || ab.classList.contains('locked')) return;
+    clearTimeout(_abSaveTimer);
+    _abSaveTimer = setTimeout(_saveAbState, 800);
+  }
+
   /**
    * kS(button, value)
    * Kategorie-Button auswählen. Ein Button pro Item aktiv.
@@ -987,6 +1015,7 @@
     item.querySelectorAll('.k-btn').forEach(function (btn) { btn.classList.remove('selected'); });
     button.classList.add('selected');
     _kSel[itemId] = value;
+    _scheduleAbSave();
   };
 
   /**
@@ -1337,10 +1366,11 @@
       einstieg.setAttribute('data-state', 'passed');
       var pill = document.getElementById('einstieg-status');
       if (pill) pill.textContent = 'Bestanden';
-      /* Persist Einstieg pass */
+      /* Persist Einstieg pass + chip selections */
       if (typeof CONF !== 'undefined') {
         var existing = Progress.load(CONF.id) || {};
         existing.einstieg = true;
+        existing.einstiegSel = _einstiegSel;
         Progress.save(CONF.id, existing);
       }
     }
@@ -1416,12 +1446,10 @@
     });
 
     /* Auto-save Arbeitsblatt text inputs / textareas on change */
-    var _abSaveTimer = null;
     document.addEventListener('input', function (e) {
       var ab = document.getElementById('arbeitsblatt');
       if (ab && !ab.classList.contains('locked') && ab.contains(e.target)) {
-        clearTimeout(_abSaveTimer);
-        _abSaveTimer = setTimeout(_saveAbState, 800);
+        _scheduleAbSave();
       }
     });
   });
