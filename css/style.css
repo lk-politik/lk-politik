@@ -2433,7 +2433,7 @@ strong.p-core::after {
   cursor: pointer;
 }
 
-/* Tooltip container — sized to content, capped at 340 px */
+/* Tooltip container — wider than before, compact vertically */
 .fb-tooltip {
   position: fixed;
   z-index: 901;
@@ -2441,13 +2441,13 @@ strong.p-core::after {
   border: 1px solid var(--border);
   border-top: 3px solid var(--sw); /* overridden per-category by inline style */
   border-radius: var(--r);
-  padding: .9rem 1.1rem;
+  padding: .7rem .95rem;
   width: max-content;
-  min-width: 200px;
-  max-width: 340px;
+  min-width: 220px;
+  max-width: 420px;
   box-shadow: 0 4px 20px rgba(0,0,0,.14);
-  font-size: .875rem;
-  line-height: 1.7;
+  font-size: .82rem;
+  line-height: 1.62;
   color: var(--ink2);
   font-family: var(--ff-body);
   letter-spacing: .01em;
@@ -2458,13 +2458,13 @@ strong.p-core::after {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: .4rem;
-  margin-bottom: .5rem;
+  gap: .35rem;
+  margin-bottom: .4rem;
 }
 
 .fb-tooltip-term {
   font-family: var(--ff-mono);
-  font-size: .7rem;
+  font-size: .68rem;
   font-weight: 700;
   color: var(--sw); /* overridden per-category by inline style */
   text-transform: uppercase;
@@ -2475,12 +2475,12 @@ strong.p-core::after {
 /* Category tag inside tooltip */
 .fb-tooltip-cat {
   display: inline-block;
-  font-size: .57rem;
+  font-size: .55rem;
   font-family: var(--ff-mono);
   font-weight: 600;
   letter-spacing: .07em;
   text-transform: uppercase;
-  padding: .12em .5em;
+  padding: .1em .45em;
   border-radius: 3px;
   border: 1px solid currentColor;
   line-height: 1.4;
@@ -2491,53 +2491,48 @@ strong.p-core::after {
   hyphens: auto;
 }
 
-/* Footer row: unit links left, index link right */
+/* Footer row: unit chips left, index link right */
 .fb-tooltip-footer {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-  gap: .75rem;
-  margin-top: .55rem;
-  padding-top: .45rem;
+  gap: .6rem;
+  margin-top: .45rem;
+  padding-top: .4rem;
   border-top: 1px solid var(--border-l);
 }
 
-/* Unit ref links (active units — clickable) */
+/* Unit number chips — wrap naturally for many units */
 .fb-tooltip-units {
   display: flex;
-  flex-direction: column;
-  gap: .18rem;
+  flex-wrap: wrap;
+  gap: .2rem;
 }
 
-.fb-tooltip-unit-link {
+/* Compact number chip: "3.2", "3.5" etc. — title attr = full name */
+.fb-tooltip-unit-chip {
   font-family: var(--ff-mono);
-  font-size: .64rem;
-  color: var(--acc);
+  font-size: .6rem;
+  font-weight: 600;
+  padding: .1em .42em;
+  border-radius: 3px;
+  border: 1px solid currentColor;
+  line-height: 1.5;
+  white-space: nowrap;
   text-decoration: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 220px;
 }
-.fb-tooltip-unit-link:hover { text-decoration: underline; }
-
-/* Unit ref text (pending/locked units — not clickable) */
-.fb-tooltip-unit-locked {
-  font-family: var(--ff-mono);
-  font-size: .64rem;
-  color: var(--ink3);
-  white-space: nowrap;
-}
+a.fb-tooltip-unit-chip          { color: var(--acc); background: var(--accG); }
+a.fb-tooltip-unit-chip:hover    { filter: brightness(.88); }
+span.fb-tooltip-unit-chip.locked { color: var(--ink3); border-color: var(--border); }
 
 /* "Alle Begriffe →" index link */
 .fb-tooltip-index-link {
   font-family: var(--ff-mono);
-  font-size: .62rem;
+  font-size: .6rem;
   color: var(--ink3);
   text-decoration: none;
   flex-shrink: 0;
   white-space: nowrap;
-  align-self: flex-end;
 }
 .fb-tooltip-index-link:hover { color: var(--ink2); text-decoration: underline; }
 

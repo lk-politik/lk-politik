@@ -10,17 +10,18 @@
   'use strict';
 
   /* ── Category colour palette ────────────────────────────── */
+  /* Semantic: each colour reflects what the category represents  */
   var CAT_COLORS = {
-    'Institution':       '#2d5986',
-    'Verfahren':         '#0e7490',
-    'Rechtsakt':         '#7c3aed',
-    'Prinzip':           '#15803d',
-    'Phänomen':          '#dc2626',
-    'Vertrag':           '#7c2d12',
-    'Integrationsstufe': '#0369a1',
-    'Befugnis':          '#b45309',
-    'Posten':            '#be185d',
-    'Instrument':        '#4d7c0f'
+    'Institution':       '#1e4d8c',  /* navy — official EU structures       */
+    'Verfahren':         '#0e7490',  /* teal — procedural flows             */
+    'Rechtsakt':         '#4338ca',  /* indigo — formal legal instruments   */
+    'Prinzip':           '#166534',  /* forest — foundational principles    */
+    'Phänomen':          '#c2410c',  /* burnt orange — social phenomena     */
+    'Vertrag':           '#065f46',  /* emerald — binding treaties          */
+    'Integrationsstufe': '#0891b2',  /* sky — levels of integration        */
+    'Befugnis':          '#7c3aed',  /* violet — powers / competences       */
+    'Posten':            '#9d174d',  /* rose — persons / offices            */
+    'Instrument':        '#4d7c0f'   /* olive — policy tools                */
   };
 
   /* Expose so fachbegriffe.html and other pages can reuse */
@@ -119,19 +120,21 @@
     }
   }
 
-  /* ── Build unit-reference links for the tooltip ─────────── */
+  /* ── Build unit-reference chips for the tooltip ─────────── */
+  /* Compact: show unit number only (e.g. "3.2"), full title in
+     the native tooltip (title attr). Scales to 20+ units.      */
 
   function _unitRefsHtml(unitIds) {
     if (!unitIds || !unitIds.length) return '';
     return unitIds.map(function (id) {
-      var unit = _unitById(id);
+      var unit  = _unitById(id);
+      var num   = unit ? unit.num   : id;
+      var title = unit ? unit.title : ('Einheit ' + id);
       if (unit && unit.status === 'active' && unit.file) {
         var href = _base + 'einheiten/' + unit.file;
-        return '<a class="fb-tooltip-unit-link" href="' + href + '">' +
-               '\u2192 ' + unit.num + ' ' + unit.title + '</a>';
+        return '<a class="fb-tooltip-unit-chip" href="' + href + '" title="' + title + '">' + num + '</a>';
       }
-      var label = unit ? (unit.num + ' ' + unit.title) : ('Einheit ' + id);
-      return '<span class="fb-tooltip-unit-locked">\u2192 ' + label + '</span>';
+      return '<span class="fb-tooltip-unit-chip locked" title="' + title + '">' + num + '</span>';
     }).join('');
   }
 

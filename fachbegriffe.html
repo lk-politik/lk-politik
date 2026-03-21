@@ -20,22 +20,18 @@
   font-size: .7rem;
   font-weight: 600;
   padding: .3em .8em;
-  border: 1px solid var(--border);
+  border: 1px solid currentColor;
   border-radius: 4px;
-  background: var(--card);
-  color: var(--ink3);
+  background: transparent;
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: .08em;
-  transition: all .15s;
+  transition: filter .12s, background .12s;
+  /* color set per-category via inline style */
 }
 
-.fb-filter-btn:hover,
-.fb-filter-btn.active {
-  background: var(--accG);
-  border-color: var(--acc);
-  color: var(--acc);
-}
+.fb-filter-btn:hover { filter: brightness(.85); }
+.fb-filter-btn.active { /* background set via inline style in JS */ }
 
 .fb-list { list-style: none; padding: 0; }
 
@@ -75,26 +71,35 @@
   border-radius: 3px;
 }
 
-.fb-unit-link {
-  color: var(--acc);
-  text-decoration: none;
-  font-family: var(--ff-mono);
-  font-size: .68rem;
-}
-.fb-unit-link:hover { text-decoration: underline; }
-
 .fb-entry-def {
   font-size: .88rem;
   color: var(--ink2);
   line-height: 1.6;
-  margin-bottom: .4rem;
+  margin-bottom: .45rem;
 }
 
 .fb-entry-units {
-  font-family: var(--ff-mono);
-  font-size: .68rem;
-  color: var(--ink3);
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem;
 }
+
+/* Compact unit-number chip — shared with tooltip */
+.fb-unit-chip {
+  display: inline-block;
+  font-family: var(--ff-mono);
+  font-size: .62rem;
+  font-weight: 600;
+  padding: .1em .45em;
+  border-radius: 3px;
+  border: 1px solid currentColor;
+  line-height: 1.5;
+  white-space: nowrap;
+  text-decoration: none;
+}
+a.fb-unit-chip          { color: var(--acc); background: var(--accG); }
+a.fb-unit-chip:hover    { filter: brightness(.88); }
+span.fb-unit-chip.locked { color: var(--ink3); border-color: var(--border); }
 
 .fb-empty {
   color: var(--ink3);
@@ -154,18 +159,18 @@
 (function () {
   /* ── Category colour palette (mirrors tooltips.js) ───── */
   var CAT_COLORS = {
-    'Institution':       '#2d5986',
-    'Verfahren':         '#0e7490',
-    'Rechtsakt':         '#7c3aed',
-    'Prinzip':           '#15803d',
-    'Phänomen':          '#dc2626',
-    'Vertrag':           '#7c2d12',
-    'Integrationsstufe': '#0369a1',
-    'Befugnis':          '#b45309',
-    'Posten':            '#be185d',
-    'Instrument':        '#4d7c0f'
+    'Institution':       '#1e4d8c',  /* navy — official structures      */
+    'Verfahren':         '#0e7490',  /* teal — procedural flows         */
+    'Rechtsakt':         '#4338ca',  /* indigo — legal instruments      */
+    'Prinzip':           '#166534',  /* forest — foundational           */
+    'Phänomen':          '#c2410c',  /* burnt orange — phenomena        */
+    'Vertrag':           '#065f46',  /* emerald — treaties              */
+    'Integrationsstufe': '#0891b2',  /* sky — integration levels        */
+    'Befugnis':          '#7c3aed',  /* violet — powers/competences     */
+    'Posten':            '#9d174d',  /* rose — persons/offices          */
+    'Instrument':        '#4d7c0f'   /* olive — policy tools            */
   };
-  function _catColor(cat) { return CAT_COLORS[cat] || '#b45309'; }
+  function _catColor(cat) { return CAT_COLORS[cat] || '#1e4d8c'; }
 
   var _all    = [];
   var _filter = 'all';
@@ -177,12 +182,13 @@
   var _units    = window._PLK_UNITS || [];
 
   function _unitHtml(unitId) {
-    var unit = _units.find(function (u) { return u.id === unitId; });
+    var unit  = _units.find(function (u) { return u.id === unitId; });
+    var num   = unit ? unit.num   : unitId;
+    var title = unit ? unit.title : ('Einheit ' + unitId);
     if (unit && unit.status === 'active' && unit.file) {
-      return '<a class="fb-unit-link" href="einheiten/' + unit.file + '">' +
-             unit.num + ' ' + unit.title + '</a>';
+      return '<a class="fb-unit-chip" href="einheiten/' + unit.file + '" title="' + title + '">' + num + '</a>';
     }
-    return unit ? (unit.num + ' ' + unit.title) : ('Einheit ' + unitId);
+    return '<span class="fb-unit-chip locked" title="' + title + '">' + num + '</span>';
   }
 
   function _render() {
@@ -206,28 +212,39 @@
       var catBadge = g.cat
         ? '<span class="fb-cat-badge" style="color:' + color + ';background:' + color + '18">' + g.cat + '</span>'
         : '';
-      var unitLinks = g.units.map(_unitHtml).join(' &middot; ');
+      var unitLinks = g.units.map(_unitHtml).join('');
       return '<li class="fb-entry" style="border-left-color:' + color + '">' +
         '<div class="fb-entry-term" style="color:' + color + '">' + g.term + catBadge + '</div>' +
         '<div class="fb-entry-def">' + g.def + '</div>' +
-        '<div class="fb-entry-units">\u2192 ' + unitLinks + '</div>' +
+        '<div class="fb-entry-units">' + unitLinks + '</div>' +
         '</li>';
     }).join('');
   }
 
-  function _setFilterActive(btn, color) {
+  /* colorOf: reads the color stored on the btn via data attr */
+  function _colorOf(btn) { return btn.dataset.catColor || null; }
+
+  function _applyBtnStyle(btn, active) {
+    var color = _colorOf(btn);
+    if (!color) {
+      /* "Alle" button — use accent */
+      btn.style.color = active ? 'var(--acc)' : 'var(--ink3)';
+      btn.style.borderColor = active ? 'var(--acc)' : 'var(--border)';
+      btn.style.background  = active ? 'var(--accG)' : '';
+    } else {
+      btn.style.color       = color;
+      btn.style.borderColor = color;
+      btn.style.background  = active ? color + '22' : color + '0c';
+    }
+  }
+
+  function _setFilterActive(activeBtn) {
     filtersEl.querySelectorAll('.fb-filter-btn').forEach(function (b) {
       b.classList.remove('active');
-      b.style.color = '';
-      b.style.borderColor = '';
-      b.style.background = '';
+      _applyBtnStyle(b, false);
     });
-    btn.classList.add('active');
-    if (color) {
-      btn.style.color = color;
-      btn.style.borderColor = color;
-      btn.style.background = color + '14';
-    }
+    activeBtn.classList.add('active');
+    _applyBtnStyle(activeBtn, true);
   }
 
   function _buildFilters(data) {
@@ -239,18 +256,22 @@
       var btn = document.createElement('button');
       btn.className = 'fb-filter-btn';
       btn.dataset.filter = cat;
+      btn.dataset.catColor = color;
       btn.textContent = cat;
+      _applyBtnStyle(btn, false);
       btn.addEventListener('click', function () {
         _filter = cat;
-        _setFilterActive(btn, color);
+        _setFilterActive(btn);
         _render();
       });
       filtersEl.appendChild(btn);
     });
 
-    filtersEl.querySelector('[data-filter="all"]').addEventListener('click', function () {
+    var allBtn = filtersEl.querySelector('[data-filter="all"]');
+    _applyBtnStyle(allBtn, true);  /* "Alle" starts active */
+    allBtn.addEventListener('click', function () {
       _filter = 'all';
-      _setFilterActive(this, null);
+      _setFilterActive(allBtn);
       _render();
     });
   }
