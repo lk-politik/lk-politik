@@ -621,7 +621,17 @@
   function _updateProgressBar() {
     if (typeof CONF === 'undefined') return;
     var passed = Object.keys(qgPass).filter(function (k) { return qgPass[k]; }).length;
-    var pct    = CONF.gates > 0 ? Math.round((passed / CONF.gates) * 100) : 0;
+    var hasAB  = CONF.abPts > 0;
+    var pct;
+    if (hasAB) {
+      /* Gates + Arbeitsblatt each count as one step toward completion.
+         AB score is read from localStorage so it survives page refresh. */
+      var savedAbPts = ((Progress.load(CONF.id) || {}).abPts) || 0;
+      var abFrac = Math.min(savedAbPts / CONF.abPts, 1);
+      pct = Math.round(((passed + abFrac) / (CONF.gates + 1)) * 100);
+    } else {
+      pct = CONF.gates > 0 ? Math.round((passed / CONF.gates) * 100) : 0;
+    }
     _setProgressBar(pct);
   }
 
@@ -1093,10 +1103,11 @@
     var el  = document.getElementById('ab-score');
     if (el) el.textContent = pts + ' / ' + CONF.abPts;
 
-    /* Fortschritt speichern */
+    /* Fortschritt speichern + Gesamtbalken aktualisieren */
     var existing = Progress.load(CONF.id) || {};
     existing.abPts = pts;
     Progress.save(CONF.id, existing);
+    _updateProgressBar();
   };
 
   /**
