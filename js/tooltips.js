@@ -10,18 +10,21 @@
   'use strict';
 
   /* ── Category colour palette ────────────────────────────── */
-  /* Semantic: each colour reflects what the category represents  */
+  /* Two families — grey (formal/structural) and gold (active/principled).
+     No red or red-adjacent colours.                              */
   var CAT_COLORS = {
-    'Institution':       '#1e4d8c',  /* navy — official EU structures       */
-    'Verfahren':         '#0e7490',  /* teal — procedural flows             */
-    'Rechtsakt':         '#4338ca',  /* indigo — formal legal instruments   */
-    'Prinzip':           '#166534',  /* forest — foundational principles    */
-    'Phänomen':          '#c2410c',  /* burnt orange — social phenomena     */
-    'Vertrag':           '#065f46',  /* emerald — binding treaties          */
-    'Integrationsstufe': '#0891b2',  /* sky — levels of integration        */
-    'Befugnis':          '#7c3aed',  /* violet — powers / competences       */
-    'Posten':            '#9d174d',  /* rose — persons / offices            */
-    'Instrument':        '#4d7c0f'   /* olive — policy tools                */
+    /* Grey family — dark to medium, formal structures */
+    'Institution':       '#111827',  /* near-black — official bodies        */
+    'Rechtsakt':         '#1f2937',  /* very dark grey — legal acts         */
+    'Vertrag':           '#374151',  /* dark grey — binding treaties        */
+    'Verfahren':         '#4b5563',  /* medium-dark grey — procedures       */
+    'Befugnis':          '#6b7280',  /* medium grey — competences           */
+    /* Gold/amber family — dark to bright, principled/active */
+    'Prinzip':           '#a16207',  /* dark gold — foundational principles */
+    'Integrationsstufe': '#b45309',  /* dark amber — integration levels     */
+    'Posten':            '#ca8a04',  /* gold — official persons/positions   */
+    'Instrument':        '#d97706',  /* amber — policy tools                */
+    'Phänomen':          '#f59e0b'   /* bright amber — observable phenomena */
   };
 
   /* Expose so fachbegriffe.html and other pages can reuse */

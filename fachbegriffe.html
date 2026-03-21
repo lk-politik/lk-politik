@@ -158,19 +158,20 @@ span.fb-unit-chip.locked { color: var(--ink3); border-color: var(--border); }
 <script>
 (function () {
   /* ── Category colour palette (mirrors tooltips.js) ───── */
+  /* Grey (formal/structural) + gold/amber (principled/active). No red. */
   var CAT_COLORS = {
-    'Institution':       '#1e4d8c',  /* navy — official structures      */
-    'Verfahren':         '#0e7490',  /* teal — procedural flows         */
-    'Rechtsakt':         '#4338ca',  /* indigo — legal instruments      */
-    'Prinzip':           '#166534',  /* forest — foundational           */
-    'Phänomen':          '#c2410c',  /* burnt orange — phenomena        */
-    'Vertrag':           '#065f46',  /* emerald — treaties              */
-    'Integrationsstufe': '#0891b2',  /* sky — integration levels        */
-    'Befugnis':          '#7c3aed',  /* violet — powers/competences     */
-    'Posten':            '#9d174d',  /* rose — persons/offices          */
-    'Instrument':        '#4d7c0f'   /* olive — policy tools            */
+    'Institution':       '#111827',
+    'Rechtsakt':         '#1f2937',
+    'Vertrag':           '#374151',
+    'Verfahren':         '#4b5563',
+    'Befugnis':          '#6b7280',
+    'Prinzip':           '#a16207',
+    'Integrationsstufe': '#b45309',
+    'Posten':            '#ca8a04',
+    'Instrument':        '#d97706',
+    'Phänomen':          '#f59e0b'
   };
-  function _catColor(cat) { return CAT_COLORS[cat] || '#1e4d8c'; }
+  function _catColor(cat) { return CAT_COLORS[cat] || '#4b5563'; }
 
   var _all    = [];
   var _filter = 'all';
