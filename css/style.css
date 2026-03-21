@@ -532,6 +532,19 @@ code, .mono {
   display: block;
 }
 
+/* --- Passed-open state (body visible, correct answers shown) --- */
+.einstieg[data-state="passed-open"] {
+  border-color: var(--ok-border);
+}
+
+.einstieg[data-state="passed-open"] .einstieg-header {
+  background: var(--ok);
+}
+
+.einstieg[data-state="passed-open"] .einstieg-retry {
+  display: block;
+}
+
 /* --- Re-opened state (still passed, body visible, answers reset) --- */
 .einstieg[data-state="re-opened"] {
   border-color: var(--ok-border);

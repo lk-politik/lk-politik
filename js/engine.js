@@ -501,11 +501,20 @@
     }
   };
 
-  /* Resets answers inside a QG (bypasses qgPass guard — gate stays passed).
-     Known limitation: .olist DOM order is NOT restored. The engine never
-     stores original item order, so shuffled ordering tasks will show the
-     student's last arrangement. This matches existing rstQ behaviour.
-     qgPass[gateNr] and data-passed are NOT cleared — gate stays unlocked. */
+  /* Fisher-Yates shuffle of all children of a parent element */
+  function _shuffleChildren(parent) {
+    var items = Array.from(parent.children);
+    for (var i = items.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = items[i]; items[i] = items[j]; items[j] = tmp;
+    }
+    var frag = document.createDocumentFragment();
+    items.forEach(function (item) { frag.appendChild(item); });
+    parent.appendChild(frag);
+  }
+
+  /* Resets answers inside a QG and shuffles option order so students can't
+     memorise position. qgPass[gateNr] and data-passed are NOT cleared. */
   function _resetQgForRetry(gateNr, gate) {
     gate.querySelectorAll('.mco input').forEach(function (inp) {
       inp.checked = false;
@@ -523,6 +532,16 @@
     });
     var fbEl = document.getElementById('qfb' + gateNr);
     if (fbEl) { fbEl.style.display = 'none'; fbEl.textContent = ''; }
+
+    /* Shuffle MC option order */
+    gate.querySelectorAll('.mco-list').forEach(function (list) {
+      _shuffleChildren(list);
+    });
+    /* Shuffle ordering task items and re-number */
+    gate.querySelectorAll('.olist').forEach(function (list) {
+      _shuffleChildren(list);
+      oRenum(list);
+    });
   }
 
   /* --------------------------------------------------------
@@ -1330,31 +1349,32 @@
   /**
    * toggleEinstieg()
    * Called by clicking the Einstieg header.
-   * passed     → re-opened  (expand + reset answers; pill stays "Bestanden")
-   * re-opened  → passed     (collapse)
-   * open       → no-op      (cannot collapse before passing)
+   * passed      → passed-open  (expand, keep correct answers visible)
+   * passed-open → passed       (collapse)
+   * re-opened   → passed       (collapse)
+   * open        → no-op        (cannot collapse before passing)
+   * Only retryEinstieg() resets answers.
    */
   window.toggleEinstieg = function () {
     var einstieg = document.getElementById('einstieg');
     if (!einstieg) return;
     var state = einstieg.getAttribute('data-state') || 'open';
     if (state === 'passed') {
-      _resetEinstiegAnswers(einstieg);
-      einstieg.setAttribute('data-state', 're-opened');
-    } else if (state === 're-opened') {
+      einstieg.setAttribute('data-state', 'passed-open');
+    } else if (state === 'passed-open' || state === 're-opened') {
       einstieg.setAttribute('data-state', 'passed');
     }
   };
 
   /**
    * retryEinstieg()
-   * Called by the "↺ Nochmal ansehen" link in the retry strip.
+   * Called by the "↺ Nochmal ansehen" link — resets and shuffles chips.
    */
   window.retryEinstieg = function () {
     var einstieg = document.getElementById('einstieg');
     if (!einstieg) return;
     var state = einstieg.getAttribute('data-state') || 'open';
-    if (state === 'passed') {
+    if (state === 'passed' || state === 'passed-open') {
       _resetEinstiegAnswers(einstieg);
       einstieg.setAttribute('data-state', 're-opened');
     }
@@ -1367,6 +1387,10 @@
     });
     var btn = document.getElementById('einstieg-btn');
     if (btn) btn.disabled = true;
+    /* Shuffle chip order within each card so students can't memorise position */
+    einstieg.querySelectorAll('.einstieg-chips').forEach(function (chips) {
+      _shuffleChildren(chips);
+    });
   }
 
   document.addEventListener('DOMContentLoaded', function () {
