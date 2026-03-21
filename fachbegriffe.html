@@ -42,7 +42,7 @@
 .fb-entry {
   background: var(--card);
   border: 1px solid var(--border-l);
-  border-left: 4px solid var(--sw);
+  border-left: 4px solid var(--sw); /* overridden per-category by inline style */
   border-radius: var(--r);
   padding: .85rem 1.1rem;
   margin-bottom: .75rem;
@@ -52,27 +52,36 @@
   font-family: var(--ff-mono);
   font-size: .8rem;
   font-weight: 700;
-  color: var(--sw);
+  color: var(--sw); /* overridden per-category by inline style */
   text-transform: uppercase;
   letter-spacing: .08em;
   margin-bottom: .3rem;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: .5rem;
 }
 
 .fb-cat-badge {
-  font-size: .62rem;
+  font-size: .6rem;
   font-family: var(--ff-mono);
   font-weight: 600;
   letter-spacing: .06em;
   text-transform: uppercase;
-  background: var(--accG);
-  color: var(--acc);
-  border: 1px solid var(--accL);
+  background: var(--accG); /* overridden per-category by inline style */
+  color: var(--acc);       /* overridden per-category by inline style */
+  border: 1px solid currentColor;
   padding: .1em .55em;
   border-radius: 3px;
 }
+
+.fb-unit-link {
+  color: var(--acc);
+  text-decoration: none;
+  font-family: var(--ff-mono);
+  font-size: .68rem;
+}
+.fb-unit-link:hover { text-decoration: underline; }
 
 .fb-entry-def {
   font-size: .88rem;
@@ -140,8 +149,24 @@
 
 <script src="js/progress.js"></script>
 <script src="data/glossary.js"></script>
+<script src="data/units.js"></script>
 <script>
 (function () {
+  /* ── Category colour palette (mirrors tooltips.js) ───── */
+  var CAT_COLORS = {
+    'Institution':       '#2d5986',
+    'Verfahren':         '#0e7490',
+    'Rechtsakt':         '#7c3aed',
+    'Prinzip':           '#15803d',
+    'Phänomen':          '#dc2626',
+    'Vertrag':           '#7c2d12',
+    'Integrationsstufe': '#0369a1',
+    'Befugnis':          '#b45309',
+    'Posten':            '#be185d',
+    'Instrument':        '#4d7c0f'
+  };
+  function _catColor(cat) { return CAT_COLORS[cat] || '#b45309'; }
+
   var _all    = [];
   var _filter = 'all';
   var _search = '';
@@ -149,11 +174,23 @@
   var listEl    = document.getElementById('fb-list');
   var filtersEl = document.getElementById('fb-filters');
   var searchEl  = document.getElementById('fb-search');
+  var _units    = window._PLK_UNITS || [];
+
+  function _unitHtml(unitId) {
+    var unit = _units.find(function (u) { return u.id === unitId; });
+    if (unit && unit.status === 'active' && unit.file) {
+      return '<a class="fb-unit-link" href="einheiten/' + unit.file + '">' +
+             unit.num + ' ' + unit.title + '</a>';
+    }
+    return unit ? (unit.num + ' ' + unit.title) : ('Einheit ' + unitId);
+  }
 
   function _render() {
     var items = _all.filter(function (g) {
       var matchCat    = _filter === 'all' || g.cat === _filter;
-      var matchSearch = !_search || g.term.toLowerCase().indexOf(_search) !== -1 || g.def.toLowerCase().indexOf(_search) !== -1;
+      var matchSearch = !_search ||
+        g.term.toLowerCase().indexOf(_search) !== -1 ||
+        g.def.toLowerCase().indexOf(_search) !== -1;
       return matchCat && matchSearch;
     });
 
@@ -165,14 +202,32 @@
     }
 
     listEl.innerHTML = items.map(function (g) {
-      var catBadge  = g.cat ? ' <span class="fb-cat-badge">' + g.cat + '</span>' : '';
-      var unitLinks = g.units.map(function (u) { return 'Einheit ' + u; }).join(', ');
-      return '<li class="fb-entry">' +
-        '<div class="fb-entry-term">' + g.term + catBadge + '</div>' +
+      var color    = _catColor(g.cat);
+      var catBadge = g.cat
+        ? '<span class="fb-cat-badge" style="color:' + color + ';background:' + color + '18">' + g.cat + '</span>'
+        : '';
+      var unitLinks = g.units.map(_unitHtml).join(' &middot; ');
+      return '<li class="fb-entry" style="border-left-color:' + color + '">' +
+        '<div class="fb-entry-term" style="color:' + color + '">' + g.term + catBadge + '</div>' +
         '<div class="fb-entry-def">' + g.def + '</div>' +
-        '<div class="fb-entry-units">→ ' + unitLinks + '</div>' +
+        '<div class="fb-entry-units">\u2192 ' + unitLinks + '</div>' +
         '</li>';
     }).join('');
+  }
+
+  function _setFilterActive(btn, color) {
+    filtersEl.querySelectorAll('.fb-filter-btn').forEach(function (b) {
+      b.classList.remove('active');
+      b.style.color = '';
+      b.style.borderColor = '';
+      b.style.background = '';
+    });
+    btn.classList.add('active');
+    if (color) {
+      btn.style.color = color;
+      btn.style.borderColor = color;
+      btn.style.background = color + '14';
+    }
   }
 
   function _buildFilters(data) {
@@ -180,14 +235,14 @@
     data.forEach(function (g) { if (g.cat) catSet[g.cat] = true; });
     var cats = Object.keys(catSet).sort();
     cats.forEach(function (cat) {
+      var color = _catColor(cat);
       var btn = document.createElement('button');
       btn.className = 'fb-filter-btn';
       btn.dataset.filter = cat;
       btn.textContent = cat;
       btn.addEventListener('click', function () {
         _filter = cat;
-        filtersEl.querySelectorAll('.fb-filter-btn').forEach(function (b) { b.classList.remove('active'); });
-        btn.classList.add('active');
+        _setFilterActive(btn, color);
         _render();
       });
       filtersEl.appendChild(btn);
@@ -195,8 +250,7 @@
 
     filtersEl.querySelector('[data-filter="all"]').addEventListener('click', function () {
       _filter = 'all';
-      filtersEl.querySelectorAll('.fb-filter-btn').forEach(function (b) { b.classList.remove('active'); });
-      this.classList.add('active');
+      _setFilterActive(this, null);
       _render();
     });
   }
@@ -206,7 +260,13 @@
     _render();
   });
 
-  /* Read from global set by data/glossary.js (loaded via script tag) */
+  /* Pre-fill search from ?q= URL param (linked from tooltips) */
+  var urlQ = (location.search.match(/[?&]q=([^&]*)/) || [])[1];
+  if (urlQ) {
+    _search = decodeURIComponent(urlQ).toLowerCase();
+    searchEl.value = decodeURIComponent(urlQ);
+  }
+
   if (window._PLK_GLOSSARY && window._PLK_GLOSSARY.length) {
     _all = window._PLK_GLOSSARY;
     _buildFilters(_all);

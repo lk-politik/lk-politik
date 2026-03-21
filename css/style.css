@@ -2420,8 +2420,8 @@ strong.p-core::after {
 
 /* =====================================================
    42. Fachbegriff Inline Tooltip (.fb, .fb-tooltip)
-   Amber-underlined terms in SW blocks
-   Tap/hover → compact popover with definition
+   Dotted-underlined terms in SW blocks
+   Tap → popover with definition, unit links, index link
    ===================================================== */
 
 .fb {
@@ -2433,38 +2433,113 @@ strong.p-core::after {
   cursor: pointer;
 }
 
+/* Tooltip container — sized to content, capped at 340 px */
 .fb-tooltip {
   position: fixed;
   z-index: 901;
   background: var(--card);
   border: 1px solid var(--border);
-  border-top: 3px solid var(--sw);
+  border-top: 3px solid var(--sw); /* overridden per-category by inline style */
   border-radius: var(--r);
-  padding: .75rem .9rem;
-  max-width: 260px;
-  box-shadow: 0 4px 16px rgba(0,0,0,.12);
-  font-size: .82rem;
-  line-height: 1.55;
+  padding: .9rem 1.1rem;
+  width: max-content;
+  min-width: 200px;
+  max-width: 340px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.14);
+  font-size: .875rem;
+  line-height: 1.7;
   color: var(--ink2);
+  font-family: var(--ff-body);
+  letter-spacing: .01em;
+}
+
+/* Term + category badge row */
+.fb-tooltip-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-bottom: .5rem;
 }
 
 .fb-tooltip-term {
   font-family: var(--ff-mono);
   font-size: .7rem;
   font-weight: 700;
-  color: var(--sw);
+  color: var(--sw); /* overridden per-category by inline style */
   text-transform: uppercase;
   letter-spacing: .1em;
-  margin-bottom: .35rem;
+  line-height: 1.2;
 }
 
-.fb-tooltip-def { margin-bottom: .4rem; }
-
-.fb-tooltip-units {
+/* Category tag inside tooltip */
+.fb-tooltip-cat {
+  display: inline-block;
+  font-size: .57rem;
   font-family: var(--ff-mono);
-  font-size: .65rem;
-  color: var(--ink3);
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  padding: .12em .5em;
+  border-radius: 3px;
+  border: 1px solid currentColor;
+  line-height: 1.4;
 }
+
+/* Definition text — allow hyphenation for German long compounds */
+.fb-tooltip-def {
+  hyphens: auto;
+}
+
+/* Footer row: unit links left, index link right */
+.fb-tooltip-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-top: .55rem;
+  padding-top: .45rem;
+  border-top: 1px solid var(--border-l);
+}
+
+/* Unit ref links (active units — clickable) */
+.fb-tooltip-units {
+  display: flex;
+  flex-direction: column;
+  gap: .18rem;
+}
+
+.fb-tooltip-unit-link {
+  font-family: var(--ff-mono);
+  font-size: .64rem;
+  color: var(--acc);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+.fb-tooltip-unit-link:hover { text-decoration: underline; }
+
+/* Unit ref text (pending/locked units — not clickable) */
+.fb-tooltip-unit-locked {
+  font-family: var(--ff-mono);
+  font-size: .64rem;
+  color: var(--ink3);
+  white-space: nowrap;
+}
+
+/* "Alle Begriffe →" index link */
+.fb-tooltip-index-link {
+  font-family: var(--ff-mono);
+  font-size: .62rem;
+  color: var(--ink3);
+  text-decoration: none;
+  flex-shrink: 0;
+  white-space: nowrap;
+  align-self: flex-end;
+}
+.fb-tooltip-index-link:hover { color: var(--ink2); text-decoration: underline; }
 
 /* =====================================================
    43. Interactive UK Block — Quiz Mode

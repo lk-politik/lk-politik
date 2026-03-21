@@ -3,21 +3,41 @@
    Operator badge tooltips · Fachbegriff popovers
    Requires: css/style.css sections 40-42
    Load after engine.js in unit HTML files.
+   ES5 only — no arrow functions, no const/let.
    ========================================================== */
 
 ;(function () {
   'use strict';
 
-  /* ── Shared state ──────────────────────────────────────── */
-  var _operators  = null;  // Loaded from data/operators.json
-  var _glossary   = null;  // Loaded from data/glossary.json
-  var _activeTooltip = null;  // Currently visible tooltip element
+  /* ── Category colour palette ────────────────────────────── */
+  var CAT_COLORS = {
+    'Institution':       '#2d5986',
+    'Verfahren':         '#0e7490',
+    'Rechtsakt':         '#7c3aed',
+    'Prinzip':           '#15803d',
+    'Phänomen':          '#dc2626',
+    'Vertrag':           '#7c2d12',
+    'Integrationsstufe': '#0369a1',
+    'Befugnis':          '#b45309',
+    'Posten':            '#be185d',
+    'Instrument':        '#4d7c0f'
+  };
 
-  /* ── Base path (resolve from script src: …/js/tooltips.js → …/) ── */
+  /* Expose so fachbegriffe.html and other pages can reuse */
+  window._PLK_CAT_COLORS = CAT_COLORS;
+
+  function _catColor(cat) { return CAT_COLORS[cat] || '#b45309'; }
+
+  /* ── Shared state ──────────────────────────────────────── */
+  var _operators     = null;
+  var _glossary      = null;
+  var _units         = null;
+  var _activeTooltip = null;
+
+  /* ── Base path (resolve from script src) ──────────────── */
   var _base = (function () {
     var s = document.currentScript;
     if (s && s.src) return s.src.replace(/js\/tooltips\.js.*$/i, '');
-    // Fallback: guess from document location
     var p = location.pathname;
     if (p.indexOf('/einheiten/') !== -1) return '../';
     return './';
@@ -40,12 +60,14 @@
   }
 
   function _loadData() {
-    /* Prefer script-injected globals (work on file:// protocol) */
     if (window._PLK_OPERATORS) { _operators = window._PLK_OPERATORS; }
-    else { _fetchJSON('data/operators.json', function (data) { _operators = data; }); }
+    else { _fetchJSON('data/operators.json', function (d) { _operators = d; }); }
 
     if (window._PLK_GLOSSARY) { _glossary = window._PLK_GLOSSARY; }
-    else { _fetchJSON('data/glossary.json',  function (data) { _glossary  = data; }); }
+    else { _fetchJSON('data/glossary.json',  function (d) { _glossary  = d; }); }
+
+    if (window._PLK_UNITS) { _units = window._PLK_UNITS; }
+    else { _fetchJSON('data/units.json',     function (d) { _units     = d; }); }
   }
 
   function _opByName(name) {
@@ -59,22 +81,34 @@
     return _glossary.find(function (g) { return g.term.toLowerCase() === lower; }) || null;
   }
 
+  function _unitById(id) {
+    if (!_units) return null;
+    return _units.find(function (u) { return u.id === id; }) || null;
+  }
+
   /* ── Tooltip positioning ───────────────────────────────── */
 
   function _positionTooltip(tooltip, anchor) {
     var r    = anchor.getBoundingClientRect();
-    var tw   = 280;
-    // position:fixed is viewport-relative — do NOT add window.scrollY/scrollX
+    /* Read actual rendered width — works because tooltip is already in DOM */
+    var tw   = tooltip.offsetWidth;
     var top  = r.bottom + 8;
     var left = r.left;
 
-    // Keep within viewport
+    /* Flip left if it overflows the right edge */
     if (left + tw > window.innerWidth - 16) {
       left = window.innerWidth - tw - 16;
     }
     if (left < 8) left = 8;
 
-    tooltip.style.top  = top + 'px';
+    /* Flip above anchor if it overflows the bottom */
+    var th = tooltip.offsetHeight;
+    if (top + th > window.innerHeight - 12) {
+      top = r.top - th - 8;
+      if (top < 8) top = 8;
+    }
+
+    tooltip.style.top  = top  + 'px';
     tooltip.style.left = left + 'px';
   }
 
@@ -85,6 +119,22 @@
     }
   }
 
+  /* ── Build unit-reference links for the tooltip ─────────── */
+
+  function _unitRefsHtml(unitIds) {
+    if (!unitIds || !unitIds.length) return '';
+    return unitIds.map(function (id) {
+      var unit = _unitById(id);
+      if (unit && unit.status === 'active' && unit.file) {
+        var href = _base + 'einheiten/' + unit.file;
+        return '<a class="fb-tooltip-unit-link" href="' + href + '">' +
+               '\u2192 ' + unit.num + ' ' + unit.title + '</a>';
+      }
+      var label = unit ? (unit.num + ' ' + unit.title) : ('Einheit ' + id);
+      return '<span class="fb-tooltip-unit-locked">\u2192 ' + label + '</span>';
+    }).join('');
+  }
+
   /* ── Operator badge tooltips ────────────────────────────── */
 
   function _initOpBadges() {
@@ -92,7 +142,6 @@
       badge.addEventListener('click', function (e) {
         e.stopPropagation();
 
-        // Toggle: close if same badge clicked again
         if (_activeTooltip && _activeTooltip.dataset.for === badge.dataset.op) {
           _closeTooltip();
           return;
@@ -100,14 +149,12 @@
         _closeTooltip();
 
         var opName = badge.dataset.op;
-        var op = _opByName(opName);
-
+        var op     = _opByName(opName);
         var tooltip = document.createElement('div');
-        tooltip.className = 'op-tooltip';
+        tooltip.className  = 'op-tooltip';
         tooltip.dataset.for = opName;
 
         if (_operators === null) {
-          // Data still loading
           tooltip.innerHTML = '<p style="color:var(--ink3);font-size:.8rem">Lade Daten \u2026</p>';
         } else if (!op) {
           tooltip.innerHTML = '<p style="color:var(--ink3);font-size:.8rem">Operator nicht gefunden.</p>';
@@ -143,24 +190,46 @@
         }
         _closeTooltip();
 
-        var entry = _glossary === null ? null : _termByName(termText);
+        var entry   = _glossary === null ? null : _termByName(termText);
         var tooltip = document.createElement('div');
-        tooltip.className = 'fb-tooltip';
+        tooltip.className   = 'fb-tooltip';
         tooltip.dataset.for = 'fb-' + termText;
 
         if (_glossary === null) {
-          tooltip.innerHTML = '<div class="fb-tooltip-term">' + termText + '</div>' +
-            '<div class="fb-tooltip-def">Lade Daten \u2026</div>';
-        } else if (!entry) {
-          tooltip.innerHTML = '<div class="fb-tooltip-term">' + termText + '</div>' +
-            '<div class="fb-tooltip-def">Definition nicht gefunden.</div>';
-        } else {
-          var unitLinks = entry.units.map(function (u) { return 'Einheit ' + u; }).join(', ');
-          var abLabel   = entry.ab ? ' \u00b7 AB ' + ['', 'I', 'II', 'III'][entry.ab] : '';
           tooltip.innerHTML =
-            '<div class="fb-tooltip-term">' + entry.term + abLabel + '</div>' +
+            '<div class="fb-tooltip-header">' +
+              '<span class="fb-tooltip-term">' + termText + '</span>' +
+            '</div>' +
+            '<div class="fb-tooltip-def">Lade Daten \u2026</div>';
+
+        } else if (!entry) {
+          tooltip.innerHTML =
+            '<div class="fb-tooltip-header">' +
+              '<span class="fb-tooltip-term">' + termText + '</span>' +
+            '</div>' +
+            '<div class="fb-tooltip-def">Definition nicht gefunden.</div>';
+
+        } else {
+          var color = _catColor(entry.cat);
+          tooltip.style.borderTopColor = color;
+
+          var catHtml = entry.cat
+            ? '<span class="fb-tooltip-cat" style="color:' + color + ';background:' + color + '18">' + entry.cat + '</span>'
+            : '';
+
+          var indexHref = _base + 'fachbegriffe.html?q=' + encodeURIComponent(entry.term);
+          var unitRefs  = _unitRefsHtml(entry.units);
+
+          tooltip.innerHTML =
+            '<div class="fb-tooltip-header">' +
+              '<span class="fb-tooltip-term" style="color:' + color + '">' + entry.term + '</span>' +
+              catHtml +
+            '</div>' +
             '<div class="fb-tooltip-def">' + entry.def + '</div>' +
-            '<div class="fb-tooltip-units">\u2192 ' + unitLinks + '</div>';
+            '<div class="fb-tooltip-footer">' +
+              '<div class="fb-tooltip-units">' + unitRefs + '</div>' +
+              '<a class="fb-tooltip-index-link" href="' + indexHref + '">Alle Begriffe \u2192</a>' +
+            '</div>';
         }
 
         document.body.appendChild(tooltip);
@@ -177,7 +246,6 @@
     _initOpBadges();
     _initFbTerms();
 
-    // Close tooltips on outside click
     document.addEventListener('click', function (e) {
       if (_activeTooltip && !_activeTooltip.contains(e.target)) {
         _closeTooltip();
