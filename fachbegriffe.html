@@ -158,20 +158,19 @@ span.fb-unit-chip.locked { color: var(--ink3); border-color: var(--border); }
 <script>
 (function () {
   /* ── Category colour palette (mirrors tooltips.js) ───── */
-  /* Grey (formal/structural) + gold/amber (principled/active). No red. */
   var CAT_COLORS = {
-    'Institution':       '#111827',
-    'Rechtsakt':         '#1f2937',
-    'Vertrag':           '#374151',
-    'Verfahren':         '#4b5563',
-    'Befugnis':          '#6b7280',
-    'Prinzip':           '#a16207',
-    'Integrationsstufe': '#b45309',
-    'Posten':            '#ca8a04',
-    'Instrument':        '#d97706',
-    'Phänomen':          '#f59e0b'
+    'Vertrag':           '#1e3a8a',
+    'Institution':       '#1d4ed8',
+    'Posten':            '#3b82f6',
+    'Verfahren':         '#0891b2',
+    'Befugnis':          '#166534',
+    'Instrument':        '#16a34a',
+    'Rechtsakt':         '#6b7280',
+    'Integrationsstufe': '#ca8a04',
+    'Phänomen':          '#111827',
+    'Prinzip':           '#94a3b8'
   };
-  function _catColor(cat) { return CAT_COLORS[cat] || '#4b5563'; }
+  function _catColor(cat) { return CAT_COLORS[cat] || '#6b7280'; }
 
   var _all    = [];
   var _filter = 'all';

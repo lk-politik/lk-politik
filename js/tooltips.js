@@ -10,21 +10,20 @@
   'use strict';
 
   /* ── Category colour palette ────────────────────────────── */
-  /* Two families — grey (formal/structural) and gold (active/principled).
+  /* Blue → teal → green spectrum for structural/procedural categories.
+     Grey, yellow, black, silver for the remaining types.
      No red or red-adjacent colours.                              */
   var CAT_COLORS = {
-    /* Grey family — dark to medium, formal structures */
-    'Institution':       '#111827',  /* near-black — official bodies        */
-    'Rechtsakt':         '#1f2937',  /* very dark grey — legal acts         */
-    'Vertrag':           '#374151',  /* dark grey — binding treaties        */
-    'Verfahren':         '#4b5563',  /* medium-dark grey — procedures       */
-    'Befugnis':          '#6b7280',  /* medium grey — competences           */
-    /* Gold/amber family — dark to bright, principled/active */
-    'Prinzip':           '#a16207',  /* dark gold — foundational principles */
-    'Integrationsstufe': '#b45309',  /* dark amber — integration levels     */
-    'Posten':            '#ca8a04',  /* gold — official persons/positions   */
-    'Instrument':        '#d97706',  /* amber — policy tools                */
-    'Phänomen':          '#f59e0b'   /* bright amber — observable phenomena */
+    'Vertrag':           '#1e3a8a',  /* navy blue   — binding treaties      */
+    'Institution':       '#1d4ed8',  /* blue        — official bodies       */
+    'Posten':            '#3b82f6',  /* light blue  — persons/offices       */
+    'Verfahren':         '#0891b2',  /* teal        — procedures/flow       */
+    'Befugnis':          '#166534',  /* green       — competences/powers    */
+    'Instrument':        '#16a34a',  /* light green — policy tools          */
+    'Rechtsakt':         '#6b7280',  /* grey        — legal acts            */
+    'Integrationsstufe': '#ca8a04',  /* gold/yellow — integration levels    */
+    'Phänomen':          '#111827',  /* near-black  — observable phenomena  */
+    'Prinzip':           '#94a3b8'   /* silver      — foundational (white)  */
   };
 
   /* Expose so fachbegriffe.html and other pages can reuse */
