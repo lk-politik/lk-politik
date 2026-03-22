@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Politik-LK — Exercise Library</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root { --acc: #0891b2; --accL: #e0f2fe; --accG: rgba(8,145,178,.08); }
+
+    .ex-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0 2rem;
+    }
+    .ex-card {
+      border: 1px solid var(--border-l);
+      border-radius: .5rem;
+      padding: 1rem;
+      background: var(--bg);
+    }
+    .ex-card h3 {
+      margin: 0 0 .4rem;
+      font-size: 1rem;
+    }
+    .ex-card .ex-meta {
+      font-size: .8rem;
+      color: var(--ink2);
+      margin: .25rem 0;
+    }
+    .ex-card .ex-tag {
+      display: inline-block;
+      font-size: .7rem;
+      font-family: var(--ff-mono);
+      background: var(--accG);
+      color: var(--acc);
+      border-radius: .25rem;
+      padding: .1rem .4rem;
+    }
+    .ex-card a {
+      font-family: var(--ff-mono);
+      font-size: .75rem;
+    }
+    .section-intro {
+      color: var(--ink2);
+      font-size: .9rem;
+      margin: -.25rem 0 .75rem;
+    }
+  </style>
+</head>
+<body>
+  <div style="max-width:960px;margin:2rem auto;padding:1rem 1.5rem">
+    <h1>Exercise Library</h1>
+    <p>Ubersicht aller 19 Aufgabentypen. Fur jede Lernaktivitat gibt es eine Detaildatei in <code>_ex/</code> mit HTML-Pattern, CSS-Klassen und einem vollstandigen Beispiel.</p>
+
+    <!-- ======================================================
+         A — Auswahl & Zuordnung
+    ======================================================= -->
+    <h2>A &mdash; Auswahl &amp; Zuordnung</h2>
+    <p class="section-intro">Aufgaben, bei denen Schuler Antworten ausw&auml;hlen, Paare bilden oder Elemente sortieren.</p>
+
+    <div class="ex-grid">
+
+      <div class="ex-card">
+        <h3>Radio MC</h3>
+        <p class="ex-meta"><a href="_ex/mc-radio.html">_ex/mc-radio.html</a></p>
+        <p class="ex-meta"><strong>Wann verwenden:</strong> Wenn genau eine Antwort korrekt ist (Definitionen, Faktenwissen).</p>
+        <p class="ex-meta"><strong>Interaktion:</strong> Radio ausw&auml;hlen</p>
+        <span class="ex-tag">quiz-base.js</span>
+      </div>
+
+      <div class="ex-card">
+        <h3>Checkbox MC</h3>
+        <p class="ex-meta"><a href="_ex/mc-checkbox.html">_ex/mc-checkbox.html</a></p>
+        <p class="ex-meta"><strong>Wann verwenden:</strong> Wenn mehrere Antworten korrekt sein k&ouml;nnen (Merkmale, Funktionen).</p>
+        <p class="ex-meta"><strong>Interaktion:</strong> Checkboxen anklicken</p>
+        <span class="ex-tag">quiz-ext.js</span>
+      </div>
+
+      <div class="ex-card">
+        <h3>Zuordnung</h3>
+        <p class="ex-meta"><a href="_ex/zuordnung.html">_ex/zuordnung.html</a></p>
+        <p class="ex-meta"><strong>Wann verwenden:</strong> Wenn Begriff&ndash;Beschreibung-Paare zugeordnet werden sollen.</p>
+        <p class="ex-meta"><strong>Interaktion:</strong> Paarweise anklicken</p>
+        <span class="ex-tag">quiz-base.js</span>
+      </div>
+
+      <div class="ex-card">
+        <h3>Zuordnung-Tabelle</h3>
+        <p class="ex-meta"><a href="_ex/zuordnung-table.html">_ex/zuordnung-table.html</a></p>
+        <p class="ex-meta"><strong>Wann verwenden:</strong> Wenn mehrere Objekte nach denselben Kategorien eingeordnet werden sollen (Matrix).</p>
+        <p class="ex-meta"><strong>Interaktion:</strong> Radio-Matrix</p>
+        <span class="ex-tag">quiz-ext.js</span>
+      </div>
+
+      <div class="ex-card">
+        <h3>Kategorisierung</h3>
+        <p class="ex-meta"><a href="_ex/kategorisierung.html">_ex/kategorisierung.html</a></p>
+        <p class="ex-meta"><strong>Wann verwenden:</strong> Wenn Begriffe in 2&ndash;3 Kategorien sortiert werden sollen.</p>
+        <p class="ex-meta"><strong>Interaktion:</strong> Chips zuordnen</p>
+        <span class="ex-tag">quiz-base.js</span>
+      </div>
+
+      <div class="ex-card">
+        <h3>Markieren</h3>
+        <p class="ex-meta"><a href="_ex/markieren.html">_ex/markieren.html</a></p>
+        <p class="ex-meta"><strong>Wann verwenden:</strong> Wenn bestimmte W&ouml;rter oder Phrasen im Text markiert werden sollen.</p>
+        <p class="ex-meta"><strong>Interaktion:</strong> W&ouml;rter anklicken</p>
+        <span class="ex-tag">quiz-ext.js</span>
+      </div>
+
+      <div class="ex-card">
+        <h3>Spot the Error</h3>
+        <p class="ex-meta"><a href="_ex/spot-error.html">_ex/spot-error.html</a></p>
+        <p class="ex-meta"><strong>Wann verwenden:</strong> Wenn Fehler in einem Text gefunden werden sollen (CSS-Variante von Markieren).</p>
+        <p class="ex-meta"><strong>Interaktion:</strong> Fehler anklicken</p>
+        <span class="ex-tag">quiz-ext.js</span>
+      </div>
+
+      <div class="ex-card">
+        <h3>Sort into Buckets</h3>
+        <p class="ex-meta"><a href="_ex/sort-buckets.html">_ex/sort-buckets.html</a></p>
+        <p class="ex-meta"><strong>Wann verwenden:</strong> Wenn Chips in 3+ Kategorien sortiert werden sollen (mehr als Kategorisierung).</p>
+        <p class="ex-meta"><strong>Interaktion:</strong> Chip &rarr; Eimer</p>
+        <span class="ex-tag">quiz-lib.js</span>
+      </div>
+
+      <div class="ex-card">
+        <h3>Build-a-Concept</h3>
+        <p class="ex-meta"><a href="_ex/build-concept.html">_ex/build-concept.html</a></p>
+        <p class="ex-meta"><strong>Wann verwenden:</strong> Wenn Sch&uuml;ler aus einer Auswahl die zutreffenden Merkmale eines Konzepts zusammenstellen sollen.</p>
+        <p class="ex-meta"><strong>Interaktion:</strong> Chips ausw&auml;hlen</p>
+        <span class="ex-tag">quiz-lib.js</span>
+      </div>
+
+      <div class="ex-card">
+        <h3>Timeline</h3>
+        <p class="ex-meta"><a href="_ex/timeline.html">_ex/timeline.html</a></p>
+        <p class="ex-meta"><strong>Wann verwenden:</strong> Wenn Ereignisse in chronologische Reihenfolge gebracht werden sollen.</p>
+        <p class="ex-meta"><strong>Interaktion:</strong> Chip &rarr; Zeitstrahl-Slot</p>
+        <span class="ex-tag">quiz-lib.js</span>
+      </div>
+
+      <div class="ex-card">
+        <h3>Definition &rarr; Term Match</h3>
+        <p class="ex-meta"><a href="_ex/def-match.html">_ex/def-match.html</a></p>
+        <p class="ex-meta"><strong>Wann verwenden:</strong> Wenn Definitionen und Fachbegriffe visuell aufeinander gemappt werden sollen (zwei Spalten).</p>
+        <p class="ex-meta"><strong>Interaktion:</strong> Klick-Paar (Def + Term)</p>
+        <span class="ex-tag">quiz-lib.js</span>
+      </div>
+
+      <div class="ex-card">
+        <h3>Sequence Ordering</h3>
+        <p class="ex-meta"><a href="_ex/order-list.html">_ex/order-list.html</a></p>
+        <p class="ex-meta"><strong>Wann verwenden:</strong> Wenn Schritte oder Ereignisse in die richtige Reihenfolge gebracht werden sollen (Aufz&auml;hlung, kein Zeitstrahl).</p>
+        <p class="ex-meta"><strong>Interaktion:</strong> Pfeil-Buttons</p>
+        <span class="ex-tag">quiz-base.js</span>
+      </div>
+
+    </div>
+
+    <!-- ======================================================
+         B — Eingabe & Schätzen
+    ======================================================= -->
+    <h2>B &mdash; Eingabe &amp; Sch&auml;tzen</h2>
+    <p class="section-intro">Aufgaben, bei denen Sch&uuml;ler selbst Text eingeben oder numerische Werte einsch&auml;tzen.</p>
+
+    <div class="ex-grid">
+
+      <div class="ex-card">
+        <h3>Freitext</h3>
+        <p class="ex-meta"><a href="_ex/freitext.html">_ex/freitext.html</a></p>
+        <p class="ex-meta"><strong>Wann verwenden:</strong> Wenn eine offene schriftliche Antwort erwartet wird (Argumentations&uuml;bungen, UK-Vorbereitung).</p>
+        <p class="ex-meta"><strong>Interaktion:</strong> Textarea eingeben</p>
+        <span class="ex-tag">quiz-base.js</span>
+      </div>
+
+      <div class="ex-card">
+        <h3>L&uuml;ckentext (Chips)</h3>
+        <p class="ex-meta"><a href="_ex/gap-chips.html">_ex/gap-chips.html</a></p>
+        <p class="ex-meta"><strong>Wann verwenden:</strong> Wenn ein l&uuml;ckenhafter Text mit vorgegebenen Begriffen vervollst&auml;ndigt werden soll.</p>
+        <p class="ex-meta"><strong>Interaktion:</strong> Chip &rarr; Slot</p>
+        <span class="ex-tag">quiz-base.js</span>
+      </div>
+
+      <div class="ex-card">
+        <h3>L&uuml;ckentext (Dropdown)</h3>
+        <p class="ex-meta"><a href="_ex/gap-dropdown.html">_ex/gap-dropdown.html</a></p>
+        <p class="ex-meta"><strong>Wann verwenden:</strong> Wie Chip-L&uuml;ckentext, aber mit Dropdown-Men&uuml; statt Chips (mehr Optionen m&ouml;glich).</p>
+        <p class="ex-meta"><strong>Interaktion:</strong> Dropdown ausw&auml;hlen</p>
+        <span class="ex-tag">quiz-ext.js</span>
+      </div>
+
+      <div class="ex-card">
+        <h3>Slider Estimation</h3>
+        <p class="ex-meta"><a href="_ex/slider.html">_ex/slider.html</a></p>
+        <p class="ex-meta"><strong>Wann verwenden:</strong> Wenn Sch&uuml;ler einen numerischen Wert sch&auml;tzen sollen (Prozente, Anzahl, Jahreszahlen).</p>
+        <p class="ex-meta"><strong>Interaktion:</strong> Schieberegler</p>
+        <span class="ex-tag">quiz-lib.js</span>
+      </div>
+
+    </div>
+
+    <!-- ======================================================
+         C — Selbstreflexion & Bewertung
+    ======================================================= -->
+    <h2>C &mdash; Selbstreflexion &amp; Bewertung</h2>
+    <p class="section-intro">Aufgaben zur Selbsteinsch&auml;tzung, strukturierten Urteilsbildung und Begriffswiederholung.</p>
+
+    <div class="ex-grid">
+
+      <div class="ex-card">
+        <h3>Selbsteinsch&auml;tzung</h3>
+        <p class="ex-meta"><a href="_ex/selbsteinschaetzung.html">_ex/selbsteinschaetzung.html</a></p>
+        <p class="ex-meta"><strong>Wann verwenden:</strong> Wenn Sch&uuml;ler ihren eigenen Kenntnisstand einsch&auml;tzen sollen (vor/nach einer Einheit).</p>
+        <p class="ex-meta"><strong>Interaktion:</strong> Skala anklicken</p>
+        <span class="ex-tag">quiz-ext.js</span>
+      </div>
+
+      <div class="ex-card">
+        <h3>UK Pr&uuml;fen</h3>
+        <p class="ex-meta"><a href="_ex/uk-pruefen.html">_ex/uk-pruefen.html</a></p>
+        <p class="ex-meta"><strong>Wann verwenden:</strong> F&uuml;r die strukturierte Urteilskompetenz-Aufgabe mit mehrstufigem Bewertungsprozess.</p>
+        <p class="ex-meta"><strong>Interaktion:</strong> Mehrstufig (Kriterien &rarr; Urteil)</p>
+        <span class="ex-tag">uk-quiz.js</span>
+      </div>
+
+      <div class="ex-card">
+        <h3>Flashcard</h3>
+        <p class="ex-meta"><a href="_ex/flashcard.html">_ex/flashcard.html</a></p>
+        <p class="ex-meta"><strong>Wann verwenden:</strong> F&uuml;r Vokabel-/Begriffswiederholung; kein AB-Punkt, reine &Uuml;bungsform.</p>
+        <p class="ex-meta"><strong>Interaktion:</strong> Karte umdrehen</p>
+        <span class="ex-tag">quiz-lib.js</span>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>
