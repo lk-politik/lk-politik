@@ -1,7 +1,7 @@
 /* ==========================================================
    Politik-LK — engine.js
    Quiz-Engine · Arbeitsblatt-Engine · Passwort-System v2
-   Voraussetzung: progress.js muss zuerst geladen sein
+   progress.js absorbed — PLK.Progress handles localStorage
    ==========================================================
    Jede Einheit definiert CONF im eigenen HTML:
    var CONF = {
@@ -150,7 +150,7 @@
    * Überschreibt das Masterpasswort in localStorage.
    * Aufruf z.B. aus der Browser-Konsole: setMasterPw('neues-pw')
    */
-  window.setMasterPw = function (newPw) {
+  PLK.setMasterPw = function (newPw) {
     if (!newPw) return;
     localStorage.setItem(_PW_STORE_KEY, newPw);
     console.info('[PW] Masterpasswort gespeichert.');
@@ -160,7 +160,7 @@
    * setStuPw(unitId, newPw)
    * Überschreibt das Schülerpasswort einer Einheit in localStorage.
    */
-  window.setStuPw = function (unitId, newPw) {
+  PLK.setStuPw = function (unitId, newPw) {
     if (!unitId || !newPw) return;
     localStorage.setItem(_STU_STORE_PFX + unitId, newPw);
     console.info('[PW] Schülerpasswort für Einheit ' + unitId + ' gespeichert.');
@@ -171,8 +171,8 @@
    * Generiert neue Schülerpasswörter für alle bekannten Einheiten
    * und gibt eine Übersicht zurück.
    */
-  window.regenerateAllPw = function () {
-    var progress  = Progress.getAll();
+  PLK.regenerateAllPw = function () {
+    var progress  = PLK.Progress.getAll();
     var unitIds   = Object.keys(progress);
     var generated = {};
 
@@ -204,7 +204,7 @@
    * Akzeptiert Schüler- und Masterpasswort gleich.
    * Zeigt bei Treffer das Schülerpasswort neben dem Feld an.
    */
-  window.chkPw = function (inputId, hintId) {
+  PLK.chkPw = function (inputId, hintId) {
     var inp  = document.getElementById(inputId);
     var hint = document.getElementById(hintId);
     if (!inp) return;
@@ -265,14 +265,14 @@
   /* Speichert freigeschalteten Zustand */
   function _persistUnlock() {
     if (typeof CONF === 'undefined') return;
-    var existing = Progress.load(CONF.id) || { gates: {} };
+    var existing = PLK.Progress.load(CONF.id) || { gates: {} };
     existing.unlocked = true;
     if (typeof CONF !== 'undefined') {
       for (var g = 1; g <= CONF.gates; g++) {
         existing.gates['qg' + g] = true;
       }
     }
-    Progress.save(CONF.id, existing);
+    PLK.Progress.save(CONF.id, existing);
   }
 
   /* --------------------------------------------------------
@@ -280,7 +280,7 @@
   -------------------------------------------------------- */
   function _restoreState() {
     if (typeof CONF === 'undefined') return;
-    var saved = Progress.load(CONF.id);
+    var saved = PLK.Progress.load(CONF.id);
     if (!saved) return;
 
     /* Restore Einstieg passed state — must come before saved.unlocked check */
@@ -540,7 +540,7 @@
       qgPass[gateNr] = true;
       _saveGates();
       _saveGateAnswers(gateNr, gate);
-      unlk(gateNr);
+      PLK.unlk(gateNr);
     }
   };
 
@@ -616,7 +616,7 @@
   };
 
   /* Fisher-Yates shuffle of all children of a parent element */
-  function _shuffleChildren(parent) {
+  PLK._shuffleChildren = function (parent) {
     var items = Array.from(parent.children);
     for (var i = items.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * (i + 1));
@@ -625,7 +625,8 @@
     var frag = document.createDocumentFragment();
     items.forEach(function (item) { frag.appendChild(item); });
     parent.appendChild(frag);
-  }
+  };
+  var _shuffleChildren = PLK._shuffleChildren;
 
   /* Resets answers inside a QG and shuffles option order so students can't
      memorise position. qgPass[gateNr] and data-passed are NOT cleared. */
@@ -661,7 +662,7 @@
   /* --------------------------------------------------------
      unlk(gateNr) — Nächsten Block & Gate freischalten
   -------------------------------------------------------- */
-  window.unlk = function (gateNr) {
+  PLK.unlk = function (gateNr) {
     _unlockBlock(gateNr, true);
 
     // Unlock new block types (ab2, uk) declared with data-gate attribute
@@ -731,7 +732,7 @@
     if (hasAB) {
       /* Gates + Arbeitsblatt each count as one step toward completion.
          AB score is read from localStorage so it survives page refresh. */
-      var savedAbPts = ((Progress.load(CONF.id) || {}).abPts) || 0;
+      var savedAbPts = ((PLK.Progress.load(CONF.id) || {}).abPts) || 0;
       var abFrac = Math.min(savedAbPts / CONF.abPts, 1);
       pct = Math.round(((passed + abFrac) / (CONF.gates + 1)) * 100);
     } else {
@@ -752,9 +753,9 @@
   -------------------------------------------------------- */
   function _saveGates() {
     if (typeof CONF === 'undefined') return;
-    var existing = Progress.load(CONF.id) || {};
+    var existing = PLK.Progress.load(CONF.id) || {};
     existing.gates = qgPass;
-    Progress.save(CONF.id, existing);
+    PLK.Progress.save(CONF.id, existing);
   }
 
   /* Saves answer snapshot for a passed gate so they can be restored on reload */
@@ -783,10 +784,10 @@
     });
     if (Object.keys(mcChecked).length) snapshot.mcChecked = mcChecked;
 
-    var existing = Progress.load(CONF.id) || {};
+    var existing = PLK.Progress.load(CONF.id) || {};
     if (!existing.gateAnswers) existing.gateAnswers = {};
     existing.gateAnswers[gateNr] = snapshot;
-    Progress.save(CONF.id, existing);
+    PLK.Progress.save(CONF.id, existing);
   }
 
   /* Restores answer visuals for a passed gate (gate was 100% correct) */
@@ -932,12 +933,12 @@
 
     var pts = Math.round((correct / total) * (abScores[aufgabeId + '_max'] || total));
     abScores[aufgabeId] = pts;
-    shR(resultId, correct, total);
+    PLK.shR(resultId, correct, total);
 
     var retry = document.getElementById(retryId);
     if (retry) retry.style.display = correct < total ? 'inline-flex' : 'none';
 
-    upAB();
+    PLK.upAB();
     _saveAbState();
   };
 
@@ -1081,8 +1082,8 @@
     });
 
     abScores[aufgabeId] = correct;
-    shR(aufgabeId + '-result', correct, total);
-    upAB();
+    PLK.shR(aufgabeId + '-result', correct, total);
+    PLK.upAB();
     _saveAbState();
   };
 
@@ -1152,8 +1153,8 @@
     });
 
     abScores[aufgabeId] = correct;
-    shR(aufgabeId + '-result', correct, total);
-    upAB();
+    PLK.shR(aufgabeId + '-result', correct, total);
+    PLK.upAB();
     _saveAbState();
   };
 
@@ -1187,7 +1188,7 @@
    * shR(id, correct, total)
    * Ergebnis-Box anzeigen: gut (≥80%), mittel (≥50%), schlecht (<50%).
    */
-  window.shR = function (id, correct, total) {
+  PLK.shR = function (id, correct, total) {
     var el = document.getElementById(id);
     if (!el) return;
     el.style.display = 'block';
@@ -1202,16 +1203,16 @@
    * upAB()
    * Arbeitsblatt-Gesamtpunktzahl aktualisieren.
    */
-  window.upAB = function () {
+  PLK.upAB = function () {
     if (typeof CONF === 'undefined') return;
-    var pts = rcAB();
+    var pts = PLK.rcAB();
     var el  = document.getElementById('ab-score');
     if (el) el.textContent = pts + ' / ' + CONF.abPts;
 
     /* Fortschritt speichern + Gesamtbalken aktualisieren */
-    var existing = Progress.load(CONF.id) || {};
+    var existing = PLK.Progress.load(CONF.id) || {};
     existing.abPts = pts;
-    Progress.save(CONF.id, existing);
+    PLK.Progress.save(CONF.id, existing);
     _updateProgressBar();
   };
 
@@ -1219,7 +1220,7 @@
    * rcAB()
    * Punkte aus abScores summieren.
    */
-  window.rcAB = function () {
+  PLK.rcAB = function () {
     return Object.keys(abScores).reduce(function (sum, k) {
       if (k.indexOf('_max') === -1) sum += (abScores[k] || 0);
       return sum;
@@ -1276,9 +1277,9 @@
       Object.keys(_zMap[k]).forEach(function (l) { state.zMap[k][l] = _zMap[k][l]; });
     });
 
-    var existing = Progress.load(CONF.id) || {};
+    var existing = PLK.Progress.load(CONF.id) || {};
     existing.ab = state;
-    Progress.save(CONF.id, existing);
+    PLK.Progress.save(CONF.id, existing);
   }
   PLK._saveAbState = _saveAbState; /* expose for use in quiz-base + quiz-ext */
 
@@ -1399,7 +1400,7 @@
     });
     ab.querySelectorAll('.z-badge').forEach(function (el) { el.textContent = ''; });
 
-    upAB();
+    PLK.upAB();
     _saveAbState();
   };
 
@@ -1419,7 +1420,7 @@
    * Only one chip active per card at a time.
    * Enables the submit button once all 4 situations are answered.
    */
-  window.selEinstieg = function (btn, sitNr) {
+  PLK.selEinstieg = function (btn, sitNr) {
     var card = btn.closest('.einstieg-card');
     if (!card) return;
 
@@ -1449,7 +1450,7 @@
    * On all-correct: set data-state="passed", persist, update pill.
    * On wrong: show per-chip correct/wrong colours, leave open.
    */
-  window.chkEinstieg = function () {
+  PLK.chkEinstieg = function () {
     var einstieg = document.getElementById('einstieg');
     if (!einstieg) return;
 
@@ -1485,10 +1486,10 @@
       if (pill) pill.textContent = 'Bestanden';
       /* Persist Einstieg pass + chip selections */
       if (typeof CONF !== 'undefined') {
-        var existing = Progress.load(CONF.id) || {};
+        var existing = PLK.Progress.load(CONF.id) || {};
         existing.einstieg = true;
         existing.einstiegSel = _einstiegSel;
-        Progress.save(CONF.id, existing);
+        PLK.Progress.save(CONF.id, existing);
       }
     }
   };
@@ -1502,7 +1503,7 @@
    * open        → no-op        (cannot collapse before passing)
    * Only retryEinstieg() resets answers.
    */
-  window.toggleEinstieg = function () {
+  PLK.toggleEinstieg = function () {
     var einstieg = document.getElementById('einstieg');
     if (!einstieg) return;
     var state = einstieg.getAttribute('data-state') || 'open';
@@ -1517,7 +1518,7 @@
    * retryEinstieg()
    * Called by the "↺ Nochmal ansehen" link — resets and shuffles chips.
    */
-  window.retryEinstieg = function () {
+  PLK.retryEinstieg = function () {
     var einstieg = document.getElementById('einstieg');
     if (!einstieg) return;
     var state = einstieg.getAttribute('data-state') || 'open';
