@@ -124,7 +124,17 @@
         vals.forEach(function (v, i) {
           if (inputs[i]) {
             inputs[i].value = v;
-            PLK.sldrLive(inputs[i]);
+            /* Inline equivalent of PLK.sldrLive — safe before init runs */
+            var display = inputs[i].parentNode &&
+              inputs[i].parentNode.querySelector('.sldr-val');
+            if (!display) {
+              var sldrWrap = inputs[i].parentElement;
+              while (sldrWrap && !sldrWrap.classList.contains('sldr-wrap')) {
+                sldrWrap = sldrWrap.parentElement;
+              }
+              if (sldrWrap) display = sldrWrap.querySelector('.sldr-val');
+            }
+            if (display) display.textContent = inputs[i].value;
           }
         });
       });
@@ -222,14 +232,20 @@
 
       PLK.tlDrop = function (slotEl) {
         if (!_tlActive) return;
+        /* Guard: active chip must belong to the same tl-wrap as the slot */
+        var chipWrap = _tlActive.parentElement;
+        while (chipWrap && !chipWrap.classList.contains('tl-wrap')) {
+          chipWrap = chipWrap.parentElement;
+        }
+        var slotWrap = slotEl;
+        while (slotWrap && !slotWrap.classList.contains('tl-wrap')) {
+          slotWrap = slotWrap.parentElement;
+        }
+        if (!chipWrap || !slotWrap || chipWrap !== slotWrap) return;
         /* If slot already filled, move existing chip back to bank first */
         var existing = slotEl.querySelector('.tl-chip');
         if (existing) {
-          var wrap = slotEl;
-          while (wrap && !wrap.classList.contains('tl-wrap')) {
-            wrap = wrap.parentElement;
-          }
-          var bank = wrap ? wrap.querySelector('.tl-bank') : null;
+          var bank = slotWrap.querySelector('.tl-bank');
           if (bank) bank.appendChild(existing);
         }
         slotEl.appendChild(_tlActive);
@@ -331,9 +347,14 @@
         /* Show correct value for each wrong slider (spec §4.3) */
         var fbEl = document.getElementById(fbId);
         if (fbEl) {
+          /* Remove any correction spans from a previous check */
+          _each(fbEl.querySelectorAll('.sldr-correction'), function (old) {
+            old.parentNode.removeChild(old);
+          });
           _each(inputs, function (inp) {
             if (inp.classList.contains('wrong')) {
               var note = document.createElement('span');
+              note.className = 'sldr-correction';
               note.style.cssText =
                 'display:block;font-size:.8rem;margin-top:.3rem;color:var(--ink3)';
               note.textContent =
@@ -443,6 +464,16 @@
 
       PLK.sbDrop = function (bucketEl) {
         if (!_sbActive) return;
+        /* Guard: active chip must belong to the same sb-wrap as the bucket */
+        var chipWrap = _sbActive.parentElement;
+        while (chipWrap && !chipWrap.classList.contains('sb-wrap')) {
+          chipWrap = chipWrap.parentElement;
+        }
+        var bucketWrap = bucketEl;
+        while (bucketWrap && !bucketWrap.classList.contains('sb-wrap')) {
+          bucketWrap = bucketWrap.parentElement;
+        }
+        if (!chipWrap || !bucketWrap || chipWrap !== bucketWrap) return;
         var itemsDiv = bucketEl.querySelector('.sb-bucket-items') || bucketEl;
         _sbActive.classList.remove('active');
         itemsDiv.appendChild(_sbActive);
