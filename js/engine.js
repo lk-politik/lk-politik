@@ -789,6 +789,7 @@
     /* quiz-ext types — must run before Progress.save so ext sub-keys are included */
     if (PLK._saveExtState) PLK._saveExtState(ab, state);
     if (PLK._saveLibState) PLK._saveLibState(ab, state);
+    if (PLK._saveLib2State) PLK._saveLib2State(ab, state);
     PLK.Progress.save(CONF.id, existing);
   }
   PLK._saveAbState = _saveAbState; /* expose for use in quiz-base + quiz-ext */
@@ -871,6 +872,7 @@
     /* quiz-ext types */
     if (PLK._restoreExtState) PLK._restoreExtState(ab, saved);
     if (PLK._restoreLibState) PLK._restoreLibState(ab, saved);
+    if (PLK._restoreLib2State) PLK._restoreLib2State(ab, saved);
   }
 
   /* rstAllAB — moved to quiz-base.js (PLK.rstAllAB) */
