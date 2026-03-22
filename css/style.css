@@ -1394,8 +1394,7 @@ code, .mono {
 }
 
 .qg[data-state="passed"] .qg-retry-link,
-.qg[data-state="passed-open"] .qg-retry-link,
-.qg[data-state="retry"] .qg-retry-link {
+.qg[data-state="passed-open"] .qg-retry-link {
   display: flex;
   justify-content: flex-end;
   padding: 0.4rem 0.75rem 0.5rem;
