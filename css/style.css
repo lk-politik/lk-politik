@@ -3190,3 +3190,352 @@ span.fb-tooltip-unit-chip.locked { color: var(--ink3); border-color: var(--borde
 
 .mk.ok  { background: var(--ok-l);  border-bottom-color: var(--ok);  color: var(--ok);  }
 .mk.err { background: var(--err-l); border-bottom-color: var(--err); color: var(--err); }
+
+/* =====================================================
+   51. Timeline (.tl-wrap / .tl-chip / .tl-slot)
+   Click-to-place event chips into chronological slots
+   ===================================================== */
+
+.tl-wrap { margin: .75rem 0; }
+
+.tl-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  padding: .75rem;
+  background: var(--input-bg);
+  border: 1px solid var(--border-l);
+  border-radius: var(--r);
+  margin-bottom: .75rem;
+  min-height: 2.75rem;
+}
+
+.tl-chip {
+  background: var(--card);
+  border: 1.5px solid var(--acc);
+  color: var(--acc);
+  border-radius: var(--r-sm);
+  padding: .3rem .75rem;
+  font-size: .82rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background .12s;
+}
+.tl-chip:hover     { background: var(--accG); }
+.tl-chip.active    { background: var(--accL); font-weight: 600; }
+
+.tl-slots {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+.tl-slot {
+  flex: 1;
+  min-width: 110px;
+  min-height: 3.5rem;
+  border: 2px dashed var(--border);
+  border-radius: var(--r);
+  padding: .4rem .65rem;
+  font-size: .8rem;
+  color: var(--ink3);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+  transition: border-color .12s, background .12s;
+}
+.tl-slot:hover  { border-color: var(--acc); background: var(--accG); }
+.tl-slot.filled { border-style: solid; border-color: var(--border); }
+.tl-slot.ok     { border-color: var(--ok);  background: var(--ok-l); }
+.tl-slot.err    { border-color: var(--err); background: var(--err-l); }
+
+/* =====================================================
+   52. Flashcard (.fc-set / .fc-card / .fc-inner)
+   CSS 3D flip: term front, definition back
+   ===================================================== */
+
+.fc-set {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: .75rem 0;
+}
+
+.fc-card {
+  perspective: 800px;
+  width: 240px;
+  min-height: 140px;
+  cursor: pointer;
+}
+
+.fc-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 140px;
+  transition: transform .45s;
+  transform-style: preserve-3d;
+}
+.fc-card.fc-flipped .fc-inner { transform: rotateY(180deg); }
+
+.fc-front,
+.fc-back {
+  position: absolute;
+  inset: 0;
+  min-height: 140px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--r);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: .5rem;
+}
+
+.fc-front {
+  background: var(--card);
+  border: 1.5px solid var(--acc);
+}
+.fc-back {
+  background: var(--accL);
+  border: 1.5px solid var(--acc);
+  transform: rotateY(180deg);
+}
+
+.fc-term {
+  font-weight: 600;
+  font-size: .9rem;
+  color: var(--ink);
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.fc-def {
+  font-size: .84rem;
+  color: var(--ink2);
+  line-height: 1.55;
+  flex: 1;
+}
+
+.fc-flip-btn {
+  background: transparent;
+  border: 1px solid var(--acc);
+  color: var(--acc);
+  border-radius: var(--r-sm);
+  padding: .25rem .65rem;
+  font-size: .75rem;
+  cursor: pointer;
+  align-self: flex-end;
+  transition: background .12s;
+}
+.fc-flip-btn:hover { background: var(--accG); }
+
+/* =====================================================
+   53. Slider Estimation (.sldr-wrap / .sldr-input)
+   Range input with tolerance-band correctness check
+   ===================================================== */
+
+.sldr-wrap {
+  background: var(--input-bg);
+  border: 1px solid var(--border-l);
+  border-radius: var(--r);
+  padding: 1rem 1.25rem;
+  margin: .75rem 0;
+}
+
+.sldr-q {
+  font-size: .88rem;
+  color: var(--ink2);
+  margin-bottom: .75rem;
+}
+
+.sldr-row {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+
+.sldr-lo,
+.sldr-hi {
+  font-size: .78rem;
+  color: var(--ink3);
+  white-space: nowrap;
+}
+
+.sldr-input {
+  flex: 1;
+  accent-color: var(--acc);
+  cursor: pointer;
+}
+.sldr-input.correct { accent-color: var(--ok); }
+.sldr-input.wrong   { accent-color: var(--err); }
+
+.sldr-val {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--acc);
+  text-align: center;
+  margin-top: .4rem;
+}
+
+/* =====================================================
+   54. Definition to Term Match (.dm-wrap)
+   Two-panel click-to-pair matching
+   ===================================================== */
+
+.dm-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .75rem;
+  margin: .75rem 0;
+}
+
+.dm-def,
+.dm-term {
+  background: var(--input-bg);
+  border: 1.5px solid var(--border-l);
+  border-radius: var(--r-sm);
+  padding: .6rem .85rem;
+  font-size: .85rem;
+  color: var(--ink2);
+  cursor: pointer;
+  transition: border-color .12s, background .12s;
+  margin-bottom: .4rem;
+}
+.dm-def:hover,
+.dm-term:hover   { border-color: var(--acc); background: var(--accG); }
+
+.dm-def.dm-active,
+.dm-term.dm-active { border-color: var(--acc); background: var(--accL); font-weight: 600; }
+
+.dm-def.paired,
+.dm-term.paired  { border-style: dashed; cursor: default; opacity: .75; }
+
+.dm-def.ok,
+.dm-term.ok  { border-color: var(--ok);  background: var(--ok-l);  color: var(--ok); }
+.dm-def.err,
+.dm-term.err { border-color: var(--err); background: var(--err-l); color: var(--err); }
+
+/* =====================================================
+   55. Sort into Buckets (.sb-wrap / .sb-chip / .sb-bucket)
+   Select a chip then click a bucket to place it
+   ===================================================== */
+
+.sb-wrap { margin: .75rem 0; }
+
+.sb-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  padding: .75rem;
+  background: var(--input-bg);
+  border: 1px solid var(--border-l);
+  border-radius: var(--r);
+  margin-bottom: .75rem;
+  min-height: 2.75rem;
+}
+
+.sb-chip {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: .3rem .75rem;
+  font-size: .82rem;
+  color: var(--ink2);
+  cursor: pointer;
+  user-select: none;
+  transition: background .12s, border-color .12s;
+}
+.sb-chip:hover  { border-color: var(--acc); background: var(--accG); }
+.sb-chip.active { border-color: var(--acc); background: var(--accL); font-weight: 600; }
+.sb-chip.ok     { border-color: var(--ok);  background: var(--ok-l);  color: var(--ok); }
+.sb-chip.err    { border-color: var(--err); background: var(--err-l); color: var(--err); }
+
+.sb-buckets {
+  display: flex;
+  gap: .75rem;
+  flex-wrap: wrap;
+}
+
+.sb-bucket {
+  flex: 1;
+  min-width: 160px;
+  border: 2px dashed var(--border);
+  border-radius: var(--r);
+  cursor: pointer;
+  transition: border-color .12s, background .12s;
+  overflow: hidden;
+}
+.sb-bucket:hover { border-color: var(--acc); background: var(--accG); }
+
+.sb-bucket-label {
+  background: var(--border-l);
+  padding: .35rem .75rem;
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--ink3);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.sb-bucket-items {
+  padding: .5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  min-height: 2.5rem;
+}
+
+/* =====================================================
+   56. Build-a-Concept (.bc-wrap / .bc-chip)
+   Toggle chips to identify concept components
+   ===================================================== */
+
+.bc-wrap {
+  background: var(--input-bg);
+  border: 1px solid var(--border-l);
+  border-radius: var(--r);
+  padding: 1rem 1.25rem;
+  margin: .75rem 0;
+}
+
+.bc-prompt {
+  font-size: .88rem;
+  color: var(--ink2);
+  margin-bottom: .75rem;
+}
+
+.bc-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.bc-chip {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: .35rem .8rem;
+  font-size: .84rem;
+  color: var(--ink2);
+  cursor: pointer;
+  user-select: none;
+  transition: background .12s, border-color .12s;
+}
+.bc-chip:hover       { border-color: var(--acc); background: var(--accG); }
+.bc-chip.bc-selected { border-color: var(--acc); background: var(--accL); color: var(--acc); font-weight: 600; }
+.bc-chip.bc-correct  { border-color: var(--ok);  background: var(--ok-l);  color: var(--ok);  cursor: default; }
+.bc-chip.bc-wrong    { border-color: var(--err); background: var(--err-l); color: var(--err); cursor: default; }
+
+/* =====================================================
+   57. Spot the Error modifier (.mark-text.spot-error)
+   Red-tinted framing for error-finding exercises
+   ===================================================== */
+
+.mark-text.spot-error {
+  background: #fff8f8;
+  border-color: var(--err);
+  cursor: crosshair;
+}
