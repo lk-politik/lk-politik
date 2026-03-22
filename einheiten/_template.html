@@ -138,6 +138,31 @@
       .de-grid{grid-template-columns:1fr}
       .org-grid{grid-template-columns:1fr}
     }
+
+    /* ── Teacher note (always visible, subtle) ── */
+    /* .lk-note is in style.css — no unit-specific CSS needed */
+
+    /* ── Mehrebenen-Schaubild (mep-*) — copy from 3-4_mehrebenensystem.html if used ── */
+    /* .mep{display:flex;flex-direction:column;gap:0;margin:1.5rem auto;max-width:480px;font-family:var(--ff-head)}
+    .mep-section{border:1px solid var(--sc);border-radius:10px;padding:16px 10px 8px;margin-bottom:16px;position:relative}
+    .mep-section-lbl{font-family:var(--ff-head);font-size:.65rem;letter-spacing:1.5px;font-weight:700;text-transform:uppercase;color:var(--sc);position:absolute;top:-.85em;left:50%;transform:translateX(-50%);background:#fff;padding:0 10px;white-space:nowrap}
+    .mep-pair{display:flex;gap:4px;margin-bottom:0}
+    .mep-pair .mep-card{flex:1;margin-bottom:0}
+    .mep-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;padding:.7rem .75rem;border-left:4px solid var(--rc);background:var(--rbg);border-radius:6px;margin-bottom:4px;text-align:center}
+    .mep-card-flag{width:24px;height:16px;display:flex;align-items:center;justify-content:center}
+    .mep-card-name{font-family:var(--ff-head);font-size:.7rem;letter-spacing:.5px;font-weight:700;color:var(--rc)}
+    .mep-card-info{font-family:var(--ff-head);font-size:.78rem;color:var(--ink2);line-height:1.4}
+    .mep-row{display:flex;align-items:center;gap:1.25rem;padding:.65rem 1rem .65rem 1.25rem;border-left:4px solid var(--rc);background:var(--rbg);border-radius:6px;margin-bottom:4px}
+    .mep-row:last-child{margin-bottom:0}
+    .mep-flag{flex-shrink:0;width:24px;height:16px;display:flex;align-items:center}
+    .mep-name{font-family:var(--ff-head);font-size:.72rem;letter-spacing:.5px;font-weight:700;color:var(--rc);width:100px;flex-shrink:0}
+    .mep-info{font-family:var(--ff-head);font-size:.82rem;color:var(--ink2);line-height:1.5;width:90px;flex-shrink:0;text-align:center}
+    .mep-eg-wrap{margin-left:auto;width:90px;text-align:center;flex-shrink:0}
+    .mep-eg{display:inline-block;font-family:var(--ff-head);font-size:.68rem;font-weight:600;color:var(--natl);background:var(--natlB);padding:.15rem .55rem;border-radius:99px;vertical-align:middle} */
+
+    /* ── Umsetzung-Flow (ums-flow / ums-title) — wraps a .flow-row, neutral background ── */
+    /* .ums-flow{background:var(--bg);border:1px solid var(--border-l);border-radius:10px;padding:1.25rem 1rem;margin:1rem 0}
+    .ums-title{font-family:var(--ff-mono);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);text-align:center;margin-bottom:.85rem;font-weight:600} */
   </style>
 </head>
 <body>
@@ -473,6 +498,104 @@ teacher password provided with the worksheet.
         </div>
         <div class="vgl-arrow">→ Wichtigster Unterschied: …</div>
       </div>
+
+      <!-- ── OPTION: badge badge-gold — Klausurrelevant marker on SW block header ── -->
+      <!-- Add to the .sw-head row: -->
+      <!-- <span class="badge badge-gold" style="margin-left:auto">Klausurrelevant</span> -->
+
+      <!-- ── OPTION: lk-note — always-visible teacher hint (no JS needed) ── -->
+      <!-- Place anywhere inside a .sw block or .auf block -->
+      <!-- <div class="lk-note">
+        <strong>Hinweis Lehrkraft:</strong> Didaktischer Hinweis oder Musterlösung.
+      </div> -->
+
+      <!-- ── OPTION K: Denkanstöße / Reflexion block (discussion prompt) ── -->
+      <!-- Inline-styled — no CSS class needed. Replace --de/--eu colours as needed. -->
+      <!-- FILL: phase label, Leitfrage, Denkanstöße bullet points -->
+      <!-- <div style="background:var(--euL);border-left:3px solid var(--eu);border-radius:6px;padding:1rem 1.25rem;margin-top:1rem">
+        <div style="font-family:var(--ff-mono);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--eu);margin-bottom:.4rem">Phase 1 · Einstieg</div>
+        <div style="font-size:.9rem;font-weight:600;color:var(--ink);margin-bottom:.5rem">Leitfrage für diese Phase?</div>
+        <p style="font-size:.85rem;color:var(--ink2);line-height:1.65">
+          <strong>Denkanstöße:</strong> Erster Denkanstoß.
+          Zweiter Denkanstoß.
+        </p>
+      </div> -->
+
+      <!-- ── OPTION L: Mehrebenen-Schaubild (mep-* pyramid) ── -->
+      <!-- Copy mep-* CSS block from optional <style> above and uncomment it. -->
+      <!-- Requires: --supra/--supraL, --inter/--interL, --natl/--natlL/--natlB CSS vars (style.css). -->
+      <!-- FILL: section labels (EU, DE), mep-card / mep-row per level, flag SVGs, names, info text. -->
+      <!-- <div class="mep" aria-label="Schaubild des Mehrebenensystems">
+        <div class="mep-section" style="--sc:var(--acc)">
+          <div class="mep-section-lbl">EU</div>
+          <div class="mep-pair">
+            <div class="mep-card" style="--rc:var(--supra);--rbg:var(--supraL)">
+              <span class="mep-card-flag"><!-- SVG EU-Flagge --></span>
+              <span class="mep-card-name">Supranational</span>
+              <span class="mep-card-info">Europäische Union</span>
+            </div>
+            <div class="mep-card" style="--rc:var(--inter);--rbg:var(--interL)">
+              <span class="mep-card-flag"><!-- SVG EU-Flagge --></span>
+              <span class="mep-card-name">Intergouvernemental</span>
+              <span class="mep-card-info">EU-Mitgliedstaaten</span>
+            </div>
+          </div>
+        </div>
+        <div class="mep-section" style="--sc:var(--natl)">
+          <div class="mep-section-lbl">DE</div>
+          <div class="mep-row" style="--rc:var(--natl);--rbg:#f0fdf4">
+            <span class="mep-flag"><!-- SVG DE-Flagge --></span>
+            <span class="mep-name">National</span>
+            <span class="mep-info">Bund</span>
+            <span class="mep-eg-wrap"><span class="mep-eg">Deutschland</span></span>
+          </div>
+          <div class="mep-row" style="--rc:var(--natl);--rbg:#f0fdf4">
+            <span class="mep-flag"><!-- SVG DE-Flagge --></span>
+            <span class="mep-name">Regional</span>
+            <span class="mep-info">Länder</span>
+            <span class="mep-eg-wrap"><span class="mep-eg">Saarland</span></span>
+          </div>
+          <div class="mep-row" style="--rc:var(--natl);--rbg:#f0fdf4">
+            <span class="mep-flag"><!-- SVG DE-Flagge --></span>
+            <span class="mep-name">Lokal</span>
+            <span class="mep-info">Gemeinden</span>
+            <span class="mep-eg-wrap"><span class="mep-eg">Perl</span></span>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- ── OPTION M: Umsetzung-Flow (ums-flow) — neutral wrapper for a .flow-row ── -->
+      <!-- Copy ums-flow / ums-title CSS block from optional <style> above and uncomment it. -->
+      <!-- FILL: ums-title label, SCHRITT N / flow-ic / flow-lb / flow-ds / flow-ac per step. -->
+      <!-- Use fac-eu for EU-level actors, fac-de for national actors. -->
+      <!-- <div class="ums-flow">
+        <div class="ums-title">Umsetzung am Beispiel: FILL TITLE</div>
+        <div class="flow-row">
+          <div class="flow-s">
+            <div class="flow-n">SCHRITT 1</div><div class="flow-ic">📜</div>
+            <div class="flow-lb">EU-Richtlinie</div>
+            <div class="flow-ds">EP und Rat der EU verabschieden die Richtlinie.</div>
+            <span class="flow-ac fac-eu">🗳️ EP + 📋 Rat der EU</span>
+          </div>
+          <div class="flow-s">
+            <div class="flow-n">SCHRITT 2</div><div class="flow-ic">⚙️</div>
+            <div class="flow-lb">Ministerium</div>
+            <div class="flow-ds">Zuständiges Ministerium erarbeitet einen Gesetzentwurf.</div>
+            <span class="flow-ac fac-de">Bundesregierung</span>
+          </div>
+          <div class="flow-s">
+            <div class="flow-n">SCHRITT 3</div><div class="flow-ic">🏛️</div>
+            <div class="flow-lb">Bundestag + Bundesrat</div>
+            <div class="flow-ds">Kabinett beschließt. Bundestag und Bundesrat stimmen zu.</div>
+            <span class="flow-ac fac-de">DE-Verfahren</span>
+          </div>
+          <div class="flow-s">
+            <div class="flow-n">SCHRITT 4</div><div class="flow-ic">✅</div>
+            <div class="flow-lb">Gilt in DE</div>
+            <div class="flow-ds">Das EU-Ziel ist nun nationales Recht.</div>
+          </div>
+        </div>
+      </div> -->
 
     </div><!-- /block content -->
   </div><!-- /#sw1 -->
@@ -1150,6 +1273,154 @@ teacher password provided with the worksheet.
       </div>
     </div>
 
+
+    <!-- ─────────────────────────────────────────────────────────────
+         OPTIONAL: Checkbox MC — "select all that apply" (AB I–II)
+         Uses same mco-list structure as radio MC but with checkboxes.
+         Multiple data-correct="1" items allowed.
+         Checked via PLK.chkQ(N) — no separate function needed.
+         ───────────────────────────────────────────────────────────── -->
+    <!--
+    <div class="qi">
+      <div class="qi-n">Frage X von Y</div>
+      <div class="qi-t">Wähle alle zutreffenden Aussagen aus.</div>
+      <ul class="mco-list">
+        <li class="mco" data-correct="1">
+          <label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
+            <input type="checkbox" name="q1_Xc" onchange="PLK.mcsCbx(this)"> Richtige Aussage A</label></li>
+        <li class="mco">
+          <label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
+            <input type="checkbox" name="q1_Xc" onchange="PLK.mcsCbx(this)"> Falsche Aussage</label></li>
+        <li class="mco" data-correct="1">
+          <label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
+            <input type="checkbox" name="q1_Xc" onchange="PLK.mcsCbx(this)"> Richtige Aussage B</label></li>
+      </ul>
+    </div>
+    -->
+
+    <!-- ─────────────────────────────────────────────────────────────
+         OPTIONAL: Dropdown Lückentext (AB I)
+         FILL: drop-slot data-a (correct value), option values + labels.
+               data-a must exactly match one option value.
+               PLK.chkDrop(wrapId, n, fbId, retryId)
+               n = number of .drop-slot elements.
+         ───────────────────────────────────────────────────────────── -->
+    <!-- <div class="auf" id="auf6-wrap">
+      <div class="auf-h">
+        <div class="auf-n">06</div>
+        <h2 class="auf-title">Lückentext (Auswahl): Titel</h2>
+        <div class="auf-tags">
+          <span class="lz-chip"><span class="lz-chip-id">LZ 1</span><span class="lz-chip-text">Zuordnen</span></span>
+          <span class="klausur-tag">AB I</span>
+        </div>
+      </div>
+      <p class="auf-i">Wähle den richtigen Begriff aus dem Dropdown-Menü.</p>
+      <div class="auf-body" id="auf6-body">
+        <div style="background:var(--input-bg);border:1px solid var(--border-l);border-radius:10px;padding:1.5rem 1rem;font-size:.88rem;color:var(--ink2);line-height:2.2">
+          Die EU hat
+          <select class="drop-slot" data-a="27">
+            <option value="">—</option>
+            <option value="15">15</option>
+            <option value="27">27</option>
+            <option value="31">31</option>
+          </select>
+          Mitgliedstaaten.
+        </div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-top:1rem">
+          <button class="btn btn-primary" onclick="PLK.chkDrop('auf6-wrap',1,'auf6-result','auf6-retry')">Überprüfen</button>
+          <button class="btn btn-ghost btn-sm" id="auf6-retry" style="display:none" onclick="PLK.rstDrop('auf6-wrap')">Zurücksetzen</button>
+        </div>
+        <div class="mc-feedback" id="auf6-result" style="margin-top:.75rem"></div>
+      </div>
+    </div> -->
+
+    <!-- ─────────────────────────────────────────────────────────────
+         OPTIONAL: Selbsteinschätzung — Confidence scale (AB II–III)
+         Counts 1 AB point on any rating selection. Not graded.
+         FILL: id, data-pts, self-q text.
+         ───────────────────────────────────────────────────────────── -->
+    <!-- <div class="self-wrap" id="self1" data-pts="1">
+      <div class="self-q">Ich kann erklären, wie … funktioniert.</div>
+      <div class="self-opts">
+        <button class="self-btn" data-v="1" onclick="PLK.chkSelf(this)">gar nicht</button>
+        <button class="self-btn" data-v="2" onclick="PLK.chkSelf(this)">kaum</button>
+        <button class="self-btn" data-v="3" onclick="PLK.chkSelf(this)">gut</button>
+        <button class="self-btn" data-v="4" onclick="PLK.chkSelf(this)">sicher ✓</button>
+      </div>
+    </div> -->
+
+    <!-- ─────────────────────────────────────────────────────────────
+         OPTIONAL: Zuordnung-Tabelle — Radio matrix (AB I–II)
+         FILL: table id, column headers, rows (data-correct = correct column value,
+               radio name="tableId_rN" unique per row, radio value = column header).
+               PLK.chkZT(tableId, fbId) — 1 pt per correct row.
+         ───────────────────────────────────────────────────────────── -->
+    <!-- <div class="auf" id="auf7">
+      <div class="auf-h">
+        <div class="auf-n">07</div>
+        <h2 class="auf-title">Zuordnung: Ebenen</h2>
+        <div class="auf-tags">
+          <span class="lz-chip"><span class="lz-chip-id">LZ 1</span><span class="lz-chip-text">Einordnen</span></span>
+          <span class="klausur-tag">AB I</span>
+        </div>
+      </div>
+      <p class="auf-i">Ordne jedes Organ der richtigen Ebene zu.</p>
+      <div class="auf-body">
+        <table class="zt-table" id="zt1">
+          <thead><tr>
+            <th></th><th>Spalte A</th><th>Spalte B</th><th>Spalte C</th>
+          </tr></thead>
+          <tbody>
+            <tr data-correct="Spalte A">
+              <td>Organ / Begriff 1</td>
+              <td><input type="radio" name="zt1_r1" onclick="PLK.selZT(this)" value="Spalte A"></td>
+              <td><input type="radio" name="zt1_r1" onclick="PLK.selZT(this)" value="Spalte B"></td>
+              <td><input type="radio" name="zt1_r1" onclick="PLK.selZT(this)" value="Spalte C"></td>
+            </tr>
+            <!-- FILL: add more rows; name="zt1_rN" increments N per row -->
+          </tbody>
+        </table>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem">
+          <button class="btn btn-primary" onclick="PLK.chkZT('zt1','zt1-result')">Überprüfen</button>
+          <button class="btn btn-ghost btn-sm" onclick="PLK.rstZT('zt1')">Zurücksetzen</button>
+        </div>
+        <div class="mc-feedback" id="zt1-result" style="margin-top:.75rem"></div>
+      </div>
+    </div> -->
+
+    <!-- ─────────────────────────────────────────────────────────────
+         OPTIONAL: Markieren — Click to tag words (AB II)
+         FILL: wrap id, data-n (number of correct spans),
+               mark each taggable word with class="mk",
+               mark correct words with data-correct="1".
+               PLK.chkMark(wrapId, n, fbId).
+         ───────────────────────────────────────────────────────────── -->
+    <!-- <div class="auf" id="auf8">
+      <div class="auf-h">
+        <div class="auf-n">08</div>
+        <h2 class="auf-title">Markieren: Titel</h2>
+        <div class="auf-tags">
+          <span class="lz-chip"><span class="lz-chip-id">LZ 1</span><span class="lz-chip-text">Identifizieren</span></span>
+          <span class="klausur-tag">AB II</span>
+        </div>
+      </div>
+      <p class="auf-i">Markiere alle Begriffe, die auf … zutreffen.</p>
+      <div class="auf-body">
+        <div class="mark-text" id="mk1" data-n="2">
+          Satz mit
+          <span class="mk" data-correct="1" onclick="PLK.mkCl(this)">richtigem Begriff</span>
+          und einem
+          <span class="mk" onclick="PLK.mkCl(this)">falschem Begriff</span>
+          sowie einem weiteren
+          <span class="mk" data-correct="1" onclick="PLK.mkCl(this)">richtigen Begriff</span>.
+        </div>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem">
+          <button class="btn btn-primary" onclick="PLK.chkMark('mk1',2,'mk1-result')">Überprüfen</button>
+          <button class="btn btn-ghost btn-sm" onclick="PLK.rstMark('mk1')">Zurücksetzen</button>
+        </div>
+        <div class="mc-feedback" id="mk1-result" style="margin-top:.75rem"></div>
+      </div>
+    </div> -->
 
   </div><!-- /#arbeitsblatt -->
 
