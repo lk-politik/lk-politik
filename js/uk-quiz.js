@@ -1,18 +1,29 @@
-/* ==========================================================
-   Politik-LK — uk-quiz.js
-   Sequential Urteilskompetenz block — 3-stage reveal
-   Stage 1: Einleitung (Kriterium + AB I)
-   Stage 2: Hauptteil (Recheck #1 + AB II)
-   Stage 3: Schlussfolgerung (Recheck #2 + AB III)
-   Kriterium: must be correct to advance stage 1.
-   AB step options: any selection suffices (reflection, not tested).
-   Recheck chips: must match _kritIdx to advance stages 2 and 3.
-   Load after engine.js in unit HTML files.
-   ES5 only — no arrow functions, no const/let.
-   ========================================================== */
-
 ;(function () {
   'use strict';
+
+  /* Element.closest() polyfill for older browsers */
+  if (!Element.prototype.closest) {
+    Element.prototype.closest = function (sel) {
+      var el = this;
+      while (el && el.nodeType === 1) {
+        if (el.matches ? el.matches(sel) : el.msMatchesSelector(sel)) return el;
+        el = el.parentElement || el.parentNode;
+      }
+      return null;
+    };
+  }
+
+  /* ==========================================================
+     Politik-LK — uk-quiz.js
+     Sequential Urteilskompetenz block — 3-stage reveal
+     Stage 1: Einleitung (Kriterium + AB I)
+     Stage 2: Hauptteil (Recheck #1 + AB II)
+     Stage 3: Schlussfolgerung (Recheck #2 + AB III)
+     Kriterium: must be correct to advance stage 1.
+     AB step options: any selection suffices (reflection, not tested).
+     Recheck chips: must match stored krit-idx to advance stages 2 and 3.
+     ES5 only — no arrow functions, no const/let.
+     ========================================================== */
 
   /* ── Error label map ────────────────────────────────────── */
   var ERROR_LABELS = {
@@ -40,71 +51,72 @@
     return arr;
   }
 
-  /* ── Init ───────────────────────────────────────────────── */
+  PLK.register({
+    name: 'uk-quiz',
+    init: function () {
 
-  document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.uk').forEach(_initBlock);
-  });
-
-  function _initBlock(block) {
-    /* Shuffle options in each step's .uk-opts list */
-    block.querySelectorAll('[data-step] .uk-opts').forEach(function (ul) {
-      var items = Array.from(ul.querySelectorAll('.uk-opt'));
-      _shuffle(items).forEach(function (li) { ul.appendChild(li); });
-    });
-
-    /* _kritIdx: closure variable — tracks selected Kriterium msidx.
-       Note: window.selKrit and window.submitStage are assigned here.
-       If multiple .uk blocks exist on a page, the last _initBlock wins.
-       Unit 3.5 has one .uk block — safe. */
-    var _kritIdx = null;
-
-    /* ── Kriterium selection ─────────────────────────────── */
-    window.selKrit = function (el) {
-      var parent = el.closest('.uk-krit-opts');
-      if (!parent) return;
-      parent.querySelectorAll('.uk-krit-opt').forEach(function (o) {
-        o.classList.remove('selected', 'wrong');
-        var errSpan = o.querySelector('.uk-krit-opt-err');
-        if (errSpan) errSpan.textContent = '';
-      });
-      el.classList.add('selected');
-      _kritIdx = el.getAttribute('data-msidx');
-
-      /* Recheck chips are NOT pre-selected — students must confirm
-         their Kriterium independently in each subsequent stage. */
-
-      _checkStageReady(block);
-    };
-
-    /* ── Recheck chip click ───────────────────────────────── */
-    block.querySelectorAll('.uk-krit-chip').forEach(function (chip) {
-      chip.addEventListener('click', function () {
-        var recheck = chip.closest('.uk-krit-recheck');
-        if (!recheck) return;
-        recheck.querySelectorAll('.uk-krit-chip').forEach(function (c) {
-          c.classList.remove('selected', 'wrong');
+      /* Shuffle options in each step's .uk-opts list for every block */
+      document.querySelectorAll('.uk').forEach(function (block) {
+        block.querySelectorAll('[data-step] .uk-opts').forEach(function (ul) {
+          var items = Array.prototype.slice.call(ul.querySelectorAll('.uk-opt'));
+          _shuffle(items).forEach(function (li) { ul.appendChild(li); });
         });
-        var rErr = recheck.querySelector('.uk-krit-recheck-err');
-        if (rErr) { rErr.textContent = ''; rErr.style.display = 'none'; }
-        chip.classList.add('selected');
-        /* Do NOT update _kritIdx here — it is set only by selKrit
-           in stage 1.  The recheck chip is validated against that
-           stored value so students must recall their original choice. */
-        _checkStageReady(block);
+
+        /* Recheck chip listeners — one block at a time so .uk-krit-chip
+           clicks stay scoped to the right block */
+        block.querySelectorAll('.uk-krit-chip').forEach(function (chip) {
+          chip.addEventListener('click', function () {
+            var recheck = chip.closest('.uk-krit-recheck');
+            if (!recheck) return;
+            recheck.querySelectorAll('.uk-krit-chip').forEach(function (c) {
+              c.classList.remove('selected', 'wrong');
+            });
+            var rErr = recheck.querySelector('.uk-krit-recheck-err');
+            if (rErr) { rErr.textContent = ''; rErr.style.display = 'none'; }
+            chip.classList.add('selected');
+            _checkStageReady(block);
+          });
+        });
+
+        /* Option click listeners */
+        block.querySelectorAll('.uk-opt').forEach(function (opt) {
+          opt.addEventListener('click', function () { _onOptClick(block, opt); });
+        });
       });
-    });
 
-    /* ── Option click ────────────────────────────────────── */
-    block.querySelectorAll('.uk-opt').forEach(function (opt) {
-      opt.addEventListener('click', function () { _onOptClick(block, opt); });
-    });
+      /* ── Kriterium selection (global, no closure-clobber) ── */
+      PLK.selKrit = function (el) {
+        var block = el.closest('.uk');
+        if (!block) return;
+        var parent = el.closest('.uk-krit-opts');
+        if (!parent) return;
+        parent.querySelectorAll('.uk-krit-opt').forEach(function (o) {
+          o.classList.remove('selected', 'wrong');
+          var errSpan = o.querySelector('.uk-krit-opt-err');
+          if (errSpan) errSpan.textContent = '';
+        });
+        el.classList.add('selected');
 
-    /* ── Per-stage submit ────────────────────────────────── */
-    window.submitStage = function (btn, stageNum) {
-      _submitStage(block, btn, stageNum, _kritIdx);
-    };
-  }
+        /* Store selected krit-idx on the block element so submitStage
+           can retrieve it later without a closure variable */
+        block.setAttribute('data-krit-idx', el.getAttribute('data-msidx'));
+
+        /* Recheck chips are NOT pre-selected — students must confirm
+           their Kriterium independently in each subsequent stage. */
+
+        _checkStageReady(block);
+      };
+
+      /* ── Per-stage submit (global, no closure-clobber) ───── */
+      PLK.submitStage = function (el, stageN) {
+        var block = el.closest('.uk');
+        if (!block) return;
+        var kritIdx = block.getAttribute('data-krit-idx');
+        _submitStage(block, el, stageN, kritIdx);
+      };
+
+    }
+  });
 
   /* ── Get the currently active (not locked, not done) stage ── */
   function _getActiveStage(block) {
@@ -178,7 +190,7 @@
   }
 
   /* ── Per-stage submit and validation ─────────────────── */
-  function _submitStage(block, btn, stageNum, _kritIdx) {
+  function _submitStage(block, btn, stageNum, kritIdx) {
     var stage = block.querySelector('.uk-stage[data-stage="' + stageNum + '"]');
     if (!stage) return;
 
@@ -195,8 +207,8 @@
           kritOpt.classList.add('wrong');
           var errEl = kritOpt.querySelector('.uk-krit-opt-err');
           if (errEl) {
-            var errType  = kritOpt.getAttribute('data-error') || '';
-            var errText  = kritOpt.getAttribute('data-errtext') || '';
+            var errType = kritOpt.getAttribute('data-error') || '';
+            var errText = kritOpt.getAttribute('data-errtext') || '';
             errEl.textContent = (ERROR_LABELS[errType] || 'FEHLER') +
                                 (errText ? ': ' + errText : '');
           }
@@ -212,7 +224,7 @@
     if (recheck) {
       var selChip = recheck.querySelector('.uk-krit-chip.selected');
       var recheckMsidx = selChip ? selChip.getAttribute('data-msidx') : null;
-      var expectedMsidx = (_kritIdx !== null) ? String(_kritIdx) : null;
+      var expectedMsidx = (kritIdx !== null) ? String(kritIdx) : null;
 
       if (recheckMsidx !== expectedMsidx) {
         allCorrect = false;
@@ -258,5 +270,4 @@
     }
   }
 
-  /* ── Error display helpers ───────────────────────────── */
 })();
