@@ -1,0 +1,38 @@
+<!-- _ex/truefalse.html — Politik-LK Exercise Library -->
+<h2>Wahr oder Falsch</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Für schnelle Wissensüberprüfung: Schülerinnen und Schüler bewerten einzelne Aussagen als wahr oder falsch. Geeignet zum Einstieg oder als Abschlusscheck nach einer Lernphase.</p>
+
+<h3>Interaktion</h3>
+<p>Eine Aussage wird angezeigt; Schülerinnen und Schüler tippen auf „Wahr" oder „Falsch". Bei falschen Aussagen kann eine Erklärung eingeblendet werden. Fortschritt als Punkt-Reihe oben.</p>
+
+<h3>JS-Modul</h3>
+<p><code>quiz-lib2.js</code> — Typ: <code>data-type="wahr-falsch"</code>. Kein AB-Punkt.</p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;div class="aufgabe" data-type="wahr-falsch" data-id="auf1"&gt;
+  &lt;div class="tf-item" data-correct="true"&gt;
+    &lt;!-- FILL: Aussage --&gt;
+  &lt;/div&gt;
+  &lt;div class="tf-item" data-correct="false"
+       data-explain="&lt;!-- FILL: Erklärung (nur bei falschen Aussagen) --&gt;"&gt;
+    &lt;!-- FILL: Aussage --&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3>Attribute</h3>
+<ul>
+  <li><code>data-correct</code>: <code>"true"</code> oder <code>"false"</code></li>
+  <li><code>data-explain</code> (optional): nur bei <code>data-correct="false"</code>; erscheint wenn Schüler falsch tippen</li>
+</ul>
+
+<h3>Vollständiges Beispiel</h3>
+<pre><code>&lt;div class="aufgabe" data-type="wahr-falsch" data-id="auf1"&gt;
+  &lt;div class="tf-item" data-correct="true"&gt;Das Europäische Parlament wird direkt von EU-Bürgern gewählt.&lt;/div&gt;
+  &lt;div class="tf-item" data-correct="false"
+       data-explain="Der Europäische Rat gibt politische Leitlinien vor — er hat keine Gesetzgebungsbefugnis."&gt;
+    Der Europäische Rat beschließt EU-Gesetze.
+  &lt;/div&gt;
+  &lt;div class="tf-item" data-correct="true"&gt;Die Europäische Kommission hat das alleinige Initiativrecht.&lt;/div&gt;
+&lt;/div&gt;</code></pre>

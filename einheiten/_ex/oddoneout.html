@@ -1,0 +1,44 @@
+<!-- _ex/oddoneout.html — Politik-LK Exercise Library -->
+<h2>Das passt nicht dazu (Odd-One-Out)</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Wenn Schülerinnen und Schüler kategorische Unterschiede erkennen sollen: Drei oder vier Elemente werden gezeigt, eines gehört nicht zur Gruppe. Fördert analytisches Denken und Begriffsabgrenzung.</p>
+
+<h3>Interaktion</h3>
+<p>Vier (oder drei) Karten im Raster — Schülerinnen und Schüler tippen den Außenseiter. Falsche Taps sperren die Karte; nach richtiger Auswahl erscheint eine Erklärung und dann der Weiter-Button.</p>
+
+<h3>JS-Modul</h3>
+<p><code>quiz-lib2.js</code> — Typ: <code>data-type="odd-one-out"</code>. Kein AB-Punkt.</p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;div class="aufgabe" data-type="odd-one-out" data-id="auf2"&gt;
+  &lt;div class="ooo-round"
+       data-question="&lt;!-- FILL: Frage (HTML erlaubt) --&gt;"&gt;
+    &lt;div class="ooo-opt" data-emoji="🗳️" data-sub="Kurzbeschreibung"&gt;Bezeichnung&lt;/div&gt;
+    &lt;div class="ooo-opt" data-emoji="📋" data-sub="Kurzbeschreibung" data-odd="true"
+         data-explain="&lt;!-- FILL: Erklärung --&gt;"&gt;Außenseiter&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3>Attribute</h3>
+<ul>
+  <li><code>data-question</code>: Fragetext (HTML zulässig, z.B. <code>&lt;strong&gt;</code>)</li>
+  <li><code>data-emoji</code>: Emoji-Symbol — passend zu den Glossar-Emojis aus dem fb-Tooltip-System</li>
+  <li><code>data-sub</code>: Kurzbeschreibung (klein unter dem Label)</li>
+  <li><code>data-odd="true"</code>: Markiert den Außenseiter (genau eines pro Runde)</li>
+  <li><code>data-explain</code> (optional): Erklärung nach korrekter Auswahl</li>
+</ul>
+
+<h3>Vollständiges Beispiel</h3>
+<pre><code>&lt;div class="aufgabe" data-type="odd-one-out" data-id="auf2"&gt;
+  &lt;div class="ooo-round"
+       data-question="Welches Organ ist &amp;lt;strong&amp;gt;nicht&amp;lt;/strong&amp;gt; an der EU-Gesetzgebung beteiligt?"&gt;
+    &lt;div class="ooo-opt" data-emoji="🗳️" data-sub="Wählt Gesetze mit"&gt;Europäisches Parlament&lt;/div&gt;
+    &lt;div class="ooo-opt" data-emoji="📋" data-sub="Ministerrat"&gt;Rat der EU&lt;/div&gt;
+    &lt;div class="ooo-opt" data-emoji="⚙️" data-sub="Initiativrecht"&gt;Europäische Kommission&lt;/div&gt;
+    &lt;div class="ooo-opt" data-emoji="👑" data-sub="Gipfeltreffen der Staatschefs" data-odd="true"
+         data-explain="Der Europäische Rat gibt Leitlinien vor, beschließt aber keine Gesetze."&gt;
+      Europäischer Rat
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>

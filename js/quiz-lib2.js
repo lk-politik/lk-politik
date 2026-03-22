@@ -92,13 +92,13 @@
       var id = wrap.getAttribute('data-aufid');
       if (_fcrState[id]) {
         var st2 = _fcrState[id];
-        state.ab.fcr[id] = {
-          active:     st2.active,
-          cardStates: st2.cardStates.map(function (cs) {
-            return { done: cs.done, missed: cs.missed, chosen: cs.chosen,
-                     order: cs.order ? cs.order.slice() : null };
-          })
-        };
+        var csSnap = [];
+        for (var ci = 0; ci < st2.cardStates.length; ci++) {
+          var cs = st2.cardStates[ci];
+          csSnap.push({ done: cs.done, missed: cs.missed, chosen: cs.chosen,
+                        order: cs.order ? cs.order.slice() : null });
+        }
+        state.ab.fcr[id] = { active: st2.active, cardStates: csSnap };
       }
     });
 

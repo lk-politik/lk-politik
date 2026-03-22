@@ -1,0 +1,41 @@
+<!-- _ex/flashcard-recall.html — Politik-LK Exercise Library -->
+<h2>Flashcard Recall (Definitionsauswahl)</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Zur aktiven Begriffswiederholung: Schülerinnen und Schüler sehen alle Fachbegriffe gleichzeitig und wählen für jeden die richtige Definition aus drei Optionen. Nach Abschluss dienen die Karten als Lernübersicht.</p>
+
+<h3>Interaktion</h3>
+<p>Alle Begriffskarten im Raster. Begriff antippen → drei gemischte Definitionen erscheinen. Richtig → Karte grün; Falsch → Optionen mischen sich neu. Am Ende faltet sich der Auswahlbereich weg, Karten zeigen Begriff + Definition.</p>
+
+<h3>JS-Modul</h3>
+<p><code>quiz-lib2.js</code> — Typ: <code>data-type="flashcard-recall"</code>. Kein AB-Punkt.</p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;div class="aufgabe" data-type="flashcard-recall" data-id="auf3"&gt;
+  &lt;div class="fcr-card" data-term="Begriff" data-correct="0"&gt;
+    &lt;!-- FILL: genau 3 .fcr-choice --&gt;
+    &lt;div class="fcr-choice"&gt;Richtige Definition&lt;/div&gt;
+    &lt;div class="fcr-choice"&gt;Falsche Option A&lt;/div&gt;
+    &lt;div class="fcr-choice"&gt;Falsche Option B&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3>Attribute</h3>
+<ul>
+  <li><code>data-term</code>: Fachbegriff</li>
+  <li><code>data-correct</code>: 0-basierter Index der richtigen <code>.fcr-choice</code> in <strong>Quellreihenfolge</strong> (vor dem Mischen). Die Anzeige wird gemischt — <code>data-correct</code> ändert sich nie.</li>
+</ul>
+
+<h3>Vollständiges Beispiel</h3>
+<pre><code>&lt;div class="aufgabe" data-type="flashcard-recall" data-id="auf3"&gt;
+  &lt;div class="fcr-card" data-term="Subsidiaritätsprinzip" data-correct="0"&gt;
+    &lt;div class="fcr-choice"&gt;Entscheidungen auf niedrigster geeigneter Ebene; EU handelt nur wenn Mitgliedstaaten überfordert.&lt;/div&gt;
+    &lt;div class="fcr-choice"&gt;Alle Mitgliedstaaten erhalten gleiche Stimmrechte im Rat.&lt;/div&gt;
+    &lt;div class="fcr-choice"&gt;EU-Gesetze benötigen Zweidrittelmehrheit des EP.&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="fcr-card" data-term="Verhältnismäßigkeit" data-correct="1"&gt;
+    &lt;div class="fcr-choice"&gt;Staaten dürfen EU-Verordnungen innerhalb 2 Jahren ändern.&lt;/div&gt;
+    &lt;div class="fcr-choice"&gt;EU-Maßnahmen dürfen nicht über das Notwendige hinausgehen.&lt;/div&gt;
+    &lt;div class="fcr-choice"&gt;EU-Mittel werden gleichmäßig nach Bevölkerungsanteil verteilt.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>

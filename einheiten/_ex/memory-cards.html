@@ -1,0 +1,61 @@
+<!-- _ex/memory-cards.html — Politik-LK Exercise Library -->
+<h2>Memory Card Game</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Zum Einüben von Zusammenhängen durch visuelles Gedächtnis: Institutionen ↔ Kompetenzen, Personen ↔ Ämter, Verträge ↔ Ziele. Stärkt Vernetzung stärker als reines Lesen.</p>
+
+<h3>Interaktion</h3>
+<p>Alle Karten liegen verdeckt. Zwei aufdecken — passen sie zusammen, bleiben sie offen (grün). Falsche Paare bleiben 2 Sekunden sichtbar, dann drehen sie sich zurück.</p>
+
+<h3>JS-Modul</h3>
+<p><code>quiz-lib2.js</code> — Typ: <code>data-type="memory-cards"</code>. Kein AB-Punkt.</p>
+
+<h3>HTML-Pattern (drei Modi)</h3>
+<pre><code>&lt;div class="aufgabe" data-type="memory-cards" data-id="auf4"&gt;
+
+  &lt;!-- Modus A: Glossar-Begriff ↔ Kompetenztext --&gt;
+  &lt;div class="mc-pair"
+       data-term="Exakter Glossar-Begriff"
+       data-match="Kompetenztext"&gt;&lt;/div&gt;
+
+  &lt;!-- Modus B: Person ↔ Amt --&gt;
+  &lt;div class="mc-pair"
+       data-person="dateiname-ohne-jpg"
+       data-name="Vollständiger Name"
+       data-match="Amtsbezeichnung"&gt;&lt;/div&gt;
+
+  &lt;!-- Modus C: Vertrag / nicht-Glossar-Begriff ↔ Ziel --&gt;
+  &lt;div class="mc-pair"
+       data-label="Bezeichnung"
+       data-match="Ziel / Inhalt"&gt;&lt;/div&gt;
+
+&lt;/div&gt;</code></pre>
+
+<h3>Attribute</h3>
+<ul>
+  <li><code>data-term</code>: Exakter Glossar-Begriff — Emoji wird automatisch aus <code>_PLK_GLOSSARY</code> geholt (konsistent mit fb-Tooltips)</li>
+  <li><code>data-person</code> + <code>data-name</code>: Dateiname ohne .jpg (z.B. <code>von-der-leyen</code> → <code>data/persons/von-der-leyen.jpg</code>); Fallback: Initialen-Kreis (erste + letzte Initiale)</li>
+  <li><code>data-label</code>: Nicht-Glossar-Bezeichnung; bekommt immer 📜</li>
+  <li><code>data-match</code>: Text der grauen Gegenkarte (bei allen Modi)</li>
+</ul>
+
+<h3>Person-Fotos</h3>
+<p>Fotos einmalig manuell aus Wikimedia Commons (CC-BY-SA) laden und in <code>data/persons/</code> ablegen:</p>
+<ul>
+  <li><code>von-der-leyen.jpg</code> — File:Ursula_von_der_Leyen_(51558021872).jpg</li>
+  <li><code>metsola.jpg</code> — File:Roberta_Metsola_2022.jpg</li>
+  <li><code>costa.jpg</code> — File:António_Costa_2022_(cropped).jpg</li>
+  <li><code>kallas.jpg</code> — File:Kaja_Kallas_2023.jpg</li>
+</ul>
+
+<h3>Vollständiges Beispiel</h3>
+<pre><code>&lt;div class="aufgabe" data-type="memory-cards" data-id="auf4"&gt;
+  &lt;div class="mc-pair" data-term="Europäisches Parlament"
+       data-match="Wählt Gesetze mit, kontrolliert die Kommission, genehmigt den Haushalt."&gt;&lt;/div&gt;
+  &lt;div class="mc-pair" data-term="Rat der EU"
+       data-match="Vertritt die Mitgliedstaaten; beschließt Gesetze gemeinsam mit dem EP."&gt;&lt;/div&gt;
+  &lt;div class="mc-pair" data-person="von-der-leyen" data-name="Ursula von der Leyen"
+       data-match="Präsidentin der Europäischen Kommission"&gt;&lt;/div&gt;
+  &lt;div class="mc-pair" data-label="Vertrag von Maastricht"
+       data-match="Gründung der EU; Einführung der Unionsbürgerschaft (1992)."&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
