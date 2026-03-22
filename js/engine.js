@@ -384,236 +384,11 @@
 
   /* Speichert bestandene Gates { 1: true, 2: false, ... } */
   var qgPass = {};
+  PLK._qs = { qgPass: qgPass };  /* shared quiz state for quiz-base.js */
 
-  /* --------------------------------------------------------
-     mcS(el) — Multiple-Choice Auswahl
-     Markiert ausgewählte Option visuell.
-  -------------------------------------------------------- */
-  window.mcS = function (el) {
-    var name  = el.name;
-    var group = document.querySelectorAll('input[name="' + name + '"]');
-    group.forEach(function (inp) {
-      var item = inp.closest('.mco');
-      if (item) item.classList.remove('selected');
-    });
-    var item = el.closest('.mco');
-    if (item) item.classList.add('selected');
-  };
+  /* mcS, oMv, oRenum — moved to quiz-base.js (PLK.mcS, PLK.oMv, PLK.oRenum) */
 
-  /* --------------------------------------------------------
-     oMv(arrow, direction) — Reihenfolge-Item verschieben
-     direction: -1 (nach oben) oder +1 (nach unten)
-  -------------------------------------------------------- */
-  window.oMv = function (arrow, direction) {
-    var item   = arrow.closest('.oitem');
-    var list   = item ? item.closest('.olist') : null;
-    if (!list) return;
-
-    var items  = Array.from(list.querySelectorAll('.oitem'));
-    var idx    = items.indexOf(item);
-    var target = items[idx + direction];
-    if (!target) return;
-
-    if (direction === -1) {
-      list.insertBefore(item, target);
-    } else {
-      list.insertBefore(target, item);
-    }
-    oRenum(list);
-  };
-
-  /* --------------------------------------------------------
-     oRenum(list) — Nummerierung nach Verschiebung aktualisieren
-  -------------------------------------------------------- */
-  window.oRenum = function (list) {
-    var items = list.querySelectorAll('.oitem');
-    items.forEach(function (item, i) {
-      var num = item.querySelector('.oitem-num');
-      if (num) num.textContent = (i + 1) + '.';
-    });
-  };
-
-  /* --------------------------------------------------------
-     chkQ(gateNr, questionCount)
-     Prüft ein Quiz-Gate. Gibt Feedback, schaltet bei Erfolg frei.
-  -------------------------------------------------------- */
-  window.chkQ = function (gateNr, questionCount) {
-    var gate   = document.getElementById('qg' + gateNr);
-    if (!gate || gate.getAttribute('data-passed') === '1') return;
-
-    var total  = 0;
-    var correct = 0;
-
-    /* -- MC-Fragen prüfen -- */
-    var mcGroups = {};
-    gate.querySelectorAll('.mco input[type="radio"], .mco input[type="checkbox"]').forEach(function (inp) {
-      if (!mcGroups[inp.name]) mcGroups[inp.name] = [];
-      mcGroups[inp.name].push(inp);
-    });
-
-    Object.keys(mcGroups).forEach(function (name) {
-      total++;
-      var inputs  = mcGroups[name];
-      var allOk   = true;
-      var anyWrong = false;
-
-      inputs.forEach(function (inp) {
-        var item     = inp.closest('.mco');
-        var expected = item ? item.getAttribute('data-correct') === '1' : false;
-        item && item.classList.remove('correct', 'wrong');
-
-        if (inp.checked && !expected) { anyWrong = true; }
-        if (!inp.checked && expected) { anyWrong = true; }
-      });
-
-      /* Visuelles Feedback */
-      inputs.forEach(function (inp) {
-        var item     = inp.closest('.mco');
-        var expected = item ? item.getAttribute('data-correct') === '1' : false;
-        if (inp.checked) {
-          item && item.classList.add(expected ? 'correct' : 'wrong');
-        } else if (expected) {
-          item && item.classList.add('wrong');
-        }
-      });
-
-      if (!anyWrong) correct++;
-    });
-
-    /* -- Texteingaben prüfen -- */
-    gate.querySelectorAll('.qinp input[data-answers], .qinp textarea[data-answers]').forEach(function (inp) {
-      total++;
-      var answers = inp.getAttribute('data-answers').split('|').map(function (s) { return s.trim().toLowerCase(); });
-      var val     = inp.value.trim().toLowerCase();
-      var fb      = inp.closest('.qinp') ? inp.closest('.qinp').querySelector('.qinp-feedback') : null;
-
-      /* Accept if any keyword appears anywhere in the student's answer */
-      var isCorrect = val.length > 0 && answers.some(function (a) { return val.indexOf(a) !== -1; });
-      if (isCorrect) {
-        correct++;
-        inp.style.borderColor = 'var(--ok)';
-        if (fb) { fb.className = 'qinp-feedback ok'; fb.textContent = '✓ Richtig'; }
-      } else {
-        inp.style.borderColor = 'var(--err)';
-        if (fb) { fb.className = 'qinp-feedback err'; fb.textContent = '✗ Nicht ganz — überprüfe deine Antwort.'; }
-      }
-    });
-
-    /* -- Reihenfolge-Aufgaben prüfen -- */
-    gate.querySelectorAll('.olist[data-correct]').forEach(function (list) {
-      total++;
-      var expected = list.getAttribute('data-correct').split(',').map(function (s) { return s.trim(); });
-      var items    = list.querySelectorAll('.oitem');
-      var order    = Array.from(items).map(function (item) { return item.getAttribute('data-id') || ''; });
-      var ok       = JSON.stringify(expected) === JSON.stringify(order);
-
-      items.forEach(function (item) {
-        item.classList.remove('correct', 'wrong');
-        item.classList.add(ok ? 'correct' : 'wrong');
-      });
-      if (ok) correct++;
-    });
-
-    /* -- Feedback anzeigen -- */
-    var fbEl = document.getElementById('qfb' + gateNr);
-    if (fbEl) {
-      fbEl.style.display = 'block';
-      if (correct === total) {
-        fbEl.className = 'mc-feedback ok';
-        fbEl.textContent = '✓ Alle Antworten richtig!';
-      } else {
-        fbEl.className = 'mc-feedback err';
-        fbEl.textContent = correct + ' von ' + total + ' richtig. Versuche es nochmal!';
-      }
-    }
-
-    /* -- Bei vollem Erfolg: Gate bestanden -- */
-    if (correct === total && total > 0) {
-      gate.setAttribute('data-passed', '1');
-      gate.setAttribute('data-state', 'passed');
-      /* Update status pill to "Block N: Bestanden" */
-      var pill = document.getElementById('qg' + gateNr + 's');
-      if (pill) {
-        pill.textContent = 'Block ' + gateNr + ': Bestanden';
-        pill.className = 'qg-status pass';
-      }
-      qgPass[gateNr] = true;
-      _saveGates();
-      _saveGateAnswers(gateNr, gate);
-      PLK.unlk(gateNr);
-    }
-  };
-
-  /* --------------------------------------------------------
-     rstQ(gateNr) — Gate zurücksetzen (nur wenn nicht bestanden)
-  -------------------------------------------------------- */
-  window.rstQ = function (gateNr) {
-    if (qgPass[gateNr]) return;
-    var gate = document.getElementById('qg' + gateNr);
-    if (!gate) return;
-
-    /* MC zurücksetzen */
-    gate.querySelectorAll('.mco input').forEach(function (inp) {
-      inp.checked = false;
-      var item = inp.closest('.mco');
-      if (item) item.classList.remove('selected', 'correct', 'wrong');
-    });
-
-    /* Texteingaben */
-    gate.querySelectorAll('.qinp input, .qinp textarea').forEach(function (inp) {
-      inp.value = '';
-      inp.style.borderColor = '';
-      var fb = inp.closest('.qinp') ? inp.closest('.qinp').querySelector('.qinp-feedback') : null;
-      if (fb) { fb.className = 'qinp-feedback'; fb.textContent = ''; }
-    });
-
-    /* Reihenfolge-Feedback */
-    gate.querySelectorAll('.oitem').forEach(function (item) {
-      item.classList.remove('correct', 'wrong');
-    });
-
-    /* Gesamt-Feedback */
-    var fbEl = document.getElementById('qfb' + gateNr);
-    if (fbEl) { fbEl.style.display = 'none'; fbEl.textContent = ''; }
-  };
-
-  /* --------------------------------------------------------
-     toggleQg(gateNr) — Collapse/expand a passed QG panel
-     passed       → passed-open  (expand, keep answers — view only)
-     passed-open  → passed       (collapse)
-     retry        → passed       (collapse)
-     open         → no-op        (cannot collapse before passing)
-     Only retryQg() / the retry link resets answers.
-  -------------------------------------------------------- */
-  window.toggleQg = function (gateNr) {
-    var gate = document.getElementById('qg' + gateNr);
-    if (!gate) return;
-    var state = gate.getAttribute('data-state') || 'open';
-    if (state === 'passed') {
-      /* Expand to view saved answers — no reset */
-      gate.setAttribute('data-state', 'passed-open');
-    } else if (state === 'passed-open') {
-      /* Collapse back */
-      gate.setAttribute('data-state', 'passed');
-    } else if (state === 'retry') {
-      gate.setAttribute('data-state', 'passed');
-    }
-    /* state === 'open': no-op — cannot collapse before passing */
-  };
-
-  /* --------------------------------------------------------
-     retryQg(gateNr) — Expand from the retry link (same as
-     clicking the header in passed state)
-  -------------------------------------------------------- */
-  window.retryQg = function (gateNr) {
-    var gate = document.getElementById('qg' + gateNr);
-    if (!gate) return;
-    var state = gate.getAttribute('data-state') || 'open';
-    if (state === 'passed' || state === 'passed-open') {
-      _resetQgForRetry(gateNr, gate);
-      gate.setAttribute('data-state', 'retry');
-    }
-  };
+  /* chkQ, rstQ, toggleQg, retryQg — moved to quiz-base.js */
 
   /* Fisher-Yates shuffle of all children of a parent element */
   PLK._shuffleChildren = function (parent) {
@@ -655,9 +430,10 @@
     /* Shuffle ordering task items and re-number */
     gate.querySelectorAll('.olist').forEach(function (list) {
       _shuffleChildren(list);
-      oRenum(list);
+      PLK.oRenum(list);
     });
   }
+  PLK._resetQgForRetry = _resetQgForRetry;
 
   /* --------------------------------------------------------
      unlk(gateNr) — Nächsten Block & Gate freischalten
@@ -757,6 +533,7 @@
     existing.gates = qgPass;
     PLK.Progress.save(CONF.id, existing);
   }
+  PLK._saveGates = _saveGates;
 
   /* Saves answer snapshot for a passed gate so they can be restored on reload */
   function _saveGateAnswers(gateNr, gate) {
@@ -789,6 +566,7 @@
     existing.gateAnswers[gateNr] = snapshot;
     PLK.Progress.save(CONF.id, existing);
   }
+  PLK._saveGateAnswers = _saveGateAnswers;
 
   /* Restores answer visuals for a passed gate (gate was 100% correct) */
   function _restoreGateAnswers(gateNr, gate, snapshot) {
@@ -837,143 +615,16 @@
 
   /* Punkte-Speicher: { aufgabeId: pts } */
   var abScores = {};
+  PLK._qs.abScores = abScores;
 
   /* --------------------------------------------------------
      LÜCKENTEXT — Chip-Bank + Slots
   -------------------------------------------------------- */
 
   var _selectedChip  = null;  /* { el, value, bankId } */
+  PLK._sc = { v: _selectedChip };  /* wrapper for reassignable chip ref */
 
-  /**
-   * selC(chip, bankId)
-   * Chip auswählen oder abwählen.
-   */
-  window.selC = function (chip, bankId) {
-    /* Bereits ausgewählten Chip deselecten */
-    if (_selectedChip && _selectedChip.el === chip) {
-      chip.classList.remove('selected');
-      _selectedChip = null;
-      return;
-    }
-    /* Anderen Chip deselecten */
-    if (_selectedChip) _selectedChip.el.classList.remove('selected');
-
-    chip.classList.add('selected');
-    _selectedChip = { el: chip, value: chip.getAttribute('data-v'), bankId: bankId };
-  };
-
-  /**
-   * slCl(slot)
-   * Slot anklicken: ausgewählten Chip einsetzen oder vorhandenen entfernen.
-   */
-  window.slCl = function (slot) {
-    if (_selectedChip) {
-      /* Slot bereits belegt? Chip zurück in Bank */
-      var prev = slot.getAttribute('data-v');
-      if (prev) frC(prev, _selectedChip.bankId);
-
-      /* Chip in Slot einsetzen */
-      slot.textContent  = _selectedChip.value;
-      slot.setAttribute('data-v', _selectedChip.value);
-      slot.classList.add('filled');
-      slot.classList.remove('correct', 'wrong');
-
-      /* Chip aus Bank entfernen (visuell deaktivieren) */
-      _selectedChip.el.classList.add('used');
-      _selectedChip.el.classList.remove('selected');
-      _selectedChip.el.setAttribute('data-used', '1');
-      _selectedChip = null;
-    } else {
-      /* Kein Chip ausgewählt → Slot leeren */
-      var val = slot.getAttribute('data-v');
-      if (val) {
-        var bankId = slot.closest('[data-bankid]') ?
-          slot.closest('[data-bankid]').getAttribute('data-bankid') :
-          slot.getAttribute('data-bank');
-        frC(val, bankId);
-        slot.textContent = '';
-        slot.removeAttribute('data-v');
-        slot.classList.remove('filled', 'correct', 'wrong');
-      }
-    }
-    _scheduleAbSave();
-  };
-
-  /**
-   * frC(value, bankId)
-   * Chip in Bank wieder freigeben (nach Entfernen aus Slot).
-   */
-  window.frC = function (value, bankId) {
-    var bank = bankId ? document.getElementById(bankId) : null;
-    if (!bank) return;
-    var chip = bank.querySelector('[data-v="' + value + '"][data-used="1"]');
-    if (chip) {
-      chip.classList.remove('used', 'selected');
-      chip.removeAttribute('data-used');
-    }
-  };
-
-  /**
-   * chkSl(aufgabeId, bankId, total, resultId, retryId)
-   * Lückentext prüfen. Jeder Slot trägt data-a=korrekte_Antwort.
-   */
-  window.chkSl = function (aufgabeId, bankId, total, resultId, retryId) {
-    var container = document.getElementById(aufgabeId);
-    if (!container) return;
-
-    var correct = 0;
-    container.querySelectorAll('.slot').forEach(function (slot) {
-      var given    = (slot.getAttribute('data-v') || '').trim().toLowerCase();
-      var expected = (slot.getAttribute('data-a') || '').trim().toLowerCase();
-      slot.classList.remove('correct', 'wrong');
-      if (!given) return;
-      if (given === expected) { slot.classList.add('correct'); correct++; }
-      else                    { slot.classList.add('wrong'); }
-    });
-
-    var pts = Math.round((correct / total) * (abScores[aufgabeId + '_max'] || total));
-    abScores[aufgabeId] = pts;
-    PLK.shR(resultId, correct, total);
-
-    var retry = document.getElementById(retryId);
-    if (retry) retry.style.display = correct < total ? 'inline-flex' : 'none';
-
-    PLK.upAB();
-    _saveAbState();
-  };
-
-  /**
-   * retSl(aufgabeId, bankId)
-   * Nur falsche Slots zurücksetzen.
-   */
-  window.retSl = function (aufgabeId, bankId) {
-    var container = document.getElementById(aufgabeId);
-    if (!container) return;
-    container.querySelectorAll('.slot.wrong').forEach(function (slot) {
-      var val = slot.getAttribute('data-v');
-      if (val) frC(val, bankId);
-      slot.textContent = '';
-      slot.removeAttribute('data-v');
-      slot.classList.remove('filled', 'wrong');
-    });
-  };
-
-  /**
-   * rsSl(aufgabeId, bankId)
-   * Alle Slots zurücksetzen.
-   */
-  window.rsSl = function (aufgabeId, bankId) {
-    var container = document.getElementById(aufgabeId);
-    if (!container) return;
-    container.querySelectorAll('.slot').forEach(function (slot) {
-      var val = slot.getAttribute('data-v');
-      if (val) frC(val, bankId);
-      slot.textContent = '';
-      slot.removeAttribute('data-v');
-      slot.classList.remove('filled', 'correct', 'wrong');
-    });
-    if (_selectedChip) { _selectedChip.el.classList.remove('selected'); _selectedChip = null; }
-  };
+  /* selC, slCl, frC, chkSl, retSl, rsSl — moved to quiz-base.js */
 
   /* --------------------------------------------------------
      ZUORDNUNG — links-rechts Matching
@@ -981,59 +632,11 @@
 
   var _zSel = {};  /* { taskNr: { leftId, leftEl } } */
   var _zMap = {};  /* { taskNr: { leftId: rightId } } */
+  PLK._qs.zSel = _zSel;
+  PLK._qs.zMap = _zMap;
 
-  /**
-   * zCl(el, taskNr)
-   * Klick auf ein Zuordnungs-Element.
-   * Links-Elemente: data-z="l" data-id="..."
-   * Rechts-Elemente: data-z="r" data-id="..."
-   */
-  window.zCl = function (el, taskNr) {
-    var side = el.getAttribute('data-z');
-
-    if (side === 'l') {
-      /* Linke Seite auswählen */
-      if (_zSel[taskNr]) _zSel[taskNr].el.classList.remove('selected');
-      if (_zSel[taskNr] && _zSel[taskNr].leftId === el.getAttribute('data-id')) {
-        _zSel[taskNr] = null;
-        return;
-      }
-      el.classList.add('selected');
-      _zSel[taskNr] = { leftId: el.getAttribute('data-id'), el: el };
-
-    } else if (side === 'r') {
-      /* Rechte Seite: Zuordnung herstellen */
-      if (!_zSel[taskNr]) return;
-
-      if (!_zMap[taskNr]) _zMap[taskNr] = {};
-      var leftId  = _zSel[taskNr].leftId;
-      var rightId = el.getAttribute('data-id');
-
-      /* Bereits vorhandene Zuordnung aufheben */
-      var existingRight = _zMap[taskNr][leftId];
-      if (existingRight) {
-        var oldRight = document.querySelector('[data-task="' + taskNr + '"][data-z="r"][data-id="' + existingRight + '"]');
-        if (oldRight) oldRight.classList.remove('matched');
-      }
-      /* Bereits rechts zugeordnetes linkes Element suchen */
-      Object.keys(_zMap[taskNr]).forEach(function (lId) {
-        if (_zMap[taskNr][lId] === rightId && lId !== leftId) {
-          delete _zMap[taskNr][lId];
-          var oldLeft = document.querySelector('[data-task="' + taskNr + '"][data-z="l"][data-id="' + lId + '"]');
-          if (oldLeft) { oldLeft.classList.remove('matched'); _zVisConn(taskNr, lId, null); }
-        }
-      });
-
-      _zMap[taskNr][leftId] = rightId;
-      _zSel[taskNr].el.classList.remove('selected');
-      _zSel[taskNr].el.classList.add('matched');
-      el.classList.add('matched');
-      _zSel[taskNr] = null;
-      _zVisConn(taskNr, leftId, rightId);
-      _scheduleAbSave();
-    }
-  };
-
+  /* zCl, uM, chkZ, retZ, rsZ — moved to quiz-base.js */
+  /* _zVisConn stays in engine.js (private), exposed as PLK._zVisConn */
   /* Verbindungslinie visuell darstellen (einfache Badge-Variante) */
   function _zVisConn(taskNr, leftId, rightId) {
     var leftEl = document.querySelector('[data-task="' + taskNr + '"][data-z="l"][data-id="' + leftId + '"]');
@@ -1047,68 +650,14 @@
       badge.textContent = '';
     }
   }
-
-  /**
-   * uM(taskNr, leftId)
-   * Zuordnung aufheben.
-   */
-  window.uM = function (taskNr, leftId) {
-    if (!_zMap[taskNr] || !_zMap[taskNr][leftId]) return;
-    var rightId  = _zMap[taskNr][leftId];
-    delete _zMap[taskNr][leftId];
-
-    var leftEl  = document.querySelector('[data-task="' + taskNr + '"][data-z="l"][data-id="' + leftId + '"]');
-    var rightEl = document.querySelector('[data-task="' + taskNr + '"][data-z="r"][data-id="' + rightId + '"]');
-    if (leftEl)  { leftEl.classList.remove('matched', 'correct', 'wrong'); _zVisConn(taskNr, leftId, null); }
-    if (rightEl) rightEl.classList.remove('matched', 'correct', 'wrong');
-  };
-
-  /**
-   * chkZ(taskNr, aufgabeId)
-   * Zuordnungen prüfen. Jedes linke Element trägt data-correct=rightId.
-   */
-  window.chkZ = function (taskNr, aufgabeId) {
-    var lefts = document.querySelectorAll('[data-task="' + taskNr + '"][data-z="l"]');
-    var total = lefts.length, correct = 0;
-
-    lefts.forEach(function (el) {
-      var id       = el.getAttribute('data-id');
-      var expected = el.getAttribute('data-correct');
-      var given    = _zMap[taskNr] ? _zMap[taskNr][id] : null;
-      el.classList.remove('correct', 'wrong');
-
-      if (given === expected) { el.classList.add('correct'); correct++; }
-      else                    { el.classList.add('wrong'); }
-    });
-
-    abScores[aufgabeId] = correct;
-    PLK.shR(aufgabeId + '-result', correct, total);
-    PLK.upAB();
-    _saveAbState();
-  };
-
-  /** retZ(taskNr, aufgabeId) — Nur falsche Zuordnungen zurücksetzen */
-  window.retZ = function (taskNr, aufgabeId) {
-    var lefts = document.querySelectorAll('[data-task="' + taskNr + '"][data-z="l"].wrong');
-    lefts.forEach(function (el) { uM(taskNr, el.getAttribute('data-id')); });
-    var res = document.getElementById(aufgabeId + '-result');
-    if (res) res.style.display = 'none';
-  };
-
-  /** rsZ(taskNr, aufgabeId) — Alle Zuordnungen zurücksetzen */
-  window.rsZ = function (taskNr, aufgabeId) {
-    if (_zMap[taskNr]) {
-      Object.keys(_zMap[taskNr]).forEach(function (id) { uM(taskNr, id); });
-    }
-    var res = document.getElementById(aufgabeId + '-result');
-    if (res) res.style.display = 'none';
-  };
+  PLK._zVisConn = _zVisConn;
 
   /* --------------------------------------------------------
      KATEGORISIERUNG — Buttons pro Item
   -------------------------------------------------------- */
 
   var _kSel = {};  /* { itemId: value } */
+  PLK._qs.kSel = _kSel;
 
   /* Auto-save timer — IIFE-scoped so slCl/kS/zCl can trigger debounced saves */
   var _abSaveTimer = null;
@@ -1118,67 +667,9 @@
     clearTimeout(_abSaveTimer);
     _abSaveTimer = setTimeout(_saveAbState, 800);
   }
+  PLK._scheduleAbSave = _scheduleAbSave;
 
-  /**
-   * kS(button, value)
-   * Kategorie-Button auswählen. Ein Button pro Item aktiv.
-   */
-  window.kS = function (button, value) {
-    var item   = button.closest('.k-item');
-    if (!item) return;
-    var itemId = item.getAttribute('data-id');
-
-    item.querySelectorAll('.k-btn').forEach(function (btn) { btn.classList.remove('selected'); });
-    button.classList.add('selected');
-    _kSel[itemId] = value;
-    _scheduleAbSave();
-  };
-
-  /**
-   * chkK(aufgabeId)
-   * Kategorisierung prüfen. Jedes .k-item trägt data-correct=wert.
-   */
-  window.chkK = function (aufgabeId) {
-    var items = document.querySelectorAll('#' + aufgabeId + ' .k-item');
-    var total = items.length, correct = 0;
-
-    items.forEach(function (item) {
-      var id       = item.getAttribute('data-id');
-      var expected = item.getAttribute('data-correct');
-      var given    = _kSel[id];
-      item.classList.remove('correct', 'wrong');
-
-      if (given !== undefined && given === expected) { item.classList.add('correct'); correct++; }
-      else if (given !== undefined)                  { item.classList.add('wrong'); }
-    });
-
-    abScores[aufgabeId] = correct;
-    PLK.shR(aufgabeId + '-result', correct, total);
-    PLK.upAB();
-    _saveAbState();
-  };
-
-  /** retK(aufgabeId) — Nur falsche Kategorien zurücksetzen */
-  window.retK = function (aufgabeId) {
-    document.querySelectorAll('#' + aufgabeId + ' .k-item.wrong').forEach(function (item) {
-      item.classList.remove('wrong');
-      var id = item.getAttribute('data-id');
-      delete _kSel[id];
-      item.querySelectorAll('.k-btn').forEach(function (btn) { btn.classList.remove('selected'); });
-    });
-  };
-
-  /** rsK(aufgabeId) — Alle Kategorien zurücksetzen */
-  window.rsK = function (aufgabeId) {
-    document.querySelectorAll('#' + aufgabeId + ' .k-item').forEach(function (item) {
-      item.classList.remove('correct', 'wrong');
-      var id = item.getAttribute('data-id');
-      delete _kSel[id];
-      item.querySelectorAll('.k-btn').forEach(function (btn) { btn.classList.remove('selected'); });
-    });
-    var res = document.getElementById(aufgabeId + '-result');
-    if (res) res.style.display = 'none';
-  };
+  /* kS, chkK, retK, rsK — moved to quiz-base.js */
 
   /* --------------------------------------------------------
      ARBEITSBLATT — Hilfsfunktionen
@@ -1360,49 +851,7 @@
     }
   }
 
-  /**
-   * rstAllAB()
-   * Gesamtes Arbeitsblatt zurücksetzen (nach Bestätigung).
-   */
-  window.rstAllAB = function () {
-    if (!confirm('Alle Arbeitsblatt-Eingaben zurücksetzen?')) return;
-    abScores = {};
-    _kSel    = {};
-    _zMap    = {};
-    _zSel    = {};
-    _selectedChip = null;
-
-    /* Alle Inputs leeren */
-    var ab = document.getElementById('arbeitsblatt');
-    if (!ab) return;
-
-    ab.querySelectorAll('input[type="text"], textarea').forEach(function (el) {
-      el.value = ''; el.style.borderColor = '';
-    });
-    ab.querySelectorAll('.slot').forEach(function (slot) {
-      slot.textContent = ''; slot.removeAttribute('data-v');
-      slot.classList.remove('filled', 'correct', 'wrong');
-    });
-    ab.querySelectorAll('.chip').forEach(function (chip) {
-      chip.classList.remove('used', 'selected'); chip.removeAttribute('data-used');
-    });
-    ab.querySelectorAll('.mco, .k-item').forEach(function (el) {
-      el.classList.remove('correct', 'wrong', 'selected', 'matched');
-    });
-    ab.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(function (inp) {
-      inp.checked = false;
-    });
-    ab.querySelectorAll('.k-btn, .z-l, .z-r').forEach(function (el) {
-      el.classList.remove('selected', 'matched', 'correct', 'wrong');
-    });
-    ab.querySelectorAll('.mc-feedback, .qinp-feedback').forEach(function (el) {
-      el.style.display = 'none'; el.textContent = '';
-    });
-    ab.querySelectorAll('.z-badge').forEach(function (el) { el.textContent = ''; });
-
-    PLK.upAB();
-    _saveAbState();
-  };
+  /* rstAllAB — moved to quiz-base.js (PLK.rstAllAB) */
 
   /* ==========================================================
      INIT — beim Laden der Seite
@@ -1563,7 +1012,7 @@
 
     /* Reihenfolge: initiale Nummerierung setzen */
     document.querySelectorAll('.olist').forEach(function (list) {
-      oRenum(list);
+      PLK.oRenum(list);
     });
 
     /* Auto-save Arbeitsblatt text inputs / textareas on change */
@@ -1575,21 +1024,6 @@
     });
   });
 
-  /**
-   * saveAB(hintId)
-   * Speichert Arbeitsblatt-Eingaben explizit (z.B. über Speichern-Button).
-   * Zeigt kurz eine Bestätigung an falls hintId angegeben.
-   */
-  window.saveAB = function (hintId) {
-    _saveAbState();
-    if (hintId) {
-      var hint = document.getElementById(hintId);
-      if (hint) {
-        hint.textContent = 'Gespeichert';
-        hint.style.color = 'var(--ok)';
-        setTimeout(function () { hint.textContent = ''; }, 2000);
-      }
-    }
-  };
+  /* saveAB — moved to quiz-base.js (PLK.saveAB) */
 
 })();
