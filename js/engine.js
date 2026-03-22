@@ -404,6 +404,9 @@
   /* Resets answers inside a QG and shuffles option order so students can't
      memorise position. qgPass[gateNr] and data-passed are NOT cleared. */
   function _resetQgForRetry(gateNr, gate) {
+    /* Allow re-submission after retry */
+    gate.removeAttribute('data-passed');
+
     gate.querySelectorAll('.mco input').forEach(function (inp) {
       inp.checked = false;
       var item = inp.closest('.mco');

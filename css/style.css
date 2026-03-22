@@ -1008,6 +1008,24 @@ code, .mono {
   font-size: .8rem;
 }
 
+.einstieg-retry a {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .35rem .85rem;
+  background: var(--ok);
+  color: #fff;
+  border-radius: 6px;
+  font-size: .78rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.einstieg-retry a:hover {
+  opacity: .88;
+}
+
 /* --- Passed state --- */
 .einstieg[data-state="passed"] {
   border-color: var(--ok-border);
