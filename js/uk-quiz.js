@@ -51,24 +51,28 @@
     return arr;
   }
 
+  function _each(nodeList, fn) {
+    Array.prototype.forEach.call(nodeList, fn);
+  }
+
   PLK.register({
     name: 'uk-quiz',
     init: function () {
 
       /* Shuffle options in each step's .uk-opts list for every block */
-      document.querySelectorAll('.uk').forEach(function (block) {
-        block.querySelectorAll('[data-step] .uk-opts').forEach(function (ul) {
+      _each(document.querySelectorAll('.uk'), function (block) {
+        _each(block.querySelectorAll('[data-step] .uk-opts'), function (ul) {
           var items = Array.prototype.slice.call(ul.querySelectorAll('.uk-opt'));
-          _shuffle(items).forEach(function (li) { ul.appendChild(li); });
+          _each(_shuffle(items), function (li) { ul.appendChild(li); });
         });
 
         /* Recheck chip listeners — one block at a time so .uk-krit-chip
            clicks stay scoped to the right block */
-        block.querySelectorAll('.uk-krit-chip').forEach(function (chip) {
+        _each(block.querySelectorAll('.uk-krit-chip'), function (chip) {
           chip.addEventListener('click', function () {
             var recheck = chip.closest('.uk-krit-recheck');
             if (!recheck) return;
-            recheck.querySelectorAll('.uk-krit-chip').forEach(function (c) {
+            _each(recheck.querySelectorAll('.uk-krit-chip'), function (c) {
               c.classList.remove('selected', 'wrong');
             });
             var rErr = recheck.querySelector('.uk-krit-recheck-err');
@@ -79,7 +83,7 @@
         });
 
         /* Option click listeners */
-        block.querySelectorAll('.uk-opt').forEach(function (opt) {
+        _each(block.querySelectorAll('.uk-opt'), function (opt) {
           opt.addEventListener('click', function () { _onOptClick(block, opt); });
         });
       });
@@ -90,7 +94,7 @@
         if (!block) return;
         var parent = el.closest('.uk-krit-opts');
         if (!parent) return;
-        parent.querySelectorAll('.uk-krit-opt').forEach(function (o) {
+        _each(parent.querySelectorAll('.uk-krit-opt'), function (o) {
           o.classList.remove('selected', 'wrong');
           var errSpan = o.querySelector('.uk-krit-opt-err');
           if (errSpan) errSpan.textContent = '';
@@ -154,7 +158,7 @@
     }
 
     /* Every step in this stage must have a selection */
-    stage.querySelectorAll('[data-step] .uk-opts').forEach(function (pool) {
+    _each(stage.querySelectorAll('[data-step] .uk-opts'), function (pool) {
       if (!pool.querySelector('.uk-opt.selected, .uk-opt.correct')) {
         allReady = false;
       }
@@ -173,7 +177,7 @@
     var pool = step.querySelector('.uk-opts');
     if (!pool) return;
 
-    pool.querySelectorAll('.uk-opt').forEach(function (o) {
+    _each(pool.querySelectorAll('.uk-opt'), function (o) {
       o.classList.remove('selected', 'incorrect');
       _clearErrorNodes(o);
     });
@@ -228,7 +232,7 @@
 
       if (recheckMsidx !== expectedMsidx) {
         allCorrect = false;
-        recheck.querySelectorAll('.uk-krit-chip').forEach(function (chip) {
+        _each(recheck.querySelectorAll('.uk-krit-chip'), function (chip) {
           if (chip.getAttribute('data-msidx') !== expectedMsidx) {
             chip.classList.add('wrong');
           }
@@ -242,7 +246,7 @@
     }
 
     /* AB step options: mark selected as correct (any selection passes) */
-    stage.querySelectorAll('[data-step] .uk-opts').forEach(function (pool) {
+    _each(stage.querySelectorAll('[data-step] .uk-opts'), function (pool) {
       var selected = pool.querySelector('.uk-opt.selected');
       if (selected) {
         selected.classList.remove('selected');
