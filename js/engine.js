@@ -786,9 +786,9 @@
 
     var existing = PLK.Progress.load(CONF.id) || {};
     existing.ab = state;
-    PLK.Progress.save(CONF.id, existing);
-    /* quiz-ext types */
+    /* quiz-ext types — must run before Progress.save so ext sub-keys are included */
     if (PLK._saveExtState) PLK._saveExtState(ab, state);
+    PLK.Progress.save(CONF.id, existing);
   }
   PLK._saveAbState = _saveAbState; /* expose for use in quiz-base + quiz-ext */
 
