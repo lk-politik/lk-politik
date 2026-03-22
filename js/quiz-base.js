@@ -100,7 +100,9 @@
       -------------------------------------------------------- */
       PLK.chkQ = function (gateNr, questionCount) {
         var gate   = document.getElementById('qg' + gateNr);
-        if (!gate || gate.getAttribute('data-passed') === '1') return;
+        if (!gate) return;
+        /* data-passed guard removed: CSS visibility controls button access;
+           allowing re-evaluation lets users check answers after restoration. */
 
         var total  = 0;
         var correct = 0;
