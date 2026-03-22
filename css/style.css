@@ -367,8 +367,8 @@ code, .mono {
    8b. Visual system — reusable templates for all diagrams
    ──────────────────────────────────────────────────────────
    TYPOGRAPHIC SCALE (inside visuals):
-     T2  .vis-title          .85rem  700  --ink       Fraunces
-     T3  .vis-head            .78rem  700  themed      Fraunces
+     T2  .vis-title          .95rem  700  --ink       Fraunces  (accent underline)
+     T2b .vis-head            .95rem  700  themed      Fraunces  (sub → T3 .78rem)
      T4  .vis-inst-name       .75rem  700  --ink       Fraunces
      T5  .vis-cell / -desc    .72rem  400  --ink2      DM Sans
      T6  .vis-lead / -sub     .65rem  500  --ink2      DM Sans
@@ -391,12 +391,17 @@ code, .mono {
   font-family: var(--ff-head);
 }
 .vis-title {                            /* T2 — visual title */
-  font-size: .85rem;
+  font-size: .95rem;
   font-weight: 700;
   color: var(--ink);
   text-align: center;
   margin-bottom: .6rem;
   line-height: 1.4;
+  padding-bottom: .45rem;
+  background-image: linear-gradient(90deg, transparent 15%, var(--acc) 40%, var(--acc) 60%, transparent 85%);
+  background-size: 60% 2px;
+  background-position: center bottom;
+  background-repeat: no-repeat;
 }
 .vis-title .fb { font-weight: 700 !important; }
 
@@ -454,15 +459,15 @@ code, .mono {
   color: var(--ink2);
   line-height: 1.45;
 }
-.vis-head {                             /* T3 — column/example header */
+.vis-head {                             /* T2b — column/example header */
   text-align: center;
-  font-size: .78rem;
+  font-size: .95rem;
   font-weight: 700;
   padding: .45rem;
   border-radius: 6px;
 }
-.vis-head sub {                         /* T6 — sub-label under header */
-  font-size: .65rem;
+.vis-head sub {                         /* T3 — sub-label under header */
+  font-size: .78rem;
   font-weight: 500;
   color: var(--ink2);
   display: block;
