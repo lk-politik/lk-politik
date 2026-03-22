@@ -16,96 +16,115 @@
   <!-- FILL: accent colour for this unit (--acc hex, --accL light tint, --accG ghost rgba) -->
   <style>:root{--acc:#2d5986;--accL:#e8f0f8;--accG:rgba(45,89,134,.08)}</style>
 
-  <!-- OPTIONAL: unit-specific styles for custom layout components used in this unit only.
-       Common patterns shown below — delete what is not used.                             -->
+  <!-- OPTIONAL: unit-specific styles.
+       ─────────────────────────────────────────────────────────
+       GLOBAL VISUAL SYSTEM (style.css §8b) — use these for NEW visuals:
+         .vis               Step / comparison grid (2-col)
+         .vis-flow           Sequential process diagram
+         .vis-matrix         Grid table (powers × levels)
+         .vis-stack          Layered / tiered diagram
+         .vis-org-grid/card  Institution / organ cards
+         .vis-compare        Two-column comparison (pro/con)
+         .vis-timeline       Horizontal dot timeline
+
+       GLOBAL CONTENT (style.css §8c):
+         .fazit / .fazit-title      Conclusion box
+         .callout / .callout-lbl    Info / highlight box
+         .callout.key-pos           Key position variant
+
+       GLOBAL SHARED:
+         .vis-title  .vis-lbl  .vis-tag  .vis-head  .vis .emo
+         .fac-s .fac-i .fac-n .fac-de .fac-eu     Level badges
+         .iflag                                     Inline flag SVGs
+
+       TYPOGRAPHIC SCALE (visual internals):
+         T2  .vis-title          .85rem  700  Fraunces  --ink
+         T3  .vis-head / h4      .78rem  700  Fraunces  themed
+         T4  .vis-inst-name      .75rem  700  Fraunces  --ink
+         T5  .vis-cell / -desc   .72rem  400  DM Sans   --ink2
+         T6  .vis-inst-lead      .65rem  500  DM Sans   --ink2
+         T7  .vis-lbl (upper)    .56rem  700  Plex Mono --ink3
+         T8  .vis-tag / badge    .50rem  600  Plex Mono themed
+         EMO .vis .emo           1.1rem
+
+       LEGACY classes (still work, migrate when revising a unit):
+         .tl .tl-i .tl-d .tl-y .tl-t         → .vis-timeline
+         .org-grid .org-card .org-sb .org-desc → .vis-org-grid/card
+         .de-grid .de-col .de-item .de-dot    → .vis-compare
+         .flow-box .flow-row .flow-s .flow-n  → .vis-flow
+         .ebenen-stack .ebene .eb-*           → .vis-stack
+         .vote-box .key-pos                    → .callout
+         .vergleich-wrap .vgl-*               → .vis-compare
+         .gew-matrix .gew-*                   → .vis-matrix
+         .mep .mep-*                          → .vis-stack
+       ─────────────────────────────────────────────────────────
+       Only put styles here that are TRULY unit-specific (e.g. a
+       one-off layout used only in this unit). Everything reusable
+       should go in style.css.                                   -->
   <style>
 
-    /* ── Timeline (horizontal dots) ── */
+    /* ── LEGACY visual classes (kept for backward compat with existing units) ── */
+    /* These will be migrated to the global .vis-* system per-unit over time.    */
+
+    /* Timeline (horizontal dots) — legacy, use .vis-timeline for new */
     .tl{display:flex;flex-wrap:wrap;gap:0;margin:18px 0 8px;position:relative;padding-top:28px}
     .tl::before{content:'';position:absolute;top:10px;left:0;right:0;height:2px;background:var(--border-l)}
     .tl-i{flex:1;min-width:80px;text-align:center;position:relative}
     .tl-d{width:10px;height:10px;border-radius:50%;background:var(--gold);position:absolute;top:-22px;left:50%;transform:translateX(-50%);box-shadow:0 0 8px rgba(197,150,12,.4)}
-    .tl-y{font-family:var(--ff-mono);font-size:.7rem;font-weight:600;color:var(--gold);margin-bottom:2px}
+    .tl-y{font-family:var(--ff-mono);font-size:.56rem;font-weight:700;color:var(--gold);margin-bottom:2px}
     .tl-t{font-size:.65rem;color:var(--ink3);line-height:1.3}
     .tl-t strong{color:var(--ink)}
 
-    /* ── Organ / person cards ── */
-    .org-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;margin-top:18px}
-    .org-card{background:var(--input-bg);border:1px solid var(--border-l);border-radius:10px;padding:18px 20px;transition:box-shadow .2s}
-    .org-card:hover{box-shadow:0 2px 12px rgba(0,0,0,.06)}
-    .org-card h4{font-family:var(--ff-head);font-size:1.05rem;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:10px}
-    .org-card h4 .emo{font-size:1.35rem}
-    .org-sb{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:10px;font-size:.8rem}
-    .org-sb .ol{color:var(--ink3);font-family:var(--ff-mono);font-size:.65rem;letter-spacing:1px;text-transform:uppercase}
-    .org-sb .ov{color:var(--ink);font-weight:600}
-    .org-desc{font-size:.88rem;color:var(--ink2);line-height:1.65}
+    /* Organ / person cards — legacy, use .vis-org-grid/card for new */
+    .org-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-top:18px}
+    .org-card{background:var(--card);border:1px solid var(--border-l);border-left:4px solid var(--acc);border-radius:8px;padding:1rem 1.1rem;transition:box-shadow .15s}
+    .org-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .org-card h4{font-family:var(--ff-head);font-size:.78rem;font-weight:700;margin-bottom:.35rem;display:flex;align-items:center;gap:.4rem}
+    .org-card h4 .emo{font-size:1.1rem}
+    .org-sb{display:grid;grid-template-columns:auto 1fr;gap:.15rem .5rem;margin-bottom:.4rem;font-size:.65rem}
+    .org-sb .ol{color:var(--ink3);font-weight:500}
+    .org-sb .ov{color:var(--ink2);font-weight:600}
+    .org-desc{font-size:.72rem;color:var(--ink2);line-height:1.55}
     .org-desc strong{color:var(--ink)}
     .org-card.legislative{border-left:4px solid var(--acc)}
     .org-card.brief{border-left:4px solid var(--border)}
     .org-img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--border-l);flex-shrink:0}
 
-    /* ── Demokratie / Effizienz two-column grid ── */
-    .de-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
+    /* Two-column comparison — legacy, use .vis-compare for new */
+    .de-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:14px}
     .de-col{background:var(--input-bg);border:1px solid var(--border-l);border-radius:8px;padding:16px}
-    .de-col h4{font-family:var(--ff-head);font-size:.9rem;font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:8px}
-    .de-item{display:flex;gap:8px;margin-bottom:10px;align-items:flex-start;font-size:.78rem;line-height:1.6;color:var(--ink2)}
+    .de-col h4{font-family:var(--ff-head);font-size:.78rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+    .de-item{display:flex;gap:8px;margin-bottom:10px;align-items:flex-start;font-size:.72rem;line-height:1.55;color:var(--ink2)}
     .de-item:last-child{margin-bottom:0}
     .de-item strong{color:var(--ink)}
     .de-dot{width:7px;height:7px;border-radius:50%;margin-top:5px;flex-shrink:0}
     .dot-g{background:#34d399}.dot-y{background:#fbbf24}.dot-r{background:#f87171}
 
-    /* ── Info / callout boxes ── */
+    /* Info boxes — legacy, use .callout for new */
     .vote-box{background:var(--accL);border:1px solid rgba(45,89,134,.15);border-radius:6px;padding:.6rem .8rem;margin-top:8px;font-size:.72rem;line-height:1.5;color:var(--ink2)}
     .vote-box strong{color:var(--acc)}
-    .key-pos{background:var(--accL);border:1px solid rgba(45,89,134,.15);border-radius:8px;padding:.85rem 1rem;margin-top:1.25rem}
-    .key-pos p{margin:0;font-size:.82rem;line-height:1.6}
 
-    /* ── Ordered-list quiz (olist) ── */
-    .olist{list-style:none;padding:0;margin:.5rem 0}
-    .oitem{display:flex;align-items:center;gap:.6rem;background:var(--card);border:1px solid var(--border-l);border-radius:6px;padding:.5rem .75rem;margin-bottom:.4rem;font-size:.85rem;cursor:default;user-select:none}
-    .oitem-num{font-family:var(--ff-mono);font-size:.65rem;font-weight:700;color:var(--ink3);min-width:1rem;text-align:center}
-    .oarr{display:flex;flex-direction:column;gap:1px;margin-left:auto}
-    .oab{background:none;border:none;cursor:pointer;font-size:.7rem;color:var(--ink3);padding:0 2px;line-height:1}
-    .oab:hover{color:var(--ink)}
-
-    /* ── Lighter labels (unit-specific override) ── */
-    .sw-label{font-weight:500}
-    .qg-status{font-weight:500}
-    .qg-label{font-weight:500}
-    .k-btn{font-weight:500;letter-spacing:.02em}
-
-    /* ── Flow diagrams (de-flow = amber, eu-flow = blue) ── */
+    /* Flow diagrams — legacy, use .vis-flow for new */
     .flow-box{border-radius:10px;padding:1.25rem 1rem;margin-top:1rem;margin-bottom:.5rem}
     .flow-box.de-flow{background:var(--deL);border:1px solid rgba(161,98,7,.15)}
     .flow-box.eu-flow{background:var(--euL);border:1px solid rgba(29,78,216,.15)}
-    .flow-title{font-family:var(--ff-mono);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;text-align:center;margin-bottom:.85rem;font-weight:600}
+    .flow-title{font-family:var(--ff-mono);font-size:.56rem;letter-spacing:1.2px;text-transform:uppercase;text-align:center;margin-bottom:.85rem;font-weight:700;color:var(--ink3)}
     .de-flow .flow-title{color:var(--de)}
     .eu-flow .flow-title{color:var(--eu)}
     .flow-row{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:.25rem}
     .flow-s{flex:1;min-width:7.5rem;text-align:center;padding:.85rem .5rem;position:relative}
-    .flow-s:not(:last-child)::after{content:'→';position:absolute;right:-.45rem;top:50%;transform:translateY(-50%);font-size:1.25rem;color:var(--ink3);z-index:3}
-    .flow-n{font-family:var(--ff-mono);font-size:.56rem;letter-spacing:.1em;color:var(--ink3);margin-bottom:.25rem}
-    .flow-ic{font-size:1.35rem;margin-bottom:.25rem}
-    .flow-lb{font-family:var(--ff-serif);font-size:.78rem;font-weight:600;margin-bottom:.25rem}
-    .flow-ds{font-size:.7rem;color:var(--ink2);line-height:1.5}
-    .flow-ac{font-family:var(--ff-mono);font-size:.56rem;padding:.15rem .5rem;border-radius:12px;display:inline-block;margin-top:.35rem}
-    .fac-de{background:var(--deB);color:var(--de)}
-    .fac-eu{background:var(--euB);color:var(--eu)}
+    .flow-s:not(:last-child)::after{content:'\2192';position:absolute;right:-.45rem;top:50%;transform:translateY(-50%);font-size:1.25rem;color:var(--ink3);z-index:3}
+    .flow-n{font-family:var(--ff-mono);font-size:.56rem;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink3);margin-bottom:.25rem}
+    .flow-ic{font-size:1.3rem;margin-bottom:.25rem}
+    .flow-lb{font-family:var(--ff-head);font-size:.75rem;font-weight:700;margin-bottom:.25rem}
+    .flow-ds{font-size:.72rem;color:var(--ink2);line-height:1.45}
+    .flow-ac{font-family:var(--ff-mono);font-size:.50rem;font-weight:600;padding:.1rem .4rem;border-radius:10px;display:inline-block;margin-top:.35rem}
 
-    /* ── Vertical timeline (step-by-step process, e.g. legislative) ── */
-    .tl-usb{display:flex;flex-direction:column;gap:.75rem;margin:1rem 0}
-    .tl-step{display:flex;gap:.85rem;align-items:flex-start;padding:.65rem .85rem;background:var(--bg);border-radius:8px;border-left:3px solid var(--eu)}
-    .tl-step .tl-date{font-family:var(--ff-mono);font-size:.72rem;font-weight:600;color:var(--eu);min-width:5.5rem;white-space:nowrap;padding-top:.1rem}
-    .tl-step .tl-actor{font-family:var(--ff-head);font-size:.92rem;font-weight:600;color:var(--eu);display:block;margin-bottom:.3rem}
-    .tl-step .tl-desc{font-size:.82rem;color:var(--ink2);line-height:1.55}
-    .tl-step .tl-desc strong{color:var(--ink)}
-
-    /* ── Ebenen-Stack (Mehrebenensystem layers) ── */
-    /* Requires: --supra/--supraL, --inter/--interL, --natl/--natlL CSS vars (style.css) */
+    /* Ebenen-Stack — legacy, use .vis-stack for new */
     .ebenen-stack{display:flex;flex-direction:column;gap:0;margin:1rem 0;border-radius:10px;overflow:hidden;border:1px solid var(--border-l)}
     .ebene{padding:1rem 1.25rem}
-    .ebene h4{font-family:var(--ff-head);font-size:.95rem;font-weight:600;margin-bottom:.35rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
-    .ebene p{font-size:.85rem;line-height:1.6;color:var(--ink2)}
+    .ebene h4{font-family:var(--ff-head);font-size:.78rem;font-weight:700;margin-bottom:.35rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+    .ebene p{font-size:.72rem;line-height:1.55;color:var(--ink2)}
     .ebene p strong{color:var(--ink)}
     .eb-supra{background:var(--supraL);border-bottom:1px solid rgba(37,99,235,.15)}
     .eb-supra h4{color:var(--supra)}
@@ -113,56 +132,34 @@
     .eb-inter h4{color:var(--inter)}
     .eb-natl{background:var(--natlL)}
     .eb-natl h4{color:var(--natl)}
-    .eb-tag{font-family:var(--ff-mono);font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;padding:.15rem .5rem;border-radius:4px;font-weight:600;white-space:nowrap}
+    .eb-tag{font-family:var(--ff-mono);font-size:.56rem;letter-spacing:1.2px;text-transform:uppercase;padding:.15rem .5rem;border-radius:4px;font-weight:700;white-space:nowrap}
     .eb-tag.supra{background:rgba(37,99,235,.1);color:var(--supra)}
     .eb-tag.inter{background:rgba(217,119,6,.1);color:var(--inter)}
     .eb-tag.natl{background:rgba(5,150,105,.1);color:var(--natl)}
 
-    /* ── Org-mini cards (compact, for Ebenen-Stack grid) ── */
-    /* When used inside .ebenen-stack, override .org-grid column width:
-       .org-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}  */
-    .org-mini{background:rgba(255,255,255,.7);border:1px solid var(--border-l);border-radius:8px;padding:.6rem .85rem;text-align:center;font-size:.78rem}
-    .org-mini .emo{font-size:1.25rem;display:block;margin-bottom:.2rem}
-    .org-mini .oname{font-family:var(--ff-head);font-size:.8rem;font-weight:600;color:var(--ink)}
-    .org-mini .osub{font-size:.68rem;color:var(--ink3);margin-top:.15rem}
+    /* Org-mini cards (compact) */
+    .org-mini{background:rgba(255,255,255,.7);border:1px solid var(--border-l);border-radius:8px;padding:.6rem .85rem;text-align:center;font-size:.72rem}
+    .org-mini .emo{font-size:1.1rem;display:block;margin-bottom:.15rem}
+    .org-mini .oname{font-family:var(--ff-head);font-size:.75rem;font-weight:700;color:var(--ink)}
+    .org-mini .osub{font-size:.65rem;color:var(--ink3);margin-top:.15rem}
 
-    /* ── Vergleich mini-box (side-by-side comparison) ── */
+    /* Vergleich mini-box — legacy, use .vis-compare for new */
     .vergleich-wrap{margin-top:1rem;padding:1rem 1.25rem;background:var(--bg);border:1px solid var(--border-l);border-radius:8px}
-    .vergleich-wrap h4{font-family:var(--ff-head);font-size:.85rem;font-weight:600;margin-bottom:.5rem}
+    .vergleich-wrap h4{font-family:var(--ff-head);font-size:.78rem;font-weight:700;margin-bottom:.5rem}
     .vgl-row{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:.5rem}
-    .vgl-col{flex:1;min-width:200px;font-size:.8rem;line-height:1.7;color:var(--ink2)}
+    .vgl-col{flex:1;min-width:200px;font-size:.72rem;line-height:1.55;color:var(--ink2)}
     .vgl-col strong{color:var(--ink)}
     .vgl-arrow{font-family:var(--ff-mono);font-size:.75rem;color:var(--ink3)}
 
+    /* Lighter labels (unit-specific override) */
+    .sw-label{font-weight:500}
+    .qg-status{font-weight:500}
+    .qg-label{font-weight:500}
+    .k-btn{font-weight:500;letter-spacing:.02em}
+
     @media(max-width:700px){
-      .de-grid{grid-template-columns:1fr}
-      .org-grid{grid-template-columns:1fr}
+      .de-grid,.vis-compare,.vis-org-grid,.org-grid{grid-template-columns:1fr}
     }
-
-    /* ── Teacher note (always visible, subtle) ── */
-    /* .lk-note is in style.css — no unit-specific CSS needed */
-
-    /* ── Mehrebenen-Schaubild (mep-*) — copy from 3-4_mehrebenensystem.html if used ── */
-    /* .mep{display:flex;flex-direction:column;gap:0;margin:1.5rem auto;max-width:480px;font-family:var(--ff-head)}
-    .mep-section{border:1px solid var(--sc);border-radius:10px;padding:16px 10px 8px;margin-bottom:16px;position:relative}
-    .mep-section-lbl{font-family:var(--ff-head);font-size:.65rem;letter-spacing:1.5px;font-weight:700;text-transform:uppercase;color:var(--sc);position:absolute;top:-.85em;left:50%;transform:translateX(-50%);background:#fff;padding:0 10px;white-space:nowrap}
-    .mep-pair{display:flex;gap:4px;margin-bottom:0}
-    .mep-pair .mep-card{flex:1;margin-bottom:0}
-    .mep-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;padding:.7rem .75rem;border-left:4px solid var(--rc);background:var(--rbg);border-radius:6px;margin-bottom:4px;text-align:center}
-    .mep-card-flag{width:24px;height:16px;display:flex;align-items:center;justify-content:center}
-    .mep-card-name{font-family:var(--ff-head);font-size:.7rem;letter-spacing:.5px;font-weight:700;color:var(--rc)}
-    .mep-card-info{font-family:var(--ff-head);font-size:.78rem;color:var(--ink2);line-height:1.4}
-    .mep-row{display:flex;align-items:center;gap:1.25rem;padding:.65rem 1rem .65rem 1.25rem;border-left:4px solid var(--rc);background:var(--rbg);border-radius:6px;margin-bottom:4px}
-    .mep-row:last-child{margin-bottom:0}
-    .mep-flag{flex-shrink:0;width:24px;height:16px;display:flex;align-items:center}
-    .mep-name{font-family:var(--ff-head);font-size:.72rem;letter-spacing:.5px;font-weight:700;color:var(--rc);width:100px;flex-shrink:0}
-    .mep-info{font-family:var(--ff-head);font-size:.82rem;color:var(--ink2);line-height:1.5;width:90px;flex-shrink:0;text-align:center}
-    .mep-eg-wrap{margin-left:auto;width:90px;text-align:center;flex-shrink:0}
-    .mep-eg{display:inline-block;font-family:var(--ff-head);font-size:.68rem;font-weight:600;color:var(--natl);background:var(--natlB);padding:.15rem .55rem;border-radius:99px;vertical-align:middle} */
-
-    /* ── Umsetzung-Flow (ums-flow / ums-title) — wraps a .flow-row, neutral background ── */
-    /* .ums-flow{background:var(--bg);border:1px solid var(--border-l);border-radius:10px;padding:1.25rem 1rem;margin:1rem 0}
-    .ums-title{font-family:var(--ff-mono);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);text-align:center;margin-bottom:.85rem;font-weight:600} */
   </style>
 </head>
 <body>
