@@ -141,6 +141,11 @@ span.fb-unit-chip.locked { color: var(--ink3); border-color: var(--border); }
 
   <input type="search" id="fb-search" placeholder="Begriff suchen …" autocomplete="off">
 
+  <div class="fb-page-filter" id="fb-chapter-filters" style="margin-bottom:.5rem">
+    <button class="fb-filter-btn active" data-chapter="all" style="color:#fff;border-color:var(--acc);background:var(--acc)">Alle Kapitel</button>
+    <!-- Chapter buttons rendered by JS -->
+  </div>
+
   <div class="fb-page-filter" id="fb-filters">
     <button class="fb-filter-btn active" data-filter="all">Alle</button>
     <!-- Category buttons rendered by JS -->
@@ -152,52 +157,80 @@ span.fb-unit-chip.locked { color: var(--ink3); border-color: var(--border); }
 
 </div>
 
-<script src="js/progress.js"></script>
 <script src="data/glossary.js"></script>
 <script src="data/units.js"></script>
 <script>
 (function () {
   /* ── Category colour palette (mirrors tooltips.js) ───── */
   var CAT_COLORS = {
-    'Vertrag':           '#1e3a8a',
-    'Institution':       '#1d4ed8',
-    'Posten':            '#3b82f6',
-    'Verfahren':         '#0891b2',
-    'Befugnis':          '#166534',
-    'Instrument':        '#16a34a',
-    'Rechtsakt':         '#6b7280',
-    'Integrationsstufe': '#ca8a04',
-    'Phänomen':          '#111827',
-    'Prinzip':           '#94a3b8'
+    'Organisation':      '#1e3a8a',
+    'Institution':       '#2563eb',
+    'Posten':            '#60a5fa',
+    'Verfahren':         '#0d9488',
+    'Vertrag':           '#16a34a',
+    'Rechtsnorm':        '#d97706',
+    'Prinzip':           '#ea580c',
+    'Struktur':          '#374151',
+    'Konzept':           '#111827',
+    'Phänomen':          '#a855f7'
   };
+  var CAT_INVERTED = { 'Konzept': 1, 'Struktur': 1 };
   function _catColor(cat) { return CAT_COLORS[cat] || '#6b7280'; }
 
-  var _all    = [];
-  var _filter = 'all';
-  var _search = '';
+  /* Chapter colour map — EU chapter is blue, others TBD */
+  var CHAPTER_COLORS = {
+    3: '#2563eb'   /* EU / Kapitel 3 — blue */
+  };
+  var CHAPTER_TEXT_COLORS = {
+    3: '#fde68a'   /* gold on blue for chapter 3 */
+  };
+  var CHAPTER_NAMES = {
+    1: 'K1:BRD',
+    2: 'K2:GG',
+    3: 'K3:EU'
+  };
 
-  var listEl    = document.getElementById('fb-list');
-  var filtersEl = document.getElementById('fb-filters');
-  var searchEl  = document.getElementById('fb-search');
-  var _units    = window._PLK_UNITS || [];
+  var _all           = [];
+  var _filter        = 'all';
+  var _chapterFilter = 'all';
+  var _search        = '';
+
+  var listEl         = document.getElementById('fb-list');
+  var filtersEl      = document.getElementById('fb-filters');
+  var chapterFilEl   = document.getElementById('fb-chapter-filters');
+  var searchEl       = document.getElementById('fb-search');
+  var _units         = window._PLK_UNITS || [];
+
+  /* Chapter chip colours — blue bg + gold text for EU */
+  var CHIP_TEXT = { 3: '#fde68a' };
 
   function _unitHtml(unitId) {
     var unit  = _units.find(function (u) { return u.id === unitId; });
     var num   = unit ? unit.num   : unitId;
     var title = unit ? unit.title : ('Einheit ' + unitId);
+    var ch    = parseInt(unitId, 10);
+    var bg    = CHAPTER_COLORS[ch] || '';
+    var fg    = CHIP_TEXT[ch]      || '';
+    var cStyle = bg ? 'color:' + fg + ';background:' + bg + ';border-color:' + bg : '';
     if (unit && unit.status === 'active' && unit.file) {
-      return '<a class="fb-unit-chip" href="einheiten/' + unit.file + '" title="' + title + '">' + num + '</a>';
+      return '<a class="fb-unit-chip" href="einheiten/' + unit.file + '" title="' + title + '"' +
+        (cStyle ? ' style="' + cStyle + '"' : '') + '>' + num + '</a>';
     }
-    return '<span class="fb-unit-chip locked" title="' + title + '">' + num + '</span>';
+    var lStyle = bg ? 'color:' + bg + '80;border-color:' + bg + '40;background:' + bg + '10' : '';
+    return '<span class="fb-unit-chip locked" title="' + title + '"' +
+      (lStyle ? ' style="' + lStyle + '"' : '') + '>' + num + '</span>';
   }
 
   function _render() {
     var items = _all.filter(function (g) {
-      var matchCat    = _filter === 'all' || g.cat === _filter;
-      var matchSearch = !_search ||
+      var matchCat     = _filter === 'all' || g.cat === _filter;
+      var matchChapter = _chapterFilter === 'all' || g.chapter === _chapterFilter;
+      var abbrStr = g.abbr ? (typeof g.abbr === 'string' ? g.abbr : g.abbr.join(' ')).toLowerCase() : '';
+      var matchSearch  = !_search ||
         g.term.toLowerCase().indexOf(_search) !== -1 ||
-        g.def.toLowerCase().indexOf(_search) !== -1;
-      return matchCat && matchSearch;
+        g.def.toLowerCase().indexOf(_search) !== -1 ||
+        abbrStr.indexOf(_search) !== -1;
+      return matchCat && matchChapter && matchSearch;
     });
 
     items.sort(function (a, b) { return a.term.localeCompare(b.term, 'de'); });
@@ -209,12 +242,21 @@ span.fb-unit-chip.locked { color: var(--ink3); border-color: var(--border); }
 
     listEl.innerHTML = items.map(function (g) {
       var color    = _catColor(g.cat);
+      var isKonzept  = g.cat === 'Konzept';
+      var isStruktur = g.cat === 'Struktur';
+      var catStyle = isKonzept
+        ? 'color:#fff;background:#111827'
+        : isStruktur
+          ? 'color:#1f2937;background:#f3f4f6;border:1px solid #d1d5db'
+          : 'color:' + color + ';background:' + color + '18';
       var catBadge = g.cat
-        ? '<span class="fb-cat-badge" style="color:' + color + ';background:' + color + '18">' + g.cat + '</span>'
+        ? '<span class="fb-cat-badge" style="' + catStyle + '">' + g.cat + '</span>'
         : '';
+      var termColor = isKonzept ? '#111827' : (isStruktur ? '#374151' : color);
+      var borderColor = isKonzept ? '#111827' : (isStruktur ? '#9ca3af' : color);
       var unitLinks = g.units.map(_unitHtml).join('');
-      return '<li class="fb-entry" style="border-left-color:' + color + '">' +
-        '<div class="fb-entry-term" style="color:' + color + '">' + g.term + catBadge + '</div>' +
+      return '<li class="fb-entry" style="border-left-color:' + borderColor + '">' +
+        '<div class="fb-entry-term" style="color:' + termColor + '">' + (g.emoji ? '<span style="margin-right:.35rem">' + g.emoji + '</span>' : '') + g.term + catBadge + '</div>' +
         '<div class="fb-entry-def">' + g.def + '</div>' +
         '<div class="fb-entry-units">' + unitLinks + '</div>' +
         '</li>';
@@ -226,15 +268,25 @@ span.fb-unit-chip.locked { color: var(--ink3); border-color: var(--border); }
 
   function _applyBtnStyle(btn, active) {
     var color = _colorOf(btn);
+    var cat   = btn.dataset.filter;
     if (!color) {
       /* "Alle" button — use accent */
-      btn.style.color = active ? 'var(--acc)' : 'var(--ink3)';
+      btn.style.color       = active ? '#fff' : 'var(--ink3)';
       btn.style.borderColor = active ? 'var(--acc)' : 'var(--border)';
-      btn.style.background  = active ? 'var(--accG)' : '';
+      btn.style.background  = active ? 'var(--acc)' : '';
+    } else if (cat === 'Konzept') {
+      btn.style.color       = active ? '#fff' : '#6b7280';
+      btn.style.borderColor = active ? '#111827' : '#d1d5db';
+      btn.style.background  = active ? '#111827' : '';
+    } else if (cat === 'Struktur') {
+      btn.style.color       = active ? '#1f2937' : '#6b7280';
+      btn.style.borderColor = active ? '#374151' : '#d1d5db';
+      btn.style.background  = active ? '#e5e7eb' : '';
+      btn.style.fontWeight  = active ? '800' : '600';
     } else {
-      btn.style.color       = color;
-      btn.style.borderColor = color;
-      btn.style.background  = active ? color + '22' : color + '0c';
+      btn.style.color       = active ? '#fff' : '#6b7280';
+      btn.style.borderColor = active ? color : '#d1d5db';
+      btn.style.background  = active ? color : '';
     }
   }
 
@@ -253,9 +305,9 @@ span.fb-unit-chip.locked { color: var(--ink3); border-color: var(--border); }
     /* Ordered by colour spectrum: navy → blue → light-blue → teal →
        light-green → green → grey → gold → black → silver            */
     var CAT_ORDER = [
-      'Vertrag', 'Institution', 'Posten',
-      'Verfahren', 'Instrument', 'Befugnis',
-      'Rechtsakt', 'Integrationsstufe', 'Phänomen', 'Prinzip'
+      'Organisation', 'Institution', 'Posten', 'Verfahren',
+      'Vertrag', 'Rechtsnorm', 'Prinzip',
+      'Struktur', 'Konzept', 'Phänomen'
     ];
     var cats = CAT_ORDER.filter(function (c) { return catSet[c]; });
     /* Append any unknown categories not in the ordered list */
@@ -287,20 +339,94 @@ span.fb-unit-chip.locked { color: var(--ink3); border-color: var(--border); }
     });
   }
 
+  /* ── Chapter filter builder ──────────────────────────── */
+  function _setChapterActive(activeBtn) {
+    chapterFilEl.querySelectorAll('.fb-filter-btn').forEach(function (b) {
+      b.classList.remove('active');
+      var ch = b.dataset.chapter;
+      var col = ch !== 'all' ? (CHAPTER_COLORS[Number(ch)] || 'var(--ink3)') : null;
+      if (col) {
+        b.style.color = '#6b7280';
+        b.style.borderColor = '#d1d5db';
+        b.style.background = '';
+      } else {
+        b.style.color = '#6b7280';
+        b.style.borderColor = '#d1d5db';
+        b.style.background = '';
+      }
+    });
+    activeBtn.classList.add('active');
+    var ach = activeBtn.dataset.chapter;
+    var acol = ach !== 'all' ? (CHAPTER_COLORS[Number(ach)] || 'var(--ink3)') : null;
+    var atxt = ach !== 'all' ? (CHAPTER_TEXT_COLORS[Number(ach)] || '#fff') : '#fff';
+    if (acol) {
+      activeBtn.style.color = atxt;
+      activeBtn.style.borderColor = acol;
+      activeBtn.style.background = acol;
+    } else {
+      activeBtn.style.color = '#fff';
+      activeBtn.style.borderColor = 'var(--acc)';
+      activeBtn.style.background = 'var(--acc)';
+    }
+  }
+
+  function _buildChapterFilters(data) {
+    var chapSet = {};
+    data.forEach(function (g) { if (g.chapter) chapSet[g.chapter] = true; });
+    var chapters = Object.keys(chapSet).map(Number).sort();
+
+    chapters.forEach(function (ch) {
+      var btn = document.createElement('button');
+      btn.className = 'fb-filter-btn';
+      btn.dataset.chapter = String(ch);
+      btn.textContent = CHAPTER_NAMES[ch] || ('K' + ch);
+      btn.style.color = '#6b7280';
+      btn.style.borderColor = '#d1d5db';
+      btn.style.background = '';
+      btn.addEventListener('click', function () {
+        _chapterFilter = ch;
+        _setChapterActive(btn);
+        _render();
+      });
+      chapterFilEl.appendChild(btn);
+    });
+
+    var allChBtn = chapterFilEl.querySelector('[data-chapter="all"]');
+    _setChapterActive(allChBtn);
+    allChBtn.addEventListener('click', function () {
+      _chapterFilter = 'all';
+      _setChapterActive(allChBtn);
+      _render();
+    });
+  }
+
   searchEl.addEventListener('input', function () {
     _search = searchEl.value.trim().toLowerCase();
     _render();
   });
 
   /* Pre-fill search from ?q= URL param (linked from tooltips) */
+  function _styleSearch() {
+    if (searchEl.value.trim()) {
+      searchEl.style.borderColor = 'var(--acc)';
+      searchEl.style.boxShadow = '0 0 0 2px var(--accG)';
+    } else {
+      searchEl.style.borderColor = '';
+      searchEl.style.boxShadow = '';
+    }
+  }
+  searchEl.addEventListener('input', _styleSearch);
+
   var urlQ = (location.search.match(/[?&]q=([^&]*)/) || [])[1];
   if (urlQ) {
     _search = decodeURIComponent(urlQ).toLowerCase();
     searchEl.value = decodeURIComponent(urlQ);
+    _styleSearch();
   }
 
   if (window._PLK_GLOSSARY && window._PLK_GLOSSARY.length) {
     _all = window._PLK_GLOSSARY;
+    _buildChapterFilters(_all);
     _buildFilters(_all);
     _render();
   } else {

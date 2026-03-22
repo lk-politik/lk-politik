@@ -15,16 +15,16 @@
      Grey, yellow, black, silver for the remaining types.
      No red or red-adjacent colours.                              */
   var CAT_COLORS = {
-    'Vertrag':           '#1e3a8a',  /* navy blue   — binding treaties      */
-    'Institution':       '#1d4ed8',  /* blue        — official bodies       */
-    'Posten':            '#3b82f6',  /* light blue  — persons/offices       */
-    'Verfahren':         '#0891b2',  /* teal        — procedures/flow       */
-    'Befugnis':          '#166534',  /* green       — competences/powers    */
-    'Instrument':        '#16a34a',  /* light green — policy tools          */
-    'Rechtsakt':         '#6b7280',  /* grey        — legal acts            */
-    'Integrationsstufe': '#ca8a04',  /* gold/yellow — integration levels    */
-    'Phänomen':          '#111827',  /* near-black  — observable phenomena  */
-    'Prinzip':           '#94a3b8'   /* silver      — foundational          */
+    'Organisation':      '#1e3a8a',  /* dark blue                           */
+    'Institution':       '#2563eb',  /* blue                                */
+    'Posten':            '#60a5fa',  /* light blue                          */
+    'Verfahren':         '#0d9488',  /* green-blue (teal)                   */
+    'Vertrag':           '#16a34a',  /* green                               */
+    'Rechtsnorm':        '#d97706',  /* amber                               */
+    'Prinzip':           '#ea580c',  /* orange                              */
+    'Struktur':          '#374151',  /* white bg + black text               */
+    'Konzept':           '#111827',  /* black bg + white text               */
+    'Phänomen':          '#a855f7'   /* purple-pink                         */
   };
 
   /* Expose so fachbegriffe.html and other pages can reuse */
@@ -32,11 +32,20 @@
 
   function _catColor(cat) { return CAT_COLORS[cat] || '#6b7280'; }
 
+  /* Categories with inverted badge rendering (light bg + dark text) */
+  var CAT_INVERTED = { 'Konzept': 1, 'Struktur': 1 };
+
+  /* Chapter colour map — used for unit-reference chips in tooltips */
+  var CHAPTER_COLORS = { 3: '#2563eb' };   /* EU = blue */
+  var CHAPTER_TEXT   = { 3: '#fde68a' };   /* EU chips = gold text on blue */
+
   /* ── Shared state ──────────────────────────────────────── */
   var _operators     = null;
   var _glossary      = null;
   var _units         = null;
   var _activeTooltip = null;
+  var _tooltipAnchor = null;   /* original anchor element for in-place replacement */
+  var _tooltipStack  = [];     /* history stack for back-navigation in nested tooltips */
 
   /* ── Base path (resolve from script src) ──────────────── */
   var _base = (function () {
@@ -89,7 +98,15 @@
   function _termByName(name) {
     if (!_glossary) return null;
     var lower = name.toLowerCase();
-    return _glossary.find(function (g) { return g.term.toLowerCase() === lower; }) || null;
+    /* Try exact term match first */
+    var exact = _glossary.find(function (g) { return g.term.toLowerCase() === lower; });
+    if (exact) return exact;
+    /* Fallback: check abbreviations */
+    return _glossary.find(function (g) {
+      if (!g.abbr) return false;
+      if (typeof g.abbr === 'string') return g.abbr.toLowerCase() === lower;
+      return g.abbr.some(function (a) { return a.toLowerCase() === lower; });
+    }) || null;
   }
 
   function _unitById(id) {
@@ -124,6 +141,8 @@
     if (_activeTooltip) {
       _activeTooltip.remove();
       _activeTooltip = null;
+      _tooltipAnchor = null;
+      _tooltipStack  = [];
     }
   }
 
@@ -135,15 +154,139 @@
       var unit  = _unitById(id);
       var num   = unit ? unit.num   : id;
       var title = unit ? unit.title : ('Einheit ' + id);
+      var ch    = parseInt(id, 10);  /* chapter number from unit-id prefix */
+      var bg    = CHAPTER_COLORS[ch] || '';
+      var fg    = CHAPTER_TEXT[ch]   || '';
+      var cStyle = bg
+        ? 'color:' + fg + ';background:' + bg + ';border-color:' + bg
+        : '';
       if (unit && unit.status === 'active' && unit.file) {
         var href = _base + 'einheiten/' + unit.file;
-        return '<a class="fb-tooltip-unit-chip" href="' + href + '" title="' + title + '">' + num + '</a>';
+        return '<a class="fb-tooltip-unit-chip" href="' + href + '" title="' + title + '"' +
+          (cStyle ? ' style="' + cStyle + '"' : '') + '>' + num + '</a>';
       }
-      return '<span class="fb-tooltip-unit-chip locked" title="' + title + '">' + num + '</span>';
+      var lStyle = bg
+        ? 'color:' + bg + '80;border-color:' + bg + '40;background:' + bg + '10'
+        : '';
+      return '<span class="fb-tooltip-unit-chip locked" title="' + title + '"' +
+        (lStyle ? ' style="' + lStyle + '"' : '') + '>' + num + '</span>';
     }).join('');
   }
 
   /* ── Show helpers ───────────────────────────────────────── */
+
+  /* Tag glossary terms inside a definition string as clickable fb spans */
+  /* German adjective ending regex (shared with _autoTagTerms) */
+  var _ADJ_END = /^(.*?)(e|en|em|er|es)$/i;
+  function _flexPattern(term) {
+    var escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return escaped.split(/(\s+)/).map(function (tok) {
+      if (/^\s+$/.test(tok)) return tok;
+      var raw = tok.replace(/\\(.)/g, '$1');
+      var m = _ADJ_END.exec(raw);
+      if (m && m[1].length >= 2) {
+        var stem = m[1].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        return stem + '(?:e|en|em|er|es)';
+      }
+      return tok;
+    }).join('');
+  }
+
+  function _tagDefsInline(defText, excludeTerm) {
+    if (!_glossary || !_glossary.length) return defText;
+    var exLower = excludeTerm.toLowerCase();
+    var inlineEntries = [];
+
+    _glossary.forEach(function (g) {
+      if (g.term.toLowerCase() !== exLower) {
+        inlineEntries.push({ pattern: _flexPattern(g.term), term: g.term });
+      }
+      if (g.abbr) {
+        var abbrs = typeof g.abbr === 'string' ? [g.abbr] : g.abbr;
+        abbrs.forEach(function (a) {
+          if (a.toLowerCase() !== exLower) {
+            inlineEntries.push({ pattern: _flexPattern(a), term: g.term });
+          }
+        });
+      }
+    });
+
+    inlineEntries.sort(function (a, b) { return b.pattern.length - a.pattern.length; });
+    var patterns = inlineEntries.map(function (e) { return e.pattern; });
+    if (!patterns.length) return defText;
+    var re = new RegExp('\\b(' + patterns.join('|') + ')([a-zäöüß]*)', 'gi');
+    return defText.replace(re, function (full, base, suffix) {
+      /* Resolve matched text to glossary term */
+      var resolved = null;
+      for (var i = 0; i < inlineEntries.length; i++) {
+        var testRe = new RegExp('^' + inlineEntries[i].pattern + '$', 'i');
+        if (testRe.test(base)) { resolved = inlineEntries[i].term; break; }
+      }
+      var needsFb = (resolved && resolved.toLowerCase() !== base.toLowerCase()) || suffix;
+      var fbVal = resolved || base;
+      var attr = needsFb ? ' data-fb="' + fbVal + '"' : '';
+      return '<strong class="fb" style="cursor:pointer"' + attr + '>' + base + suffix + '</strong>';
+    });
+  }
+
+  /* Build the inner HTML for a fb-tooltip given a glossary entry */
+  function _fbTooltipHtml(entry, termText, showBack) {
+    if (_glossary === null) {
+      return '<div class="fb-tooltip-header">' +
+        '<span class="fb-tooltip-term">' + termText + '</span>' +
+      '</div>' +
+      '<div class="fb-tooltip-def">Lade Daten \u2026</div>';
+    }
+    if (!entry) {
+      return '<div class="fb-tooltip-header">' +
+        '<span class="fb-tooltip-term">' + termText + '</span>' +
+      '</div>' +
+      '<div class="fb-tooltip-def">Definition nicht gefunden.</div>';
+    }
+
+    var color = _catColor(entry.cat);
+    var isKonzept  = entry.cat === 'Konzept';   /* dark bg + white text */
+    var isStruktur = entry.cat === 'Struktur';   /* light bg + dark text */
+    var inverted   = CAT_INVERTED[entry.cat];
+
+    var catStyle = isKonzept
+      ? 'color:#fff;background:#111827'
+      : isStruktur
+        ? 'color:#1f2937;background:#f3f4f6;border:1px solid #d1d5db'
+        : 'color:' + color + ';background:' + color + '18';
+    var catHtml = entry.cat
+      ? '<span class="fb-tooltip-cat" style="' + catStyle + '">' + entry.cat + '</span>'
+      : '';
+
+    var termColor = isKonzept ? '#111827' : (isStruktur ? '#374151' : color);
+    var indexHref = _base + 'fachbegriffe.html?q=' + encodeURIComponent(entry.term);
+    var unitRefs  = _unitRefsHtml(entry.units);
+    var taggedDef = _tagDefsInline(entry.def, entry.term);
+
+    var backHtml = showBack
+      ? '<span class="fb-tooltip-back" style="cursor:pointer;font-size:.7rem;color:var(--acc);margin-right:.5rem">\u2190 zur\u00fcck</span>'
+      : '';
+
+    return '<div class="fb-tooltip-header">' +
+        backHtml +
+        (entry.emoji ? '<span style="margin-right:.35rem;font-size:1.1rem;vertical-align:middle">' + entry.emoji + '</span>' : '') +
+        '<span class="fb-tooltip-term" style="color:' + termColor + '">' + entry.term + '</span>' +
+        catHtml +
+      '</div>' +
+      '<div class="fb-tooltip-def">' + taggedDef + '</div>' +
+      '<div class="fb-tooltip-footer">' +
+        '<div class="fb-tooltip-units">' + unitRefs + '</div>' +
+        '<a class="fb-tooltip-index-link" href="' + indexHref + '">Alle Begriffe \u2192</a>' +
+      '</div>';
+  }
+
+  function _applyTooltipBorderColor(tooltip, entry) {
+    if (!entry) return;
+    var color = _catColor(entry.cat);
+    var isKonzept  = entry.cat === 'Konzept';
+    var isStruktur = entry.cat === 'Struktur';
+    tooltip.style.borderTopColor = isKonzept ? '#111827' : (isStruktur ? '#9ca3af' : color);
+  }
 
   function _showFbTooltip(anchor, termText) {
     var entry   = _glossary === null ? null : _termByName(termText);
@@ -151,46 +294,38 @@
     tooltip.className   = 'fb-tooltip';
     tooltip.dataset.for = 'fb-' + termText;
 
-    if (_glossary === null) {
-      tooltip.innerHTML =
-        '<div class="fb-tooltip-header">' +
-          '<span class="fb-tooltip-term">' + termText + '</span>' +
-        '</div>' +
-        '<div class="fb-tooltip-def">Lade Daten \u2026</div>';
-
-    } else if (!entry) {
-      tooltip.innerHTML =
-        '<div class="fb-tooltip-header">' +
-          '<span class="fb-tooltip-term">' + termText + '</span>' +
-        '</div>' +
-        '<div class="fb-tooltip-def">Definition nicht gefunden.</div>';
-
-    } else {
-      var color = _catColor(entry.cat);
-      tooltip.style.borderTopColor = color;
-
-      var catHtml = entry.cat
-        ? '<span class="fb-tooltip-cat" style="color:' + color + ';background:' + color + '18">' + entry.cat + '</span>'
-        : '';
-
-      var indexHref = _base + 'fachbegriffe.html?q=' + encodeURIComponent(entry.term);
-      var unitRefs  = _unitRefsHtml(entry.units);
-
-      tooltip.innerHTML =
-        '<div class="fb-tooltip-header">' +
-          '<span class="fb-tooltip-term" style="color:' + color + '">' + entry.term + '</span>' +
-          catHtml +
-        '</div>' +
-        '<div class="fb-tooltip-def">' + entry.def + '</div>' +
-        '<div class="fb-tooltip-footer">' +
-          '<div class="fb-tooltip-units">' + unitRefs + '</div>' +
-          '<a class="fb-tooltip-index-link" href="' + indexHref + '">Alle Begriffe \u2192</a>' +
-        '</div>';
-    }
+    tooltip.innerHTML = _fbTooltipHtml(entry, termText, false);
+    _applyTooltipBorderColor(tooltip, entry);
 
     document.body.appendChild(tooltip);
     _positionTooltip(tooltip, anchor);
     _activeTooltip = tooltip;
+    _tooltipAnchor = anchor;
+    _tooltipStack  = [];
+  }
+
+  /* Replace tooltip content in-place (for nested term clicks) */
+  function _replaceFbTooltip(termText) {
+    if (!_activeTooltip) return;
+    /* Push current state onto stack */
+    _tooltipStack.push({
+      html: _activeTooltip.innerHTML,
+      borderColor: _activeTooltip.style.borderTopColor,
+      forAttr: _activeTooltip.dataset.for
+    });
+    var entry = _termByName(termText);
+    _activeTooltip.innerHTML = _fbTooltipHtml(entry, termText, true);
+    _activeTooltip.dataset.for = 'fb-' + termText;
+    _applyTooltipBorderColor(_activeTooltip, entry);
+  }
+
+  /* Go back one step in tooltip history */
+  function _tooltipGoBack() {
+    if (!_activeTooltip || !_tooltipStack.length) return;
+    var prev = _tooltipStack.pop();
+    _activeTooltip.innerHTML = prev.html;
+    _activeTooltip.style.borderTopColor = prev.borderColor;
+    _activeTooltip.dataset.for = prev.forAttr;
   }
 
   function _showOpTooltip(anchor, opName) {
@@ -227,14 +362,44 @@
   function _autoTagTerms() {
     if (!_glossary || !_glossary.length) return;
 
-    /* Sort longer terms first — prevents partial matches in combined regex */
-    var terms = _glossary.slice().sort(function (a, b) {
-      return b.term.length - a.term.length;
+    /* Build combined list of terms + abbreviations, mapping each to its base term */
+    var abbrMap = {};   /* lowercase match → glossary term (for abbreviations) */
+
+    var allEntries = []; /* { pattern: regexStr, term: glossaryTerm, isAbbr: bool } */
+
+    _glossary.forEach(function (g) {
+      allEntries.push({ pattern: _flexPattern(g.term), term: g.term, isAbbr: false });
+      if (g.abbr) {
+        var abbrs = typeof g.abbr === 'string' ? [g.abbr] : g.abbr;
+        abbrs.forEach(function (a) {
+          abbrMap[a.toLowerCase()] = g.term;
+          allEntries.push({ pattern: _flexPattern(a), term: g.term, isAbbr: true });
+        });
+      }
     });
-    var pattern = terms.map(function (g) {
-      return g.term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    }).join('|');
-    var re = new RegExp('(' + pattern + ')', 'gi');
+
+    /* Sort longer patterns first — prevents partial matches in combined regex */
+    allEntries.sort(function (a, b) { return b.pattern.length - a.pattern.length; });
+
+    var pattern = allEntries.map(function (e) { return e.pattern; }).join('|');
+    /* Match pattern + optional trailing lowercase suffix (German noun inflection) */
+    /* \b prevents matching "EP" inside "Rezept", "Konzept" etc. */
+    var re = new RegExp('\\b(' + pattern + ')([a-zäöüß]*)', 'gi');
+
+    /* Build a lookup: given a matched string, find its glossary term */
+    function _resolveMatch(matchedText) {
+      var lower = matchedText.toLowerCase();
+      /* Check abbrMap first (explicit abbreviations) */
+      if (abbrMap[lower]) return abbrMap[lower];
+      /* Try each entry's pattern to find the parent term */
+      for (var i = 0; i < allEntries.length; i++) {
+        var testRe = new RegExp('^' + allEntries[i].pattern + '$', 'i');
+        if (testRe.test(lower) || testRe.test(matchedText)) {
+          return allEntries[i].term;
+        }
+      }
+      return null;
+    }
 
     /* ── Skip zone detection ── */
     var SKIP_TAGS = {
@@ -282,9 +447,19 @@
         }
         var s = document.createElement('strong');
         s.className = 'fb';
-        s.textContent = m[1];
+        var baseTerm = m[1];
+        var suffix   = m[2] || '';
+        s.textContent = baseTerm + suffix;
+        /* data-fb: resolve to glossary term (handles abbreviations + inflected adjectives) */
+        var resolved = _resolveMatch(baseTerm);
+        if (resolved && resolved.toLowerCase() !== baseTerm.toLowerCase()) {
+          s.setAttribute('data-fb', resolved);
+        } else if (suffix) {
+          /* Suffix-only inflection (noun ending): store unsuffixed form */
+          s.setAttribute('data-fb', resolved || baseTerm);
+        }
         frag.appendChild(s);
-        last = m.index + m[1].length;
+        last = m.index + baseTerm.length + suffix.length;
       }
       if (last < text.length) {
         frag.appendChild(document.createTextNode(text.slice(last)));
@@ -303,16 +478,40 @@
     _loadData();
     _autoTagTerms(); /* sync path: window._PLK_GLOSSARY already set by script tag */
 
+    /* Close tooltip on scroll — fixes the "stuck tooltip" bug */
+    var _scrollTimer = null;
+    window.addEventListener('scroll', function () {
+      if (!_activeTooltip) return;
+      if (_scrollTimer) clearTimeout(_scrollTimer);
+      _scrollTimer = setTimeout(function () { _closeTooltip(); }, 80);
+    }, true);
+
     /* Single delegated handler for all tooltip interactions.
        No per-element listeners needed — works for auto-tagged
        terms too, without any re-initialization.               */
     document.addEventListener('click', function (e) {
       var t = e.target;
 
-      /* strong.fb → glossary tooltip */
+      /* Back button inside tooltip */
+      if (t.className && t.className.indexOf('fb-tooltip-back') !== -1) {
+        e.stopPropagation();
+        _tooltipGoBack();
+        return;
+      }
+
+      /* strong.fb inside an active tooltip → replace content in-place */
+      if (t.tagName === 'STRONG' && t.className && t.className.indexOf('fb') !== -1
+          && _activeTooltip && _activeTooltip.contains(t)) {
+        e.stopPropagation();
+        var nestedTerm = t.getAttribute('data-fb') || t.textContent.trim();
+        _replaceFbTooltip(nestedTerm);
+        return;
+      }
+
+      /* strong.fb in page → glossary tooltip */
       if (t.tagName === 'STRONG' && t.className && t.className.indexOf('fb') !== -1) {
         e.stopPropagation();
-        var termText = t.textContent.trim();
+        var termText = t.getAttribute('data-fb') || t.textContent.trim();
         if (_activeTooltip && _activeTooltip.dataset.for === 'fb-' + termText) {
           _closeTooltip(); return;
         }

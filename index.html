@@ -153,7 +153,16 @@
 
 </div>
 
-<script src="js/progress.js"></script>
+<script>
+/* Minimal Progress shim for index — reads localStorage only.
+   Full implementation lives in engine.js (PLK.Progress). */
+var Progress = {
+  load: function (id) {
+    try { var raw = localStorage.getItem('plk_' + id); return raw ? JSON.parse(raw) : null; }
+    catch (e) { return null; }
+  }
+};
+</script>
 <script>
 /* ==========================================================
    index.js (inline)

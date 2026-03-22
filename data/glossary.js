@@ -7,7 +7,7 @@ var _PLK_GLOSSARY = [
       "3-5"
     ],
     "chapter": 3,
-    "cat": "Integrationsstufe"
+    "cat": "Konzept"
   },
   {
     "term": "Vier Grundfreiheiten",
@@ -61,10 +61,12 @@ var _PLK_GLOSSARY = [
       "3-5"
     ],
     "chapter": 3,
-    "cat": "Rechtsakt"
+    "cat": "Rechtsnorm"
   },
   {
     "term": "Ordentliches Gesetzgebungsverfahren",
+    "abbr": "OGV",
+    "emoji": "📜",
     "def": "Das Standardverfahren der EU-Gesetzgebung: Die Kommission schlägt vor, das Europäische Parlament und der Rat der EU entscheiden gleichberechtigt. Es können bis zu drei Lesungen stattfinden.",
     "units": [
       "3-3"
@@ -80,10 +82,11 @@ var _PLK_GLOSSARY = [
       "3-3"
     ],
     "chapter": 3,
-    "cat": "Befugnis"
+    "cat": "Verfahren"
   },
   {
     "term": "Trilog",
+    "emoji": "🤝",
     "def": "Informelle Dreierverhandlung zwischen Vertretern des EP, des Rates und der Kommission, um einen Kompromiss zu erarbeiten. Triloge beschleunigen das Verfahren, stehen aber wegen mangelnder Transparenz in der Kritik.",
     "units": [
       "3-3"
@@ -99,7 +102,7 @@ var _PLK_GLOSSARY = [
       "3-5"
     ],
     "chapter": 3,
-    "cat": "Rechtsakt"
+    "cat": "Rechtsnorm"
   },
   {
     "term": "Verordnung",
@@ -108,7 +111,7 @@ var _PLK_GLOSSARY = [
       "3-3"
     ],
     "chapter": 3,
-    "cat": "Rechtsakt"
+    "cat": "Rechtsnorm"
   },
   {
     "term": "Vermittlungsausschuss",
@@ -138,7 +141,18 @@ var _PLK_GLOSSARY = [
     "cat": "Vertrag"
   },
   {
+    "term": "EU-Verfassungsvertrag",
+    "def": "Ein 2004 unterzeichneter Vertrag, der die EU-Verträge in einer einzigen Verfassung zusammenfassen sollte. Scheiterte 2005 an Referenden in Frankreich und den Niederlanden. Wesentliche Inhalte wurden später in den Vertrag von Lissabon übernommen, aber ohne den Begriff 'Verfassung'.",
+    "units": [
+      "3-4"
+    ],
+    "chapter": 3,
+    "cat": "Vertrag"
+  },
+  {
     "term": "Europäisches Parlament",
+    "abbr": "EP",
+    "emoji": "🗳️",
     "def": "Das einzige direkt von den EU-Bürgern gewählte Organ. Entscheidet gleichberechtigt mit dem Rat über Gesetze, kontrolliert die Kommission und beschließt den EU-Haushalt. Sitz: Straßburg/Brüssel, max. 705 Abgeordnete + Präsidentin.",
     "units": [
       "3-2"
@@ -148,6 +162,7 @@ var _PLK_GLOSSARY = [
   },
   {
     "term": "Rat der EU",
+    "emoji": "📋",
     "def": "Das Gesetzgebungsorgan der Mitgliedstaaten. Besteht je nach Thema aus den zuständigen Fachministern (1 pro Land). Beschließt seit Lissabon mit doppelter Mehrheit gemeinsam mit dem EP Gesetze.",
     "units": [
       "3-2"
@@ -157,6 +172,8 @@ var _PLK_GLOSSARY = [
   },
   {
     "term": "Europäische Kommission",
+    "abbr": "Kommission",
+    "emoji": "⚙️",
     "def": "Das Exekutivorgan der EU mit alleinigem Initiativrecht für Gesetzesvorschläge. 'Hüterin der Verträge': überwacht die Einhaltung des EU-Rechts. 27 Kommissare (1 pro Land), Sitz: Brüssel.",
     "units": [
       "3-2"
@@ -166,6 +183,7 @@ var _PLK_GLOSSARY = [
   },
   {
     "term": "Europäischer Rat",
+    "emoji": "👑",
     "def": "Die Staats- und Regierungschefs der 27 EU-Staaten. Legt die großen politischen Ziele der EU fest, beschließt aber keine Gesetze. Seit Lissabon mit ständigem Präsidenten (2,5 Jahre). Nicht verwechseln mit dem Rat der EU!",
     "units": [
       "3-2"
@@ -175,6 +193,8 @@ var _PLK_GLOSSARY = [
   },
   {
     "term": "Europäische Zentralbank",
+    "abbr": "EZB",
+    "emoji": "💶",
     "def": "Verantwortlich für stabile Preise im Euroraum. Legt die Geldpolitik fest, gibt den Euro aus und überwacht Banken. Unabhängig von Politik. Sitz: Frankfurt am Main.",
     "units": [
       "3-2"
@@ -184,6 +204,8 @@ var _PLK_GLOSSARY = [
   },
   {
     "term": "Gerichtshof der EU",
+    "abbr": "EuGH",
+    "emoji": "⚖️",
     "def": "Stellt sicher, dass EU-Recht in allen Mitgliedstaaten gleich angewendet wird. 27 Richter (1 pro Staat). Seit Lissabon: Grundrechtecharta als Prüfungsmaßstab. Sitz: Luxemburg.",
     "units": [
       "3-2"
@@ -193,6 +215,7 @@ var _PLK_GLOSSARY = [
   },
   {
     "term": "Europäischer Rechnungshof",
+    "emoji": "🔍",
     "def": "Prüft alle Einnahmen und Ausgaben der EU auf ordnungsgemäße und sinnvolle Verwendung. 27 Mitglieder (1 pro Staat). Sitz: Luxemburg.",
     "units": [
       "3-2"
@@ -216,7 +239,7 @@ var _PLK_GLOSSARY = [
       "3-2"
     ],
     "chapter": 3,
-    "cat": "Instrument"
+    "cat": "Verfahren"
   },
   {
     "term": "Subsidiaritätsprinzip",
@@ -234,7 +257,7 @@ var _PLK_GLOSSARY = [
       "3-2"
     ],
     "chapter": 3,
-    "cat": "Rechtsakt"
+    "cat": "Rechtsnorm"
   },
   {
     "term": "qualifizierte Mehrheit",
@@ -255,12 +278,147 @@ var _PLK_GLOSSARY = [
     "cat": "Posten"
   },
   {
+    "term": "Robert Schuman",
+    "def": "In Luxemburg-Stadt (Clausen) geborener und in Luxemburg aufgewachsener Politiker, der als französischer Außenminister am 9. Mai 1950 den Plan vorlegte, die Kohle- und Stahlproduktion Frankreichs und Deutschlands einer gemeinsamen supranationalen Behörde zu unterstellen. Sein Vater besaß durch den Wechsel Lothringens zwischen Frankreich und dem Deutschen Reich sowohl die deutsche als auch die französische Staatsangehörigkeit. Schuman selbst wuchs in Luxemburg auf und besuchte dort das Athenäum. Diese grenzüberschreitende Biografie prägte seine Überzeugung, dass Frieden in Europa nur durch gemeinsame Institutionen gesichert werden kann. Die Schuman-Erklärung führte zur Gründung der EGKS und gilt als Geburtsstunde der europäischen Integration. Der 9. Mai ist heute Europatag.",
+    "units": [
+      "3-1",
+      "3-4"
+    ],
+    "chapter": 3,
+    "cat": "Posten"
+  },
+  {
     "term": "Hoher Vertreter für Außen- und Sicherheitspolitik",
+    "abbr": ["Hohen Vertreter für Außen- und Sicherheitspolitik", "Hohem Vertreter für Außen- und Sicherheitspolitik", "Hohe Vertreterin für Außen- und Sicherheitspolitik", "Hohen Vertreters", "HV", "EU-Außenminister", "EU-Außenministerin"],
     "def": "Durch Lissabon geschaffene Position, die die Außenpolitik der EU bündelt. Zugleich Vizepräsident der Kommission. Aktuell: Kaja Kallas (Estland). Soll der EU ein einheitlicheres Auftreten in der Weltpolitik ermöglichen.",
     "units": [
       "3-2"
     ],
     "chapter": 3,
     "cat": "Posten"
+  },
+  {
+    "term": "supranational",
+    "def": "Überstaatlich: Ebene, auf der gemeinsame Organe eigenständig Entscheidungen treffen, die für alle Mitgliedstaaten verbindlich sind. Diese Organe vertreten das Gesamtinteresse der Organisation, nicht einzelne Staaten.",
+    "units": [
+      "3-4"
+    ],
+    "chapter": 3,
+    "cat": "Struktur"
+  },
+  {
+    "term": "intergouvernemental",
+    "def": "Zwischenstaatlich: Ebene, auf der die Regierungen der Mitgliedstaaten zusammenarbeiten und ihre nationalen Interessen vertreten. Entscheidungen erfordern oft Einstimmigkeit oder qualifizierte Mehrheit.",
+    "units": [
+      "3-4"
+    ],
+    "chapter": 3,
+    "cat": "Struktur"
+  },
+  {
+    "term": "Staatenverbund",
+    "def": "Eine enge Verbindung souveräner Staaten, die freiwillig nationale Kompetenzen an gemeinsame Organe übertragen, ohne ihre Eigenstaatlichkeit zu verlieren. Weder Bundesstaat noch Staatenbund.",
+    "units": [
+      "3-4"
+    ],
+    "chapter": 3,
+    "cat": "Struktur"
+  },
+  {
+    "term": "Mehrebenensystem",
+    "def": "Politisches System, in dem Zuständigkeiten auf mehrere Ebenen verteilt sind (z.B. Gemeinde, Land, Bund, EU). Jede Ebene trifft in ihrem Kompetenzbereich eigene Entscheidungen.",
+    "units": [
+      "3-4"
+    ],
+    "chapter": 3,
+    "cat": "Struktur"
+  },
+  {
+    "term": "Bundesstaat",
+    "def": "Ein Staat, in dem die Gliedstaaten (z.B. Bundesländer) einen Teil ihrer Souveränität an den Gesamtstaat abgetreten haben. Die Bundesebene kann verbindlich für alle Gliedstaaten entscheiden. Beispiele: Deutschland, USA.",
+    "units": [
+      "3-4"
+    ],
+    "chapter": 3,
+    "cat": "Struktur"
+  },
+  {
+    "term": "Staatenbund",
+    "def": "Ein loser Zusammenschluss souveräner Staaten, die in bestimmten Bereichen kooperieren, aber ihre volle Souveränität behalten. Entscheidungen erfordern in der Regel Einstimmigkeit. Beispiel: die Vereinten Nationen.",
+    "units": [
+      "3-4"
+    ],
+    "chapter": 3,
+    "cat": "Struktur"
+  },
+  {
+    "term": "Souveränität",
+    "def": "Das Recht eines Staates, seine inneren und äußeren Angelegenheiten unabhängig und ohne Einmischung anderer Staaten zu regeln. In der EU übertragen die Mitgliedstaaten Teile ihrer Souveränität an gemeinsame Organe.",
+    "units": [
+      "3-4"
+    ],
+    "chapter": 3,
+    "cat": "Konzept"
+  },
+  {
+    "term": "Bundesverfassungsgericht",
+    "abbr": "BVerfG",
+    "emoji": "⚖️",
+    "def": "Oberstes Verfassungsorgan der Bundesrepublik Deutschland. Wacht über die Einhaltung des Grundgesetzes und entscheidet u.a. über die Vereinbarkeit von EU-Verträgen mit dem deutschen Verfassungsrecht.",
+    "units": [
+      "2-1",
+      "3-4"
+    ],
+    "chapter": 2,
+    "cat": "Institution"
+  },
+  {
+    "term": "EGKS",
+    "def": "Die Europäische Gemeinschaft für Kohle und Stahl, gegründet 1952 (Vertrag von Paris). Erste supranationale Organisation Europas: Sechs Staaten unterstellten ihre Kohle- und Stahlproduktion einer gemeinsamen Hohen Behörde. Wurde durch die EWG (1958) erweitert und ging 1993 in die Europäische Union auf.",
+    "units": [
+      "3-1",
+      "3-4"
+    ],
+    "chapter": 3,
+    "cat": "Organisation"
+  },
+  {
+    "term": "EWG",
+    "def": "Die Europäische Wirtschaftsgemeinschaft, gegründet 1958 (Römische Verträge). Ziel: schrittweiser Aufbau eines gemeinsamen Marktes und einer Zollunion zwischen den sechs Gründerstaaten. Wurde 1993 (Vertrag von Maastricht) in die Europäische Union überführt.",
+    "units": [
+      "3-1",
+      "3-4"
+    ],
+    "chapter": 3,
+    "cat": "Organisation"
+  },
+  {
+    "term": "Europäische Union",
+    "def": "Politische und wirtschaftliche Gemeinschaft von 27 europäischen Staaten, gegründet 1992 durch den Vertrag von Maastricht. Vereint supranationale und intergouvernementale Entscheidungsebenen in einem Mehrebenensystem.",
+    "units": [
+      "3-1",
+      "3-2",
+      "3-4"
+    ],
+    "chapter": 3,
+    "cat": "Organisation"
+  },
+  {
+    "term": "Vertrag von Paris",
+    "def": "Gründungsvertrag der EGKS (unterzeichnet 1951, in Kraft 1952). Erster Vertrag, der Souveränitätsrechte an eine supranationale europäische Institution übertrug. Lief 2002 planmäßig aus.",
+    "units": [
+      "3-1"
+    ],
+    "chapter": 3,
+    "cat": "Vertrag"
+  },
+  {
+    "term": "Römische Verträge",
+    "def": "Die 1957 unterzeichneten Verträge zur Gründung der EWG und der Europäischen Atomgemeinschaft (Euratom). Legten den Grundstein für den gemeinsamen Markt und die wirtschaftliche Integration Europas.",
+    "units": [
+      "3-1"
+    ],
+    "chapter": 3,
+    "cat": "Vertrag"
   }
 ];

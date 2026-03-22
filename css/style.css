@@ -364,6 +364,494 @@ code, .mono {
 }
 
 /* ----------------------------------------------------------
+   8b. Visual system — reusable templates for all diagrams
+   ──────────────────────────────────────────────────────────
+   TYPOGRAPHIC SCALE (inside visuals):
+     T2  .vis-title          .85rem  700  --ink       Fraunces
+     T3  .vis-head            .78rem  700  themed      Fraunces
+     T4  .vis-inst-name       .75rem  700  --ink       Fraunces
+     T5  .vis-cell / -desc    .72rem  400  --ink2      DM Sans
+     T6  .vis-lead / -sub     .65rem  500  --ink2      DM Sans
+     T7  .vis-lbl (uppercase) .56rem  700  --ink3      Plex Mono
+     T8  .vis-tag / badge     .50rem  600  themed      Plex Mono
+     EMO .vis .emo            1.1rem                   (emoji)
+
+   All visuals share font-family:var(--ff-head) as container
+   default; body-text children override to ff-body as needed.
+   Colours come from inline style or unit CSS vars.
+   ---------------------------------------------------------- */
+
+/* ── 8b-0. Shared container & typography ────────────────── */
+.vis {
+  background: var(--bg);
+  border: 1px solid var(--border-l);
+  border-radius: 10px;
+  padding: .85rem .75rem;
+  margin: 1rem 0;
+  font-family: var(--ff-head);
+}
+.vis-title {                            /* T2 — visual title */
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: .6rem;
+  line-height: 1.4;
+}
+.vis-title .fb { font-weight: 700 !important; }
+
+.vis-lbl {                              /* T7 — meta labels (step nums, section labels, row headers) */
+  font-family: var(--ff-mono);
+  font-size: .56rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+.vis-tag {                              /* T8 — level badges / category pills */
+  font-family: var(--ff-mono);
+  font-size: .50rem;
+  font-weight: 600;
+  padding: .1rem .4rem;
+  border-radius: 10px;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.vis .emo {                             /* EMO — emoji icons */
+  font-size: 1.1rem;
+  display: inline;
+  vertical-align: middle;
+  margin-right: .2rem;
+  font-style: normal;
+}
+.vis .emo-lg {                          /* EMO-lg — large emoji (stacked layouts) */
+  font-size: 1.3rem;
+  display: block;
+  margin-bottom: .15rem;
+}
+
+/* ── 8b-1. vis (step/comparison) — 2-col grid with steps ── */
+.vis-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .5rem;
+}
+.vis-step { margin-bottom: .3rem; }
+.vis-step-lbl {                         /* inherits T7 via .vis-lbl pattern */
+  font-family: var(--ff-mono);
+  font-size: .56rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: .15rem;
+}
+.vis-cell {                             /* T5 — body cell */
+  border-radius: 6px;
+  padding: .4rem .45rem;
+  text-align: center;
+  font-size: .72rem;
+  color: var(--ink2);
+  line-height: 1.45;
+}
+.vis-head {                             /* T3 — column/example header */
+  text-align: center;
+  font-size: .78rem;
+  font-weight: 700;
+  padding: .45rem;
+  border-radius: 6px;
+}
+.vis-head sub {                         /* T6 — sub-label under header */
+  font-size: .65rem;
+  font-weight: 500;
+  color: var(--ink2);
+  display: block;
+  margin-top: .1rem;
+}
+
+/* ── 8b-2. vis-flow — sequential process diagram ────────── */
+.vis-flow { overflow-x: auto; }
+.vis-flow-row {
+  display: flex;
+  gap: .35rem;
+  align-items: stretch;
+  min-width: min-content;
+}
+.vis-flow-s {                           /* single step card */
+  flex: 1;
+  min-width: 120px;
+  border-radius: 6px;
+  padding: .5rem .45rem;
+  text-align: center;
+  position: relative;
+}
+.vis-flow-s:not(:last-child)::after {   /* arrow between steps */
+  content: '\2192';
+  position: absolute;
+  right: -.45rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: .7rem;
+  color: var(--ink3);
+  z-index: 1;
+}
+.vis-flow-n {                           /* T4 — step name */
+  font-family: var(--ff-head);
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: .15rem;
+}
+.vis-flow-ic {                          /* emoji icon above name */
+  font-size: 1.3rem;
+  display: block;
+  margin-bottom: .15rem;
+}
+.vis-flow-desc {                        /* T5 — step description */
+  font-size: .72rem;
+  color: var(--ink2);
+  line-height: 1.45;
+}
+.vis-flow-ac {                          /* T8 — actor badge on step */
+  display: inline-block;
+  font-family: var(--ff-mono);
+  font-size: .50rem;
+  font-weight: 600;
+  padding: .1rem .4rem;
+  border-radius: 10px;
+  margin-top: .25rem;
+}
+
+/* ── 8b-3. vis-matrix — grid table (powers × levels) ───── */
+.vis-matrix {
+  border: 1px solid var(--border-l);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 1rem 0;
+  font-family: var(--ff-head);
+}
+.vis-matrix-grid {
+  display: grid;
+  gap: 0;
+}
+.vis-matrix-hdr {                       /* T7 — column header (uppercase) */
+  font-size: .56rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: .55rem .5rem;
+  text-align: center;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border-l);
+  color: var(--ink2);
+}
+.vis-matrix-hdr:not(:last-child) { border-right: 1px solid var(--border-l); }
+.vis-matrix-corner {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border-l);
+  border-right: 1px solid var(--border-l);
+}
+.vis-matrix-row-lbl {                   /* T7 — row label (vertical text) */
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  font-size: .56rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: .6rem .35rem;
+  text-align: center;
+  border-right: 1px solid var(--border-l);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.vis-matrix-cell {                      /* container cell */
+  padding: .55rem .45rem;
+  border-bottom: 1px solid var(--border-l);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: .25rem;
+  text-align: center;
+}
+.vis-matrix-cell:not(:last-child) { border-right: 1px solid var(--border-l); }
+
+/* Institution card inside matrix cell */
+.vis-inst {
+  background: rgba(255,255,255,.85);
+  border: 1px solid var(--border-l);
+  border-radius: 6px;
+  padding: .45rem .5rem;
+  width: 100%;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: .4rem;
+}
+.vis-inst-name {                        /* T4 */
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.vis-inst-lead {                        /* T6 — person/role */
+  font-size: .65rem;
+  color: var(--ink2);
+  margin-top: .15rem;
+  font-weight: 500;
+}
+.vis-inst-sub {                         /* T6 italic — secondary info */
+  font-size: .62rem;
+  color: var(--ink3);
+  margin-top: .05rem;
+  font-style: italic;
+}
+.vis-inst-link {                        /* T6 — connection / relationship note */
+  font-size: .62rem;
+  color: var(--ink2);
+  margin-top: .3rem;
+  padding-top: .25rem;
+  border-top: 1px dashed var(--border-l);
+  line-height: 1.5;
+}
+
+/* ── 8b-4. vis-stack — layered / tiered diagrams ────────── */
+.vis-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 1rem 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border-l);
+}
+.vis-stack-layer {
+  padding: 1rem 1.25rem;
+}
+.vis-stack-layer h4 {                   /* T3 — layer heading */
+  font-family: var(--ff-head);
+  font-size: .78rem;
+  font-weight: 700;
+  margin-bottom: .35rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+.vis-stack-layer p {                    /* T5 — layer description */
+  font-size: .72rem;
+  line-height: 1.55;
+  color: var(--ink2);
+}
+
+/* ── 8b-5. vis-org — institution / organ card grid ──────── */
+.vis-org-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+  margin: .65rem 0;
+}
+.vis-org-card {
+  background: var(--card);
+  border: 1px solid var(--border-l);
+  border-left: 4px solid var(--acc);
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
+  transition: box-shadow .15s;
+}
+.vis-org-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+.vis-org-card h4 {                      /* T3 — card title */
+  font-family: var(--ff-head);
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: .35rem;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+.vis-org-desc {                         /* T5 — card body */
+  font-size: .72rem;
+  color: var(--ink2);
+  line-height: 1.55;
+}
+.vis-org-meta {                         /* T6 — sub-grid (label: value) */
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: .15rem .5rem;
+  margin-bottom: .4rem;
+  font-size: .65rem;
+}
+.vis-org-meta .ol { color: var(--ink3); font-weight: 500; }
+.vis-org-meta .ov { color: var(--ink2); font-weight: 600; }
+
+/* Compact variant for secondary organs */
+.vis-org-card.compact { padding: .7rem .85rem; }
+.vis-org-card.compact h4 { font-size: .72rem; margin-bottom: .2rem; }
+
+/* ── 8b-6. vis-compare — two-column pro/con or comparison ─ */
+.vis-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .75rem;
+  margin: .75rem 0;
+}
+.vis-compare-col h4 {                   /* T3 — column heading */
+  font-family: var(--ff-head);
+  font-size: .78rem;
+  font-weight: 700;
+  margin-bottom: .4rem;
+}
+.vis-compare-item {                     /* bullet item */
+  display: flex;
+  gap: .5rem;
+  align-items: flex-start;
+  font-size: .72rem;
+  color: var(--ink2);
+  line-height: 1.55;
+  margin-bottom: .35rem;
+}
+.vis-compare-dot {                      /* coloured bullet dot */
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: .3rem;
+}
+
+/* ── 8b-7. vis-timeline — horizontal dot timeline ───────── */
+.vis-timeline {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: .5rem;
+  padding: 2rem .5rem .75rem;
+  position: relative;
+  overflow-x: auto;
+}
+.vis-timeline::before {                 /* connecting line */
+  content: '';
+  position: absolute;
+  top: 2.3rem;
+  left: 1.5rem;
+  right: 1.5rem;
+  height: 2px;
+  background: var(--border);
+}
+.vis-timeline-item {
+  text-align: center;
+  position: relative;
+  flex: 1;
+  min-width: 70px;
+}
+.vis-timeline-dot {                     /* dot on the line */
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid var(--card);
+  box-shadow: 0 0 0 2px var(--gold);
+  margin: 0 auto .5rem;
+}
+.vis-timeline-year {                    /* T7 — year label */
+  font-family: var(--ff-mono);
+  font-size: .56rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: .2rem;
+}
+.vis-timeline-text {                    /* T6 — description */
+  font-size: .65rem;
+  font-weight: 500;
+  color: var(--ink2);
+  line-height: 1.4;
+}
+
+/* ── 8b-8. Shared level-colour badges ───────────────────── */
+/* Use with .vis-tag: <span class="vis-tag fac-s">Supranational</span> */
+.fac-s  { background: var(--supraB, rgba(37,99,235,.12)); color: var(--supra, #2563eb); }
+.fac-i  { background: var(--interB, rgba(217,119,6,.12)); color: var(--inter, #d97706); }
+.fac-n  { background: var(--natlB, rgba(5,150,105,.12));  color: var(--natl, #059669); }
+.fac-de { background: var(--natlB, rgba(5,150,105,.12));  color: var(--natl, #059669); }
+.fac-eu { background: var(--supraB, rgba(37,99,235,.12)); color: var(--supra, #2563eb); }
+
+/* ── 8b-9. Inline flag SVGs (shared) ───────────────────── */
+.iflag {
+  display: inline-block;
+  width: 16px;
+  height: 11px;
+  vertical-align: middle;
+  border-radius: 1.5px;
+  overflow: hidden;
+  margin-left: 2px;
+  flex-shrink: 0;
+}
+
+/* ── 8b-R. Responsive — stack columns below 700px ───────── */
+@media (max-width: 700px) {
+  .vis-grid,
+  .vis-compare,
+  .vis-org-grid { grid-template-columns: 1fr; }
+  .vis-flow-row { flex-direction: column; }
+  .vis-flow-s:not(:last-child)::after { content: '\2193'; right: auto; left: 50%; top: auto; bottom: -.35rem; transform: none; }
+}
+
+/* ----------------------------------------------------------
+   8c. Content containers (inside .sw blocks)
+   ---------------------------------------------------------- */
+
+/* Fazit / conclusion box */
+.fazit {
+  margin: 1.25rem 0 .5rem;
+  padding: 1rem 1.25rem;
+  border-left: 4px solid var(--supra, var(--acc));
+  background: var(--supraL, var(--accL));
+  border-radius: 0 8px 8px 0;
+}
+.fazit-title {                          /* T7 — uppercase label */
+  font-family: var(--ff-head);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--supra, var(--acc));
+  margin-bottom: .5rem;
+}
+
+/* Callout / info box (replaces vote-box, key-pos, inline infoboxes) */
+.callout {
+  background: var(--accL);
+  border-left: 3px solid var(--acc);
+  border-radius: 0 8px 8px 0;
+  padding: .75rem 1rem;
+  margin: .75rem 0;
+  font-size: .82rem;
+  line-height: 1.7;
+  color: var(--ink2);
+}
+.callout-lbl {                          /* T7 — uppercase callout label */
+  font-family: var(--ff-mono);
+  font-size: .56rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--acc);
+  display: block;
+  margin-bottom: .2rem;
+}
+.callout strong { color: var(--ink); }
+
+/* Key position highlight */
+.callout.key-pos {
+  background: var(--gold-l);
+  border-left-color: var(--gold);
+}
+.callout.key-pos .callout-lbl { color: var(--gold); }
+
+/* ----------------------------------------------------------
    9. Einstieg-Box (.einstieg) — collapsible accent block
    ---------------------------------------------------------- */
 
