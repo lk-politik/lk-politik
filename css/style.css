@@ -368,7 +368,7 @@ code, .mono {
    ──────────────────────────────────────────────────────────
    TYPOGRAPHIC SCALE (inside visuals):
      T2  .vis-title          .95rem  700  --ink       Fraunces  (accent underline)
-     T2b .vis-head            .95rem  700  themed      Fraunces  (sub → T3 .78rem)
+     T2b .vis-head            .88rem  700  themed      Fraunces  (sub → T3 .78rem)
      T4  .vis-inst-name       .75rem  700  --ink       Fraunces
      T5  .vis-cell / -desc    .72rem  400  --ink2      DM Sans
      T6  .vis-lead / -sub     .65rem  500  --ink2      DM Sans
@@ -461,7 +461,7 @@ code, .mono {
 }
 .vis-head {                             /* T2b — column/example header */
   text-align: center;
-  font-size: .95rem;
+  font-size: .88rem;
   font-weight: 700;
   padding: .45rem;
   border-radius: 6px;
@@ -1396,13 +1396,28 @@ code, .mono {
 .qg[data-state="passed"] .qg-retry-link,
 .qg[data-state="passed-open"] .qg-retry-link,
 .qg[data-state="retry"] .qg-retry-link {
-  display: block;
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
   padding: 0.4rem 0.75rem 0.5rem;
-  font-size: 0.75rem;
-  color: var(--ok);
-  cursor: pointer;
+}
+
+.qg-retry-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .3rem .8rem;
+  background: var(--ok);
+  color: #fff;
+  border-radius: 6px;
+  font-size: .75rem;
+  font-weight: 600;
   font-family: var(--ff-mono);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.qg-retry-link a:hover {
+  opacity: .88;
 }
 
 /* ----------------------------------------------------------
