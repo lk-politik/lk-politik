@@ -3046,3 +3046,147 @@ span.fb-tooltip-unit-chip.locked { color: var(--ink3); border-color: var(--borde
   font-family: var(--ff-mono); font-size: .65rem;
   color: var(--ink3); margin-left: auto;
 }
+
+/* =====================================================
+   47. Dropdown Lückentext (.drop-slot)
+   Inline <select> used inside prose text
+   ===================================================== */
+
+.drop-slot {
+  display: inline-block;
+  font-family: var(--ff-body);
+  font-size: .88rem;
+  color: var(--ink);
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: .15rem .5rem;
+  cursor: pointer;
+  min-width: 6rem;
+  vertical-align: baseline;
+}
+
+.drop-slot:focus { outline: 2px solid var(--acc); outline-offset: 1px; }
+.drop-slot.ok  { border-color: var(--ok);  background: var(--ok-l);  color: var(--ok); }
+.drop-slot.err { border-color: var(--err); background: var(--err-l); color: var(--err); }
+
+/* =====================================================
+   48. Selbsteinschätzung (.self-wrap)
+   4-point confidence scale — completion only, not graded
+   ===================================================== */
+
+.self-wrap {
+  background: var(--card);
+  border: 1px solid var(--border-l);
+  border-radius: var(--r);
+  padding: 1rem 1.25rem;
+  margin: var(--gap) 0;
+}
+
+.self-q {
+  font-size: .9rem;
+  color: var(--ink);
+  margin-bottom: .75rem;
+  line-height: 1.5;
+}
+
+.self-opts {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+.self-btn {
+  font-family: var(--ff-body);
+  font-size: .78rem;
+  padding: .35rem .85rem;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  background: var(--bg);
+  color: var(--ink2);
+  cursor: pointer;
+  transition: border-color .15s, background .15s, color .15s;
+}
+
+.self-btn:hover { border-color: var(--acc); color: var(--acc); }
+
+.self-btn.active {
+  border-color: var(--acc);
+  background: var(--accL);
+  color: var(--acc);
+  font-weight: 600;
+}
+
+.self-wrap.done .self-btn.active {
+  border-color: var(--ok);
+  background: var(--ok-l);
+  color: var(--ok);
+}
+
+/* =====================================================
+   49. Zuordnung-Tabelle (.zt-table)
+   Radio-matrix assignment table
+   ===================================================== */
+
+.zt-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .85rem;
+  margin: var(--gap) 0;
+}
+
+.zt-table th {
+  padding: .5rem .75rem;
+  background: var(--card);
+  border: 1px solid var(--border-l);
+  color: var(--ink2);
+  font-weight: 600;
+  text-align: center;
+}
+
+.zt-table td {
+  padding: .5rem .75rem;
+  border: 1px solid var(--border-l);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.zt-table td:first-child { text-align: left; color: var(--ink); }
+
+.zt-table tr.ok td  { background: var(--ok-l); }
+.zt-table tr.err td { background: var(--err-l); }
+
+/* =====================================================
+   50. Markieren (.mark-text / .mk)
+   Click-to-tag words in a text passage
+   ===================================================== */
+
+.mark-text {
+  background: var(--input-bg);
+  border: 1px solid var(--border-l);
+  border-radius: var(--r);
+  padding: 1rem 1.25rem;
+  font-size: .9rem;
+  line-height: 2;
+  margin: .75rem 0;
+}
+
+.mk {
+  cursor: pointer;
+  border-radius: 3px;
+  padding: .05rem .2rem;
+  border-bottom: 2px solid transparent;
+  transition: background .12s, border-color .12s;
+}
+
+.mk:hover { background: var(--accG); border-bottom-color: var(--acc); }
+
+.mk.mk-selected {
+  background: var(--accL);
+  border-bottom-color: var(--acc);
+  color: var(--acc);
+  font-weight: 600;
+}
+
+.mk.ok  { background: var(--ok-l);  border-bottom-color: var(--ok);  color: var(--ok);  }
+.mk.err { background: var(--err-l); border-bottom-color: var(--err); color: var(--err); }
