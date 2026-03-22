@@ -1274,153 +1274,11 @@ teacher password provided with the worksheet.
     </div>
 
 
-    <!-- ─────────────────────────────────────────────────────────────
-         OPTIONAL: Checkbox MC — "select all that apply" (AB I–II)
-         Uses same mco-list structure as radio MC but with checkboxes.
-         Multiple data-correct="1" items allowed.
-         Checked via PLK.chkQ(N) — no separate function needed.
-         ───────────────────────────────────────────────────────────── -->
-    <!--
-    <div class="qi">
-      <div class="qi-n">Frage X von Y</div>
-      <div class="qi-t">Wähle alle zutreffenden Aussagen aus.</div>
-      <ul class="mco-list">
-        <li class="mco" data-correct="1">
-          <label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="checkbox" name="q1_Xc" onchange="PLK.mcsCbx(this)"> Richtige Aussage A</label></li>
-        <li class="mco">
-          <label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="checkbox" name="q1_Xc" onchange="PLK.mcsCbx(this)"> Falsche Aussage</label></li>
-        <li class="mco" data-correct="1">
-          <label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="checkbox" name="q1_Xc" onchange="PLK.mcsCbx(this)"> Richtige Aussage B</label></li>
-      </ul>
-    </div>
-    -->
 
-    <!-- ─────────────────────────────────────────────────────────────
-         OPTIONAL: Dropdown Lückentext (AB I)
-         FILL: drop-slot data-a (correct value), option values + labels.
-               data-a must exactly match one option value.
-               PLK.chkDrop(wrapId, n, fbId, retryId)
-               n = number of .drop-slot elements.
-         ───────────────────────────────────────────────────────────── -->
-    <!-- <div class="auf" id="auf6-wrap">
-      <div class="auf-h">
-        <div class="auf-n">06</div>
-        <h2 class="auf-title">Lückentext (Auswahl): Titel</h2>
-        <div class="auf-tags">
-          <span class="lz-chip"><span class="lz-chip-id">LZ 1</span><span class="lz-chip-text">Zuordnen</span></span>
-          <span class="klausur-tag">AB I</span>
-        </div>
-      </div>
-      <p class="auf-i">Wähle den richtigen Begriff aus dem Dropdown-Menü.</p>
-      <div class="auf-body" id="auf6-body">
-        <div style="background:var(--input-bg);border:1px solid var(--border-l);border-radius:10px;padding:1.5rem 1rem;font-size:.88rem;color:var(--ink2);line-height:2.2">
-          Die EU hat
-          <select class="drop-slot" data-a="27">
-            <option value="">—</option>
-            <option value="15">15</option>
-            <option value="27">27</option>
-            <option value="31">31</option>
-          </select>
-          Mitgliedstaaten.
-        </div>
-        <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-top:1rem">
-          <button class="btn btn-primary" onclick="PLK.chkDrop('auf6-wrap',1,'auf6-result','auf6-retry')">Überprüfen</button>
-          <button class="btn btn-ghost btn-sm" id="auf6-retry" style="display:none" onclick="PLK.rstDrop('auf6-wrap')">Zurücksetzen</button>
-        </div>
-        <div class="mc-feedback" id="auf6-result" style="margin-top:.75rem"></div>
-      </div>
-    </div> -->
-
-    <!-- ─────────────────────────────────────────────────────────────
-         OPTIONAL: Selbsteinschätzung — Confidence scale (AB II–III)
-         Counts 1 AB point on any rating selection. Not graded.
-         FILL: id, data-pts, self-q text.
-         ───────────────────────────────────────────────────────────── -->
-    <!-- <div class="self-wrap" id="self1" data-pts="1">
-      <div class="self-q">Ich kann erklären, wie … funktioniert.</div>
-      <div class="self-opts">
-        <button class="self-btn" data-v="1" onclick="PLK.chkSelf(this)">gar nicht</button>
-        <button class="self-btn" data-v="2" onclick="PLK.chkSelf(this)">kaum</button>
-        <button class="self-btn" data-v="3" onclick="PLK.chkSelf(this)">gut</button>
-        <button class="self-btn" data-v="4" onclick="PLK.chkSelf(this)">sicher ✓</button>
-      </div>
-    </div> -->
-
-    <!-- ─────────────────────────────────────────────────────────────
-         OPTIONAL: Zuordnung-Tabelle — Radio matrix (AB I–II)
-         FILL: table id, column headers, rows (data-correct = correct column value,
-               radio name="tableId_rN" unique per row, radio value = column header).
-               PLK.chkZT(tableId, fbId) — 1 pt per correct row.
-         ───────────────────────────────────────────────────────────── -->
-    <!-- <div class="auf" id="auf7">
-      <div class="auf-h">
-        <div class="auf-n">07</div>
-        <h2 class="auf-title">Zuordnung: Ebenen</h2>
-        <div class="auf-tags">
-          <span class="lz-chip"><span class="lz-chip-id">LZ 1</span><span class="lz-chip-text">Einordnen</span></span>
-          <span class="klausur-tag">AB I</span>
-        </div>
-      </div>
-      <p class="auf-i">Ordne jedes Organ der richtigen Ebene zu.</p>
-      <div class="auf-body">
-        <table class="zt-table" id="zt1">
-          <thead><tr>
-            <th></th><th>Spalte A</th><th>Spalte B</th><th>Spalte C</th>
-          </tr></thead>
-          <tbody>
-            <tr data-correct="Spalte A">
-              <td>Organ / Begriff 1</td>
-              <td><input type="radio" name="zt1_r1" onclick="PLK.selZT(this)" value="Spalte A"></td>
-              <td><input type="radio" name="zt1_r1" onclick="PLK.selZT(this)" value="Spalte B"></td>
-              <td><input type="radio" name="zt1_r1" onclick="PLK.selZT(this)" value="Spalte C"></td>
-            </tr>
-            <!-- FILL: add more rows; name="zt1_rN" increments N per row -->
-          </tbody>
-        </table>
-        <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem">
-          <button class="btn btn-primary" onclick="PLK.chkZT('zt1','zt1-result')">Überprüfen</button>
-          <button class="btn btn-ghost btn-sm" onclick="PLK.rstZT('zt1')">Zurücksetzen</button>
-        </div>
-        <div class="mc-feedback" id="zt1-result" style="margin-top:.75rem"></div>
-      </div>
-    </div> -->
-
-    <!-- ─────────────────────────────────────────────────────────────
-         OPTIONAL: Markieren — Click to tag words (AB II)
-         FILL: wrap id, data-n (number of correct spans),
-               mark each taggable word with class="mk",
-               mark correct words with data-correct="1".
-               PLK.chkMark(wrapId, n, fbId).
-         ───────────────────────────────────────────────────────────── -->
-    <!-- <div class="auf" id="auf8">
-      <div class="auf-h">
-        <div class="auf-n">08</div>
-        <h2 class="auf-title">Markieren: Titel</h2>
-        <div class="auf-tags">
-          <span class="lz-chip"><span class="lz-chip-id">LZ 1</span><span class="lz-chip-text">Identifizieren</span></span>
-          <span class="klausur-tag">AB II</span>
-        </div>
-      </div>
-      <p class="auf-i">Markiere alle Begriffe, die auf … zutreffen.</p>
-      <div class="auf-body">
-        <div class="mark-text" id="mk1" data-n="2">
-          Satz mit
-          <span class="mk" data-correct="1" onclick="PLK.mkCl(this)">richtigem Begriff</span>
-          und einem
-          <span class="mk" onclick="PLK.mkCl(this)">falschem Begriff</span>
-          sowie einem weiteren
-          <span class="mk" data-correct="1" onclick="PLK.mkCl(this)">richtigen Begriff</span>.
-        </div>
-        <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem">
-          <button class="btn btn-primary" onclick="PLK.chkMark('mk1',2,'mk1-result')">Überprüfen</button>
-          <button class="btn btn-ghost btn-sm" onclick="PLK.rstMark('mk1')">Zurücksetzen</button>
-        </div>
-        <div class="mc-feedback" id="mk1-result" style="margin-top:.75rem"></div>
-      </div>
-    </div> -->
+    <!-- ═══════════════════════════════════════════════════════════════
+         EXERCISE TYPES: see einheiten/_exercises.html for all patterns.
+         Copy the HTML snippet from the matching _ex/<type>.html file.
+         ═══════════════════════════════════════════════════════════════ -->
 
   </div><!-- /#arbeitsblatt -->
 
@@ -1511,6 +1369,8 @@ var CONF = {
 <script src="../js/engine.js"></script>
 <script src="../js/quiz-base.js"></script>
 <script src="../js/quiz-ext.js"></script>
+<!-- OPTIONAL: add quiz-lib.js when using Timeline/Flashcard/Slider/DefMatch/SortBuckets/BuildConcept -->
+<!-- <script src="../js/quiz-lib.js"></script> -->
 <script src="../js/uk-quiz.js"></script>
 <script src="../data/glossary.js"></script>
 <script src="../data/operators.js"></script>
