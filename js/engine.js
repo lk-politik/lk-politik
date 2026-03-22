@@ -1563,7 +1563,7 @@
 
     /* Reihenfolge: initiale Nummerierung setzen */
     document.querySelectorAll('.olist').forEach(function (list) {
-      PLK.oRenum(list);
+      oRenum(list);
     });
 
     /* Auto-save Arbeitsblatt text inputs / textareas on change */
