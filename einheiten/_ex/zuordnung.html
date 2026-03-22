@@ -1,0 +1,100 @@
+<!-- _ex/zuordnung.html — Politik-LK Exercise Library -->
+<h2>Zuordnung — Klick-Paar Matching</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Klick-Paar-Zuordnung eignet sich, wenn Schülerinnen und Schüler Beschreibungen oder Definitionen mit Begriffen oder Organen verbinden sollen. Der Typ eignet sich gut als erste Arbeitsblatt-Aufgabe, da er Fachwissen aktiviert und visuell strukturiert. Jede linke Option wird genau einer rechten Option zugeordnet (1:1-Matching).</p>
+
+<h3>Interaktion</h3>
+<p>Schülerinnen und Schüler klicken zuerst ein linkes Element (Beschreibung), dann ein rechtes Element (Begriff); eine Linie zeigt die Verbindung an.</p>
+
+<h3>JS-Modul</h3>
+<p><code>quiz-base.js</code> — Funktionen: <code>PLK.zCl(el, taskNr)</code>, <code>PLK.chkZ(taskNr, aufgabeId)</code>, <code>PLK.retZ(taskNr, aufgabeId)</code>, <code>PLK.rsZ(taskNr, aufgabeId)</code></p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;!-- Zuordnung — FILL: taskNr (eindeutige Zahl), aufgabeId --&gt;
+&lt;!-- Linke Elemente: data-z="l" data-id="..." data-correct="rightId" --&gt;
+&lt;!-- Rechte Elemente: data-z="r" data-id="..." --&gt;
+&lt;div class="zg"&gt;
+  &lt;div&gt;
+    &lt;div class="zlist"&gt;
+      &lt;!-- FILL: data-correct = data-id des passenden rechten Elements --&gt;
+      &lt;div class="zi" data-task="1" data-z="l" data-id="l1" data-correct="<!-- FILL: rightId -->" onclick="PLK.zCl(this,1)"&gt;
+        &lt;!-- FILL: Beschreibungstext links --&gt;
+      &lt;/div&gt;
+      &lt;div class="zi" data-task="1" data-z="l" data-id="l2" data-correct="<!-- FILL: rightId -->" onclick="PLK.zCl(this,1)"&gt;
+        &lt;!-- FILL: Beschreibungstext links --&gt;
+      &lt;/div&gt;
+      &lt;div class="zi" data-task="1" data-z="l" data-id="l3" data-correct="<!-- FILL: rightId -->" onclick="PLK.zCl(this,1)"&gt;
+        &lt;!-- FILL: Beschreibungstext links --&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="zarr"&gt;
+    &lt;!-- FILL: je ein &#x27F7; pro Paar --&gt;
+    &lt;span&gt;&#x27F7;&lt;/span&gt;&lt;span&gt;&#x27F7;&lt;/span&gt;&lt;span&gt;&#x27F7;&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;div class="zlist"&gt;
+      &lt;!-- FILL: rechte Elemente (Begriffe/Organe); data-id muss in data-correct links erscheinen --&gt;
+      &lt;div class="zi" data-task="1" data-z="r" data-id="<!-- FILL: rightId1 -->" onclick="PLK.zCl(this,1)"&gt;&lt;!-- FILL: Begriff --&gt;&lt;/div&gt;
+      &lt;div class="zi" data-task="1" data-z="r" data-id="<!-- FILL: rightId2 -->" onclick="PLK.zCl(this,1)"&gt;&lt;!-- FILL: Begriff --&gt;&lt;/div&gt;
+      &lt;div class="zi" data-task="1" data-z="r" data-id="<!-- FILL: rightId3 -->" onclick="PLK.zCl(this,1)"&gt;&lt;!-- FILL: Begriff --&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem"&gt;
+  &lt;button class="btn btn-primary" onclick="PLK.chkZ(1,'auf1')"&gt;Überprüfen&lt;/button&gt;
+  &lt;button class="btn btn-ghost btn-sm" onclick="PLK.retZ(1,'auf1')"&gt;Falsche nochmal&lt;/button&gt;
+  &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rsZ(1,'auf1')"&gt;Zurücksetzen&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class="mc-feedback" id="auf1-result" style="margin-top:.75rem"&gt;&lt;/div&gt;</code></pre>
+
+<h3>CSS-Klassen</h3>
+<ul>
+  <li><code>.zg</code> — dreispaltiges Zuordnungs-Grid (links, Pfeile, rechts)</li>
+  <li><code>.zlist</code> — Spalten-Container</li>
+  <li><code>.zi</code> — klickbares Element; <code>data-z="l"</code> oder <code>data-z="r"</code></li>
+  <li><code>.zi.selected</code> — aktiv ausgewählt (linke Seite)</li>
+  <li><code>.zi.matched</code> — zugeordnet</li>
+  <li><code>.zi.correct</code> / <code>.zi.wrong</code> — nach Prüfung</li>
+  <li><code>.zarr</code> — Pfeilspalte zwischen den Listen</li>
+</ul>
+
+<h3>State-Schlüssel</h3>
+<p><code>state.ab.texts</code> (indirekt via <code>PLK._qs.zMap[taskNr]</code>) — Map von leftId zu rightId; wird beim AB-Save serialisiert.</p>
+
+<h3>Vollständiges Beispiel (Politik-LK)</h3>
+<pre><code>&lt;!-- Aus 3-2_lissabon.html — Aufgabe 1: EU-Organe zuordnen --&gt;
+&lt;div class="zg"&gt;
+  &lt;div&gt;
+    &lt;div class="zlist"&gt;
+      &lt;div class="zi" data-task="1" data-z="l" data-id="d1" data-correct="ep" onclick="PLK.zCl(this,1)"&gt;
+        Wird direkt von den EU-Bürgern gewählt und entscheidet über Gesetze und den Haushalt
+      &lt;/div&gt;
+      &lt;div class="zi" data-task="1" data-z="l" data-id="d2" data-correct="komm" onclick="PLK.zCl(this,1)"&gt;
+        Hat das alleinige Initiativrecht und überwacht als Hüterin der Verträge das EU-Recht
+      &lt;/div&gt;
+      &lt;div class="zi" data-task="1" data-z="l" data-id="d3" data-correct="rat" onclick="PLK.zCl(this,1)"&gt;
+        Besteht aus je einem Fachminister pro Land und beschließt mit doppelter Mehrheit
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="zarr"&gt;
+    &lt;span&gt;&#x27F7;&lt;/span&gt;&lt;span&gt;&#x27F7;&lt;/span&gt;&lt;span&gt;&#x27F7;&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;div class="zlist"&gt;
+      &lt;div class="zi" data-task="1" data-z="r" data-id="komm" onclick="PLK.zCl(this,1)"&gt;Europäische Kommission&lt;/div&gt;
+      &lt;div class="zi" data-task="1" data-z="r" data-id="ep" onclick="PLK.zCl(this,1)"&gt;Europäisches Parlament&lt;/div&gt;
+      &lt;div class="zi" data-task="1" data-z="r" data-id="rat" onclick="PLK.zCl(this,1)"&gt;Rat der EU&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem"&gt;
+  &lt;button class="btn btn-primary" onclick="PLK.chkZ(1,'auf1')"&gt;Überprüfen&lt;/button&gt;
+  &lt;button class="btn btn-ghost btn-sm" onclick="PLK.retZ(1,'auf1')"&gt;Falsche nochmal&lt;/button&gt;
+  &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rsZ(1,'auf1')"&gt;Zurücksetzen&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class="mc-feedback" id="auf1-result" style="margin-top:.75rem"&gt;&lt;/div&gt;</code></pre>

@@ -1,0 +1,108 @@
+<!-- _ex/order-list.html — Politik-LK Exercise Library -->
+<h2>Order-List — Reihenfolge ordnen</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Reihenfolge-Aufgaben eignen sich, wenn ein Ablauf oder Prozess in der richtigen Sequenz dargestellt werden soll, zum Beispiel Schritte eines Gesetzgebungsverfahrens oder Phasen einer politischen Entscheidung. Der Typ schult prozedurales Wissen und ist gut als zweite Frage in einem Gate kombinierbar.</p>
+
+<h3>Interaktion</h3>
+<p>Schülerinnen und Schüler verschieben Items mit den Pfeil-Buttons nach oben oder unten; beim Klick auf "Überprüfen" wird die Reihenfolge mit <code>data-correct</code> abgeglichen.</p>
+
+<h3>JS-Modul</h3>
+<p><code>quiz-base.js</code> — Funktionen: <code>PLK.oMv(el, dir)</code> (dir: -1 oben, +1 unten), <code>PLK.chkQ(n)</code>, <code>PLK.rstQ(n)</code></p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;!-- Order-List innerhalb eines Quiz-Gates --&gt;
+&lt;!-- FILL: data-correct = kommagetrennte Liste der data-id Werte in richtiger Reihenfolge --&gt;
+&lt;div class="qi"&gt;
+  &lt;div class="qi-n"&gt;Frage 1 von 1&lt;/div&gt;
+  &lt;div class="qi-t"&gt;&lt;!-- FILL: Fragetext, z. B. "Bringe die Schritte in die richtige Reihenfolge" --&gt;&lt;/div&gt;
+  &lt;ul class="olist" id="q1_1o" data-correct="<!-- FILL: id1,id2,id3,id4 -->"&gt;
+    &lt;!-- FILL: Items in zufälliger Anfangsreihenfolge; data-id muss mit data-correct übereinstimmen --&gt;
+    &lt;li class="oitem" data-id="<!-- FILL: id1 -->"&gt;
+      &lt;span class="oitem-num"&gt;1&lt;/span&gt;
+      &lt;span&gt;&lt;!-- FILL: Itemtext --&gt;&lt;/span&gt;
+      &lt;div class="oarr"&gt;
+        &lt;button class="oab" onclick="PLK.oMv(this,-1)"&gt;&#x25B2;&lt;/button&gt;
+        &lt;button class="oab" onclick="PLK.oMv(this,1)"&gt;&#x25BC;&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li class="oitem" data-id="<!-- FILL: id2 -->"&gt;
+      &lt;span class="oitem-num"&gt;2&lt;/span&gt;
+      &lt;span&gt;&lt;!-- FILL: Itemtext --&gt;&lt;/span&gt;
+      &lt;div class="oarr"&gt;
+        &lt;button class="oab" onclick="PLK.oMv(this,-1)"&gt;&#x25B2;&lt;/button&gt;
+        &lt;button class="oab" onclick="PLK.oMv(this,1)"&gt;&#x25BC;&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li class="oitem" data-id="<!-- FILL: id3 -->"&gt;
+      &lt;span class="oitem-num"&gt;3&lt;/span&gt;
+      &lt;span&gt;&lt;!-- FILL: Itemtext --&gt;&lt;/span&gt;
+      &lt;div class="oarr"&gt;
+        &lt;button class="oab" onclick="PLK.oMv(this,-1)"&gt;&#x25B2;&lt;/button&gt;
+        &lt;button class="oab" onclick="PLK.oMv(this,1)"&gt;&#x25BC;&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li class="oitem" data-id="<!-- FILL: id4 -->"&gt;
+      &lt;span class="oitem-num"&gt;4&lt;/span&gt;
+      &lt;span&gt;&lt;!-- FILL: Itemtext --&gt;&lt;/span&gt;
+      &lt;div class="oarr"&gt;
+        &lt;button class="oab" onclick="PLK.oMv(this,-1)"&gt;&#x25B2;&lt;/button&gt;
+        &lt;button class="oab" onclick="PLK.oMv(this,1)"&gt;&#x25BC;&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+
+<h3>CSS-Klassen</h3>
+<ul>
+  <li><code>.olist</code> — Liste; <code>data-correct</code> = kommagetrennte id-Folge der korrekten Reihenfolge</li>
+  <li><code>.oitem</code> — einzelnes Item; <code>data-id</code> muss in <code>data-correct</code> erscheinen</li>
+  <li><code>.oitem-num</code> — wird von <code>PLK.oRenum()</code> nach jedem Verschieben aktualisiert</li>
+  <li><code>.oarr</code> — Container der Pfeil-Buttons</li>
+  <li><code>.oab</code> — Pfeil-Button (onclick: PLK.oMv)</li>
+  <li><code>.oitem.correct</code> / <code>.oitem.wrong</code> — nach Prüfung</li>
+</ul>
+
+<h3>State-Schlüssel</h3>
+<p><code>state.gates[n]</code> — boolescher Bestandsstatus des Gates. Die Reihenfolge selbst wird nicht separat gespeichert; nach Bestehen wird die Ansicht im "passed"-Zustand eingefroren.</p>
+
+<h3>Vollständiges Beispiel (Politik-LK)</h3>
+<pre><code>&lt;!-- Aus 3-3_gesetzgebung.html — Umsetzung einer EU-Richtlinie in Deutschland --&gt;
+&lt;div class="qi"&gt;
+  &lt;div class="qi-n"&gt;Frage 2 von 3&lt;/div&gt;
+  &lt;div class="qi-t"&gt;Bringe die Schritte der Umsetzung einer EU-Richtlinie in Deutschland in die richtige Reihenfolge.&lt;/div&gt;
+  &lt;ul class="olist" id="q3_2o" data-correct="eu,min,bt,gilt"&gt;
+    &lt;li class="oitem" data-id="bt"&gt;
+      &lt;span class="oitem-num"&gt;1&lt;/span&gt;
+      &lt;span&gt;Bundestag und Bundesrat stimmen zu&lt;/span&gt;
+      &lt;div class="oarr"&gt;
+        &lt;button class="oab" onclick="PLK.oMv(this,-1)"&gt;&#x25B2;&lt;/button&gt;
+        &lt;button class="oab" onclick="PLK.oMv(this,1)"&gt;&#x25BC;&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li class="oitem" data-id="gilt"&gt;
+      &lt;span class="oitem-num"&gt;2&lt;/span&gt;
+      &lt;span&gt;Das Gesetz gilt in Deutschland&lt;/span&gt;
+      &lt;div class="oarr"&gt;
+        &lt;button class="oab" onclick="PLK.oMv(this,-1)"&gt;&#x25B2;&lt;/button&gt;
+        &lt;button class="oab" onclick="PLK.oMv(this,1)"&gt;&#x25BC;&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li class="oitem" data-id="eu"&gt;
+      &lt;span class="oitem-num"&gt;3&lt;/span&gt;
+      &lt;span&gt;EU beschließt Richtlinie&lt;/span&gt;
+      &lt;div class="oarr"&gt;
+        &lt;button class="oab" onclick="PLK.oMv(this,-1)"&gt;&#x25B2;&lt;/button&gt;
+        &lt;button class="oab" onclick="PLK.oMv(this,1)"&gt;&#x25BC;&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li class="oitem" data-id="min"&gt;
+      &lt;span class="oitem-num"&gt;4&lt;/span&gt;
+      &lt;span&gt;Bundesregierung erarbeitet Gesetzesänderung&lt;/span&gt;
+      &lt;div class="oarr"&gt;
+        &lt;button class="oab" onclick="PLK.oMv(this,-1)"&gt;&#x25B2;&lt;/button&gt;
+        &lt;button class="oab" onclick="PLK.oMv(this,1)"&gt;&#x25BC;&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</code></pre>

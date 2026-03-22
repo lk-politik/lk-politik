@@ -1,0 +1,85 @@
+<!-- _ex/gap-dropdown.html — Politik-LK Exercise Library -->
+<h2>Gap-Dropdown — Dropdown-Lückentext</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Dropdown-Lückentext eignet sich, wenn jeder Slot eine eigene Auswahlliste erhält und dieselben Optionen für mehrere Slots verfügbar sein sollen (kein "verbrauchen" von Chips). Geeignet für Texte mit vielen Lücken, bei denen eine Chip-Bank unübersichtlich wäre. Richtig beantwortete Felder werden direkt gesperrt.</p>
+
+<h3>Interaktion</h3>
+<p>Schülerinnen und Schüler wählen aus jedem Dropdown-Feld die passende Option; beim Klick auf "Überprüfen" werden alle Felder gleichzeitig geprüft.</p>
+
+<h3>JS-Modul</h3>
+<p><code>quiz-ext.js</code> — Funktionen: <code>PLK.chkDrop(wrapId, n, fbId, retryId)</code>, <code>PLK.rstDrop(wrapId)</code></p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;!-- Gap-Dropdown — FILL: wrapId, n (Anzahl Slots), fbId, retryId --&gt;
+&lt;!-- Wichtig: alle .drop-slot müssen sich INNERHALB des Elements mit id=wrapId befinden --&gt;
+&lt;div class="auf-body" id="drop1"&gt;
+
+  &lt;p&gt;&lt;!-- FILL: Satzanfang --&gt;
+    &lt;select class="drop-slot" data-a="<!-- FILL: korrekte Option -->"&gt;
+      &lt;option value=""&gt;-- wählen --&lt;/option&gt;
+      &lt;!-- FILL: Optionen --&gt;
+      &lt;option value="<!-- FILL: Wert A -->"&gt;&lt;!-- FILL: Wert A --&gt;&lt;/option&gt;
+      &lt;option value="<!-- FILL: Wert B -->"&gt;&lt;!-- FILL: Wert B --&gt;&lt;/option&gt;
+      &lt;option value="<!-- FILL: Wert C -->"&gt;&lt;!-- FILL: Wert C --&gt;&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;!-- FILL: Satzende --&gt;&lt;/p&gt;
+
+  &lt;p&gt;&lt;!-- FILL: Satz --&gt;
+    &lt;select class="drop-slot" data-a="<!-- FILL: korrekte Option -->"&gt;
+      &lt;option value=""&gt;-- wählen --&lt;/option&gt;
+      &lt;option value="<!-- FILL: Wert A -->"&gt;&lt;!-- FILL: Wert A --&gt;&lt;/option&gt;
+      &lt;option value="<!-- FILL: Wert B -->"&gt;&lt;!-- FILL: Wert B --&gt;&lt;/option&gt;
+    &lt;/select&gt;&lt;/p&gt;
+
+  &lt;!-- n = Anzahl .drop-slot[data-a] Elemente --&gt;
+  &lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem"&gt;
+    &lt;button class="btn btn-primary" onclick="PLK.chkDrop('drop1',2,'drop1-result','drop1-retry')"&gt;Überprüfen&lt;/button&gt;
+    &lt;button class="btn btn-ghost btn-sm" id="drop1-retry" style="display:none" onclick="PLK.rstDrop('drop1')"&gt;Zurücksetzen&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="mc-feedback" id="drop1-result" style="display:none;margin-top:.75rem"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3>CSS-Klassen</h3>
+<ul>
+  <li><code>.drop-slot</code> — <code>&lt;select&gt;</code>-Element; <code>data-a</code> = korrekte Option (Wert, nicht Label)</li>
+  <li><code>.drop-slot.ok</code> — richtig beantwortet (disabled nach Prüfung)</li>
+  <li><code>.drop-slot.err</code> — falsch beantwortet</li>
+</ul>
+
+<h3>State-Schlüssel</h3>
+<p><code>state.ab.drop[wrapId][slotIndex]</code> — gewählter Wert pro Slot, indexiert nach Position innerhalb des Wrappers.</p>
+
+<h3>Vollständiges Beispiel (Politik-LK)</h3>
+<pre><code>&lt;!-- EU-Entscheidungsverfahren Lückentext --&gt;
+&lt;div class="auf-body" id="drop1"&gt;
+  &lt;p&gt;Im ordentlichen Gesetzgebungsverfahren bringt die
+    &lt;select class="drop-slot" data-a="Kommission"&gt;
+      &lt;option value=""&gt;-- wählen --&lt;/option&gt;
+      &lt;option value="Kommission"&gt;Kommission&lt;/option&gt;
+      &lt;option value="Rat der EU"&gt;Rat der EU&lt;/option&gt;
+      &lt;option value="Europäischer Rat"&gt;Europäischer Rat&lt;/option&gt;
+    &lt;/select&gt;
+    einen Gesetzesvorschlag ein.&lt;/p&gt;
+  &lt;p&gt;Danach entscheiden
+    &lt;select class="drop-slot" data-a="EP und Rat der EU gleichberechtigt"&gt;
+      &lt;option value=""&gt;-- wählen --&lt;/option&gt;
+      &lt;option value="EP allein"&gt;EP allein&lt;/option&gt;
+      &lt;option value="EP und Rat der EU gleichberechtigt"&gt;EP und Rat der EU gleichberechtigt&lt;/option&gt;
+      &lt;option value="Rat der EU allein"&gt;Rat der EU allein&lt;/option&gt;
+    &lt;/select&gt;
+    über den Entwurf.&lt;/p&gt;
+  &lt;p&gt;Eine verabschiedete EU-Verordnung gilt
+    &lt;select class="drop-slot" data-a="sofort in allen Mitgliedstaaten"&gt;
+      &lt;option value=""&gt;-- wählen --&lt;/option&gt;
+      &lt;option value="nur nach nationaler Umsetzung"&gt;nur nach nationaler Umsetzung&lt;/option&gt;
+      &lt;option value="sofort in allen Mitgliedstaaten"&gt;sofort in allen Mitgliedstaaten&lt;/option&gt;
+      &lt;option value="nur in Eurozone-Ländern"&gt;nur in Eurozone-Ländern&lt;/option&gt;
+    &lt;/select&gt;.&lt;/p&gt;
+
+  &lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem"&gt;
+    &lt;button class="btn btn-primary" onclick="PLK.chkDrop('drop1',3,'drop1-result','drop1-retry')"&gt;Überprüfen&lt;/button&gt;
+    &lt;button class="btn btn-ghost btn-sm" id="drop1-retry" style="display:none" onclick="PLK.rstDrop('drop1')"&gt;Zurücksetzen&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="mc-feedback" id="drop1-result" style="display:none;margin-top:.75rem"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>

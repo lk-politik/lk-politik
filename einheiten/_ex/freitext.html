@@ -1,0 +1,65 @@
+<!-- _ex/freitext.html — Politik-LK Exercise Library -->
+<h2>Freitext — Freie Texteingabe</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Freitext verwenden, wenn Schülerinnen und Schüler eine eigene Antwort formulieren sollen, die sich nicht automatisch prüfen lässt, zum Beispiel Stellungnahmen, Argumentationen (AB II/III) oder Debattenvorbereitungen. Der Typ speichert die Antwort im State, ohne sie zu bewerten; er ist der Standardtyp für AB-III-Aufgaben.</p>
+
+<h3>Interaktion</h3>
+<p>Schülerinnen und Schüler tippen ihre Antwort in eine Textarea; beim Klick auf "Antwort speichern" wird sie im State persistiert und eine kurze Bestätigung erscheint.</p>
+
+<h3>JS-Modul</h3>
+<p><code>quiz-base.js</code> — Funktionen: <code>PLK.chkFT(textareaId, fbId)</code> (Speichern mit Feedback), <code>PLK.saveAB(hintId)</code> (Speichern mit Kurz-Hint). Beide speichern den State; <code>chkFT</code> zeigt ein Feedback-Element, <code>saveAB</code> einen temporären Hint-Span.</p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;!-- Freitext — FILL: textareaId, fbId / hintId --&gt;
+&lt;!-- Variante A: mit Feedback-Div (chkFT) --&gt;
+&lt;div class="auf-body"&gt;
+  &lt;textarea id="auf1-antwort"
+    style="width:100%;min-height:120px;padding:.75rem;border:1px solid var(--border-l);border-radius:8px;font-family:var(--ff-body);font-size:.9rem;line-height:1.6;color:var(--ink);background:#fff;resize:vertical"
+    placeholder="Schreibe deine Antwort hier ..."&gt;&lt;/textarea&gt;
+  &lt;div style="margin-top:.5rem;display:flex;align-items:center;gap:.75rem"&gt;
+    &lt;button class="btn btn-ghost btn-sm" onclick="PLK.chkFT('auf1-antwort','auf1-fb')"&gt;Antwort speichern&lt;/button&gt;
+    &lt;span class="mc-feedback" id="auf1-fb" style="display:none"&gt;&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Variante B: mit Hint-Span (saveAB) — schlanker für kompakte Layouts --&gt;
+&lt;div class="auf-body"&gt;
+  &lt;textarea id="auf2-antwort"
+    style="width:100%;min-height:120px;padding:.75rem;border:1px solid var(--border-l);border-radius:8px;font-family:var(--ff-body);font-size:.9rem;line-height:1.6;color:var(--ink);background:#fff;resize:vertical"
+    placeholder="Schreibe deine Antwort hier ..."&gt;&lt;/textarea&gt;
+  &lt;div style="margin-top:.5rem;display:flex;align-items:center;gap:.75rem"&gt;
+    &lt;button class="btn btn-ghost btn-sm" onclick="PLK.saveAB('auf2-hint')"&gt;Antwort speichern&lt;/button&gt;
+    &lt;span id="auf2-hint" style="font-size:.78rem;font-family:var(--ff-mono)"&gt;&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3>CSS-Klassen</h3>
+<ul>
+  <li>Keine eigenen CSS-Klassen. Textarea wird inline gestylt (wie im Template).</li>
+  <li><code>.mc-feedback.ok</code> — nach erfolgreichem <code>PLK.chkFT()</code></li>
+  <li><code>.mc-feedback.err</code> — wenn Textarea leer ist</li>
+</ul>
+
+<h3>State-Schlüssel</h3>
+<p><code>state.ab.texts[textareaId]</code> — eingegebener Text; wird durch den AB-State-Save persistiert.</p>
+
+<h3>Vollständiges Beispiel (Politik-LK)</h3>
+<pre><code>&lt;!-- Aus 3-3_gesetzgebung.html — Aufgabe 3: Debattenvorbereitung --&gt;
+&lt;div style="background:var(--bg);border:1px solid var(--border-l);border-radius:8px;padding:1rem 1.25rem"&gt;
+  &lt;div style="font-family:var(--ff-serif);font-size:1rem;font-weight:600;font-style:italic;color:var(--ink);margin-bottom:.75rem;line-height:1.5"&gt;
+    Ist das EU-Gesetzgebungsverfahren demokratischer oder weniger demokratisch als das deutsche? Nenne mindestens ein Argument für jede Seite.
+  &lt;/div&gt;
+  &lt;p style="font-size:.82rem;color:var(--ink3);font-style:italic;line-height:1.5;margin-bottom:.75rem"&gt;
+    &lt;strong&gt;Denk daran:&lt;/strong&gt; In Deutschland hat das Parlament (Bundestag) selbst ein
+    Initiativrecht, in der EU nicht. Aber in der EU entscheiden EP und Rat der EU gleichberechtigt,
+    während in Deutschland der Bundestag den Bundesrat in vielen Fällen überstimmen kann.
+  &lt;/p&gt;
+  &lt;textarea id="auf3-antwort"
+    style="width:100%;min-height:120px;padding:.75rem;border:1px solid var(--border-l);border-radius:8px;font-family:var(--ff-body);font-size:.9rem;line-height:1.6;color:var(--ink);background:#fff;resize:vertical"
+    placeholder="Schreibe deine Antwort hier ..."&gt;&lt;/textarea&gt;
+  &lt;div style="margin-top:.5rem;display:flex;align-items:center;gap:.75rem"&gt;
+    &lt;button class="btn btn-ghost btn-sm" onclick="PLK.saveAB('auf3-save-hint')"&gt;Antwort speichern&lt;/button&gt;
+    &lt;span id="auf3-save-hint" style="font-size:.78rem;font-family:var(--ff-mono)"&gt;&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>

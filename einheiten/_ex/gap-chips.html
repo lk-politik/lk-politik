@@ -1,0 +1,85 @@
+<!-- _ex/gap-chips.html — Politik-LK Exercise Library -->
+<h2>Gap-Chips — Chip-Bank Lückentext</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Chip-Lückentext eignet sich, wenn Schülerinnen und Schüler Fachbegriffe aktiv in einen Kontext einsetzen sollen, ohne freie Texteingabe. Der Typ ist besonders geeignet für definierte Begriffsmengen, zum Beispiel die vier Grundfreiheiten oder die Organe der EU. Die Chips werden nach Gebrauch aus der Bank entfernt, sodass keine Option doppelt verwendet werden kann.</p>
+
+<h3>Interaktion</h3>
+<p>Schülerinnen und Schüler klicken zuerst einen Chip in der Bank (markiert ihn), dann klicken sie auf eine Lücke (Slot), um ihn einzusetzen; ein Klick auf einen gefüllten Slot ohne aktiven Chip leert ihn wieder.</p>
+
+<h3>JS-Modul</h3>
+<p><code>quiz-base.js</code> — Funktionen: <code>PLK.selC(el, bankId)</code>, <code>PLK.slCl(el)</code>, <code>PLK.chkSl(aufgabeId, bankId, total, resultId, retryId)</code>, <code>PLK.retSl(aufgabeId, bankId)</code>, <code>PLK.rsSl(aufgabeId, bankId)</code></p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;!-- Gap-Chips Lückentext — FILL: aufgabeId, bankId, Chips und Slots --&gt;
+&lt;!-- aufgabeId = ID des Containers, der alle .slot enthält --&gt;
+&lt;!-- bankId    = ID der .bank div; muss in selC() und chkSl() übereinstimmen --&gt;
+&lt;div class="auf-body" id="auf1"&gt;
+
+  &lt;!-- Chip-Bank --&gt;
+  &lt;div class="bank" id="bk1"&gt;
+    &lt;!-- FILL: data-v = exakter Wert, der auch im data-a der Slots erscheint --&gt;
+    &lt;span class="chip" data-v="<!-- FILL: Begriff A -->" onclick="PLK.selC(this,'bk1')"&gt;&lt;!-- FILL: Begriff A --&gt;&lt;/span&gt;
+    &lt;span class="chip" data-v="<!-- FILL: Begriff B -->" onclick="PLK.selC(this,'bk1')"&gt;&lt;!-- FILL: Begriff B --&gt;&lt;/span&gt;
+    &lt;span class="chip" data-v="<!-- FILL: Begriff C -->" onclick="PLK.selC(this,'bk1')"&gt;&lt;!-- FILL: Begriff C --&gt;&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Lückentext-Absätze mit Slots --&gt;
+  &lt;!-- FILL: data-a = korrekte Antwort (exakt wie data-v des passenden Chips) --&gt;
+  &lt;p class="lp"&gt;&lt;!-- FILL: Satzanfang --&gt;
+    &lt;span class="slot" data-a="<!-- FILL: Begriff A -->" data-bank="bk1" onclick="PLK.slCl(this)"&gt;&lt;/span&gt;
+    &lt;!-- FILL: Satzende --&gt;&lt;/p&gt;
+  &lt;p class="lp"&gt;&lt;!-- FILL: Satz --&gt;
+    &lt;span class="slot" data-a="<!-- FILL: Begriff B -->" data-bank="bk1" onclick="PLK.slCl(this)"&gt;&lt;/span&gt;&lt;/p&gt;
+  &lt;p class="lp"&gt;&lt;!-- FILL: Satz --&gt;
+    &lt;span class="slot" data-a="<!-- FILL: Begriff C -->" data-bank="bk1" onclick="PLK.slCl(this)"&gt;&lt;/span&gt;&lt;/p&gt;
+
+  &lt;!-- Steuerleiste: total = Anzahl Slots --&gt;
+  &lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem"&gt;
+    &lt;button class="btn btn-primary" onclick="PLK.chkSl('auf1','bk1',3,'auf1-result','auf1-retry')"&gt;Überprüfen&lt;/button&gt;
+    &lt;button class="btn btn-ghost btn-sm" id="auf1-retry" style="display:none" onclick="PLK.retSl('auf1','bk1')"&gt;Falsche nochmal&lt;/button&gt;
+    &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rsSl('auf1','bk1')"&gt;Zurücksetzen&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="mc-feedback" id="auf1-result" style="display:none;margin-top:.75rem"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3>CSS-Klassen</h3>
+<ul>
+  <li><code>.bank</code> — Container der Chips; erhält <code>id="bk1"</code> (bankId)</li>
+  <li><code>.chip</code> — klickbarer Chip; <code>data-v</code> = Wert</li>
+  <li><code>.chip.used</code> — visuell deaktiviert nach Einsetzen</li>
+  <li><code>.chip.selected</code> — aktiv ausgewählt</li>
+  <li><code>.slot</code> — Lücke im Text; <code>data-a</code> = korrekte Antwort, <code>data-bank</code> = bankId</li>
+  <li><code>.slot.filled</code> — Slot belegt</li>
+  <li><code>.slot.correct</code> / <code>.slot.wrong</code> — nach Prüfung</li>
+  <li><code>.lp</code> — Lückentext-Absatz (inline-Block Kontext)</li>
+</ul>
+
+<h3>State-Schlüssel</h3>
+<p><code>state.ab.slots[wrapId][slotIndex]</code> — gespeicherte Chip-Werte pro Slot, indexiert nach Position.</p>
+
+<h3>Vollständiges Beispiel (Politik-LK)</h3>
+<pre><code>&lt;!-- Aus 3-5_binnenmarkt.html — Aufgabe 1: Die vier Freiheiten zuordnen --&gt;
+&lt;div class="auf-body" id="auf1"&gt;
+  &lt;div class="bank" id="bk1"&gt;
+    &lt;span class="chip" data-v="Warenverkehr"           onclick="PLK.selC(this,'bk1')"&gt;Warenverkehr&lt;/span&gt;
+    &lt;span class="chip" data-v="Personenverkehr"        onclick="PLK.selC(this,'bk1')"&gt;Personenverkehr&lt;/span&gt;
+    &lt;span class="chip" data-v="Dienstleistungsverkehr" onclick="PLK.selC(this,'bk1')"&gt;Dienstleistungsverkehr&lt;/span&gt;
+    &lt;span class="chip" data-v="Kapitalverkehr"         onclick="PLK.selC(this,'bk1')"&gt;Kapitalverkehr&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;p class="lp"&gt;Ein spanischer Arzt arbeitet in einem deutschen Krankenhaus:
+    &lt;span class="slot" data-a="Personenverkehr"        data-bank="bk1" onclick="PLK.slCl(this)"&gt;&lt;/span&gt;&lt;/p&gt;
+  &lt;p class="lp"&gt;Amazon liefert ein Buch aus den Niederlanden nach Deutschland ohne Zoll:
+    &lt;span class="slot" data-a="Warenverkehr"           data-bank="bk1" onclick="PLK.slCl(this)"&gt;&lt;/span&gt;&lt;/p&gt;
+  &lt;p class="lp"&gt;Ein Investor aus Frankreich kauft Anteile an einer deutschen Firma:
+    &lt;span class="slot" data-a="Kapitalverkehr"         data-bank="bk1" onclick="PLK.slCl(this)"&gt;&lt;/span&gt;&lt;/p&gt;
+  &lt;p class="lp"&gt;Ein italienischer Architekt plant ein Gebäude in Österreich:
+    &lt;span class="slot" data-a="Dienstleistungsverkehr" data-bank="bk1" onclick="PLK.slCl(this)"&gt;&lt;/span&gt;&lt;/p&gt;
+
+  &lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem"&gt;
+    &lt;button class="btn btn-primary" onclick="PLK.chkSl('auf1','bk1',4,'auf1-result','auf1-retry')"&gt;Überprüfen&lt;/button&gt;
+    &lt;button class="btn btn-ghost btn-sm" id="auf1-retry" style="display:none" onclick="PLK.retSl('auf1','bk1')"&gt;Falsche nochmal&lt;/button&gt;
+    &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rsSl('auf1','bk1')"&gt;Zurücksetzen&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="mc-feedback" id="auf1-result" style="display:none;margin-top:.75rem"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>

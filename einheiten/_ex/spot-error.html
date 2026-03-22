@@ -1,0 +1,67 @@
+<!-- _ex/spot-error.html — Politik-LK Exercise Library -->
+<h2>Spot-Error — Fehler im Text finden</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Spot-Error ist eine didaktische Variante des Markieren-Typs: Schülerinnen und Schüler sollen falsche Wörter oder fehlerhafte Behauptungen in einem Satz oder Absatz identifizieren. Geeignet, wenn ein Text absichtliche sachliche Fehler enthält, die erkannt werden sollen. Besonders wirksam zur Konsolidierung nach dem Einlesen.</p>
+
+<h3>Interaktion</h3>
+<p>Identisch mit Markieren: Schülerinnen und Schüler klicken auf markierbare <code>.mk</code>-Spans; beim Klick auf "Überprüfen" wird jede Markierung geprüft.</p>
+
+<h3>JS-Modul</h3>
+<p>Kein neues JS. Benutzt <code>PLK.mkCl()</code>, <code>PLK.chkMark()</code>, <code>PLK.rstMark()</code> aus <code>quiz-ext.js</code>. Einziger Unterschied: <code>class="mark-text spot-error"</code> auf dem Wrapper.</p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;!-- Spot-Error — wie Markieren, aber Wrapper-Klasse enthält "spot-error" --&gt;
+&lt;!-- FILL: wrapId, n (Anzahl falscher/markierbarer Spans mit data-correct="1"), fbId --&gt;
+&lt;p style="font-size:.88rem;margin-bottom:.75rem"&gt;&lt;!-- FILL: Aufgabenstellung, z. B. "Markiere alle sachlich falschen Wörter." --&gt;&lt;/p&gt;
+&lt;div class="mark-text spot-error" id="spot1"&gt;
+  &lt;!-- FILL: Text mit eingebetteten .mk-Spans --&gt;
+  &lt;!-- data-correct="1" an den FALSCHEN Wörtern (die markiert werden sollen) --&gt;
+  Normaler korrekter Text
+  &lt;span class="mk" data-correct="1" onclick="PLK.mkCl(this)"&gt;&lt;!-- FILL: falsches Wort --&gt;&lt;/span&gt;
+  weiterer Text
+  &lt;span class="mk" onclick="PLK.mkCl(this)"&gt;&lt;!-- FILL: richtiges Wort (Ablenker) --&gt;&lt;/span&gt;
+  Text
+  &lt;span class="mk" data-correct="1" onclick="PLK.mkCl(this)"&gt;&lt;!-- FILL: falsches Wort --&gt;&lt;/span&gt;
+  Satzende.
+&lt;/div&gt;
+
+&lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem"&gt;
+  &lt;button class="btn btn-primary" onclick="PLK.chkMark('spot1',2,'spot1-result')"&gt;Überprüfen&lt;/button&gt;
+  &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rstMark('spot1')"&gt;Zurücksetzen&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class="mc-feedback" id="spot1-result" style="margin-top:.75rem"&gt;&lt;/div&gt;</code></pre>
+
+<h3>CSS-Klassen</h3>
+<ul>
+  <li><code>.mark-text.spot-error</code> — Wrapper; das <code>spot-error</code> ist ein optionaler CSS-Modifier (z. B. anderer Hintergrund), keine JS-Funktion</li>
+  <li>Alle übrigen Klassen identisch mit Markieren: <code>.mk</code>, <code>.mk.mk-selected</code>, <code>.mk.ok</code>, <code>.mk.err</code></li>
+</ul>
+
+<h3>State-Schlüssel</h3>
+<p><code>state.ab.mk[wrapId][spanIndex]</code> — identisch mit Markieren.</p>
+
+<h3>Vollständiges Beispiel (Politik-LK)</h3>
+<pre><code>&lt;!-- Fehler im Lissabon-Absatz finden --&gt;
+&lt;p style="font-size:.88rem;margin-bottom:.75rem"&gt;
+  Markiere alle sachlich falschen Wörter im folgenden Absatz.
+&lt;/p&gt;
+&lt;div class="mark-text spot-error" id="spot1"&gt;
+  Der Vertrag von Lissabon trat im Jahr
+  &lt;span class="mk" data-correct="1" onclick="PLK.mkCl(this)"&gt;2005&lt;/span&gt;
+  in Kraft und ersetzte den gescheiterten Verfassungsvertrag.
+  Das
+  &lt;span class="mk" onclick="PLK.mkCl(this)"&gt;Europäische Parlament&lt;/span&gt;
+  erhielt durch Lissabon mehr Rechte im Gesetzgebungsverfahren.
+  Die Europaische Bürgerinitiative erlaubt es einer Million
+  &lt;span class="mk" onclick="PLK.mkCl(this)"&gt;Bürgerinnen und Bürgern&lt;/span&gt;
+  aus mindestens
+  &lt;span class="mk" data-correct="1" onclick="PLK.mkCl(this)"&gt;drei&lt;/span&gt;
+  EU-Mitgliedstaaten, die Kommission zur Vorlage eines Gesetzentwurfs aufzufordern.
+&lt;/div&gt;
+
+&lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem"&gt;
+  &lt;button class="btn btn-primary" onclick="PLK.chkMark('spot1',2,'spot1-result')"&gt;Überprüfen&lt;/button&gt;
+  &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rstMark('spot1')"&gt;Zurücksetzen&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class="mc-feedback" id="spot1-result" style="margin-top:.75rem"&gt;&lt;/div&gt;</code></pre>

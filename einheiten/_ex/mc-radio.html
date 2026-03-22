@@ -1,0 +1,84 @@
+<!-- _ex/mc-radio.html — Politik-LK Exercise Library -->
+<h2>MC-Radio — Multiple Choice (Einfachauswahl)</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Einfachauswahl eignet sich für Verständnisfragen mit einer eindeutig richtigen Antwort. Verwende diesen Typ im Verständnischeck (Quiz-Gate), wenn du prüfen willst, ob Schülerinnen und Schüler ein Konzept oder einen Ablauf verstanden haben. Nicht geeignet, wenn mehrere Antworten gleichzeitig richtig sein können.</p>
+
+<h3>Interaktion</h3>
+<p>Schülerinnen und Schüler klicken eine Option; beim Klick auf "Überprüfen" wird das Gate geprüft und bei vollständigem Erfolg freigeschaltet.</p>
+
+<h3>JS-Modul</h3>
+<p><code>quiz-base.js</code> — Funktionen: <code>PLK.mcS(el)</code>, <code>PLK.chkQ(n)</code>, <code>PLK.rstQ(n)</code>, <code>PLK.retryQg(n)</code></p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;!-- MC-Radio im Quiz-Gate — FILL: gateNr (ersetze alle "1" durch die Gate-Nummer) --&gt;
+&lt;div class="qg" id="qg1"&gt;
+  &lt;div class="qg-head" onclick="PLK.toggleQg(1)"&gt;
+    &lt;span class="qg-label"&gt;&#x2713; VERSTÄNDNISCHECK&lt;/span&gt;
+    &lt;span class="qg-status pend" id="qg1s"&gt;Block 1: Offen&lt;/span&gt;
+    &lt;span class="qg-chevron"&gt;&#x25BE;&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="qg-body"&gt;
+
+    &lt;!-- FILL: Frage 1 — qi-n "Frage X von Y", qi-t Fragetext --&gt;
+    &lt;div class="qi"&gt;
+      &lt;div class="qi-n"&gt;Frage 1 von 2&lt;/div&gt;
+      &lt;div class="qi-t"&gt;&lt;!-- FILL: Fragetext --&gt;&lt;/div&gt;
+      &lt;ul class="mco-list"&gt;
+        &lt;!-- FILL: richtige Option erhält data-correct="1"; name="q{gate}_{frage}" eindeutig halten --&gt;
+        &lt;li class="mco"&gt;&lt;label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer"&gt;
+          &lt;input type="radio" name="q1_1" onchange="PLK.mcS(this)"&gt; &lt;!-- FILL: Antworttext --&gt;&lt;/label&gt;&lt;/li&gt;
+        &lt;li class="mco" data-correct="1"&gt;&lt;label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer"&gt;
+          &lt;input type="radio" name="q1_1" onchange="PLK.mcS(this)"&gt; &lt;!-- FILL: Richtige Antwort --&gt;&lt;/label&gt;&lt;/li&gt;
+        &lt;li class="mco"&gt;&lt;label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer"&gt;
+          &lt;input type="radio" name="q1_1" onchange="PLK.mcS(this)"&gt; &lt;!-- FILL: Antworttext --&gt;&lt;/label&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+
+    &lt;!-- FILL: weitere Fragen nach gleichem Muster; name="q1_2", "q1_3" usw. --&gt;
+
+    &lt;div style="display:flex;gap:.6rem;align-items:center;margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--border-l);flex-wrap:wrap"&gt;
+      &lt;button class="btn btn-primary btn-sm" onclick="PLK.chkQ(1)"&gt;Überprüfen&lt;/button&gt;
+      &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rstQ(1)"&gt;Zurücksetzen&lt;/button&gt;
+      &lt;span class="mc-feedback" id="qfb1" style="display:none"&gt;&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="qg-retry-link" id="qg1-retry"&gt;&lt;/div&gt;</code></pre>
+
+<h3>CSS-Klassen</h3>
+<ul>
+  <li><code>.qg</code> — Quiz-Gate Container; erhält <code>data-passed="1"</code> nach Bestehen</li>
+  <li><code>.qg-head</code> — klickbare Kopfzeile (toggle collapse)</li>
+  <li><code>.qg-body</code> — sichtbarer Inhalt des Gates</li>
+  <li><code>.qi</code> — einzelne Frage</li>
+  <li><code>.qi-n</code> — Fragennummer ("Frage X von Y")</li>
+  <li><code>.qi-t</code> — Fragetext</li>
+  <li><code>.mco-list</code> — ul-Container der Optionen</li>
+  <li><code>.mco</code> — einzelne Option; <code>data-correct="1"</code> markiert die richtige</li>
+  <li><code>.mc-feedback</code> — Ergebnis-Span (ok/err nach Prüfung)</li>
+</ul>
+
+<h3>State-Schlüssel</h3>
+<p><code>state.gates[n]</code> — boolescher Bestandsstatus des Gates n; wird von <code>PLK._saveGates()</code> persistiert.</p>
+
+<h3>Vollständiges Beispiel (Politik-LK)</h3>
+<pre><code>&lt;!-- Aus 3-3_gesetzgebung.html — Gate 1, Frage 1 --&gt;
+&lt;div class="qi"&gt;
+  &lt;div class="qi-n"&gt;Frage 1 von 3&lt;/div&gt;
+  &lt;div class="qi-t"&gt;Wer kann in Deutschland einen Gesetzentwurf einbringen?&lt;/div&gt;
+  &lt;ul class="mco-list"&gt;
+    &lt;li class="mco"&gt;&lt;label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer"&gt;
+      &lt;input type="radio" name="q1_1" onchange="PLK.mcS(this)"&gt; Nur die Bundesregierung&lt;/label&gt;&lt;/li&gt;
+    &lt;li class="mco"&gt;&lt;label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer"&gt;
+      &lt;input type="radio" name="q1_1" onchange="PLK.mcS(this)"&gt; Nur der Bundestag&lt;/label&gt;&lt;/li&gt;
+    &lt;li class="mco" data-correct="1"&gt;&lt;label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer"&gt;
+      &lt;input type="radio" name="q1_1" onchange="PLK.mcS(this)"&gt; Die Bundesregierung, der Bundestag und der Bundesrat&lt;/label&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;div style="display:flex;gap:.6rem;align-items:center;margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--border-l);flex-wrap:wrap"&gt;
+  &lt;button class="btn btn-primary btn-sm" onclick="PLK.chkQ(1)"&gt;Überprüfen&lt;/button&gt;
+  &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rstQ(1)"&gt;Zurücksetzen&lt;/button&gt;
+  &lt;span class="mc-feedback" id="qfb1" style="display:none"&gt;&lt;/span&gt;
+&lt;/div&gt;</code></pre>

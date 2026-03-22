@@ -1,0 +1,98 @@
+<!-- _ex/kategorisierung.html — Politik-LK Exercise Library -->
+<h2>Kategorisierung — Kategorie-Buttons pro Item</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Kategorisierung eignet sich, wenn Schülerinnen und Schüler eine Liste von Aussagen oder Fakten einer von mehreren Kategorien zuweisen sollen, zum Beispiel "Demokratiegewinn / Effizienzgewinn / Demokratiedefizit" oder "Vorteil / Herausforderung". Besonders gut geeignet, wenn alle Items dieselben Kategorie-Buttons haben und es auf das Differenzieren ankommt.</p>
+
+<h3>Interaktion</h3>
+<p>Schülerinnen und Schüler klicken pro Item auf einen Kategorie-Button; beim Klick auf "Überprüfen" wird jedes Item mit dem in <code>data-correct</code> hinterlegten Kategorie-Wert verglichen.</p>
+
+<h3>JS-Modul</h3>
+<p><code>quiz-base.js</code> — Funktionen: <code>PLK.kS(button, cat)</code>, <code>PLK.chkK(listId)</code>, <code>PLK.retK(listId)</code>, <code>PLK.rsK(listId)</code></p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;!-- Kategorisierung — FILL: listId (= id auf .k-list), data-correct-Werte --&gt;
+&lt;div class="k-list" id="auf1"&gt;
+
+  &lt;!-- FILL: data-correct = Wert der richtigen Kategorie; data-id muss eindeutig sein --&gt;
+  &lt;div class="k-item" data-id="k1" data-correct="<!-- FILL: katA -->"&gt;
+    &lt;div class="k-text"&gt;&lt;!-- FILL: Aussage --&gt;&lt;/div&gt;
+    &lt;div class="k-btns"&gt;
+      &lt;!-- FILL: onclick-Wert muss mit data-correct der richtigen Items übereinstimmen --&gt;
+      &lt;button class="k-btn" onclick="PLK.kS(this,'<!-- FILL: katA -->')"&gt;&lt;!-- FILL: Label A --&gt;&lt;/button&gt;
+      &lt;button class="k-btn" onclick="PLK.kS(this,'<!-- FILL: katB -->')"&gt;&lt;!-- FILL: Label B --&gt;&lt;/button&gt;
+      &lt;button class="k-btn" onclick="PLK.kS(this,'<!-- FILL: katC -->')"&gt;&lt;!-- FILL: Label C --&gt;&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="k-item" data-id="k2" data-correct="<!-- FILL: katB -->"&gt;
+    &lt;div class="k-text"&gt;&lt;!-- FILL: Aussage --&gt;&lt;/div&gt;
+    &lt;div class="k-btns"&gt;
+      &lt;button class="k-btn" onclick="PLK.kS(this,'<!-- FILL: katA -->')"&gt;&lt;!-- FILL: Label A --&gt;&lt;/button&gt;
+      &lt;button class="k-btn" onclick="PLK.kS(this,'<!-- FILL: katB -->')"&gt;&lt;!-- FILL: Label B --&gt;&lt;/button&gt;
+      &lt;button class="k-btn" onclick="PLK.kS(this,'<!-- FILL: katC -->')"&gt;&lt;!-- FILL: Label C --&gt;&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-top:1rem"&gt;
+  &lt;button class="btn btn-primary" onclick="PLK.chkK('auf1')"&gt;Überprüfen&lt;/button&gt;
+  &lt;button class="btn btn-ghost btn-sm" id="auf1-retry" style="display:none" onclick="PLK.retK('auf1')"&gt;Falsche nochmal&lt;/button&gt;
+  &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rsK('auf1')"&gt;Zurücksetzen&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class="mc-feedback" id="auf1-result" style="margin-top:.75rem"&gt;&lt;/div&gt;</code></pre>
+
+<h3>CSS-Klassen</h3>
+<ul>
+  <li><code>.k-list</code> — Container; <code>id</code> = aufgabeId für <code>PLK.chkK()</code></li>
+  <li><code>.k-item</code> — einzelnes Item; <code>data-id</code> eindeutig, <code>data-correct</code> = korrekter Kategoriewert</li>
+  <li><code>.k-text</code> — Aussagetext</li>
+  <li><code>.k-btns</code> — Zeile der Kategorie-Buttons</li>
+  <li><code>.k-btn</code> — einzelner Kategorie-Button</li>
+  <li><code>.k-btn.selected</code> — aktiv ausgewählt</li>
+  <li><code>.k-item.correct</code> / <code>.k-item.wrong</code> — nach Prüfung</li>
+</ul>
+
+<h3>State-Schlüssel</h3>
+<p><code>state.ab.texts</code> (indirekt via <code>PLK._qs.kSel[itemId]</code>) — gewählter Kategorie-Wert pro Item.</p>
+
+<h3>Vollständiges Beispiel (Politik-LK)</h3>
+<pre><code>&lt;!-- Aus 3-2_lissabon.html — Aufgabe 2: Lissabon-Neuerungen einordnen --&gt;
+&lt;div class="k-list" id="auf2"&gt;
+
+  &lt;div class="k-item" data-id="k9" data-correct="F"&gt;
+    &lt;div class="k-text"&gt;Nur die Kommission darf Gesetze vorschlagen (EP hat kein Initiativrecht)&lt;/div&gt;
+    &lt;div class="k-btns"&gt;
+      &lt;button class="k-btn" onclick="PLK.kS(this,'D')"&gt;Demokratie&lt;/button&gt;
+      &lt;button class="k-btn" onclick="PLK.kS(this,'E')"&gt;Effizienz&lt;/button&gt;
+      &lt;button class="k-btn" onclick="PLK.kS(this,'F')"&gt;Defizit&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="k-item" data-id="k2" data-correct="E"&gt;
+    &lt;div class="k-text"&gt;Doppelte Mehrheit (55 % Staaten + 65 % Bevölkerung) ersetzt Einstimmigkeit in vielen Bereichen&lt;/div&gt;
+    &lt;div class="k-btns"&gt;
+      &lt;button class="k-btn" onclick="PLK.kS(this,'D')"&gt;Demokratie&lt;/button&gt;
+      &lt;button class="k-btn" onclick="PLK.kS(this,'E')"&gt;Effizienz&lt;/button&gt;
+      &lt;button class="k-btn" onclick="PLK.kS(this,'F')"&gt;Defizit&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="k-item" data-id="k5" data-correct="D"&gt;
+    &lt;div class="k-text"&gt;Die Grundrechtecharta wird rechtsverbindlich und kann eingeklagt werden&lt;/div&gt;
+    &lt;div class="k-btns"&gt;
+      &lt;button class="k-btn" onclick="PLK.kS(this,'D')"&gt;Demokratie&lt;/button&gt;
+      &lt;button class="k-btn" onclick="PLK.kS(this,'E')"&gt;Effizienz&lt;/button&gt;
+      &lt;button class="k-btn" onclick="PLK.kS(this,'F')"&gt;Defizit&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-top:1rem"&gt;
+  &lt;button class="btn btn-primary" onclick="PLK.chkK('auf2')"&gt;Überprüfen&lt;/button&gt;
+  &lt;button class="btn btn-ghost btn-sm" onclick="PLK.retK('auf2')"&gt;Falsche nochmal&lt;/button&gt;
+  &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rsK('auf2')"&gt;Zurücksetzen&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class="mc-feedback" id="auf2-result" style="display:none;margin-top:.75rem"&gt;&lt;/div&gt;</code></pre>

@@ -1,0 +1,71 @@
+<!-- _ex/mc-checkbox.html — Politik-LK Exercise Library -->
+<h2>MC-Checkbox — Multiple Choice (Mehrfachauswahl)</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Mehrfachauswahl verwenden, wenn mehrere Antworten gleichzeitig richtig sein können, zum Beispiel "Welche der folgenden Organe sind an X beteiligt?". Der Typ schult präzises Lesen, weil Schülerinnen und Schüler alle Optionen bewerten müssen. Nicht geeignet, wenn nur eine Antwort korrekt ist.</p>
+
+<h3>Interaktion</h3>
+<p>Schülerinnen und Schüler setzen Haken bei allen zutreffenden Optionen; beim Klick auf "Überprüfen" wird das Gate geprüft (alle richtigen an, alle falschen aus nötig für Bestehen).</p>
+
+<h3>JS-Modul</h3>
+<p><code>quiz-ext.js</code> — Funktionen: <code>PLK.mcsCbx(el)</code> (visuelles Feedback beim Klicken), <code>PLK.chkQ(n)</code>, <code>PLK.rstQ(n)</code></p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;!-- MC-Checkbox im Quiz-Gate — FILL: gateNr (ersetze alle "1") --&gt;
+&lt;div class="qi"&gt;
+  &lt;div class="qi-n"&gt;Frage 1 von 1&lt;/div&gt;
+  &lt;div class="qi-t"&gt;&lt;!-- FILL: Fragetext (z. B. "Wähle alle zutreffenden...") --&gt;&lt;/div&gt;
+  &lt;ul class="mco-list"&gt;
+    &lt;!-- FILL: richtige Optionen erhalten data-correct="1"; name="q{gate}_{frage}" --&gt;
+    &lt;li class="mco" data-correct="1"&gt;&lt;label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer"&gt;
+      &lt;input type="checkbox" name="q1_1" onchange="PLK.mcsCbx(this)"&gt; &lt;!-- FILL: Richtige Option --&gt;&lt;/label&gt;&lt;/li&gt;
+    &lt;li class="mco"&gt;&lt;label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer"&gt;
+      &lt;input type="checkbox" name="q1_1" onchange="PLK.mcsCbx(this)"&gt; &lt;!-- FILL: Falsche Option --&gt;&lt;/label&gt;&lt;/li&gt;
+    &lt;li class="mco" data-correct="1"&gt;&lt;label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer"&gt;
+      &lt;input type="checkbox" name="q1_1" onchange="PLK.mcsCbx(this)"&gt; &lt;!-- FILL: Richtige Option --&gt;&lt;/label&gt;&lt;/li&gt;
+    &lt;li class="mco"&gt;&lt;label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer"&gt;
+      &lt;input type="checkbox" name="q1_1" onchange="PLK.mcsCbx(this)"&gt; &lt;!-- FILL: Falsche Option --&gt;&lt;/label&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;div style="display:flex;gap:.6rem;align-items:center;margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--border-l);flex-wrap:wrap"&gt;
+  &lt;button class="btn btn-primary btn-sm" onclick="PLK.chkQ(1)"&gt;Überprüfen&lt;/button&gt;
+  &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rstQ(1)"&gt;Zurücksetzen&lt;/button&gt;
+  &lt;span class="mc-feedback" id="qfb1" style="display:none"&gt;&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+
+<h3>CSS-Klassen</h3>
+<ul>
+  <li><code>.mco</code> — einzelne Zeile; <code>data-correct="1"</code> bei allen richtigen Optionen setzen</li>
+  <li><code>.mco.sel</code> — visueller Auswahlzustand (gesetzt von <code>PLK.mcsCbx</code>)</li>
+  <li><code>.mco.correct</code> / <code>.mco.wrong</code> — nach <code>PLK.chkQ()</code> gesetzt</li>
+  <li><code>.mc-feedback</code> — Ergebnis-Span</li>
+</ul>
+
+<h3>State-Schlüssel</h3>
+<p><code>state.gates[n]</code> — boolescher Bestandsstatus des Gates n.</p>
+
+<h3>Vollständiges Beispiel (Politik-LK)</h3>
+<pre><code>&lt;!-- Welche Organe sind am ordentlichen Gesetzgebungsverfahren beteiligt? --&gt;
+&lt;div class="qi"&gt;
+  &lt;div class="qi-n"&gt;Frage 1 von 1&lt;/div&gt;
+  &lt;div class="qi-t"&gt;Welche drei Organe sind am ordentlichen Gesetzgebungsverfahren der EU beteiligt? (Alle Zutreffenden auswählen)&lt;/div&gt;
+  &lt;ul class="mco-list"&gt;
+    &lt;li class="mco" data-correct="1"&gt;&lt;label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer"&gt;
+      &lt;input type="checkbox" name="q1_1" onchange="PLK.mcsCbx(this)"&gt; Europäische Kommission (Initiativrecht)&lt;/label&gt;&lt;/li&gt;
+    &lt;li class="mco" data-correct="1"&gt;&lt;label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer"&gt;
+      &lt;input type="checkbox" name="q1_1" onchange="PLK.mcsCbx(this)"&gt; Europäisches Parlament&lt;/label&gt;&lt;/li&gt;
+    &lt;li class="mco" data-correct="1"&gt;&lt;label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer"&gt;
+      &lt;input type="checkbox" name="q1_1" onchange="PLK.mcsCbx(this)"&gt; Rat der EU&lt;/label&gt;&lt;/li&gt;
+    &lt;li class="mco"&gt;&lt;label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer"&gt;
+      &lt;input type="checkbox" name="q1_1" onchange="PLK.mcsCbx(this)"&gt; Europäischer Rat&lt;/label&gt;&lt;/li&gt;
+    &lt;li class="mco"&gt;&lt;label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer"&gt;
+      &lt;input type="checkbox" name="q1_1" onchange="PLK.mcsCbx(this)"&gt; Gerichtshof der EU&lt;/label&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;div style="display:flex;gap:.6rem;align-items:center;margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--border-l);flex-wrap:wrap"&gt;
+  &lt;button class="btn btn-primary btn-sm" onclick="PLK.chkQ(1)"&gt;Überprüfen&lt;/button&gt;
+  &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rstQ(1)"&gt;Zurücksetzen&lt;/button&gt;
+  &lt;span class="mc-feedback" id="qfb1" style="display:none"&gt;&lt;/span&gt;
+&lt;/div&gt;</code></pre>

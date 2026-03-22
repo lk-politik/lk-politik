@@ -1,0 +1,71 @@
+<!-- _ex/markieren.html — Politik-LK Exercise Library -->
+<h2>Markieren — Wörter im Text anklicken</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Markieren eignet sich, wenn Schülerinnen und Schüler bestimmte Wörter oder Phrasen in einem Originaltext identifizieren sollen, zum Beispiel alle Fachbegriffe, alle Beispiele für eine Kategorie oder alle korrekt verwendeten Schlüsselwörter. Der Typ fördert genaues Lesen und textnahe Arbeit.</p>
+
+<h3>Interaktion</h3>
+<p>Schülerinnen und Schüler klicken auf einzelne <code>.mk</code>-Spans im Text, um sie zu markieren; beim Klick auf "Überprüfen" wird jede Markierung mit dem <code>data-correct</code>-Attribut abgeglichen.</p>
+
+<h3>JS-Modul</h3>
+<p><code>quiz-ext.js</code> — Funktionen: <code>PLK.mkCl(el)</code>, <code>PLK.chkMark(wrapId, n, fbId)</code>, <code>PLK.rstMark(wrapId)</code></p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;!-- Markieren — FILL: wrapId, n (Anzahl korrekt zu markierender Spans), fbId --&gt;
+&lt;!-- Wichtig: .mark-text muss eine id haben (= wrapId) --&gt;
+&lt;div class="mark-text" id="mark1"&gt;
+  &lt;!-- FILL: Fließtext; anklickbare Wörter als .mk-Spans einbetten --&gt;
+  &lt;!-- data-correct="1" nur bei den korrekt zu markierenden Spans --&gt;
+  Normaler Text
+  &lt;span class="mk" data-correct="1" onclick="PLK.mkCl(this)"&gt;&lt;!-- FILL: richtiges Wort --&gt;&lt;/span&gt;
+  weiterer Text
+  &lt;span class="mk" onclick="PLK.mkCl(this)"&gt;&lt;!-- FILL: Ablenkerwort --&gt;&lt;/span&gt;
+  Text
+  &lt;span class="mk" data-correct="1" onclick="PLK.mkCl(this)"&gt;&lt;!-- FILL: richtiges Wort --&gt;&lt;/span&gt;
+  Satzende.
+&lt;/div&gt;
+
+&lt;!-- n = Anzahl der Spans mit data-correct="1" --&gt;
+&lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem"&gt;
+  &lt;button class="btn btn-primary" onclick="PLK.chkMark('mark1',2,'mark1-result')"&gt;Überprüfen&lt;/button&gt;
+  &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rstMark('mark1')"&gt;Zurücksetzen&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class="mc-feedback" id="mark1-result" style="margin-top:.75rem"&gt;&lt;/div&gt;</code></pre>
+
+<h3>CSS-Klassen</h3>
+<ul>
+  <li><code>.mark-text</code> — Wrapper mit <code>id</code>; enthält alle klickbaren Spans</li>
+  <li><code>.mk</code> — klickbares Wort; <code>data-correct="1"</code> bei richtigen Wörtern</li>
+  <li><code>.mk.mk-selected</code> — markiert (durch Klick)</li>
+  <li><code>.mk.ok</code> — richtig markiert (nach Prüfung)</li>
+  <li><code>.mk.err</code> — falsch markiert oder verpasst (nach Prüfung)</li>
+</ul>
+
+<h3>State-Schlüssel</h3>
+<p><code>state.ab.mk[wrapId][spanIndex]</code> — 1 wenn markiert, 0 wenn nicht, indexiert nach Position der <code>.mk</code>-Spans innerhalb des Wrappers.</p>
+
+<h3>Vollständiges Beispiel (Politik-LK)</h3>
+<pre><code>&lt;!-- Supranationale Organe im Text markieren --&gt;
+&lt;p style="font-size:.88rem;margin-bottom:.75rem"&gt;
+  Markiere alle Organe im Text, die supranational sind.
+&lt;/p&gt;
+&lt;div class="mark-text" id="mark1"&gt;
+  Die
+  &lt;span class="mk" data-correct="1" onclick="PLK.mkCl(this)"&gt;Europäische Kommission&lt;/span&gt;
+  schlägt Gesetze vor und handelt im Gesamtinteresse der EU. Daneben trifft der
+  &lt;span class="mk" onclick="PLK.mkCl(this)"&gt;Europäische Rat&lt;/span&gt;
+  die großen politischen Weichenstellungen, verfolgt dabei aber nationale Interessen. Das
+  &lt;span class="mk" data-correct="1" onclick="PLK.mkCl(this)"&gt;Europäische Parlament&lt;/span&gt;
+  wird direkt von den Bürgerinnen und Bürgern gewählt und ist supranational. Der
+  &lt;span class="mk" onclick="PLK.mkCl(this)"&gt;Rat der EU&lt;/span&gt;
+  hingegen vertritt die Mitgliedstaaten und gilt als intergouvernemental.
+  Der
+  &lt;span class="mk" data-correct="1" onclick="PLK.mkCl(this)"&gt;Gerichtshof der EU&lt;/span&gt;
+  wacht über die einheitliche Anwendung des EU-Rechts.
+&lt;/div&gt;
+
+&lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem"&gt;
+  &lt;button class="btn btn-primary" onclick="PLK.chkMark('mark1',3,'mark1-result')"&gt;Überprüfen&lt;/button&gt;
+  &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rstMark('mark1')"&gt;Zurücksetzen&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class="mc-feedback" id="mark1-result" style="margin-top:.75rem"&gt;&lt;/div&gt;</code></pre>

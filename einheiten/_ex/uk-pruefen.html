@@ -1,0 +1,176 @@
+<!-- _ex/uk-pruefen.html — Politik-LK Exercise Library -->
+<h2>UK Prüfen — Mehrstufige Urteilskompetenz</h2>
+
+<h3>Wann verwenden?</h3>
+<p>UK Prüfen ist das Kernelement der Urteilskompetenz-Aufgaben (AB III). Es begleitet Schülerinnen und Schüler durch die drei Phasen einer strukturierten Argumentation: Einleitung (Kriterium festlegen), Hauptteil (Fallmaterial analysieren und abwägen) und Schlussfolgerung (begründetes Urteil). Den Typ einsetzen, wenn eine Leitfrage diskutiert werden soll, die mehrere Perspektiven erfordert.</p>
+
+<h3>Interaktion</h3>
+<p>Stage 1 freischaltet, wenn Kriterium + alle Schritte ausgewählt sind; Stage 2 und 3 werden nach bestandenem Submit sequenziell freigeschaltet. Die Recheck-Chips in Stage 2 und 3 erzwingen die Kohärenz mit dem gewählten Kriterium.</p>
+
+<h3>JS-Modul</h3>
+<p><code>uk-quiz.js</code> — Funktionen: <code>PLK.selKrit(el)</code>, <code>PLK.submitStage(el, stageN)</code>. Block-Root muss Klasse <code>.uk</code> tragen.</p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;!-- UK Prüfen — FILL: id, Leitfrage, Kriterien, Schritte --&gt;
+&lt;div class="uk" id="uk1" data-uk="pairs"&gt;
+  &lt;div class="uk-head"&gt;
+    &lt;!-- FILL: op-badge Operator + AB-Stufe --&gt;
+    &lt;span class="op-badge" data-op="<!-- FILL: operator -->"&gt;&lt;!-- FILL: operator --&gt; · AB III&lt;/span&gt;
+    Urteilskompetenz: &lt;!-- FILL: Thema --&gt;
+  &lt;/div&gt;
+  &lt;div class="uk-body"&gt;
+
+    &lt;div class="uk-leitfrage"&gt;
+      &lt;div class="uk-leitfrage-label"&gt;Leitfrage&lt;/div&gt;
+      &lt;div class="uk-leitfrage-text"&gt;&lt;!-- FILL: Leitfrage --&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- ── STAGE 1: Einleitung ── --&gt;
+    &lt;div class="uk-stage" data-stage="1"&gt;
+      &lt;div class="uk-stage-header"&gt;
+        &lt;span class="uk-stage-tag"&gt;Einleitung&lt;/span&gt;
+        &lt;span class="uk-stage-title"&gt;Kriterium und theoretischer Kontext&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Kriterium --&gt;
+      &lt;div class="uk-krit-block"&gt;
+        &lt;span class="uk-krit-tag"&gt;Kriterium festlegen&lt;/span&gt;
+        &lt;div class="uk-krit-q"&gt;Welcher Maßstab ist geeignet, um die Leitfrage zu beantworten?&lt;/div&gt;
+        &lt;div class="uk-krit-opts"&gt;
+          &lt;!-- FILL: data-msidx = 0,1,2 (muss mit Recheck-Chips übereinstimmen)
+               data-correct="true" nur bei der richtigen Option
+               data-error = Fehlertyp (irrelevant|unstructured|factual|knowledge|chain|verdict|sided|descriptive|overreach)
+               data-errtext = spezifischer Hinweistext --&gt;
+          &lt;div class="uk-krit-opt" data-msidx="0" data-correct="true" data-error="" data-errtext=""
+               onclick="PLK.selKrit(this)"&gt;
+            &lt;span class="uk-krit-num"&gt;A&lt;/span&gt;
+            &lt;!-- FILL: richtiges Kriterium --&gt;
+            &lt;span class="uk-krit-opt-err"&gt;&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div class="uk-krit-opt" data-msidx="1" data-correct="false" data-error="sided"
+               data-errtext="<!-- FILL: Erklärung warum falsch -->"
+               onclick="PLK.selKrit(this)"&gt;
+            &lt;span class="uk-krit-num"&gt;B&lt;/span&gt;
+            &lt;!-- FILL: falsches Kriterium B --&gt;
+            &lt;span class="uk-krit-opt-err"&gt;&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div class="uk-krit-opt" data-msidx="2" data-correct="false" data-error="vague"
+               data-errtext="<!-- FILL: Erklärung warum falsch -->"
+               onclick="PLK.selKrit(this)"&gt;
+            &lt;span class="uk-krit-num"&gt;C&lt;/span&gt;
+            &lt;!-- FILL: falsches Kriterium C --&gt;
+            &lt;span class="uk-krit-opt-err"&gt;&lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- AB I Schritt --&gt;
+      &lt;div class="uk-step" data-step="kontext" data-ab="1"&gt;
+        &lt;div class="uk-step-header"&gt;&lt;span class="uk-ab-tag"&gt;AB I: Theoretischer Kontext&lt;/span&gt;&lt;/div&gt;
+        &lt;p class="uk-step-q"&gt;&lt;!-- FILL: Frage zum theoretischen Kontext --&gt;&lt;/p&gt;
+        &lt;ul class="uk-opts"&gt;
+          &lt;li class="uk-opt" data-error="step" data-errtext="<!-- FILL -->"&gt;
+            &lt;span class="uk-opt-text"&gt;&lt;!-- FILL: falsche Option --&gt;&lt;/span&gt;
+          &lt;/li&gt;
+          &lt;li class="uk-opt" data-correct="true"&gt;
+            &lt;span class="uk-opt-text"&gt;&lt;!-- FILL: richtige Option --&gt;&lt;/span&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+
+      &lt;div class="uk-stage-footer"&gt;
+        &lt;button class="uk-stage-submit" disabled onclick="PLK.submitStage(this,1)"&gt;Weiter zum Hauptteil&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;&lt;!-- /Stage 1 --&gt;
+
+    &lt;div class="uk-stage-summary" data-stage="1"&gt;
+      &lt;span class="uk-stage-summary-check"&gt;&#x2713;&lt;/span&gt;
+      &lt;span class="uk-stage-summary-label"&gt;Einleitung&lt;/span&gt;
+      &lt;span class="uk-stage-summary-krit"&gt;Kriterium &#x2713;&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;!-- ── STAGE 2: Hauptteil ── --&gt;
+    &lt;div class="uk-stage uk-stage-locked" data-stage="2"&gt;
+      &lt;div class="uk-stage-header"&gt;
+        &lt;span class="uk-stage-tag"&gt;Hauptteil&lt;/span&gt;
+        &lt;span class="uk-stage-title"&gt;Fallmaterial, Analyse und Abwägung&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Recheck #1 — data-msidx muss mit den Kriteriums-Optionen übereinstimmen --&gt;
+      &lt;div class="uk-krit-recheck"&gt;
+        &lt;div class="uk-krit-recheck-label"&gt;Roter Faden: Kriterium bestätigen&lt;/div&gt;
+        &lt;div class="uk-krit-chips"&gt;
+          &lt;!-- FILL: Kurzbezeichnungen der drei Kriterien, data-msidx 0/1/2 --&gt;
+          &lt;div class="uk-krit-chip" data-msidx="0"&gt;&lt;!-- FILL: Kriterium A kurz --&gt;&lt;/div&gt;
+          &lt;div class="uk-krit-chip" data-msidx="1"&gt;&lt;!-- FILL: Kriterium B kurz --&gt;&lt;/div&gt;
+          &lt;div class="uk-krit-chip" data-msidx="2"&gt;&lt;!-- FILL: Kriterium C kurz --&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="uk-krit-recheck-err"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- AB I + AB II Schritte nach gleichem Muster wie Stage 1 --&gt;
+      &lt;!-- ... --&gt;
+
+      &lt;div class="uk-stage-footer"&gt;
+        &lt;button class="uk-stage-submit" disabled onclick="PLK.submitStage(this,2)"&gt;Weiter zur Schlussfolgerung&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;&lt;!-- /Stage 2 --&gt;
+
+    &lt;div class="uk-stage-summary" data-stage="2"&gt;
+      &lt;span class="uk-stage-summary-check"&gt;&#x2713;&lt;/span&gt;
+      &lt;span class="uk-stage-summary-label"&gt;Hauptteil&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;!-- ── STAGE 3: Schlussfolgerung ── --&gt;
+    &lt;div class="uk-stage uk-stage-locked" data-stage="3"&gt;
+      &lt;div class="uk-stage-header"&gt;
+        &lt;span class="uk-stage-tag"&gt;Schlussfolgerung&lt;/span&gt;
+        &lt;span class="uk-stage-title"&gt;Begründetes Urteil&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Recheck #2 --&gt;
+      &lt;div class="uk-krit-recheck"&gt;
+        &lt;div class="uk-krit-recheck-label"&gt;Roter Faden: Urteil mit Kriterium verknüpfen&lt;/div&gt;
+        &lt;div class="uk-krit-chips"&gt;
+          &lt;div class="uk-krit-chip" data-msidx="0"&gt;&lt;!-- FILL --&gt;&lt;/div&gt;
+          &lt;div class="uk-krit-chip" data-msidx="1"&gt;&lt;!-- FILL --&gt;&lt;/div&gt;
+          &lt;div class="uk-krit-chip" data-msidx="2"&gt;&lt;!-- FILL --&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="uk-krit-recheck-err"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- AB III Schritt --&gt;
+      &lt;!-- ... --&gt;
+
+      &lt;div class="uk-stage-footer"&gt;
+        &lt;button class="uk-stage-submit" disabled onclick="PLK.submitStage(this,3)"&gt;Argumentation abschließen&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;&lt;!-- /Stage 3 --&gt;
+
+    &lt;div class="uk-stage-summary" data-stage="3"&gt;
+      &lt;span class="uk-stage-summary-check"&gt;&#x2713;&lt;/span&gt;
+      &lt;span class="uk-stage-summary-label"&gt;Schlussfolgerung&lt;/span&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;&lt;!-- /uk-body --&gt;
+&lt;/div&gt;&lt;!-- /uk --&gt;</code></pre>
+
+<h3>CSS-Klassen</h3>
+<ul>
+  <li><code>.uk</code> — Block-Root; muss vorhanden sein für JS-Scoping</li>
+  <li><code>.uk-stage</code> — einzelne Stage; <code>data-stage="1|2|3"</code></li>
+  <li><code>.uk-stage.uk-stage-locked</code> — gesperrt (Stage 2 und 3 initial)</li>
+  <li><code>.uk-stage.uk-stage-done</code> — abgeschlossen</li>
+  <li><code>.uk-krit-opt</code> — Kriteriums-Option; <code>data-correct="true"</code> bei richtiger</li>
+  <li><code>.uk-krit-opt.selected</code> / <code>.uk-krit-opt.correct</code> / <code>.uk-krit-opt.wrong</code></li>
+  <li><code>.uk-krit-chip</code> — Recheck-Chip; <code>data-msidx</code> muss mit Kriteriums-Optionen übereinstimmen</li>
+  <li><code>.uk-opt</code> — AB-Schritt-Option; <code>data-correct="true"</code> bei richtiger</li>
+  <li><code>.uk-stage-submit</code> — Submit-Button; initial <code>disabled</code></li>
+  <li><code>.uk-complete</code> — auf <code>.uk</code> gesetzt wenn alle Stages bestanden</li>
+</ul>
+
+<h3>State-Schlüssel</h3>
+<p>UK Prüfen speichert keinen eigenen AB-State. Der Fortschritt ist sitzungsbasiert (Stage-DOM-Zustand).</p>
+
+<h3>Vollständiges Beispiel (Politik-LK)</h3>
+<p>Siehe <code>einheiten/3-5_binnenmarkt.html</code> (UK-Block ab Zeile ~723) und <code>einheiten/3-2_lissabon.html</code> (UK-Block) für vollständige Implementierungsbeispiele mit drei Stages, Recheck-Chips und allen Fehlertypen.</p>

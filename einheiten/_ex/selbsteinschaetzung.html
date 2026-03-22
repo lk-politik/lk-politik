@@ -1,0 +1,48 @@
+<!-- _ex/selbsteinschaetzung.html — Politik-LK Exercise Library -->
+<h2>Selbsteinschätzung — Konfidenzskala</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Selbsteinschätzung eignet sich als Reflexionselement am Ende eines Lernblocks, um Schülerinnen und Schüler zur Metakognition anzuregen. Der Typ ist nicht benotet und dient nur der Selbstwahrnehmung. Er kann gut vor einer Freitext-Aufgabe oder einem UK-Prüfen-Block platziert werden, um die Reflexionsbereitschaft zu aktivieren.</p>
+
+<h3>Interaktion</h3>
+<p>Schülerinnen und Schüler klicken einmalig auf eine von vier Stufen (1 = unsicher, 4 = sicher); nach der Auswahl ist der Block gesperrt ("done").</p>
+
+<h3>JS-Modul</h3>
+<p><code>quiz-ext.js</code> — Funktion: <code>PLK.chkSelf(btn)</code>. Kein AB-Punkt (kein <code>PLK.upAB()</code>-Aufruf nötig).</p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;!-- Selbsteinschätzung — FILL: wrapperId, Frage, Button-Labels --&gt;
+&lt;!-- self-wrap muss eine id haben; data-v="1"–"4" auf den Buttons --&gt;
+&lt;div class="self-wrap" id="self1"&gt;
+  &lt;p class="self-q"&gt;&lt;!-- FILL: Selbsteinschätzungs-Frage, z. B. "Wie sicher bist du ...?" --&gt;&lt;/p&gt;
+  &lt;div class="self-btns"&gt;
+    &lt;button class="self-btn" data-v="1" onclick="PLK.chkSelf(this)"&gt;Noch unsicher&lt;/button&gt;
+    &lt;button class="self-btn" data-v="2" onclick="PLK.chkSelf(this)"&gt;Teilweise sicher&lt;/button&gt;
+    &lt;button class="self-btn" data-v="3" onclick="PLK.chkSelf(this)"&gt;Weitgehend sicher&lt;/button&gt;
+    &lt;button class="self-btn" data-v="4" onclick="PLK.chkSelf(this)"&gt;Sehr sicher&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3>CSS-Klassen</h3>
+<ul>
+  <li><code>.self-wrap</code> — Container; muss eine <code>id</code> haben; erhält <code>.done</code> nach Auswahl</li>
+  <li><code>.self-q</code> — Fragetext</li>
+  <li><code>.self-btns</code> — Button-Zeile</li>
+  <li><code>.self-btn</code> — einzelner Button; <code>data-v="1"</code>–<code>"4"</code></li>
+  <li><code>.self-btn.active</code> — aktiv ausgewählt (nach Klick gesetzt, Block gesperrt)</li>
+</ul>
+
+<h3>State-Schlüssel</h3>
+<p><code>state.ab.self[wrapperId]</code> — Wert ("1"–"4") des aktiven Buttons.</p>
+
+<h3>Vollständiges Beispiel (Politik-LK)</h3>
+<pre><code>&lt;!-- Selbsteinschätzung nach dem Lissabon-Block --&gt;
+&lt;div class="self-wrap" id="self1"&gt;
+  &lt;p class="self-q"&gt;Wie sicher bist du, die wichtigsten Neuerungen des Vertrags von Lissabon erklären zu können?&lt;/p&gt;
+  &lt;div class="self-btns"&gt;
+    &lt;button class="self-btn" data-v="1" onclick="PLK.chkSelf(this)"&gt;Noch unsicher&lt;/button&gt;
+    &lt;button class="self-btn" data-v="2" onclick="PLK.chkSelf(this)"&gt;Teilweise sicher&lt;/button&gt;
+    &lt;button class="self-btn" data-v="3" onclick="PLK.chkSelf(this)"&gt;Weitgehend sicher&lt;/button&gt;
+    &lt;button class="self-btn" data-v="4" onclick="PLK.chkSelf(this)"&gt;Sehr sicher&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>

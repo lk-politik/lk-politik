@@ -1,0 +1,107 @@
+<!-- _ex/zuordnung-table.html — Politik-LK Exercise Library -->
+<h2>Zuordnung-Tabelle — Radio-Matrix</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Die Zuordnungs-Tabelle eignet sich, wenn mehrere Zeilen jeweils eine Auswahl aus denselben Spaltenoptionen benötigen, zum Beispiel wenn Schülerinnen und Schüler für jedes EU-Organ eine Eigenschaft (supranational / intergouvernemental / national) bestimmen sollen. Der Typ ist übersichtlicher als einzelne Dropdown-Felder, wenn alle Zeilen dieselben Kategorien haben.</p>
+
+<h3>Interaktion</h3>
+<p>Pro Zeile wird ein Radio-Button gewählt; beim Klick auf "Überprüfen" wird jede Zeile mit dem in <code>data-correct</code> hinterlegten Wert verglichen.</p>
+
+<h3>JS-Modul</h3>
+<p><code>quiz-ext.js</code> — Funktionen: <code>PLK.selZT(el)</code>, <code>PLK.chkZT(tableId, fbId)</code>, <code>PLK.rstZT(tableId)</code></p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;!-- Zuordnung-Tabelle — FILL: tableId, fbId, data-correct in jeder tr --&gt;
+&lt;!-- Wichtig: Tabelle muss eine id haben; data-correct = value des richtigen Radios --&gt;
+&lt;table class="zt-table" id="zt1"&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;&lt;!-- FILL: Zeilenbeschriftung, z. B. "Organ" --&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;!-- FILL: Spaltenkopf A --&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;!-- FILL: Spaltenkopf B --&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;!-- FILL: Spaltenkopf C --&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;!-- FILL: data-correct = value des richtigen Radio-Buttons in dieser Zeile --&gt;
+    &lt;tr data-correct="<!-- FILL: value -->"&gt;
+      &lt;td&gt;&lt;!-- FILL: Zeilenbezeichnung --&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;input type="radio" name="zt1r1" value="<!-- FILL: A -->" onchange="PLK.selZT(this)"&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;input type="radio" name="zt1r1" value="<!-- FILL: B -->" onchange="PLK.selZT(this)"&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;input type="radio" name="zt1r1" value="<!-- FILL: C -->" onchange="PLK.selZT(this)"&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr data-correct="<!-- FILL: value -->"&gt;
+      &lt;td&gt;&lt;!-- FILL: Zeilenbezeichnung --&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;input type="radio" name="zt1r2" value="<!-- FILL: A -->" onchange="PLK.selZT(this)"&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;input type="radio" name="zt1r2" value="<!-- FILL: B -->" onchange="PLK.selZT(this)"&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;input type="radio" name="zt1r2" value="<!-- FILL: C -->" onchange="PLK.selZT(this)"&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr data-correct="<!-- FILL: value -->"&gt;
+      &lt;td&gt;&lt;!-- FILL: Zeilenbezeichnung --&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;input type="radio" name="zt1r3" value="<!-- FILL: A -->" onchange="PLK.selZT(this)"&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;input type="radio" name="zt1r3" value="<!-- FILL: B -->" onchange="PLK.selZT(this)"&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;input type="radio" name="zt1r3" value="<!-- FILL: C -->" onchange="PLK.selZT(this)"&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem"&gt;
+  &lt;button class="btn btn-primary" onclick="PLK.chkZT('zt1','zt1-result')"&gt;Überprüfen&lt;/button&gt;
+  &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rstZT('zt1')"&gt;Zurücksetzen&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class="mc-feedback" id="zt1-result" style="margin-top:.75rem"&gt;&lt;/div&gt;</code></pre>
+
+<h3>CSS-Klassen</h3>
+<ul>
+  <li><code>.zt-table</code> — Tabellen-Element; muss eine <code>id</code> haben</li>
+  <li><code>tbody tr[data-correct]</code> — jede Datenzeile; <code>data-correct</code> = erwarteter Radio-Wert</li>
+  <li><code>tr.ok</code> / <code>tr.err</code> — nach Prüfung durch <code>PLK.chkZT()</code></li>
+</ul>
+
+<h3>State-Schlüssel</h3>
+<p><code>state.ab.zt[tableId][rowIndex]</code> — gewählter Wert pro Zeile, indexiert nach Zeilenposition in <code>tbody</code>.</p>
+
+<h3>Vollständiges Beispiel (Politik-LK)</h3>
+<pre><code>&lt;!-- EU-Organe: supranational, intergouvernemental oder national? --&gt;
+&lt;table class="zt-table" id="zt1"&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Organ&lt;/th&gt;
+      &lt;th&gt;Supranational&lt;/th&gt;
+      &lt;th&gt;Intergouvernemental&lt;/th&gt;
+      &lt;th&gt;National&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr data-correct="s"&gt;
+      &lt;td&gt;Europäisches Parlament&lt;/td&gt;
+      &lt;td&gt;&lt;input type="radio" name="zt1r1" value="s" onchange="PLK.selZT(this)"&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;input type="radio" name="zt1r1" value="i" onchange="PLK.selZT(this)"&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;input type="radio" name="zt1r1" value="n" onchange="PLK.selZT(this)"&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr data-correct="i"&gt;
+      &lt;td&gt;Europäischer Rat&lt;/td&gt;
+      &lt;td&gt;&lt;input type="radio" name="zt1r2" value="s" onchange="PLK.selZT(this)"&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;input type="radio" name="zt1r2" value="i" onchange="PLK.selZT(this)"&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;input type="radio" name="zt1r2" value="n" onchange="PLK.selZT(this)"&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr data-correct="s"&gt;
+      &lt;td&gt;Europäische Kommission&lt;/td&gt;
+      &lt;td&gt;&lt;input type="radio" name="zt1r3" value="s" onchange="PLK.selZT(this)"&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;input type="radio" name="zt1r3" value="i" onchange="PLK.selZT(this)"&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;input type="radio" name="zt1r3" value="n" onchange="PLK.selZT(this)"&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr data-correct="n"&gt;
+      &lt;td&gt;Bundestag (Deutschland)&lt;/td&gt;
+      &lt;td&gt;&lt;input type="radio" name="zt1r4" value="s" onchange="PLK.selZT(this)"&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;input type="radio" name="zt1r4" value="i" onchange="PLK.selZT(this)"&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;input type="radio" name="zt1r4" value="n" onchange="PLK.selZT(this)"&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem"&gt;
+  &lt;button class="btn btn-primary" onclick="PLK.chkZT('zt1','zt1-result')"&gt;Überprüfen&lt;/button&gt;
+  &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rstZT('zt1')"&gt;Zurücksetzen&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class="mc-feedback" id="zt1-result" style="margin-top:.75rem"&gt;&lt;/div&gt;</code></pre>
