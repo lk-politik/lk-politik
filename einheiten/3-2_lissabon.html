@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
@@ -138,9 +138,9 @@ Purpose: protecting the learning process and preventing automated answer extract
     <div class="tool-row">
       <span class="tool-label">Zugang</span>
       <input class="tool-input" type="password" id="pw-field" placeholder="Passwort eingeben">
-      <button class="tool-btn-unlock" onclick="chkPw('pw-field','pw-hint')">Freischalten</button>
+      <button class="tool-btn-unlock" onclick="PLK.chkPw('pw-field','pw-hint')">Freischalten</button>
       <button class="tool-btn-reset"
-              onclick="if(confirm('Fortschritt zurücksetzen?')){Progress.clear(CONF.id);location.reload();}">
+              onclick="if(confirm('Fortschritt zurücksetzen?')){PLK.resetUnit();}">
         ↺ Einheit zurücksetzen
       </button>
     </div>
@@ -162,7 +162,7 @@ Purpose: protecting the learning process and preventing automated answer extract
        EINSTIEG — Von Berlin nach Brüssel
        ================================================================ -->
   <div class="einstieg" id="einstieg">
-    <div class="einstieg-header" onclick="toggleEinstieg()">
+    <div class="einstieg-header" onclick="PLK.toggleEinstieg()">
       <span class="einstieg-badge">🎯 EINSTIEG</span>
       <span class="einstieg-title">Von Berlin nach Brüssel</span>
       <span class="einstieg-status-pill" id="einstieg-status">Offen</span>
@@ -175,46 +175,46 @@ Purpose: protecting the learning process and preventing automated answer extract
       <div class="einstieg-card" data-sit="1" data-answer="nein">
           <strong>In Deutschland kann der Bundestag selbst Gesetzentwürfe einbringen. Kann das Europäische Parlament das auch?</strong>
         <div class="einstieg-chips">
-          <button class="e-chip" data-v="ja" onclick="selEinstieg(this,1)">Ja, wie der Bundestag</button>
-          <button class="e-chip" data-v="nein" onclick="selEinstieg(this,1)">Nein, nur die Kommission darf</button>
-          <button class="e-chip" data-v="mehr" onclick="selEinstieg(this,1)">Ja, aber nur mit Zweidrittelmehrheit</button>
+          <button class="e-chip" data-v="ja" onclick="PLK.selEinstieg(this,1)">Ja, wie der Bundestag</button>
+          <button class="e-chip" data-v="nein" onclick="PLK.selEinstieg(this,1)">Nein, nur die Kommission darf</button>
+          <button class="e-chip" data-v="mehr" onclick="PLK.selEinstieg(this,1)">Ja, aber nur mit Zweidrittelmehrheit</button>
         </div>
       </div>
 
       <div class="einstieg-card" data-sit="2" data-answer="lu">
           <strong>Im Bundestag hat Deutschland 736 Abgeordnete für 84 Mio. Bürger. Luxemburg hat 6 Sitze im EP für 660.000 Bürger. Wer ist im EP im Verhältnis besser vertreten?</strong>
         <div class="einstieg-chips">
-          <button class="e-chip" data-v="de" onclick="selEinstieg(this,2)">Deutschland — mehr Sitze insgesamt</button>
-          <button class="e-chip" data-v="lu" onclick="selEinstieg(this,2)">Luxemburg — pro Kopf mehr Sitze</button>
-          <button class="e-chip" data-v="gleich" onclick="selEinstieg(this,2)">Beide gleich vertreten</button>
+          <button class="e-chip" data-v="de" onclick="PLK.selEinstieg(this,2)">Deutschland — mehr Sitze insgesamt</button>
+          <button class="e-chip" data-v="lu" onclick="PLK.selEinstieg(this,2)">Luxemburg — pro Kopf mehr Sitze</button>
+          <button class="e-chip" data-v="gleich" onclick="PLK.selEinstieg(this,2)">Beide gleich vertreten</button>
         </div>
       </div>
 
       <div class="einstieg-card" data-sit="3" data-answer="ep">
           <strong>In Deutschland wählen die Bürger den Bundestag, der dann den Kanzler wählt. Wie wird die EU-Kommissionspräsidentin bestimmt?</strong>
         <div class="einstieg-chips">
-          <button class="e-chip" data-v="buerger" onclick="selEinstieg(this,3)">Die EU-Bürger wählen sie direkt</button>
-          <button class="e-chip" data-v="ep" onclick="selEinstieg(this,3)">Europäischer Rat schlägt vor, EP wählt</button>
-          <button class="e-chip" data-v="chefs" onclick="selEinstieg(this,3)">Die Regierungschefs entscheiden allein</button>
+          <button class="e-chip" data-v="buerger" onclick="PLK.selEinstieg(this,3)">Die EU-Bürger wählen sie direkt</button>
+          <button class="e-chip" data-v="ep" onclick="PLK.selEinstieg(this,3)">Europäischer Rat schlägt vor, EP wählt</button>
+          <button class="e-chip" data-v="chefs" onclick="PLK.selEinstieg(this,3)">Die Regierungschefs entscheiden allein</button>
         </div>
       </div>
 
       <div class="einstieg-card" data-sit="4" data-answer="ja">
           <strong>In Deutschland entscheidet die Mehrheit im Bundestag. Kann in der EU ein einzelner Staat eine gemeinsame Entscheidung verhindern?</strong>
         <div class="einstieg-chips">
-          <button class="e-chip" data-v="nein" onclick="selEinstieg(this,4)">Nein, es gilt immer Mehrheit</button>
-          <button class="e-chip" data-v="ja" onclick="selEinstieg(this,4)">Ja, in Bereichen wie Außenpolitik</button>
-          <button class="e-chip" data-v="nur" onclick="selEinstieg(this,4)">Nur bei Vertragsänderungen</button>
+          <button class="e-chip" data-v="nein" onclick="PLK.selEinstieg(this,4)">Nein, es gilt immer Mehrheit</button>
+          <button class="e-chip" data-v="ja" onclick="PLK.selEinstieg(this,4)">Ja, in Bereichen wie Außenpolitik</button>
+          <button class="e-chip" data-v="nur" onclick="PLK.selEinstieg(this,4)">Nur bei Vertragsänderungen</button>
         </div>
       </div>
 
       <div style="margin-top:1rem;padding-top:.75rem;border-top:1px solid rgba(0,0,0,.08)">
-        <button class="btn btn-primary btn-sm" id="einstieg-btn" onclick="chkEinstieg()" disabled>Prüfen →</button>
+        <button class="btn btn-primary btn-sm" id="einstieg-btn" onclick="PLK.chkEinstieg()" disabled>Prüfen →</button>
       </div>
 
     </div><!-- /.einstieg-body -->
     <div class="einstieg-retry" id="einstieg-retry">
-      <a href="#" onclick="retryEinstieg(); return false">↺ Nochmal ansehen</a>
+      <a href="#" onclick="PLK.retryEinstieg(); return false">↺ Nochmal ansehen</a>
     </div>
   </div>
 
@@ -252,7 +252,7 @@ Purpose: protecting the learning process and preventing automated answer extract
   <!-- QUIZ-GATE 1 -->
   <div class="qg-wrapper">
   <div class="qg" id="qg1">
-    <div class="qg-head" onclick="toggleQg(1)">
+    <div class="qg-head" onclick="PLK.toggleQg(1)">
       <span class="qg-label">✓ VERSTÄNDNISCHECK</span>
       <span class="qg-status pend" id="qg1s">Block 1: Offen</span>
       <span class="qg-chevron">▾</span>
@@ -264,11 +264,11 @@ Purpose: protecting the learning process and preventing automated answer extract
         <div class="qi-t">Welche zwei Probleme sollte der Vertrag von Lissabon lösen?</div>
         <ul class="mco-list">
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q1_1" onchange="mcS(this)"> Wirtschaftskrise und Euro-Einführung</label></li>
+            <input type="radio" name="q1_1" onchange="PLK.mcS(this)"> Wirtschaftskrise und Euro-Einführung</label></li>
           <li class="mco" data-correct="1"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q1_1" onchange="mcS(this)"> Demokratiedefizit (EP hatte zu wenig Mitsprache) und Effizienzproblem (Einstimmigkeit ermöglichte Blockaden)</label></li>
+            <input type="radio" name="q1_1" onchange="PLK.mcS(this)"> Demokratiedefizit (EP hatte zu wenig Mitsprache) und Effizienzproblem (Einstimmigkeit ermöglichte Blockaden)</label></li>
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q1_1" onchange="mcS(this)"> Austritt von Mitgliedstaaten und fehlende Grenzkontrolle</label></li>
+            <input type="radio" name="q1_1" onchange="PLK.mcS(this)"> Austritt von Mitgliedstaaten und fehlende Grenzkontrolle</label></li>
         </ul>
       </div>
 
@@ -285,22 +285,22 @@ Purpose: protecting the learning process and preventing automated answer extract
         <div class="qi-t">Warum wurde die Grundrechtecharta rechtsverbindlich gemacht?</div>
         <ul class="mco-list">
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q1_3" onchange="mcS(this)"> Sie sollte die nationalen Verfassungen der Mitgliedstaaten ersetzen.</label></li>
+            <input type="radio" name="q1_3" onchange="PLK.mcS(this)"> Sie sollte die nationalen Verfassungen der Mitgliedstaaten ersetzen.</label></li>
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q1_3" onchange="mcS(this)"> Sie war eine Bedingung für den EU-Beitritt neuer Staaten.</label></li>
+            <input type="radio" name="q1_3" onchange="PLK.mcS(this)"> Sie war eine Bedingung für den EU-Beitritt neuer Staaten.</label></li>
           <li class="mco" data-correct="1"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q1_3" onchange="mcS(this)"> Als Antwort auf das Demokratiedefizit: Grundrechte gelten verbindlich für EU-Organe und sind vor dem EuGH einklagbar.</label></li>
+            <input type="radio" name="q1_3" onchange="PLK.mcS(this)"> Als Antwort auf das Demokratiedefizit: Grundrechte gelten verbindlich für EU-Organe und sind vor dem EuGH einklagbar.</label></li>
         </ul>
       </div>
 
       <div style="display:flex;gap:.6rem;align-items:center;margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--border-l);flex-wrap:wrap">
-        <button class="btn btn-primary btn-sm" onclick="chkQ(1)">Überprüfen</button>
-        <button class="btn btn-ghost btn-sm" onclick="rstQ(1)">Zurücksetzen</button>
+        <button class="btn btn-primary btn-sm" onclick="PLK.chkQ(1)">Überprüfen</button>
+        <button class="btn btn-ghost btn-sm" onclick="PLK.rstQ(1)">Zurücksetzen</button>
         <span class="mc-feedback" id="qfb1"></span>
       </div>
     </div>
     <div class="qg-retry-link" id="qg1-retry">
-      <a href="#" onclick="retryQg(1); return false">↺ Wiederholen &amp; zurücksetzen</a>
+      <a href="#" onclick="PLK.retryQg(1); return false">↺ Wiederholen &amp; zurücksetzen</a>
     </div>
   </div><!-- /.qg -->
   </div><!-- /.qg-wrapper -->
@@ -332,7 +332,7 @@ Purpose: protecting the learning process and preventing automated answer extract
             <span class="ol">Wahl</span><span class="ov">Alle 5 Jahre, nächste 2029</span>
           </div>
           <div class="org-desc">
-            <strong>Direkt gewählt</strong> von den EU-Bürgern — das einzige direkt demokratisch legitimierte EU-Organ. Beschließt <strong>gemeinsam mit dem Rat Gesetze</strong> (ordentliches Gesetzgebungsverfahren), entscheidet über den <strong>Haushalt</strong>, <strong>kontrolliert</strong> die Kommission und wählt den Kommissionspräsidenten.
+            <strong>Direkt gewählt</strong> von den EU-Bürgern — das einzige direkt demokratisch legitimierte EU-Organ. Beschließt <strong>gemeinsam mit dem Rat der EU Gesetze</strong> (ordentliches Gesetzgebungsverfahren), entscheidet über den <strong>Haushalt</strong>, <strong>kontrolliert</strong> die Kommission und wählt den Kommissionspräsidenten.
           </div>
           <div class="vote-box">
             <strong>Abstimmung:</strong> Sitzverteilung nach <strong>degressiver Proportionalität</strong> — größere Länder haben mehr Sitze, kleinere Länder sind im Verhältnis überrepräsentiert (min. 6, max. 96 Sitze pro Land). Entscheidungen meist mit <strong>einfacher Mehrheit</strong>.
@@ -449,7 +449,7 @@ Purpose: protecting the learning process and preventing automated answer extract
   <!-- QUIZ-GATE 2 -->
   <div class="qg-wrapper locked">
   <div class="qg locked" id="qg2">
-    <div class="qg-head" onclick="toggleQg(2)">
+    <div class="qg-head" onclick="PLK.toggleQg(2)">
       <span class="qg-label">✓ VERSTÄNDNISCHECK</span>
       <span class="qg-status pend" id="qg2s">Block 2: Offen</span>
       <span class="qg-chevron">▾</span>
@@ -461,13 +461,13 @@ Purpose: protecting the learning process and preventing automated answer extract
         <div class="qi-t">Welches Organ wird direkt von den EU-Bürgern gewählt?</div>
         <ul class="mco-list">
           <li class="mco" data-correct="1"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q2_1" onchange="mcS(this)"> Das Europäische Parlament</label></li>
+            <input type="radio" name="q2_1" onchange="PLK.mcS(this)"> Das Europäische Parlament</label></li>
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q2_1" onchange="mcS(this)"> Der Europäische Rat</label></li>
+            <input type="radio" name="q2_1" onchange="PLK.mcS(this)"> Der Europäische Rat</label></li>
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q2_1" onchange="mcS(this)"> Die Europäische Kommission</label></li>
+            <input type="radio" name="q2_1" onchange="PLK.mcS(this)"> Die Europäische Kommission</label></li>
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q2_1" onchange="mcS(this)"> Der Rat der EU</label></li>
+            <input type="radio" name="q2_1" onchange="PLK.mcS(this)"> Der Rat der EU</label></li>
         </ul>
       </div>
 
@@ -476,11 +476,11 @@ Purpose: protecting the learning process and preventing automated answer extract
         <div class="qi-t">Was bedeutet „doppelte Mehrheit" (qualifizierte Mehrheit) im Rat der EU?</div>
         <ul class="mco-list">
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q2_2" onchange="mcS(this)"> Jeder Staat hat zwei Stimmen, die beide Ja sagen müssen.</label></li>
+            <input type="radio" name="q2_2" onchange="PLK.mcS(this)"> Jeder Staat hat zwei Stimmen, die beide Ja sagen müssen.</label></li>
           <li class="mco" data-correct="1"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q2_2" onchange="mcS(this)"> Ein Beschluss braucht sowohl 55 % der Staaten als auch 65 % der EU-Bevölkerung.</label></li>
+            <input type="radio" name="q2_2" onchange="PLK.mcS(this)"> Ein Beschluss braucht sowohl 55 % der Staaten als auch 65 % der EU-Bevölkerung.</label></li>
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q2_2" onchange="mcS(this)"> EP und Rat müssen beide mit 2/3 Mehrheit zustimmen.</label></li>
+            <input type="radio" name="q2_2" onchange="PLK.mcS(this)"> EP und Rat der EU müssen beide mit 2/3 Mehrheit zustimmen.</label></li>
         </ul>
       </div>
 
@@ -489,22 +489,22 @@ Purpose: protecting the learning process and preventing automated answer extract
         <div class="qi-t">Welche Rolle spielt der Europäische Rat bei der Wahl des Kommissionspräsidenten?</div>
         <ul class="mco-list">
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q2_3" onchange="mcS(this)"> Der Europäische Rat wählt den Kommissionspräsidenten allein.</label></li>
+            <input type="radio" name="q2_3" onchange="PLK.mcS(this)"> Der Europäische Rat wählt den Kommissionspräsidenten allein.</label></li>
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q2_3" onchange="mcS(this)"> Der Europäische Rat hat mit der Kommissionswahl nichts zu tun.</label></li>
+            <input type="radio" name="q2_3" onchange="PLK.mcS(this)"> Der Europäische Rat hat mit der Kommissionswahl nichts zu tun.</label></li>
           <li class="mco" data-correct="1"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q2_3" onchange="mcS(this)"> Der Europäische Rat schlägt einen Kandidaten vor, das EP muss ihn dann wählen.</label></li>
+            <input type="radio" name="q2_3" onchange="PLK.mcS(this)"> Der Europäische Rat schlägt einen Kandidaten vor, das EP muss ihn dann wählen.</label></li>
         </ul>
       </div>
 
       <div style="display:flex;gap:.6rem;align-items:center;margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--border-l);flex-wrap:wrap">
-        <button class="btn btn-primary btn-sm" onclick="chkQ(2)">Überprüfen</button>
-        <button class="btn btn-ghost btn-sm" onclick="rstQ(2)">Zurücksetzen</button>
+        <button class="btn btn-primary btn-sm" onclick="PLK.chkQ(2)">Überprüfen</button>
+        <button class="btn btn-ghost btn-sm" onclick="PLK.rstQ(2)">Zurücksetzen</button>
         <span class="mc-feedback" id="qfb2"></span>
       </div>
     </div>
     <div class="qg-retry-link" id="qg2-retry">
-      <a href="#" onclick="retryQg(2); return false">↺ Wiederholen &amp; zurücksetzen</a>
+      <a href="#" onclick="PLK.retryQg(2); return false">↺ Wiederholen &amp; zurücksetzen</a>
     </div>
   </div><!-- /.qg -->
   </div><!-- /.qg-wrapper -->
@@ -523,11 +523,11 @@ Purpose: protecting the learning process and preventing automated answer extract
       <div class="de-grid">
         <div class="de-col">
           <h4>🟢 Mehr Demokratie</h4>
-          <div class="de-item"><div class="de-dot dot-g"></div><div><strong>Stärkeres Parlament:</strong> Das EP entscheidet in über 80 Bereichen gleichberechtigt mit dem Rat über Gesetze (ordentliches Gesetzgebungsverfahren als Regelverfahren).</div></div>
+          <div class="de-item"><div class="de-dot dot-g"></div><div><strong>Stärkeres Parlament:</strong> Das EP entscheidet in über 80 Bereichen gleichberechtigt mit dem Rat der EU über Gesetze (ordentliches Gesetzgebungsverfahren als Regelverfahren).</div></div>
           <div class="de-item"><div class="de-dot dot-g"></div><div><strong class="fb">Europäische Bürgerinitiative</strong>: 1 Million Bürger aus mind. 7 Ländern können die Kommission auffordern, einen Gesetzesvorschlag zu prüfen.</div></div>
           <div class="de-item"><div class="de-dot dot-g"></div><div><strong>Nationale Parlamente:</strong> Können frühzeitig prüfen, ob ein EU-Vorschlag wirklich auf EU-Ebene geregelt werden muss (<strong class="fb">Subsidiaritätsprinzip</strong>: Was Staaten selbst regeln können, soll nicht die EU regeln).</div></div>
           <div class="de-item"><div class="de-dot dot-g"></div><div><strong class="fb">Grundrechtecharta</strong> rechtsverbindlich: Grundrechte einklagbar vor dem EuGH.</div></div>
-          <div class="de-item"><div class="de-dot dot-g"></div><div><strong>Öffentliche Ratsberatungen:</strong> Rat tagt bei Gesetzgebung öffentlich — mehr Transparenz.</div></div>
+          <div class="de-item"><div class="de-dot dot-g"></div><div><strong>Rat der EU tagt öffentlich:</strong> Bei Gesetzgebung öffentliche Sitzungen — mehr Transparenz.</div></div>
         </div>
         <div class="de-col">
           <h4>⚡ Mehr Effizienz</h4>
@@ -562,7 +562,7 @@ Purpose: protecting the learning process and preventing automated answer extract
   <!-- QUIZ-GATE 3 -->
   <div class="qg-wrapper locked">
   <div class="qg locked" id="qg3">
-    <div class="qg-head" onclick="toggleQg(3)">
+    <div class="qg-head" onclick="PLK.toggleQg(3)">
       <span class="qg-label">✓ VERSTÄNDNISCHECK</span>
       <span class="qg-status pend" id="qg3s">Block 3: Offen</span>
       <span class="qg-chevron">▾</span>
@@ -582,11 +582,11 @@ Purpose: protecting the learning process and preventing automated answer extract
         <div class="qi-t">Was ist ein Demokratiedefizit, das trotz Lissabon bestehen bleibt?</div>
         <ul class="mco-list">
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q3_2" onchange="mcS(this)"> Die EU-Bürger dürfen den Präsidenten des Europäischen Rates nicht wählen.</label></li>
+            <input type="radio" name="q3_2" onchange="PLK.mcS(this)"> Die EU-Bürger dürfen den Präsidenten des Europäischen Rates nicht wählen.</label></li>
           <li class="mco" data-correct="1"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q3_2" onchange="mcS(this)"> Das direkt gewählte EP kann keine eigenen Gesetzesvorschläge einbringen.</label></li>
+            <input type="radio" name="q3_2" onchange="PLK.mcS(this)"> Das direkt gewählte EP kann keine eigenen Gesetzesvorschläge einbringen.</label></li>
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q3_2" onchange="mcS(this)"> Die EU-Grundrechtecharta ist nicht rechtsverbindlich.</label></li>
+            <input type="radio" name="q3_2" onchange="PLK.mcS(this)"> Die EU-Grundrechtecharta ist nicht rechtsverbindlich.</label></li>
         </ul>
       </div>
 
@@ -595,22 +595,22 @@ Purpose: protecting the learning process and preventing automated answer extract
         <div class="qi-t">In welchen Bereichen gilt immer noch Einstimmigkeit und kann ein einzelner Staat blockieren?</div>
         <ul class="mco-list">
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q3_3" onchange="mcS(this)"> Umwelt- und Verbraucherschutzpolitik</label></li>
+            <input type="radio" name="q3_3" onchange="PLK.mcS(this)"> Umwelt- und Verbraucherschutzpolitik</label></li>
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q3_3" onchange="mcS(this)"> Landwirtschaft und Binnenmarkt</label></li>
+            <input type="radio" name="q3_3" onchange="PLK.mcS(this)"> Landwirtschaft und Binnenmarkt</label></li>
           <li class="mco" data-correct="1"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q3_3" onchange="mcS(this)"> Außenpolitik, Steuerpolitik und Vertragsänderungen</label></li>
+            <input type="radio" name="q3_3" onchange="PLK.mcS(this)"> Außenpolitik, Steuerpolitik und Vertragsänderungen</label></li>
         </ul>
       </div>
 
       <div style="display:flex;gap:.6rem;align-items:center;margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--border-l);flex-wrap:wrap">
-        <button class="btn btn-primary btn-sm" onclick="chkQ(3)">Überprüfen</button>
-        <button class="btn btn-ghost btn-sm" onclick="rstQ(3)">Zurücksetzen</button>
+        <button class="btn btn-primary btn-sm" onclick="PLK.chkQ(3)">Überprüfen</button>
+        <button class="btn btn-ghost btn-sm" onclick="PLK.rstQ(3)">Zurücksetzen</button>
         <span class="mc-feedback" id="qfb3"></span>
       </div>
     </div>
     <div class="qg-retry-link" id="qg3-retry">
-      <a href="#" onclick="retryQg(3); return false">↺ Wiederholen &amp; zurücksetzen</a>
+      <a href="#" onclick="PLK.retryQg(3); return false">↺ Wiederholen &amp; zurücksetzen</a>
     </div>
   </div><!-- /.qg -->
   </div><!-- /.qg-wrapper -->
@@ -630,7 +630,7 @@ Purpose: protecting the learning process and preventing automated answer extract
     <div class="card" style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:var(--gap)">
       <span style="font-family:var(--ff-mono);font-size:.75rem;color:var(--ink3);white-space:nowrap">Aufgaben</span>
       <span style="font-family:var(--ff-mono);font-size:.85rem;font-weight:600;color:var(--acc)" id="ab-score">0 / 15</span>
-      <button class="btn btn-ghost btn-sm" style="margin-left:auto" onclick="rstAllAB()">Alles zurücksetzen</button>
+      <button class="btn btn-ghost btn-sm" style="margin-left:auto" onclick="PLK.rstAllAB()">Alles zurücksetzen</button>
     </div>
 
     <!-- ─────────────────────────────────────────────────────────────
@@ -653,25 +653,25 @@ Purpose: protecting the learning process and preventing automated answer extract
         <div class="zg">
           <div>
             <div class="zlist">
-              <div class="zi" data-task="1" data-z="l" data-id="d1" data-correct="ep" onclick="zCl(this,1)">
+              <div class="zi" data-task="1" data-z="l" data-id="d1" data-correct="ep" onclick="PLK.zCl(this,1)">
                 Wird direkt von den EU-Bürgern gewählt und entscheidet über Gesetze und den Haushalt
               </div>
-              <div class="zi" data-task="1" data-z="l" data-id="d2" data-correct="komm" onclick="zCl(this,1)">
+              <div class="zi" data-task="1" data-z="l" data-id="d2" data-correct="komm" onclick="PLK.zCl(this,1)">
                 Hat das alleinige Initiativrecht und überwacht als „Hüterin der Verträge" das EU-Recht
               </div>
-              <div class="zi" data-task="1" data-z="l" data-id="d3" data-correct="rat" onclick="zCl(this,1)">
+              <div class="zi" data-task="1" data-z="l" data-id="d3" data-correct="rat" onclick="PLK.zCl(this,1)">
                 Besteht aus je einem Fachminister pro Land und beschließt mit doppelter Mehrheit
               </div>
-              <div class="zi" data-task="1" data-z="l" data-id="d4" data-correct="erat" onclick="zCl(this,1)">
+              <div class="zi" data-task="1" data-z="l" data-id="d4" data-correct="erat" onclick="PLK.zCl(this,1)">
                 Staats- und Regierungschefs legen große politische Ziele fest und schlagen den Kommissionspräsidenten vor
               </div>
-              <div class="zi" data-task="1" data-z="l" data-id="d5" data-correct="eugh" onclick="zCl(this,1)">
+              <div class="zi" data-task="1" data-z="l" data-id="d5" data-correct="eugh" onclick="PLK.zCl(this,1)">
                 Stellt sicher, dass EU-Recht überall gleich angewendet wird — Sitz in Luxemburg
               </div>
-              <div class="zi" data-task="1" data-z="l" data-id="d6" data-correct="ezb" onclick="zCl(this,1)">
+              <div class="zi" data-task="1" data-z="l" data-id="d6" data-correct="ezb" onclick="PLK.zCl(this,1)">
                 Sorgt für stabile Preise im Euroraum und ist unabhängig von der Politik
               </div>
-              <div class="zi" data-task="1" data-z="l" data-id="d7" data-correct="rh" onclick="zCl(this,1)">
+              <div class="zi" data-task="1" data-z="l" data-id="d7" data-correct="rh" onclick="PLK.zCl(this,1)">
                 Prüft alle Einnahmen und Ausgaben der EU — Sitz in Luxemburg
               </div>
             </div>
@@ -681,21 +681,21 @@ Purpose: protecting the learning process and preventing automated answer extract
           </div>
           <div>
             <div class="zlist">
-              <div class="zi" data-task="1" data-z="r" data-id="komm" onclick="zCl(this,1)">Europäische Kommission</div>
-              <div class="zi" data-task="1" data-z="r" data-id="erat" onclick="zCl(this,1)">Europäischer Rat</div>
-              <div class="zi" data-task="1" data-z="r" data-id="ep" onclick="zCl(this,1)">Europäisches Parlament</div>
-              <div class="zi" data-task="1" data-z="r" data-id="rh" onclick="zCl(this,1)">Europäischer Rechnungshof</div>
-              <div class="zi" data-task="1" data-z="r" data-id="rat" onclick="zCl(this,1)">Rat der EU</div>
-              <div class="zi" data-task="1" data-z="r" data-id="eugh" onclick="zCl(this,1)">Gerichtshof der EU</div>
-              <div class="zi" data-task="1" data-z="r" data-id="ezb" onclick="zCl(this,1)">Europäische Zentralbank</div>
+              <div class="zi" data-task="1" data-z="r" data-id="komm" onclick="PLK.zCl(this,1)">Europäische Kommission</div>
+              <div class="zi" data-task="1" data-z="r" data-id="erat" onclick="PLK.zCl(this,1)">Europäischer Rat</div>
+              <div class="zi" data-task="1" data-z="r" data-id="ep" onclick="PLK.zCl(this,1)">Europäisches Parlament</div>
+              <div class="zi" data-task="1" data-z="r" data-id="rh" onclick="PLK.zCl(this,1)">Europäischer Rechnungshof</div>
+              <div class="zi" data-task="1" data-z="r" data-id="rat" onclick="PLK.zCl(this,1)">Rat der EU</div>
+              <div class="zi" data-task="1" data-z="r" data-id="eugh" onclick="PLK.zCl(this,1)">Gerichtshof der EU</div>
+              <div class="zi" data-task="1" data-z="r" data-id="ezb" onclick="PLK.zCl(this,1)">Europäische Zentralbank</div>
             </div>
           </div>
         </div>
 
         <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem">
-          <button class="btn btn-primary" onclick="chkZ(1,'auf1')">Überprüfen</button>
-          <button class="btn btn-ghost btn-sm" onclick="retZ(1,'auf1')">Falsche nochmal</button>
-          <button class="btn btn-ghost btn-sm" onclick="rsZ(1,'auf1')">Zurücksetzen</button>
+          <button class="btn btn-primary" onclick="PLK.chkZ(1,'auf1')">Überprüfen</button>
+          <button class="btn btn-ghost btn-sm" onclick="PLK.retZ(1,'auf1')">Falsche nochmal</button>
+          <button class="btn btn-ghost btn-sm" onclick="PLK.rsZ(1,'auf1')">Zurücksetzen</button>
         </div>
         <div class="mc-feedback" id="auf1-result" style="margin-top:.75rem"></div>
       </div>
@@ -723,117 +723,117 @@ Purpose: protecting the learning process and preventing automated answer extract
           <div class="k-item" data-id="k9" data-correct="F">
             <div class="k-text">Nur die Kommission darf Gesetze vorschlagen (EP hat kein Initiativrecht)</div>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'D')">Demokratie</button>
-              <button class="k-btn" onclick="kS(this,'E')">Effizienz</button>
-              <button class="k-btn" onclick="kS(this,'F')">Defizit</button>
+              <button class="k-btn" onclick="PLK.kS(this,'D')">Demokratie</button>
+              <button class="k-btn" onclick="PLK.kS(this,'E')">Effizienz</button>
+              <button class="k-btn" onclick="PLK.kS(this,'F')">Defizit</button>
             </div>
           </div>
 
           <div class="k-item" data-id="k2" data-correct="E">
             <div class="k-text">Doppelte Mehrheit (55 % Staaten + 65 % Bevölkerung) ersetzt Einstimmigkeit in vielen Bereichen</div>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'D')">Demokratie</button>
-              <button class="k-btn" onclick="kS(this,'E')">Effizienz</button>
-              <button class="k-btn" onclick="kS(this,'F')">Defizit</button>
+              <button class="k-btn" onclick="PLK.kS(this,'D')">Demokratie</button>
+              <button class="k-btn" onclick="PLK.kS(this,'E')">Effizienz</button>
+              <button class="k-btn" onclick="PLK.kS(this,'F')">Defizit</button>
             </div>
           </div>
 
           <div class="k-item" data-id="k5" data-correct="D">
             <div class="k-text">Die Grundrechtecharta wird rechtsverbindlich und kann eingeklagt werden</div>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'D')">Demokratie</button>
-              <button class="k-btn" onclick="kS(this,'E')">Effizienz</button>
-              <button class="k-btn" onclick="kS(this,'F')">Defizit</button>
+              <button class="k-btn" onclick="PLK.kS(this,'D')">Demokratie</button>
+              <button class="k-btn" onclick="PLK.kS(this,'E')">Effizienz</button>
+              <button class="k-btn" onclick="PLK.kS(this,'F')">Defizit</button>
             </div>
           </div>
 
           <div class="k-item" data-id="k11" data-correct="F">
             <div class="k-text">In Kernbereichen (Außenpolitik, Steuern, Vertragsänderungen) gilt weiterhin Einstimmigkeit</div>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'D')">Demokratie</button>
-              <button class="k-btn" onclick="kS(this,'E')">Effizienz</button>
-              <button class="k-btn" onclick="kS(this,'F')">Defizit</button>
+              <button class="k-btn" onclick="PLK.kS(this,'D')">Demokratie</button>
+              <button class="k-btn" onclick="PLK.kS(this,'E')">Effizienz</button>
+              <button class="k-btn" onclick="PLK.kS(this,'F')">Defizit</button>
             </div>
           </div>
 
           <div class="k-item" data-id="k1" data-correct="D">
-            <div class="k-text">Das Europäische Parlament entscheidet in über 80 Bereichen gleichberechtigt mit dem Rat</div>
+            <div class="k-text">Das Europäische Parlament entscheidet in über 80 Bereichen gleichberechtigt mit dem Rat der EU</div>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'D')">Demokratie</button>
-              <button class="k-btn" onclick="kS(this,'E')">Effizienz</button>
-              <button class="k-btn" onclick="kS(this,'F')">Defizit</button>
+              <button class="k-btn" onclick="PLK.kS(this,'D')">Demokratie</button>
+              <button class="k-btn" onclick="PLK.kS(this,'E')">Effizienz</button>
+              <button class="k-btn" onclick="PLK.kS(this,'F')">Defizit</button>
             </div>
           </div>
 
           <div class="k-item" data-id="k6" data-correct="E">
             <div class="k-text">Hoher Vertreter für Außenpolitik bündelt Aufgaben für einheitlicheres Auftreten</div>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'D')">Demokratie</button>
-              <button class="k-btn" onclick="kS(this,'E')">Effizienz</button>
-              <button class="k-btn" onclick="kS(this,'F')">Defizit</button>
+              <button class="k-btn" onclick="PLK.kS(this,'D')">Demokratie</button>
+              <button class="k-btn" onclick="PLK.kS(this,'E')">Effizienz</button>
+              <button class="k-btn" onclick="PLK.kS(this,'F')">Defizit</button>
             </div>
           </div>
 
           <div class="k-item" data-id="k12" data-correct="F">
             <div class="k-text">Niedrige Wahlbeteiligung bei Europawahlen (2024 nur ca. 51 %)</div>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'D')">Demokratie</button>
-              <button class="k-btn" onclick="kS(this,'E')">Effizienz</button>
-              <button class="k-btn" onclick="kS(this,'F')">Defizit</button>
+              <button class="k-btn" onclick="PLK.kS(this,'D')">Demokratie</button>
+              <button class="k-btn" onclick="PLK.kS(this,'E')">Effizienz</button>
+              <button class="k-btn" onclick="PLK.kS(this,'F')">Defizit</button>
             </div>
           </div>
 
           <div class="k-item" data-id="k7" data-correct="D">
             <div class="k-text">Nationale Parlamente können die Subsidiarität von EU-Vorschlägen prüfen</div>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'D')">Demokratie</button>
-              <button class="k-btn" onclick="kS(this,'E')">Effizienz</button>
-              <button class="k-btn" onclick="kS(this,'F')">Defizit</button>
+              <button class="k-btn" onclick="PLK.kS(this,'D')">Demokratie</button>
+              <button class="k-btn" onclick="PLK.kS(this,'E')">Effizienz</button>
+              <button class="k-btn" onclick="PLK.kS(this,'F')">Defizit</button>
             </div>
           </div>
 
           <div class="k-item" data-id="k4" data-correct="E">
             <div class="k-text">Ständiger Präsident des Europäischen Rates statt halbjährlichem Wechsel</div>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'D')">Demokratie</button>
-              <button class="k-btn" onclick="kS(this,'E')">Effizienz</button>
-              <button class="k-btn" onclick="kS(this,'F')">Defizit</button>
+              <button class="k-btn" onclick="PLK.kS(this,'D')">Demokratie</button>
+              <button class="k-btn" onclick="PLK.kS(this,'E')">Effizienz</button>
+              <button class="k-btn" onclick="PLK.kS(this,'F')">Defizit</button>
             </div>
           </div>
 
           <div class="k-item" data-id="k10" data-correct="F">
             <div class="k-text">Die Europäische Bürgerinitiative ist unverbindlich (Kommission muss nur prüfen, nicht handeln)</div>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'D')">Demokratie</button>
-              <button class="k-btn" onclick="kS(this,'E')">Effizienz</button>
-              <button class="k-btn" onclick="kS(this,'F')">Defizit</button>
+              <button class="k-btn" onclick="PLK.kS(this,'D')">Demokratie</button>
+              <button class="k-btn" onclick="PLK.kS(this,'E')">Effizienz</button>
+              <button class="k-btn" onclick="PLK.kS(this,'F')">Defizit</button>
             </div>
           </div>
 
           <div class="k-item" data-id="k8" data-correct="E">
             <div class="k-text">In ca. 40 weiteren Bereichen Mehrheitsentscheidung statt Einstimmigkeit</div>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'D')">Demokratie</button>
-              <button class="k-btn" onclick="kS(this,'E')">Effizienz</button>
-              <button class="k-btn" onclick="kS(this,'F')">Defizit</button>
+              <button class="k-btn" onclick="PLK.kS(this,'D')">Demokratie</button>
+              <button class="k-btn" onclick="PLK.kS(this,'E')">Effizienz</button>
+              <button class="k-btn" onclick="PLK.kS(this,'F')">Defizit</button>
             </div>
           </div>
 
           <div class="k-item" data-id="k3" data-correct="D">
             <div class="k-text">Europäische Bürgerinitiative: 1 Mio. Bürger können die Kommission auffordern</div>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'D')">Demokratie</button>
-              <button class="k-btn" onclick="kS(this,'E')">Effizienz</button>
-              <button class="k-btn" onclick="kS(this,'F')">Defizit</button>
+              <button class="k-btn" onclick="PLK.kS(this,'D')">Demokratie</button>
+              <button class="k-btn" onclick="PLK.kS(this,'E')">Effizienz</button>
+              <button class="k-btn" onclick="PLK.kS(this,'F')">Defizit</button>
             </div>
           </div>
 
         </div>
 
         <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem">
-          <button class="btn btn-primary" onclick="chkK('auf2')">Überprüfen</button>
-          <button class="btn btn-ghost btn-sm" onclick="retK('auf2')">Falsche nochmal</button>
-          <button class="btn btn-ghost btn-sm" onclick="rsK('auf2')">Zurücksetzen</button>
+          <button class="btn btn-primary" onclick="PLK.chkK('auf2')">Überprüfen</button>
+          <button class="btn btn-ghost btn-sm" onclick="PLK.retK('auf2')">Falsche nochmal</button>
+          <button class="btn btn-ghost btn-sm" onclick="PLK.rsK('auf2')">Zurücksetzen</button>
         </div>
         <div class="mc-feedback" id="auf2-result" style="margin-top:.75rem"></div>
       </div>
@@ -878,19 +878,19 @@ Purpose: protecting the learning process and preventing automated answer extract
           <div class="uk-krit-q">Welcher Einleitungssatz formuliert einen klaren Maßstab für die Bewertung?</div>
           <div class="uk-krit-opts">
             <div class="uk-krit-opt" data-msidx="1" data-correct="false" data-error="vague" data-errtext="'Gestärkt oder geschwächt' und 'verschiedene Aspekte' sind keine konkreten Maßstäbe. Ein Kriterium muss benennen, woran man politische Stärkung misst (z.B. Demokratie und Effizienz)."
-                 onclick="selKrit(this)">
+                 onclick="PLK.selKrit(this)">
               <span class="uk-krit-num">A</span>
               Im Folgenden wird geprüft, ob der Vertrag von Lissabon die EU insgesamt gestärkt oder geschwächt hat. Dazu werden verschiedene Aspekte der Reformen betrachtet.
               <span class="uk-krit-opt-err"></span>
             </div>
             <div class="uk-krit-opt" data-msidx="0" data-correct="true" data-error="" data-errtext=""
-                 onclick="selKrit(this)">
+                 onclick="PLK.selKrit(this)">
               <span class="uk-krit-num">B</span>
               Im Folgenden wird bewertet, ob der Vertrag von Lissabon die EU politisch gestärkt hat. Als Maßstab dienen Demokratie und Effizienz.
               <span class="uk-krit-opt-err"></span>
             </div>
             <div class="uk-krit-opt" data-msidx="2" data-correct="false" data-error="sided" data-errtext="Dieser Satz nimmt das Ergebnis vorweg ('hat erhöht') und blendet die Demokratiedimension vollständig aus. Ein Kriterium muss offen formuliert sein und beide Dimensionen abdecken."
-                 onclick="selKrit(this)">
+                 onclick="PLK.selKrit(this)">
               <span class="uk-krit-num">C</span>
               Durch die doppelte Mehrheit und den Hohen Vertreter hat Lissabon die Handlungsfähigkeit der EU erhöht. Im Folgenden wird dies anhand der Reformen belegt.
               <span class="uk-krit-opt-err"></span>
@@ -906,7 +906,7 @@ Purpose: protecting the learning process and preventing automated answer extract
           <p class="uk-step-q">Welcher Kontext erklärt, warum die EU reformiert werden musste?</p>
           <ul class="uk-opts">
             <li class="uk-opt" data-correct="true">
-              <span class="uk-opt-text">Mit der Erweiterung von 12 auf 27 Mitglieder wurden die Entscheidungsregeln der EU überlastet. Einstimmigkeit im Rat ermöglichte Blockaden durch einzelne Staaten, und die Bürger hatten über das EP kaum Einfluss auf EU-Gesetze. Lissabon sollte beide Defizite beheben.</span>
+              <span class="uk-opt-text">Mit der Erweiterung von 12 auf 27 Mitglieder wurden die Entscheidungsregeln der EU überlastet. Einstimmigkeit im Rat der EU ermöglichte Blockaden durch einzelne Staaten, und die Bürger hatten über das EP kaum Einfluss auf EU-Gesetze. Lissabon sollte beide Defizite beheben.</span>
             </li>
             <li class="uk-opt" data-error="step" data-errtext="Du beschreibst bereits die Ergebnisse der Reformen (doppelte Mehrheit, EP als Gesetzgeber, Grundrechtecharta). Der Kontext soll die Ausgangslage vor Lissabon darstellen, nicht die Reformen selbst.">
               <span class="uk-opt-text">Lissabon ersetzte die Einstimmigkeit durch eine doppelte Mehrheit (55 %/65 %) und machte das EP zum gleichberechtigten Gesetzgeber. Die Grundrechtecharta wurde rechtsverbindlich und der Posten des Hohen Vertreters geschaffen. So reagierte die EU auf ihre wachsende Mitgliederzahl.</span>
@@ -915,7 +915,7 @@ Purpose: protecting the learning process and preventing automated answer extract
         </div>
 
         <div class="uk-stage-footer">
-          <button class="uk-stage-submit" disabled onclick="submitStage(this, 1)">
+          <button class="uk-stage-submit" disabled onclick="PLK.submitStage(this, 1)">
             Weiter zum Hauptteil
           </button>
         </div>
@@ -938,7 +938,7 @@ Purpose: protecting the learning process and preventing automated answer extract
         <div class="uk-krit-recheck">
           <div class="uk-krit-recheck-label">Roter Faden: Kriterium bestätigen</div>
           <div class="uk-krit-chips">
-            <div class="uk-krit-chip" data-msidx="2">Weniger Blockaden im Rat</div>
+            <div class="uk-krit-chip" data-msidx="2">Weniger Blockaden im Rat der EU</div>
             <div class="uk-krit-chip" data-msidx="0">Demokratie und Effizienz</div>
             <div class="uk-krit-chip" data-msidx="1">Besser oder schlechter</div>
           </div>
@@ -953,10 +953,10 @@ Purpose: protecting the learning process and preventing automated answer extract
           <p class="uk-step-q">Welche Aussage gibt die konkreten Reformen sachlich wieder?</p>
           <ul class="uk-opts">
             <li class="uk-opt" data-correct="true">
-              <span class="uk-opt-text">Lissabon hat in vielen Bereichen das EP zum gleichberechtigten Gesetzgeber gemacht und die Einstimmigkeit mit einer doppelten Mehrheit (55 %/65 %) im Rat ersetzt. Die Grundrechtecharta ist rechtsverbindlich und vor dem EuGH einklagbar. Der Posten des Hohen Vertreters durch Kaja Kallas soll nun die Außenpolitik bündeln.</span>
+              <span class="uk-opt-text">Lissabon hat in vielen Bereichen das EP zum gleichberechtigten Gesetzgeber gemacht und die Einstimmigkeit mit einer doppelten Mehrheit (55 %/65 %) im Rat der EU ersetzt. Die Grundrechtecharta ist rechtsverbindlich und vor dem EuGH einklagbar. Der Posten des Hohen Vertreters durch Kaja Kallas soll nun die Außenpolitik bündeln.</span>
             </li>
             <li class="uk-opt" data-error="level" data-errtext="Du bewertest bereits den Erfolg der Reformen ('erfolgreich', 'überwunden', 'nun demokratischer'). Hier sollen die konkreten Veränderungen zunächst sachlich dargestellt werden (das Urteil kommt erst in der Schlussfolgerung).">
-              <span class="uk-opt-text">Lissabon hat das EP erfolgreich zum gleichberechtigten Gesetzgeber gemacht und durch die doppelte Mehrheit Blockaden im Rat überwunden. Mit der rechtsverbindlichen Grundrechtecharta und dem Posten von Kaja Kallas als Hohe Vertreterin ist die EU nun demokratischer und handlungsfähiger.</span>
+              <span class="uk-opt-text">Lissabon hat das EP erfolgreich zum gleichberechtigten Gesetzgeber gemacht und durch die doppelte Mehrheit Blockaden im Rat der EU überwunden. Mit der rechtsverbindlichen Grundrechtecharta und dem Posten von Kaja Kallas als Hohe Vertreterin ist die EU nun demokratischer und handlungsfähiger.</span>
             </li>
           </ul>
         </div>
@@ -994,7 +994,7 @@ Purpose: protecting the learning process and preventing automated answer extract
         </div>
 
         <div class="uk-stage-footer">
-          <button class="uk-stage-submit" disabled onclick="submitStage(this, 2)">
+          <button class="uk-stage-submit" disabled onclick="PLK.submitStage(this, 2)">
             Weiter zur Schlussfolgerung
           </button>
         </div>
@@ -1017,7 +1017,7 @@ Purpose: protecting the learning process and preventing automated answer extract
           <div class="uk-krit-recheck-label">Roter Faden: Urteil mit Kriterium verknüpfen</div>
           <div class="uk-krit-chips">
             <div class="uk-krit-chip" data-msidx="1">Besser oder schlechter</div>
-            <div class="uk-krit-chip" data-msidx="2">Weniger Blockaden im Rat</div>
+            <div class="uk-krit-chip" data-msidx="2">Weniger Blockaden im Rat der EU</div>
             <div class="uk-krit-chip" data-msidx="0">Demokratie und Effizienz</div>
           </div>
           <div class="uk-krit-recheck-err"></div>
@@ -1040,7 +1040,7 @@ Purpose: protecting the learning process and preventing automated answer extract
         </div>
 
         <div class="uk-stage-footer">
-          <button class="uk-stage-submit" disabled onclick="submitStage(this, 3)">
+          <button class="uk-stage-submit" disabled onclick="PLK.submitStage(this, 3)">
             Argumentation abschließen
           </button>
         </div>
@@ -1095,12 +1095,13 @@ var CONF = {
   masterPw: 'PO-LK'
 };
 </script>
-<script src="../js/progress.js"></script>
 <script src="../js/engine.js"></script>
+<script src="../js/quiz-base.js"></script>
+<script src="../js/quiz-ext.js"></script>
+<script src="../js/uk-quiz.js"></script>
 <script src="../data/glossary.js"></script>
 <script src="../data/operators.js"></script>
 <script src="../data/units.js"></script>
 <script src="../js/tooltips.js"></script>
-<script src="../js/uk-quiz.js"></script>
 </body>
 </html>

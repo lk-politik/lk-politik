@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
@@ -82,9 +82,9 @@ Purpose: protecting the learning process and preventing automated answer extract
     <div class="tool-row">
       <span class="tool-label">Zugang</span>
       <input class="tool-input" type="password" id="pw-field" placeholder="Passwort eingeben">
-      <button class="tool-btn-unlock" onclick="chkPw('pw-field','pw-hint')">Freischalten</button>
+      <button class="tool-btn-unlock" onclick="PLK.chkPw('pw-field','pw-hint')">Freischalten</button>
       <button class="tool-btn-reset"
-              onclick="if(confirm('Fortschritt zurücksetzen?')){Progress.clear(CONF.id);location.reload();}">
+              onclick="if(confirm('Fortschritt zurücksetzen?')){PLK.resetUnit();}">
         ↺ Einheit zurücksetzen
       </button>
     </div>
@@ -106,7 +106,7 @@ Purpose: protecting the learning process and preventing automated answer extract
        EINSTIEG
        ================================================================ -->
   <div class="einstieg" id="einstieg">
-    <div class="einstieg-header" onclick="toggleEinstieg()">
+    <div class="einstieg-header" onclick="PLK.toggleEinstieg()">
       <span class="einstieg-badge">🎯 EINSTIEG</span>
       <span class="einstieg-title">🚀 Einstieg: Dein Alltag im Binnenmarkt</span>
       <span class="einstieg-status-pill" id="einstieg-status">Offen</span>
@@ -128,10 +128,10 @@ Purpose: protecting the learning process and preventing automated answer extract
         Jeden Morgen fahren sie über die Grenze, ohne angehalten zu werden. Niemand kontrolliert
         ihren Pass oder fragt nach einer Arbeitserlaubnis.
         <div class="einstieg-chips">
-          <button class="e-chip" data-v="ware"   onclick="selEinstieg(this, 1)">🛒 Warenverkehr</button>
-          <button class="e-chip" data-v="person" onclick="selEinstieg(this, 1)">🚶 Personenverkehr</button>
-          <button class="e-chip" data-v="dienst" onclick="selEinstieg(this, 1)">🔧 Dienstleistungsverkehr</button>
-          <button class="e-chip" data-v="kapital" onclick="selEinstieg(this, 1)">💶 Kapitalverkehr</button>
+          <button class="e-chip" data-v="ware"   onclick="PLK.selEinstieg(this, 1)">🛒 Warenverkehr</button>
+          <button class="e-chip" data-v="person" onclick="PLK.selEinstieg(this, 1)">🚶 Personenverkehr</button>
+          <button class="e-chip" data-v="dienst" onclick="PLK.selEinstieg(this, 1)">🔧 Dienstleistungsverkehr</button>
+          <button class="e-chip" data-v="kapital" onclick="PLK.selEinstieg(this, 1)">💶 Kapitalverkehr</button>
         </div>
       </div>
 
@@ -141,10 +141,10 @@ Purpose: protecting the learning process and preventing automated answer extract
         im deutschen Supermarkt nicht gibt. Ihr bringt alles einfach mit nach Hause. Kein Zoll, keine
         Kontrolle.
         <div class="einstieg-chips">
-          <button class="e-chip" data-v="ware"   onclick="selEinstieg(this, 2)">🛒 Warenverkehr</button>
-          <button class="e-chip" data-v="person" onclick="selEinstieg(this, 2)">🚶 Personenverkehr</button>
-          <button class="e-chip" data-v="dienst" onclick="selEinstieg(this, 2)">🔧 Dienstleistungsverkehr</button>
-          <button class="e-chip" data-v="kapital" onclick="selEinstieg(this, 2)">💶 Kapitalverkehr</button>
+          <button class="e-chip" data-v="ware"   onclick="PLK.selEinstieg(this, 2)">🛒 Warenverkehr</button>
+          <button class="e-chip" data-v="person" onclick="PLK.selEinstieg(this, 2)">🚶 Personenverkehr</button>
+          <button class="e-chip" data-v="dienst" onclick="PLK.selEinstieg(this, 2)">🔧 Dienstleistungsverkehr</button>
+          <button class="e-chip" data-v="kapital" onclick="PLK.selEinstieg(this, 2)">💶 Kapitalverkehr</button>
         </div>
       </div>
 
@@ -153,10 +153,10 @@ Purpose: protecting the learning process and preventing automated answer extract
         Er darf das, ohne dort eine eigene Firma gründen zu müssen. Und er ist günstiger als ein
         luxemburgischer Handwerker, weil die Lohnkosten in Deutschland niedriger sind.
         <div class="einstieg-chips">
-          <button class="e-chip" data-v="ware"   onclick="selEinstieg(this, 3)">🛒 Warenverkehr</button>
-          <button class="e-chip" data-v="person" onclick="selEinstieg(this, 3)">🚶 Personenverkehr</button>
-          <button class="e-chip" data-v="dienst" onclick="selEinstieg(this, 3)">🔧 Dienstleistungsverkehr</button>
-          <button class="e-chip" data-v="kapital" onclick="selEinstieg(this, 3)">💶 Kapitalverkehr</button>
+          <button class="e-chip" data-v="ware"   onclick="PLK.selEinstieg(this, 3)">🛒 Warenverkehr</button>
+          <button class="e-chip" data-v="person" onclick="PLK.selEinstieg(this, 3)">🚶 Personenverkehr</button>
+          <button class="e-chip" data-v="dienst" onclick="PLK.selEinstieg(this, 3)">🔧 Dienstleistungsverkehr</button>
+          <button class="e-chip" data-v="kapital" onclick="PLK.selEinstieg(this, 3)">💶 Kapitalverkehr</button>
         </div>
       </div>
 
@@ -165,20 +165,20 @@ Purpose: protecting the learning process and preventing automated answer extract
         ein deutsches Bankkonto überwiesen. Das Geld fließt automatisch über die Grenze, ohne
         Gebühren und ohne Genehmigung.
         <div class="einstieg-chips">
-          <button class="e-chip" data-v="ware"   onclick="selEinstieg(this, 4)">🛒 Warenverkehr</button>
-          <button class="e-chip" data-v="person" onclick="selEinstieg(this, 4)">🚶 Personenverkehr</button>
-          <button class="e-chip" data-v="dienst" onclick="selEinstieg(this, 4)">🔧 Dienstleistungsverkehr</button>
-          <button class="e-chip" data-v="kapital" onclick="selEinstieg(this, 4)">💶 Kapitalverkehr</button>
+          <button class="e-chip" data-v="ware"   onclick="PLK.selEinstieg(this, 4)">🛒 Warenverkehr</button>
+          <button class="e-chip" data-v="person" onclick="PLK.selEinstieg(this, 4)">🚶 Personenverkehr</button>
+          <button class="e-chip" data-v="dienst" onclick="PLK.selEinstieg(this, 4)">🔧 Dienstleistungsverkehr</button>
+          <button class="e-chip" data-v="kapital" onclick="PLK.selEinstieg(this, 4)">💶 Kapitalverkehr</button>
         </div>
       </div>
 
       <div style="margin-top:1rem;padding-top:.75rem;border-top:1px solid rgba(0,0,0,.08)">
-        <button class="btn btn-primary btn-sm" id="einstieg-btn" onclick="chkEinstieg()" disabled>Prüfen →</button>
+        <button class="btn btn-primary btn-sm" id="einstieg-btn" onclick="PLK.chkEinstieg()" disabled>Prüfen →</button>
       </div>
 
     </div><!-- /.einstieg-body -->
     <div class="einstieg-retry" id="einstieg-retry">
-      <a href="#" onclick="retryEinstieg(); return false">↺ Nochmal ansehen</a>
+      <a href="#" onclick="PLK.retryEinstieg(); return false">↺ Nochmal ansehen</a>
     </div>
   </div><!-- /#einstieg -->
 
@@ -223,7 +223,7 @@ Purpose: protecting the learning process and preventing automated answer extract
   <!-- QUIZ-GATE 1 -->
   <div class="qg-wrapper">
   <div class="qg" id="qg1">
-    <div class="qg-head" onclick="toggleQg(1)">
+    <div class="qg-head" onclick="PLK.toggleQg(1)">
       <span class="qg-label">✓ VERSTÄNDNISCHECK</span>
       <span class="qg-status pend" id="qg1s">Block 1: Offen</span>
       <span class="qg-chevron">▾</span>
@@ -235,11 +235,11 @@ Purpose: protecting the learning process and preventing automated answer extract
         <div class="qi-t">Seit wann existiert der Europäische Binnenmarkt offiziell?</div>
         <ul class="mco-list">
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q1_1" onchange="mcS(this)"> Seit 1986 (Einheitliche Europäische Akte)</label></li>
+            <input type="radio" name="q1_1" onchange="PLK.mcS(this)"> Seit 1986 (Einheitliche Europäische Akte)</label></li>
           <li class="mco" data-correct="1"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q1_1" onchange="mcS(this)"> Seit 1993</label></li>
+            <input type="radio" name="q1_1" onchange="PLK.mcS(this)"> Seit 1993</label></li>
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q1_1" onchange="mcS(this)"> Seit 2007 (Vertrag von Lissabon)</label></li>
+            <input type="radio" name="q1_1" onchange="PLK.mcS(this)"> Seit 2007 (Vertrag von Lissabon)</label></li>
         </ul>
       </div>
 
@@ -256,11 +256,11 @@ Purpose: protecting the learning process and preventing automated answer extract
         <div class="qi-t">Was unterscheidet einen Binnenmarkt von einer Zollunion?</div>
         <ul class="mco-list">
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q1_3" onchange="mcS(this)"> Im Binnenmarkt gibt es eine gemeinsame Währung.</label></li>
+            <input type="radio" name="q1_3" onchange="PLK.mcS(this)"> Im Binnenmarkt gibt es eine gemeinsame Währung.</label></li>
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q1_3" onchange="mcS(this)"> In einer Zollunion gibt es keine Zölle, im Binnenmarkt schon.</label></li>
+            <input type="radio" name="q1_3" onchange="PLK.mcS(this)"> In einer Zollunion gibt es keine Zölle, im Binnenmarkt schon.</label></li>
           <li class="mco" data-correct="1"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q1_3" onchange="mcS(this)"> Im Binnenmarkt bewegen sich auch Personen, Dienstleistungen und Kapital frei.</label></li>
+            <input type="radio" name="q1_3" onchange="PLK.mcS(this)"> Im Binnenmarkt bewegen sich auch Personen, Dienstleistungen und Kapital frei.</label></li>
         </ul>
       </div>
 
@@ -271,42 +271,42 @@ Purpose: protecting the learning process and preventing automated answer extract
           <li class="oitem" data-id="bm">
             <span class="oitem-num">1</span><span>Binnenmarkt</span>
             <div class="oarr">
-              <button class="oab" onclick="oMv(this,-1)">▲</button>
-              <button class="oab" onclick="oMv(this,1)">▼</button>
+              <button class="oab" onclick="PLK.oMv(this,-1)">▲</button>
+              <button class="oab" onclick="PLK.oMv(this,1)">▼</button>
             </div>
           </li>
           <li class="oitem" data-id="wwu">
             <span class="oitem-num">2</span><span>Wirtschafts- und Währungsunion</span>
             <div class="oarr">
-              <button class="oab" onclick="oMv(this,-1)">▲</button>
-              <button class="oab" onclick="oMv(this,1)">▼</button>
+              <button class="oab" onclick="PLK.oMv(this,-1)">▲</button>
+              <button class="oab" onclick="PLK.oMv(this,1)">▼</button>
             </div>
           </li>
           <li class="oitem" data-id="fhz">
             <span class="oitem-num">3</span><span>Freihandelszone</span>
             <div class="oarr">
-              <button class="oab" onclick="oMv(this,-1)">▲</button>
-              <button class="oab" onclick="oMv(this,1)">▼</button>
+              <button class="oab" onclick="PLK.oMv(this,-1)">▲</button>
+              <button class="oab" onclick="PLK.oMv(this,1)">▼</button>
             </div>
           </li>
           <li class="oitem" data-id="zu">
             <span class="oitem-num">4</span><span>Zollunion</span>
             <div class="oarr">
-              <button class="oab" onclick="oMv(this,-1)">▲</button>
-              <button class="oab" onclick="oMv(this,1)">▼</button>
+              <button class="oab" onclick="PLK.oMv(this,-1)">▲</button>
+              <button class="oab" onclick="PLK.oMv(this,1)">▼</button>
             </div>
           </li>
         </ul>
       </div>
 
       <div style="display:flex;gap:.6rem;align-items:center;margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--border-l);flex-wrap:wrap">
-        <button class="btn btn-primary btn-sm" onclick="chkQ(1)">Überprüfen</button>
-        <button class="btn btn-ghost btn-sm" onclick="rstQ(1)">Zurücksetzen</button>
+        <button class="btn btn-primary btn-sm" onclick="PLK.chkQ(1)">Überprüfen</button>
+        <button class="btn btn-ghost btn-sm" onclick="PLK.rstQ(1)">Zurücksetzen</button>
         <span class="mc-feedback" id="qfb1" style="display:none"></span>
       </div>
     </div>
     <div class="qg-retry-link" id="qg1-retry">
-      <a href="#" onclick="retryQg(1); return false">↺ Wiederholen &amp; zurücksetzen</a>
+      <a href="#" onclick="PLK.retryQg(1); return false">↺ Wiederholen &amp; zurücksetzen</a>
     </div>
   </div><!-- /.qg -->
   </div><!-- /.qg-wrapper -->
@@ -353,7 +353,7 @@ Purpose: protecting the learning process and preventing automated answer extract
   <!-- QUIZ-GATE 2 -->
   <div class="qg-wrapper locked">
   <div class="qg locked" id="qg2">
-    <div class="qg-head" onclick="toggleQg(2)">
+    <div class="qg-head" onclick="PLK.toggleQg(2)">
       <span class="qg-label">✓ VERSTÄNDNISCHECK</span>
       <span class="qg-status pend" id="qg2s">Block 2: Offen</span>
       <span class="qg-chevron">▾</span>
@@ -373,11 +373,11 @@ Purpose: protecting the learning process and preventing automated answer extract
         <div class="qi-t">Was erlaubt die Personenfreizügigkeit EU-Bürgern?</div>
         <ul class="mco-list">
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q2_2" onchange="mcS(this)"> Sie dürfen in jedem EU-Land Urlaub machen, aber nicht dauerhaft wohnen.</label></li>
+            <input type="radio" name="q2_2" onchange="PLK.mcS(this)"> Sie dürfen in jedem EU-Land Urlaub machen, aber nicht dauerhaft wohnen.</label></li>
           <li class="mco" data-correct="1"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q2_2" onchange="mcS(this)"> Sie dürfen in jedem EU-Land leben, arbeiten und studieren.</label></li>
+            <input type="radio" name="q2_2" onchange="PLK.mcS(this)"> Sie dürfen in jedem EU-Land leben, arbeiten und studieren.</label></li>
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q2_2" onchange="mcS(this)"> Sie dürfen in jedem EU-Land arbeiten, aber nur mit einer Arbeitserlaubnis.</label></li>
+            <input type="radio" name="q2_2" onchange="PLK.mcS(this)"> Sie dürfen in jedem EU-Land arbeiten, aber nur mit einer Arbeitserlaubnis.</label></li>
         </ul>
       </div>
 
@@ -388,29 +388,29 @@ Purpose: protecting the learning process and preventing automated answer extract
           <li class="oitem" data-id="kapital">
             <span class="oitem-num">1</span><span>Überweisung von Luxemburg auf deutsches Konto</span>
             <div class="oarr">
-              <button class="oab" onclick="oMv(this,-1)">▲</button>
-              <button class="oab" onclick="oMv(this,1)">▼</button>
+              <button class="oab" onclick="PLK.oMv(this,-1)">▲</button>
+              <button class="oab" onclick="PLK.oMv(this,1)">▼</button>
             </div>
           </li>
           <li class="oitem" data-id="person">
             <span class="oitem-num">2</span><span>Erasmus-Semester in Spanien</span>
             <div class="oarr">
-              <button class="oab" onclick="oMv(this,-1)">▲</button>
-              <button class="oab" onclick="oMv(this,1)">▼</button>
+              <button class="oab" onclick="PLK.oMv(this,-1)">▲</button>
+              <button class="oab" onclick="PLK.oMv(this,1)">▼</button>
             </div>
           </li>
           <li class="oitem" data-id="ware">
             <span class="oitem-num">3</span><span>Französische Süßigkeiten im deutschen Supermarkt</span>
             <div class="oarr">
-              <button class="oab" onclick="oMv(this,-1)">▲</button>
-              <button class="oab" onclick="oMv(this,1)">▼</button>
+              <button class="oab" onclick="PLK.oMv(this,-1)">▲</button>
+              <button class="oab" onclick="PLK.oMv(this,1)">▼</button>
             </div>
           </li>
           <li class="oitem" data-id="dienst">
             <span class="oitem-num">4</span><span>Polnischer Spediteur transportiert Ware in Deutschland</span>
             <div class="oarr">
-              <button class="oab" onclick="oMv(this,-1)">▲</button>
-              <button class="oab" onclick="oMv(this,1)">▼</button>
+              <button class="oab" onclick="PLK.oMv(this,-1)">▲</button>
+              <button class="oab" onclick="PLK.oMv(this,1)">▼</button>
             </div>
           </li>
         </ul>
@@ -421,13 +421,13 @@ Purpose: protecting the learning process and preventing automated answer extract
         <div class="qi-t">Welche der vier Freiheiten gilt auch gegenüber Nicht-EU-Ländern?</div>
         <ul class="mco-list">
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q2_4" onchange="mcS(this)"> Freier Warenverkehr</label></li>
+            <input type="radio" name="q2_4" onchange="PLK.mcS(this)"> Freier Warenverkehr</label></li>
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q2_4" onchange="mcS(this)"> Freier Personenverkehr</label></li>
+            <input type="radio" name="q2_4" onchange="PLK.mcS(this)"> Freier Personenverkehr</label></li>
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q2_4" onchange="mcS(this)"> Freier Dienstleistungsverkehr</label></li>
+            <input type="radio" name="q2_4" onchange="PLK.mcS(this)"> Freier Dienstleistungsverkehr</label></li>
           <li class="mco" data-correct="1"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q2_4" onchange="mcS(this)"> Freier Kapitalverkehr</label></li>
+            <input type="radio" name="q2_4" onchange="PLK.mcS(this)"> Freier Kapitalverkehr</label></li>
         </ul>
       </div>
 
@@ -440,13 +440,13 @@ Purpose: protecting the learning process and preventing automated answer extract
       </div>
 
       <div style="display:flex;gap:.6rem;align-items:center;margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--border-l);flex-wrap:wrap">
-        <button class="btn btn-primary btn-sm" onclick="chkQ(2)">Überprüfen</button>
-        <button class="btn btn-ghost btn-sm" onclick="rstQ(2)">Zurücksetzen</button>
+        <button class="btn btn-primary btn-sm" onclick="PLK.chkQ(2)">Überprüfen</button>
+        <button class="btn btn-ghost btn-sm" onclick="PLK.rstQ(2)">Zurücksetzen</button>
         <span class="mc-feedback" id="qfb2" style="display:none"></span>
       </div>
     </div>
     <div class="qg-retry-link" id="qg2-retry">
-      <a href="#" onclick="retryQg(2); return false">↺ Wiederholen &amp; zurücksetzen</a>
+      <a href="#" onclick="PLK.retryQg(2); return false">↺ Wiederholen &amp; zurücksetzen</a>
     </div>
   </div><!-- /.qg -->
   </div><!-- /.qg-wrapper -->
@@ -510,7 +510,7 @@ Purpose: protecting the learning process and preventing automated answer extract
   <!-- QUIZ-GATE 3 -->
   <div class="qg-wrapper locked">
   <div class="qg locked" id="qg3">
-    <div class="qg-head" onclick="toggleQg(3)">
+    <div class="qg-head" onclick="PLK.toggleQg(3)">
       <span class="qg-label">✓ VERSTÄNDNISCHECK</span>
       <span class="qg-status pend" id="qg3s">Block 3: Offen</span>
       <span class="qg-chevron">▾</span>
@@ -522,11 +522,11 @@ Purpose: protecting the learning process and preventing automated answer extract
         <div class="qi-t">Was versteht man unter "Sozialdumping"?</div>
         <ul class="mco-list">
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q3_1" onchange="mcS(this)"> EU-Länder konkurrieren darum, wer den höchsten Mindestlohn hat.</label></li>
+            <input type="radio" name="q3_1" onchange="PLK.mcS(this)"> EU-Länder konkurrieren darum, wer den höchsten Mindestlohn hat.</label></li>
           <li class="mco" data-correct="1"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q3_1" onchange="mcS(this)"> Unternehmen nutzen niedrigere Lohn- und Sozialstandards aus, um günstiger zu produzieren oder Dienstleistungen anzubieten.</label></li>
+            <input type="radio" name="q3_1" onchange="PLK.mcS(this)"> Unternehmen nutzen niedrigere Lohn- und Sozialstandards aus, um günstiger zu produzieren oder Dienstleistungen anzubieten.</label></li>
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q3_1" onchange="mcS(this)"> Die EU zwingt alle Länder, die gleichen Sozialleistungen anzubieten.</label></li>
+            <input type="radio" name="q3_1" onchange="PLK.mcS(this)"> Die EU zwingt alle Länder, die gleichen Sozialleistungen anzubieten.</label></li>
         </ul>
       </div>
 
@@ -543,11 +543,11 @@ Purpose: protecting the learning process and preventing automated answer extract
         <div class="qi-t">Was deckten die "LuxLeaks" 2014 auf?</div>
         <ul class="mco-list">
           <li class="mco" data-correct="1"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q3_3" onchange="mcS(this)"> Luxemburg hatte hunderten Unternehmen geheime Steuervereinbarungen angeboten.</label></li>
+            <input type="radio" name="q3_3" onchange="PLK.mcS(this)"> Luxemburg hatte hunderten Unternehmen geheime Steuervereinbarungen angeboten.</label></li>
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q3_3" onchange="mcS(this)"> Luxemburg hatte EU-Subventionen veruntreut.</label></li>
+            <input type="radio" name="q3_3" onchange="PLK.mcS(this)"> Luxemburg hatte EU-Subventionen veruntreut.</label></li>
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q3_3" onchange="mcS(this)"> Luxemburg wollte den Euro abschaffen.</label></li>
+            <input type="radio" name="q3_3" onchange="PLK.mcS(this)"> Luxemburg wollte den Euro abschaffen.</label></li>
         </ul>
       </div>
 
@@ -556,22 +556,22 @@ Purpose: protecting the learning process and preventing automated answer extract
         <div class="qi-t">Um wie viel Prozent hat der Binnenmarkt nach Schätzungen der Europäischen Kommission das BIP der EU erhöht?</div>
         <ul class="mco-list">
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q3_4" onchange="mcS(this)"> Etwa 2 bis 3 Prozent</label></li>
+            <input type="radio" name="q3_4" onchange="PLK.mcS(this)"> Etwa 2 bis 3 Prozent</label></li>
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q3_4" onchange="mcS(this)"> Etwa 15 bis 20 Prozent</label></li>
+            <input type="radio" name="q3_4" onchange="PLK.mcS(this)"> Etwa 15 bis 20 Prozent</label></li>
           <li class="mco" data-correct="1"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q3_4" onchange="mcS(this)"> Etwa 8 bis 9 Prozent</label></li>
+            <input type="radio" name="q3_4" onchange="PLK.mcS(this)"> Etwa 8 bis 9 Prozent</label></li>
         </ul>
       </div>
 
       <div style="display:flex;gap:.6rem;align-items:center;margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--border-l);flex-wrap:wrap">
-        <button class="btn btn-primary btn-sm" onclick="chkQ(3)">Überprüfen</button>
-        <button class="btn btn-ghost btn-sm" onclick="rstQ(3)">Zurücksetzen</button>
+        <button class="btn btn-primary btn-sm" onclick="PLK.chkQ(3)">Überprüfen</button>
+        <button class="btn btn-ghost btn-sm" onclick="PLK.rstQ(3)">Zurücksetzen</button>
         <span class="mc-feedback" id="qfb3" style="display:none"></span>
       </div>
     </div>
     <div class="qg-retry-link" id="qg3-retry">
-      <a href="#" onclick="retryQg(3); return false">↺ Wiederholen &amp; zurücksetzen</a>
+      <a href="#" onclick="PLK.retryQg(3); return false">↺ Wiederholen &amp; zurücksetzen</a>
     </div>
   </div><!-- /.qg -->
   </div><!-- /.qg-wrapper -->
@@ -592,7 +592,7 @@ Purpose: protecting the learning process and preventing automated answer extract
     <div class="card" style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:var(--gap)">
       <span style="font-family:var(--ff-mono);font-size:.75rem;color:var(--ink3);white-space:nowrap">Aufgaben</span>
       <span style="font-family:var(--ff-mono);font-size:.85rem;font-weight:600;color:var(--acc)" id="ab-score">0 / 12</span>
-      <button class="btn btn-ghost btn-sm" style="margin-left:auto" onclick="rstAllAB()">Alles zurücksetzen</button>
+      <button class="btn btn-ghost btn-sm" style="margin-left:auto" onclick="PLK.rstAllAB()">Alles zurücksetzen</button>
     </div>
 
     <!-- AUFGABE 1: Zuordnung Freiheiten (Chip-Bank) -->
@@ -611,24 +611,24 @@ Purpose: protecting the learning process and preventing automated answer extract
       <p class="auf-i">Ordne jedem Beispiel die richtige Freiheit zu. Klicke zuerst auf einen Begriff, dann auf die Lücke.</p>
       <div class="auf-body">
         <div class="bank" id="bk1">
-          <span class="chip" data-v="Warenverkehr"         onclick="selC(this,'bk1')">Warenverkehr</span>
-          <span class="chip" data-v="Personenverkehr"      onclick="selC(this,'bk1')">Personenverkehr</span>
-          <span class="chip" data-v="Dienstleistungsverkehr" onclick="selC(this,'bk1')">Dienstleistungsverkehr</span>
-          <span class="chip" data-v="Kapitalverkehr"       onclick="selC(this,'bk1')">Kapitalverkehr</span>
+          <span class="chip" data-v="Warenverkehr"         onclick="PLK.selC(this,'bk1')">Warenverkehr</span>
+          <span class="chip" data-v="Personenverkehr"      onclick="PLK.selC(this,'bk1')">Personenverkehr</span>
+          <span class="chip" data-v="Dienstleistungsverkehr" onclick="PLK.selC(this,'bk1')">Dienstleistungsverkehr</span>
+          <span class="chip" data-v="Kapitalverkehr"       onclick="PLK.selC(this,'bk1')">Kapitalverkehr</span>
         </div>
         <p class="lp">Ein spanischer Arzt arbeitet in einem deutschen Krankenhaus:
-          <span class="slot" data-a="Personenverkehr"        data-bank="bk1" onclick="slCl(this)"></span></p>
+          <span class="slot" data-a="Personenverkehr"        data-bank="bk1" onclick="PLK.slCl(this)"></span></p>
         <p class="lp">Amazon liefert ein Buch aus den Niederlanden nach Deutschland ohne Zoll:
-          <span class="slot" data-a="Warenverkehr"           data-bank="bk1" onclick="slCl(this)"></span></p>
+          <span class="slot" data-a="Warenverkehr"           data-bank="bk1" onclick="PLK.slCl(this)"></span></p>
         <p class="lp">Ein Investor aus Frankreich kauft Anteile an einer deutschen Firma:
-          <span class="slot" data-a="Kapitalverkehr"         data-bank="bk1" onclick="slCl(this)"></span></p>
+          <span class="slot" data-a="Kapitalverkehr"         data-bank="bk1" onclick="PLK.slCl(this)"></span></p>
         <p class="lp">Ein italienischer Architekt plant ein Gebäude in Österreich:
-          <span class="slot" data-a="Dienstleistungsverkehr" data-bank="bk1" onclick="slCl(this)"></span></p>
+          <span class="slot" data-a="Dienstleistungsverkehr" data-bank="bk1" onclick="PLK.slCl(this)"></span></p>
 
         <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem">
-          <button class="btn btn-primary" onclick="chkSl('auf1','bk1',4,'auf1-result','auf1-retry')">Überprüfen</button>
-          <button class="btn btn-ghost btn-sm" id="auf1-retry" style="display:none" onclick="retSl('auf1','bk1')">Falsche nochmal</button>
-          <button class="btn btn-ghost btn-sm" onclick="rsSl('auf1','bk1')">Zurücksetzen</button>
+          <button class="btn btn-primary" onclick="PLK.chkSl('auf1','bk1',4,'auf1-result','auf1-retry')">Überprüfen</button>
+          <button class="btn btn-ghost btn-sm" id="auf1-retry" style="display:none" onclick="PLK.retSl('auf1','bk1')">Falsche nochmal</button>
+          <button class="btn btn-ghost btn-sm" onclick="PLK.rsSl('auf1','bk1')">Zurücksetzen</button>
         </div>
         <div class="mc-feedback" id="auf1-result" style="display:none;margin-top:.75rem"></div>
       </div>
@@ -656,64 +656,64 @@ Purpose: protecting the learning process and preventing automated answer extract
           <div class="k-item" data-id="k1" data-correct="d">
             <span class="k-text">Verbraucher haben mehr Auswahl bei Produkten und Dienstleistungen.</span>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'d')">V</button>
-              <button class="k-btn" onclick="kS(this,'e')">H</button>
+              <button class="k-btn" onclick="PLK.kS(this,'d')">V</button>
+              <button class="k-btn" onclick="PLK.kS(this,'e')">H</button>
             </div>
           </div>
           <div class="k-item" data-id="k2" data-correct="e">
             <span class="k-text">Junge Fachkräfte wandern aus ärmeren EU-Ländern ab (Brain Drain).</span>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'d')">V</button>
-              <button class="k-btn" onclick="kS(this,'e')">H</button>
+              <button class="k-btn" onclick="PLK.kS(this,'d')">V</button>
+              <button class="k-btn" onclick="PLK.kS(this,'e')">H</button>
             </div>
           </div>
           <div class="k-item" data-id="k3" data-correct="d">
             <span class="k-text">Unternehmen können ihre Produkte in 27 Ländern ohne Zoll verkaufen.</span>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'d')">V</button>
-              <button class="k-btn" onclick="kS(this,'e')">H</button>
+              <button class="k-btn" onclick="PLK.kS(this,'d')">V</button>
+              <button class="k-btn" onclick="PLK.kS(this,'e')">H</button>
             </div>
           </div>
           <div class="k-item" data-id="k4" data-correct="e">
             <span class="k-text">Konzerne verschieben Gewinne in Niedrigsteuerländer wie Irland oder Luxemburg.</span>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'d')">V</button>
-              <button class="k-btn" onclick="kS(this,'e')">H</button>
+              <button class="k-btn" onclick="PLK.kS(this,'d')">V</button>
+              <button class="k-btn" onclick="PLK.kS(this,'e')">H</button>
             </div>
           </div>
           <div class="k-item" data-id="k5" data-correct="d">
             <span class="k-text">Keine Roaming-Gebühren beim Telefonieren im EU-Ausland.</span>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'d')">V</button>
-              <button class="k-btn" onclick="kS(this,'e')">H</button>
+              <button class="k-btn" onclick="PLK.kS(this,'d')">V</button>
+              <button class="k-btn" onclick="PLK.kS(this,'e')">H</button>
             </div>
           </div>
           <div class="k-item" data-id="k6" data-correct="e">
             <span class="k-text">Entsandte Arbeitnehmer aus Osteuropa arbeiten zu günstigeren Konditionen als lokale Handwerker.</span>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'d')">V</button>
-              <button class="k-btn" onclick="kS(this,'e')">H</button>
+              <button class="k-btn" onclick="PLK.kS(this,'d')">V</button>
+              <button class="k-btn" onclick="PLK.kS(this,'e')">H</button>
             </div>
           </div>
           <div class="k-item" data-id="k7" data-correct="d">
             <span class="k-text">Mehr Wettbewerb führt zu niedrigeren Preisen.</span>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'d')">V</button>
-              <button class="k-btn" onclick="kS(this,'e')">H</button>
+              <button class="k-btn" onclick="PLK.kS(this,'d')">V</button>
+              <button class="k-btn" onclick="PLK.kS(this,'e')">H</button>
             </div>
           </div>
           <div class="k-item" data-id="k8" data-correct="e">
             <span class="k-text">Steuerwettbewerb setzt alle EU-Länder unter Druck, ihre Steuersätze zu senken.</span>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'d')">V</button>
-              <button class="k-btn" onclick="kS(this,'e')">H</button>
+              <button class="k-btn" onclick="PLK.kS(this,'d')">V</button>
+              <button class="k-btn" onclick="PLK.kS(this,'e')">H</button>
             </div>
           </div>
         </div>
         <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem">
-          <button class="btn btn-primary" onclick="chkK('auf2')">Überprüfen</button>
-          <button class="btn btn-ghost btn-sm" onclick="retK('auf2')">Falsche nochmal</button>
-          <button class="btn btn-ghost btn-sm" onclick="rsK('auf2')">Zurücksetzen</button>
+          <button class="btn btn-primary" onclick="PLK.chkK('auf2')">Überprüfen</button>
+          <button class="btn btn-ghost btn-sm" onclick="PLK.retK('auf2')">Falsche nochmal</button>
+          <button class="btn btn-ghost btn-sm" onclick="PLK.rsK('auf2')">Zurücksetzen</button>
         </div>
         <div class="mc-feedback" id="auf2-result" style="display:none;margin-top:.75rem"></div>
       </div>
@@ -746,21 +746,21 @@ Purpose: protecting the learning process and preventing automated answer extract
           <div class="uk-krit-q">Welcher Maßstab ist geeignet, um die Leitfrage zu beantworten?</div>
           <div class="uk-krit-opts">
             <div class="uk-krit-opt" data-msidx="0" data-correct="true" data-error="" data-errtext=""
-                 onclick="selKrit(this)">
+                 onclick="PLK.selKrit(this)">
               <span class="uk-krit-num">A</span>
               Sichert der Binnenmarkt Effizienz und sozialen Ausgleich für alle Mitglieder?
               <span class="uk-krit-opt-err"></span>
             </div>
             <div class="uk-krit-opt" data-msidx="1" data-correct="false" data-error="sided"
                  data-errtext="Dieser Maßstab erfasst nur die Wachstumsperspektive. Soziale Konsequenzen bleiben außen vor."
-                 onclick="selKrit(this)">
+                 onclick="PLK.selKrit(this)">
               <span class="uk-krit-num">B</span>
               Fördert der Binnenmarkt gleichmäßiges BIP-Wachstum in allen Mitgliedstaaten?
               <span class="uk-krit-opt-err"></span>
             </div>
             <div class="uk-krit-opt" data-msidx="2" data-correct="false" data-error="vague"
                  data-errtext="Ein Beschäftigungsmaßstab greift zu kurz. Er ignoriert Lohnentwicklung, soziale Standards und Verteilungswirkungen."
-                 onclick="selKrit(this)">
+                 onclick="PLK.selKrit(this)">
               <span class="uk-krit-num">C</span>
               Schafft der Binnenmarkt per Saldo mehr Arbeitsplätze als er verdrängt?
               <span class="uk-krit-opt-err"></span>
@@ -788,7 +788,7 @@ Purpose: protecting the learning process and preventing automated answer extract
 
         <!-- Stage 1 proceed -->
         <div class="uk-stage-footer">
-          <button class="uk-stage-submit" disabled onclick="submitStage(this, 1)">
+          <button class="uk-stage-submit" disabled onclick="PLK.submitStage(this, 1)">
             Weiter zum Hauptteil
           </button>
         </div>
@@ -875,7 +875,7 @@ Purpose: protecting the learning process and preventing automated answer extract
 
         <!-- Stage 2 proceed -->
         <div class="uk-stage-footer">
-          <button class="uk-stage-submit" disabled onclick="submitStage(this, 2)">
+          <button class="uk-stage-submit" disabled onclick="PLK.submitStage(this, 2)">
             Weiter zur Schlussfolgerung
           </button>
         </div>
@@ -925,7 +925,7 @@ Purpose: protecting the learning process and preventing automated answer extract
 
         <!-- Stage 3 proceed (final) -->
         <div class="uk-stage-footer">
-          <button class="uk-stage-submit" disabled onclick="submitStage(this, 3)">
+          <button class="uk-stage-submit" disabled onclick="PLK.submitStage(this, 3)">
             Argumentation abschließen
           </button>
         </div>
@@ -1049,12 +1049,13 @@ var CONF = {
   stuPw:    'vier-freiheiten&grenzen'
 };
 </script>
-<script src="../js/progress.js"></script>
 <script src="../js/engine.js"></script>
+<script src="../js/quiz-base.js"></script>
+<script src="../js/quiz-ext.js"></script>
+<script src="../js/uk-quiz.js"></script>
 <script src="../data/glossary.js"></script>
 <script src="../data/operators.js"></script>
 <script src="../data/units.js"></script>
 <script src="../js/tooltips.js"></script>
-<script src="../js/uk-quiz.js"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
@@ -74,6 +74,66 @@
     .qg-label{font-weight:500}
     .k-btn{font-weight:500;letter-spacing:.02em}
 
+    /* ── Flow diagrams (de-flow = amber, eu-flow = blue) ── */
+    .flow-box{border-radius:10px;padding:1.25rem 1rem;margin-top:1rem;margin-bottom:.5rem}
+    .flow-box.de-flow{background:var(--deL);border:1px solid rgba(161,98,7,.15)}
+    .flow-box.eu-flow{background:var(--euL);border:1px solid rgba(29,78,216,.15)}
+    .flow-title{font-family:var(--ff-mono);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;text-align:center;margin-bottom:.85rem;font-weight:600}
+    .de-flow .flow-title{color:var(--de)}
+    .eu-flow .flow-title{color:var(--eu)}
+    .flow-row{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:.25rem}
+    .flow-s{flex:1;min-width:7.5rem;text-align:center;padding:.85rem .5rem;position:relative}
+    .flow-s:not(:last-child)::after{content:'→';position:absolute;right:-.45rem;top:50%;transform:translateY(-50%);font-size:1.25rem;color:var(--ink3);z-index:3}
+    .flow-n{font-family:var(--ff-mono);font-size:.56rem;letter-spacing:.1em;color:var(--ink3);margin-bottom:.25rem}
+    .flow-ic{font-size:1.35rem;margin-bottom:.25rem}
+    .flow-lb{font-family:var(--ff-serif);font-size:.78rem;font-weight:600;margin-bottom:.25rem}
+    .flow-ds{font-size:.7rem;color:var(--ink2);line-height:1.5}
+    .flow-ac{font-family:var(--ff-mono);font-size:.56rem;padding:.15rem .5rem;border-radius:12px;display:inline-block;margin-top:.35rem}
+    .fac-de{background:var(--deB);color:var(--de)}
+    .fac-eu{background:var(--euB);color:var(--eu)}
+
+    /* ── Vertical timeline (step-by-step process, e.g. legislative) ── */
+    .tl-usb{display:flex;flex-direction:column;gap:.75rem;margin:1rem 0}
+    .tl-step{display:flex;gap:.85rem;align-items:flex-start;padding:.65rem .85rem;background:var(--bg);border-radius:8px;border-left:3px solid var(--eu)}
+    .tl-step .tl-date{font-family:var(--ff-mono);font-size:.72rem;font-weight:600;color:var(--eu);min-width:5.5rem;white-space:nowrap;padding-top:.1rem}
+    .tl-step .tl-actor{font-family:var(--ff-head);font-size:.92rem;font-weight:600;color:var(--eu);display:block;margin-bottom:.3rem}
+    .tl-step .tl-desc{font-size:.82rem;color:var(--ink2);line-height:1.55}
+    .tl-step .tl-desc strong{color:var(--ink)}
+
+    /* ── Ebenen-Stack (Mehrebenensystem layers) ── */
+    /* Requires: --supra/--supraL, --inter/--interL, --natl/--natlL CSS vars (style.css) */
+    .ebenen-stack{display:flex;flex-direction:column;gap:0;margin:1rem 0;border-radius:10px;overflow:hidden;border:1px solid var(--border-l)}
+    .ebene{padding:1rem 1.25rem}
+    .ebene h4{font-family:var(--ff-head);font-size:.95rem;font-weight:600;margin-bottom:.35rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+    .ebene p{font-size:.85rem;line-height:1.6;color:var(--ink2)}
+    .ebene p strong{color:var(--ink)}
+    .eb-supra{background:var(--supraL);border-bottom:1px solid rgba(37,99,235,.15)}
+    .eb-supra h4{color:var(--supra)}
+    .eb-inter{background:var(--interL);border-bottom:1px solid rgba(217,119,6,.15)}
+    .eb-inter h4{color:var(--inter)}
+    .eb-natl{background:var(--natlL)}
+    .eb-natl h4{color:var(--natl)}
+    .eb-tag{font-family:var(--ff-mono);font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;padding:.15rem .5rem;border-radius:4px;font-weight:600;white-space:nowrap}
+    .eb-tag.supra{background:rgba(37,99,235,.1);color:var(--supra)}
+    .eb-tag.inter{background:rgba(217,119,6,.1);color:var(--inter)}
+    .eb-tag.natl{background:rgba(5,150,105,.1);color:var(--natl)}
+
+    /* ── Org-mini cards (compact, for Ebenen-Stack grid) ── */
+    /* When used inside .ebenen-stack, override .org-grid column width:
+       .org-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}  */
+    .org-mini{background:rgba(255,255,255,.7);border:1px solid var(--border-l);border-radius:8px;padding:.6rem .85rem;text-align:center;font-size:.78rem}
+    .org-mini .emo{font-size:1.25rem;display:block;margin-bottom:.2rem}
+    .org-mini .oname{font-family:var(--ff-head);font-size:.8rem;font-weight:600;color:var(--ink)}
+    .org-mini .osub{font-size:.68rem;color:var(--ink3);margin-top:.15rem}
+
+    /* ── Vergleich mini-box (side-by-side comparison) ── */
+    .vergleich-wrap{margin-top:1rem;padding:1rem 1.25rem;background:var(--bg);border:1px solid var(--border-l);border-radius:8px}
+    .vergleich-wrap h4{font-family:var(--ff-head);font-size:.85rem;font-weight:600;margin-bottom:.5rem}
+    .vgl-row{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:.5rem}
+    .vgl-col{flex:1;min-width:200px;font-size:.8rem;line-height:1.7;color:var(--ink2)}
+    .vgl-col strong{color:var(--ink)}
+    .vgl-arrow{font-family:var(--ff-mono);font-size:.75rem;color:var(--ink3)}
+
     @media(max-width:700px){
       .de-grid{grid-template-columns:1fr}
       .org-grid{grid-template-columns:1fr}
@@ -145,9 +205,9 @@ teacher password provided with the worksheet.
     <div class="tool-row">
       <span class="tool-label">Zugang</span>
       <input class="tool-input" type="password" id="pw-field" placeholder="Passwort eingeben">
-      <button class="tool-btn-unlock" onclick="chkPw('pw-field','pw-hint')">Freischalten</button>
+      <button class="tool-btn-unlock" onclick="PLK.chkPw('pw-field','pw-hint')">Freischalten</button>
       <button class="tool-btn-reset"
-              onclick="if(confirm('Fortschritt zurücksetzen?')){Progress.clear(CONF.id);location.reload();}">
+              onclick="if(confirm('Fortschritt zurücksetzen?')){PLK.resetUnit();}">
         ↺ Einheit zurücksetzen
       </button>
     </div>
@@ -170,10 +230,10 @@ teacher password provided with the worksheet.
        EINSTIEG
        FILL: einstieg-title, auf-i text, 3–5 einstieg-cards.
        Each card: data-sit="N" (1-based), data-answer="VALUE_OF_CORRECT_CHIP"
-       Each chip: data-v="VALUE" (must match one data-answer), onclick="selEinstieg(this,N)"
+       Each chip: data-v="VALUE" (must match one data-answer), onclick="PLK.selEinstieg(this,N)"
        ================================================================ -->
   <div class="einstieg" id="einstieg">
-    <div class="einstieg-header" onclick="toggleEinstieg()">
+    <div class="einstieg-header" onclick="PLK.toggleEinstieg()">
       <span class="einstieg-badge">🎯 EINSTIEG</span>
       <!-- FILL: short thematic title -->
       <span class="einstieg-title">Titel des Einstiegs</span>
@@ -189,32 +249,34 @@ teacher password provided with the worksheet.
       <div class="einstieg-card" data-sit="1" data-answer="CORRECT_VALUE">
         <!-- FILL: question text (use <strong> for key terms if needed) -->
         <strong>Frage 1: Was ist …?</strong>
+        <!-- OPTIONAL: add data-no-shuffle to prevent chip-order randomisation
+             (e.g. when chips represent ordered steps or ranked options) -->
         <div class="einstieg-chips">
           <!-- FILL: 2–3 chips; data-v of correct chip must match data-answer above -->
-          <button class="e-chip" data-v="CORRECT_VALUE"  onclick="selEinstieg(this,1)">Richtige Antwort</button>
-          <button class="e-chip" data-v="WRONG_A"        onclick="selEinstieg(this,1)">Falsche Antwort A</button>
-          <button class="e-chip" data-v="WRONG_B"        onclick="selEinstieg(this,1)">Falsche Antwort B</button>
+          <button class="e-chip" data-v="CORRECT_VALUE"  onclick="PLK.selEinstieg(this,1)">Richtige Antwort</button>
+          <button class="e-chip" data-v="WRONG_A"        onclick="PLK.selEinstieg(this,1)">Falsche Antwort A</button>
+          <button class="e-chip" data-v="WRONG_B"        onclick="PLK.selEinstieg(this,1)">Falsche Antwort B</button>
         </div>
       </div>
 
       <div class="einstieg-card" data-sit="2" data-answer="CORRECT_VALUE">
         <strong>Frage 2: Warum …?</strong>
         <div class="einstieg-chips">
-          <button class="e-chip" data-v="WRONG_A"        onclick="selEinstieg(this,2)">Falsche Antwort A</button>
-          <button class="e-chip" data-v="CORRECT_VALUE"  onclick="selEinstieg(this,2)">Richtige Antwort</button>
-          <button class="e-chip" data-v="WRONG_B"        onclick="selEinstieg(this,2)">Falsche Antwort B</button>
+          <button class="e-chip" data-v="WRONG_A"        onclick="PLK.selEinstieg(this,2)">Falsche Antwort A</button>
+          <button class="e-chip" data-v="CORRECT_VALUE"  onclick="PLK.selEinstieg(this,2)">Richtige Antwort</button>
+          <button class="e-chip" data-v="WRONG_B"        onclick="PLK.selEinstieg(this,2)">Falsche Antwort B</button>
         </div>
       </div>
 
       <!-- OPTIONAL: add more einstieg-cards (data-sit="3", data-sit="4", …) -->
 
       <div style="margin-top:1rem;padding-top:.75rem;border-top:1px solid rgba(0,0,0,.08)">
-        <button class="btn btn-primary btn-sm" id="einstieg-btn" onclick="chkEinstieg()" disabled>Prüfen →</button>
+        <button class="btn btn-primary btn-sm" id="einstieg-btn" onclick="PLK.chkEinstieg()" disabled>Prüfen →</button>
       </div>
 
     </div><!-- /.einstieg-body -->
     <div class="einstieg-retry" id="einstieg-retry">
-      <a href="#" onclick="retryEinstieg(); return false">↺ Nochmal ansehen</a>
+      <a href="#" onclick="PLK.retryEinstieg(); return false">↺ Nochmal ansehen</a>
     </div>
   </div><!-- /.einstieg -->
 
@@ -223,6 +285,8 @@ teacher password provided with the worksheet.
        BLOCK 1: SACHWISSEN
        FILL: sw-title, content paragraphs, quiz questions.
        First block has no "locked" class — subsequent blocks do.
+       data-p="core"  → always shown in arc (Pflicht-Inhalt)
+       data-p="imp"   → shown only when arc B is active (vertiefend)
        ================================================================ -->
   <div class="sw" id="sw1" data-p="core">
     <div class="sw-head">
@@ -321,6 +385,95 @@ teacher password provided with the worksheet.
         </table>
       </div>
 
+      <!-- ── OPTION G: Flow diagram (horizontal process steps) ── -->
+      <!-- Variants: de-flow (German govt, amber) or eu-flow (EU, blue) -->
+      <!-- FILL: flow-title, steps; fac-de or fac-eu for actor badge colour -->
+      <div class="flow-box de-flow">
+        <div class="flow-title">🇩🇪 Prozessname</div>
+        <div class="flow-row">
+          <div class="flow-s">
+            <div class="flow-n">SCHRITT 1</div><div class="flow-ic">📝</div>
+            <div class="flow-lb">Schrittname</div>
+            <div class="flow-ds">Kurzbeschreibung des Schritts und seiner Akteure.</div>
+            <span class="flow-ac fac-de">Akteur DE</span>
+          </div>
+          <div class="flow-s">
+            <div class="flow-n">SCHRITT 2</div><div class="flow-ic">🏛️</div>
+            <div class="flow-lb">Schrittname</div>
+            <div class="flow-ds">Kurzbeschreibung des Schritts und seiner Akteure.</div>
+            <span class="flow-ac fac-de">Akteur DE</span>
+          </div>
+          <!-- FILL: add more .flow-s blocks; use fac-eu for EU-level actors -->
+        </div>
+      </div>
+      <!-- EU variant: change de-flow → eu-flow and fac-de → fac-eu -->
+
+      <!-- ── OPTION H: Vertical timeline (legislative / chronological) ── -->
+      <!-- FILL: tl-date, tl-actor (emoji + name), tl-desc (bold heading + body) -->
+      <!-- Default accent colour = --eu (blue); override via style="border-left-color:var(--de)" -->
+      <div class="tl-usb">
+        <div class="tl-step">
+          <span class="tl-date">Mon. JJJJ</span>
+          <div>
+            <span class="tl-actor">🏛️ <strong class="fb">Name des Akteurs</strong></span>
+            <div class="tl-desc"><strong>Schlagzeile:</strong> Beschreibung des Ereignisses oder der Entscheidung.</div>
+          </div>
+        </div>
+        <div class="tl-step">
+          <span class="tl-date">Mon. JJJJ</span>
+          <div>
+            <span class="tl-actor">⚖️ Zweiter Akteur</span>
+            <div class="tl-desc"><strong>Schlagzeile:</strong> Beschreibung der Folge oder Reaktion.</div>
+          </div>
+        </div>
+        <!-- FILL: add more tl-step blocks; last step typically = Ergebnis / In Kraft -->
+      </div>
+
+      <!-- ── OPTION I: Ebenen-Stack with org-mini cards ── -->
+      <!-- Use for Mehrebenensystem; requires --supra/--inter/--natl vars (style.css global) -->
+      <!-- FILL: h4 text, p description, org-mini cards per level -->
+      <div class="ebenen-stack">
+        <div class="ebene eb-supra">
+          <h4>🔵 Supranationale Ebene <span class="eb-tag supra">Überstaatlich</span></h4>
+          <p>Organe, die das <strong>Gesamtinteresse</strong> vertreten. Entscheidungen gelten für alle Mitgliedstaaten.</p>
+          <div class="org-grid">
+            <div class="org-mini"><span class="emo">🗳️</span><span class="oname"><strong class="fb">Organ 1</strong></span><div class="osub">Funktion / Aufgabe</div></div>
+            <div class="org-mini"><span class="emo">⚙️</span><span class="oname"><strong class="fb">Organ 2</strong></span><div class="osub">Funktion / Aufgabe</div></div>
+          </div>
+        </div>
+        <div class="ebene eb-inter">
+          <h4>🟠 Intergouvernementale Ebene <span class="eb-tag inter">Zwischenstaatlich</span></h4>
+          <p>Vertreter der <strong>nationalen Regierungen</strong> — verfolgen auch eigene Interessen.</p>
+          <div class="org-grid">
+            <div class="org-mini"><span class="emo">👑</span><span class="oname"><strong class="fb">Organ A</strong></span><div class="osub">Funktion / Aufgabe</div></div>
+          </div>
+        </div>
+        <div class="ebene eb-natl">
+          <h4>🟢 Nationale Ebene <span class="eb-tag natl">Innerstaatlich</span></h4>
+          <p>EU-Recht wird hier in nationales Recht <strong>umgesetzt</strong> und angewendet.</p>
+          <div class="org-grid">
+            <div class="org-mini"><span class="emo">🏛️</span><span class="oname">Nationaler Akteur</span><div class="osub">Funktion / Aufgabe</div></div>
+          </div>
+        </div>
+      </div><!-- /.ebenen-stack -->
+
+      <!-- ── OPTION J: Vergleich-Wrap (side-by-side comparison box) ── -->
+      <!-- FILL: h4 title, two vgl-col divs, optional vgl-arrow summary -->
+      <div class="vergleich-wrap">
+        <h4>Vergleich: System A vs. System B</h4>
+        <div class="vgl-row">
+          <div class="vgl-col">
+            <strong>System A</strong><br>
+            Merkmal 1 · Merkmal 2 · Merkmal 3
+          </div>
+          <div class="vgl-col">
+            <strong>System B</strong><br>
+            Merkmal 1 · Merkmal 2 · Merkmal 3
+          </div>
+        </div>
+        <div class="vgl-arrow">→ Wichtigster Unterschied: …</div>
+      </div>
+
     </div><!-- /block content -->
   </div><!-- /#sw1 -->
 
@@ -332,7 +485,7 @@ teacher password provided with the worksheet.
        ================================================================ -->
   <div class="qg-wrapper">
   <div class="qg" id="qg1">
-    <div class="qg-head" onclick="toggleQg(1)">
+    <div class="qg-head" onclick="PLK.toggleQg(1)">
       <span class="qg-label">✓ VERSTÄNDNISCHECK</span>
       <span class="qg-status pend" id="qg1s">Block 1: Offen</span>
       <span class="qg-chevron">▾</span>
@@ -347,11 +500,11 @@ teacher password provided with the worksheet.
         <div class="qi-t">Fragetext für MC-Frage?</div>
         <ul class="mco-list">
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q1_1" onchange="mcS(this)"> Falsche Antwort A</label></li>
+            <input type="radio" name="q1_1" onchange="PLK.mcS(this)"> Falsche Antwort A</label></li>
           <li class="mco" data-correct="1"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q1_1" onchange="mcS(this)"> Richtige Antwort</label></li>
+            <input type="radio" name="q1_1" onchange="PLK.mcS(this)"> Richtige Antwort</label></li>
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q1_1" onchange="mcS(this)"> Falsche Antwort B</label></li>
+            <input type="radio" name="q1_1" onchange="PLK.mcS(this)"> Falsche Antwort B</label></li>
         </ul>
       </div>
 
@@ -375,42 +528,42 @@ teacher password provided with the worksheet.
           <li class="oitem" data-id="schritt3">
             <span class="oitem-num">1</span><span>Schritt C (wird verschoben)</span>
             <div class="oarr">
-              <button class="oab" onclick="oMv(this,-1)">▲</button>
-              <button class="oab" onclick="oMv(this,1)">▼</button>
+              <button class="oab" onclick="PLK.oMv(this,-1)">▲</button>
+              <button class="oab" onclick="PLK.oMv(this,1)">▼</button>
             </div>
           </li>
           <li class="oitem" data-id="schritt1">
             <span class="oitem-num">2</span><span>Schritt A (wird verschoben)</span>
             <div class="oarr">
-              <button class="oab" onclick="oMv(this,-1)">▲</button>
-              <button class="oab" onclick="oMv(this,1)">▼</button>
+              <button class="oab" onclick="PLK.oMv(this,-1)">▲</button>
+              <button class="oab" onclick="PLK.oMv(this,1)">▼</button>
             </div>
           </li>
           <li class="oitem" data-id="schritt4">
             <span class="oitem-num">3</span><span>Schritt D (wird verschoben)</span>
             <div class="oarr">
-              <button class="oab" onclick="oMv(this,-1)">▲</button>
-              <button class="oab" onclick="oMv(this,1)">▼</button>
+              <button class="oab" onclick="PLK.oMv(this,-1)">▲</button>
+              <button class="oab" onclick="PLK.oMv(this,1)">▼</button>
             </div>
           </li>
           <li class="oitem" data-id="schritt2">
             <span class="oitem-num">4</span><span>Schritt B (wird verschoben)</span>
             <div class="oarr">
-              <button class="oab" onclick="oMv(this,-1)">▲</button>
-              <button class="oab" onclick="oMv(this,1)">▼</button>
+              <button class="oab" onclick="PLK.oMv(this,-1)">▲</button>
+              <button class="oab" onclick="PLK.oMv(this,1)">▼</button>
             </div>
           </li>
         </ul>
       </div>
 
       <div style="display:flex;gap:.6rem;align-items:center;margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--border-l);flex-wrap:wrap">
-        <button class="btn btn-primary btn-sm" onclick="chkQ(1)">Überprüfen</button>
-        <button class="btn btn-ghost btn-sm" onclick="rstQ(1)">Zurücksetzen</button>
+        <button class="btn btn-primary btn-sm" onclick="PLK.chkQ(1)">Überprüfen</button>
+        <button class="btn btn-ghost btn-sm" onclick="PLK.rstQ(1)">Zurücksetzen</button>
         <span class="mc-feedback" id="qfb1"></span>
       </div>
     </div><!-- /.qg-body -->
     <div class="qg-retry-link" id="qg1-retry">
-      <a href="#" onclick="retryQg(1); return false">↺ Wiederholen &amp; zurücksetzen</a>
+      <a href="#" onclick="PLK.retryQg(1); return false">↺ Wiederholen &amp; zurücksetzen</a>
     </div>
   </div><!-- /.qg -->
   </div><!-- /.qg-wrapper -->
@@ -433,7 +586,7 @@ teacher password provided with the worksheet.
   <!-- QUIZ-GATE 2 — increment all "1" → "2" -->
   <div class="qg-wrapper">
   <div class="qg" id="qg2">
-    <div class="qg-head" onclick="toggleQg(2)">
+    <div class="qg-head" onclick="PLK.toggleQg(2)">
       <span class="qg-label">✓ VERSTÄNDNISCHECK</span>
       <span class="qg-status pend" id="qg2s">Block 2: Offen</span>
       <span class="qg-chevron">▾</span>
@@ -445,9 +598,9 @@ teacher password provided with the worksheet.
         <div class="qi-t">Fragetext?</div>
         <ul class="mco-list">
           <li class="mco" data-correct="1"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q2_1" onchange="mcS(this)"> Richtige Antwort</label></li>
+            <input type="radio" name="q2_1" onchange="PLK.mcS(this)"> Richtige Antwort</label></li>
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q2_1" onchange="mcS(this)"> Falsche Antwort</label></li>
+            <input type="radio" name="q2_1" onchange="PLK.mcS(this)"> Falsche Antwort</label></li>
         </ul>
       </div>
       <div class="qi">
@@ -458,13 +611,13 @@ teacher password provided with the worksheet.
         </div>
       </div>
       <div style="display:flex;gap:.6rem;align-items:center;margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--border-l);flex-wrap:wrap">
-        <button class="btn btn-primary btn-sm" onclick="chkQ(2)">Überprüfen</button>
-        <button class="btn btn-ghost btn-sm" onclick="rstQ(2)">Zurücksetzen</button>
+        <button class="btn btn-primary btn-sm" onclick="PLK.chkQ(2)">Überprüfen</button>
+        <button class="btn btn-ghost btn-sm" onclick="PLK.rstQ(2)">Zurücksetzen</button>
         <span class="mc-feedback" id="qfb2"></span>
       </div>
     </div>
     <div class="qg-retry-link" id="qg2-retry">
-      <a href="#" onclick="retryQg(2); return false">↺ Wiederholen &amp; zurücksetzen</a>
+      <a href="#" onclick="PLK.retryQg(2); return false">↺ Wiederholen &amp; zurücksetzen</a>
     </div>
   </div>
   </div>
@@ -486,7 +639,7 @@ teacher password provided with the worksheet.
   <!-- QUIZ-GATE 3 — increment all "2" → "3" -->
   <div class="qg-wrapper">
   <div class="qg" id="qg3">
-    <div class="qg-head" onclick="toggleQg(3)">
+    <div class="qg-head" onclick="PLK.toggleQg(3)">
       <span class="qg-label">✓ VERSTÄNDNISCHECK</span>
       <span class="qg-status pend" id="qg3s">Block 3: Offen</span>
       <span class="qg-chevron">▾</span>
@@ -497,9 +650,9 @@ teacher password provided with the worksheet.
         <div class="qi-t">Fragetext?</div>
         <ul class="mco-list">
           <li class="mco" data-correct="1"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q3_1" onchange="mcS(this)"> Richtige Antwort</label></li>
+            <input type="radio" name="q3_1" onchange="PLK.mcS(this)"> Richtige Antwort</label></li>
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q3_1" onchange="mcS(this)"> Falsche Antwort</label></li>
+            <input type="radio" name="q3_1" onchange="PLK.mcS(this)"> Falsche Antwort</label></li>
         </ul>
       </div>
       <div class="qi">
@@ -507,19 +660,19 @@ teacher password provided with the worksheet.
         <div class="qi-t">Fragetext?</div>
         <ul class="mco-list">
           <li class="mco"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q3_2" onchange="mcS(this)"> Falsche Antwort</label></li>
+            <input type="radio" name="q3_2" onchange="PLK.mcS(this)"> Falsche Antwort</label></li>
           <li class="mco" data-correct="1"><label style="display:flex;align-items:center;gap:.6rem;width:100%;cursor:pointer">
-            <input type="radio" name="q3_2" onchange="mcS(this)"> Richtige Antwort</label></li>
+            <input type="radio" name="q3_2" onchange="PLK.mcS(this)"> Richtige Antwort</label></li>
         </ul>
       </div>
       <div style="display:flex;gap:.6rem;align-items:center;margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--border-l);flex-wrap:wrap">
-        <button class="btn btn-primary btn-sm" onclick="chkQ(3)">Überprüfen</button>
-        <button class="btn btn-ghost btn-sm" onclick="rstQ(3)">Zurücksetzen</button>
+        <button class="btn btn-primary btn-sm" onclick="PLK.chkQ(3)">Überprüfen</button>
+        <button class="btn btn-ghost btn-sm" onclick="PLK.rstQ(3)">Zurücksetzen</button>
         <span class="mc-feedback" id="qfb3" style="display:none"></span>
       </div>
     </div>
     <div class="qg-retry-link" id="qg3-retry">
-      <a href="#" onclick="retryQg(3); return false">↺ Wiederholen &amp; zurücksetzen</a>
+      <a href="#" onclick="PLK.retryQg(3); return false">↺ Wiederholen &amp; zurücksetzen</a>
     </div>
   </div>
   </div>
@@ -542,7 +695,7 @@ teacher password provided with the worksheet.
     <div class="card" style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:var(--gap)">
       <span style="font-family:var(--ff-mono);font-size:.75rem;color:var(--ink3);white-space:nowrap">Aufgaben</span>
       <span style="font-family:var(--ff-mono);font-size:.85rem;font-weight:600;color:var(--acc)" id="ab-score">0 / XX</span>
-      <button class="btn btn-ghost btn-sm" style="margin-left:auto" onclick="rstAllAB()">Alles zurücksetzen</button>
+      <button class="btn btn-ghost btn-sm" style="margin-left:auto" onclick="PLK.rstAllAB()">Alles zurücksetzen</button>
     </div>
 
 
@@ -554,6 +707,24 @@ teacher password provided with the worksheet.
                data-task must be same number for matching left/right pairs.
                Punkte = number of left items.
          ───────────────────────────────────────────────────────────── -->
+    <!-- OPTIONAL: AB II task block (outside the main AB section, gated separately)
+         Place between two SW blocks; unlock with data-gate="N" (engine.js gate index).
+         CSS (.ab2) is in style.css — no unit-specific styles needed.
+         FILL: op-badge data-op (operator name matching operators.json), heading text, body -->
+    <!-- <div class="ab2 locked" id="ab2-1" data-gate="2">
+      <div class="ab2-head">
+        <span class="op-badge" data-op="analysieren">analysieren · AB II</span>
+        Aufgabe (Titel)
+      </div>
+      <div class="ab2-body">
+        <p>Aufgabenstellung. Bezug nehmen auf den Inhalt des vorherigen Blocks.</p>
+        <ol>
+          <li>Teilaufgabe a)</li>
+          <li>Teilaufgabe b)</li>
+        </ol>
+      </div>
+    </div> -->
+
     <div class="auf" id="auf1">
       <div class="auf-h">
         <div class="auf-n">01</div>
@@ -564,6 +735,9 @@ teacher password provided with the worksheet.
             <span class="lz-chip-text">Was soll die Schülerin zeigen?</span>
           </span>
           <span class="klausur-tag">AB I</span>
+          <!-- OPTIONAL: operator badge on AB II/III tasks (shown as interactive badge)
+               data-op must match an operator name in operators.json
+               <span class="op-badge" data-op="OPERATOR_NAME">OPERATOR · AB II</span> -->
         </div>
       </div>
       <p class="auf-i">Klicke zuerst links auf einen Begriff, dann rechts auf die passende Kategorie.</p>
@@ -572,13 +746,13 @@ teacher password provided with the worksheet.
           <div>
             <div class="zlist">
               <!-- FILL: data-id (unique), data-correct (must match a right-side data-id) -->
-              <div class="zi" data-task="1" data-z="l" data-id="item1" data-correct="cat_A" onclick="zCl(this,1)">
+              <div class="zi" data-task="1" data-z="l" data-id="item1" data-correct="cat_A" onclick="PLK.zCl(this,1)">
                 <span class="mn">1</span> Begriff / Schritt 1
               </div>
-              <div class="zi" data-task="1" data-z="l" data-id="item2" data-correct="cat_B" onclick="zCl(this,1)">
+              <div class="zi" data-task="1" data-z="l" data-id="item2" data-correct="cat_B" onclick="PLK.zCl(this,1)">
                 <span class="mn">2</span> Begriff / Schritt 2
               </div>
-              <div class="zi" data-task="1" data-z="l" data-id="item3" data-correct="cat_A" onclick="zCl(this,1)">
+              <div class="zi" data-task="1" data-z="l" data-id="item3" data-correct="cat_A" onclick="PLK.zCl(this,1)">
                 <span class="mn">3</span> Begriff / Schritt 3
               </div>
             </div>
@@ -589,16 +763,16 @@ teacher password provided with the worksheet.
           <div>
             <div class="zlist">
               <!-- FILL: data-id matches the data-correct values on the left -->
-              <div class="zi" data-task="1" data-z="r" data-id="cat_A" onclick="zCl(this,1)">Kategorie A</div>
-              <div class="zi" data-task="1" data-z="r" data-id="cat_B" onclick="zCl(this,1)">Kategorie B</div>
+              <div class="zi" data-task="1" data-z="r" data-id="cat_A" onclick="PLK.zCl(this,1)">Kategorie A</div>
+              <div class="zi" data-task="1" data-z="r" data-id="cat_B" onclick="PLK.zCl(this,1)">Kategorie B</div>
               <!-- OPTIONAL: more right-side items if multiple left items map to the same right item, keep them separate -->
             </div>
           </div>
         </div>
         <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem">
-          <button class="btn btn-primary" onclick="chkZ(1,'auf1')">Überprüfen</button>
-          <button class="btn btn-ghost btn-sm" onclick="retZ(1,'auf1')">Falsche nochmal</button>
-          <button class="btn btn-ghost btn-sm" onclick="rsZ(1,'auf1')">Zurücksetzen</button>
+          <button class="btn btn-primary" onclick="PLK.chkZ(1,'auf1')">Überprüfen</button>
+          <button class="btn btn-ghost btn-sm" onclick="PLK.retZ(1,'auf1')">Falsche nochmal</button>
+          <button class="btn btn-ghost btn-sm" onclick="PLK.rsZ(1,'auf1')">Zurücksetzen</button>
         </div>
         <div class="mc-feedback" id="auf1-result" style="margin-top:.75rem"></div>
       </div>
@@ -629,27 +803,27 @@ teacher password provided with the worksheet.
 
         <!-- FILL: add all answer chips here; data-v must exactly match data-a on slots -->
         <div class="chip-bank" id="bk2">
-          <span class="chip" data-v="Begriff1" onclick="selC(this,'bk2')">Begriff1</span>
-          <span class="chip" data-v="Begriff2" onclick="selC(this,'bk2')">Begriff2</span>
-          <span class="chip" data-v="Begriff3" onclick="selC(this,'bk2')">Begriff3</span>
+          <span class="chip" data-v="Begriff1" onclick="PLK.selC(this,'bk2')">Begriff1</span>
+          <span class="chip" data-v="Begriff2" onclick="PLK.selC(this,'bk2')">Begriff2</span>
+          <span class="chip" data-v="Begriff3" onclick="PLK.selC(this,'bk2')">Begriff3</span>
           <!-- OPTIONAL: Ablenkerbegriffe (no matching slot) keep students guessing -->
-          <span class="chip" data-v="Ablenker" onclick="selC(this,'bk2')">Ablenker</span>
+          <span class="chip" data-v="Ablenker" onclick="PLK.selC(this,'bk2')">Ablenker</span>
         </div>
 
         <!-- FILL: prose text with slots; each slot must have data-a and data-bank -->
         <div style="background:var(--input-bg);border:1px solid var(--border-l);border-radius:10px;padding:1.5rem 1rem;margin-top:1rem">
           <p style="font-size:.88rem;color:var(--ink2);line-height:2">
-            Einleitungssatz. <span class="slot" data-a="Begriff1" data-bank="bk2" onclick="slCl(this)"></span> ist das erste Konzept.
-            Die zweite Lücke heißt <span class="slot" data-a="Begriff2" data-bank="bk2" onclick="slCl(this)"></span>.
-            Abschließend gilt das <span class="slot" data-a="Begriff3" data-bank="bk2" onclick="slCl(this)"></span>.
+            Einleitungssatz. <span class="slot" data-a="Begriff1" data-bank="bk2" onclick="PLK.slCl(this)"></span> ist das erste Konzept.
+            Die zweite Lücke heißt <span class="slot" data-a="Begriff2" data-bank="bk2" onclick="PLK.slCl(this)"></span>.
+            Abschließend gilt das <span class="slot" data-a="Begriff3" data-bank="bk2" onclick="PLK.slCl(this)"></span>.
           </p>
         </div>
 
         <!-- FILL: N in chkSl = number of .slot elements; id matches auf id -->
         <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-top:1rem">
-          <button class="btn btn-primary" onclick="chkSl('auf2-wrap','bk2',3,'auf2-result','auf2-retry')">Überprüfen</button>
-          <button class="btn btn-ghost btn-sm" id="auf2-retry" style="display:none" onclick="retSl('auf2-wrap','bk2')">Falsche nochmal</button>
-          <button class="btn btn-ghost btn-sm" onclick="rsSl('auf2-wrap','bk2')">Zurücksetzen</button>
+          <button class="btn btn-primary" onclick="PLK.chkSl('auf2-wrap','bk2',3,'auf2-result','auf2-retry')">Überprüfen</button>
+          <button class="btn btn-ghost btn-sm" id="auf2-retry" style="display:none" onclick="PLK.retSl('auf2-wrap','bk2')">Falsche nochmal</button>
+          <button class="btn btn-ghost btn-sm" onclick="PLK.rsSl('auf2-wrap','bk2')">Zurücksetzen</button>
         </div>
         <div class="mc-feedback" id="auf2-result" style="margin-top:.75rem"></div>
       </div>
@@ -659,7 +833,7 @@ teacher password provided with the worksheet.
     <!-- ─────────────────────────────────────────────────────────────
          AUFGABE 3: Kategorisierung  (AB I–II)
          FILL: auf-title, auf-i, k-items with data-correct category codes,
-               k-btns with onclick="kS(this,'CODE')".
+               k-btns with onclick="PLK.kS(this,'CODE')".
                Codes are arbitrary (e.g. 'D','E','F' or 'Pro','Contra').
                Punkte = number of k-item elements.
          ───────────────────────────────────────────────────────────── -->
@@ -684,18 +858,18 @@ teacher password provided with the worksheet.
           <div class="k-item" data-id="k1" data-correct="A">
             <div class="k-text">Aussage, die zu Kategorie A gehört.</div>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'A')">Kategorie A</button>
-              <button class="k-btn" onclick="kS(this,'B')">Kategorie B</button>
-              <button class="k-btn" onclick="kS(this,'C')">Kategorie C</button>
+              <button class="k-btn" onclick="PLK.kS(this,'A')">Kategorie A</button>
+              <button class="k-btn" onclick="PLK.kS(this,'B')">Kategorie B</button>
+              <button class="k-btn" onclick="PLK.kS(this,'C')">Kategorie C</button>
             </div>
           </div>
 
           <div class="k-item" data-id="k2" data-correct="B">
             <div class="k-text">Aussage, die zu Kategorie B gehört.</div>
             <div class="k-btns">
-              <button class="k-btn" onclick="kS(this,'A')">Kategorie A</button>
-              <button class="k-btn" onclick="kS(this,'B')">Kategorie B</button>
-              <button class="k-btn" onclick="kS(this,'C')">Kategorie C</button>
+              <button class="k-btn" onclick="PLK.kS(this,'A')">Kategorie A</button>
+              <button class="k-btn" onclick="PLK.kS(this,'B')">Kategorie B</button>
+              <button class="k-btn" onclick="PLK.kS(this,'C')">Kategorie C</button>
             </div>
           </div>
 
@@ -704,9 +878,9 @@ teacher password provided with the worksheet.
         </div>
 
         <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem">
-          <button class="btn btn-primary" onclick="chkK('auf3')">Überprüfen</button>
-          <button class="btn btn-ghost btn-sm" onclick="retK('auf3')">Falsche nochmal</button>
-          <button class="btn btn-ghost btn-sm" onclick="rsK('auf3')">Zurücksetzen</button>
+          <button class="btn btn-primary" onclick="PLK.chkK('auf3')">Überprüfen</button>
+          <button class="btn btn-ghost btn-sm" onclick="PLK.retK('auf3')">Falsche nochmal</button>
+          <button class="btn btn-ghost btn-sm" onclick="PLK.rsK('auf3')">Zurücksetzen</button>
         </div>
         <div class="mc-feedback" id="auf3-result" style="margin-top:.75rem"></div>
       </div>
@@ -756,19 +930,19 @@ teacher password provided with the worksheet.
           <div class="uk-krit-q">Welcher Einleitungssatz formuliert einen klaren Maßstab für die Bewertung?</div>
           <div class="uk-krit-opts">
             <div class="uk-krit-opt" data-msidx="1" data-correct="false" data-error="vague" data-errtext="Begründung warum diese Antwort falsch ist."
-                 onclick="selKrit(this)">
+                 onclick="PLK.selKrit(this)">
               <span class="uk-krit-num">A</span>
               Falsches Kriterium A — zu vage oder vorwegnehmend.
               <span class="uk-krit-opt-err"></span>
             </div>
             <div class="uk-krit-opt" data-msidx="0" data-correct="true" data-error="" data-errtext=""
-                 onclick="selKrit(this)">
+                 onclick="PLK.selKrit(this)">
               <span class="uk-krit-num">B</span>
               Richtiges Kriterium: Im Folgenden wird geprüft, ob … Als Maßstab dienen X und Y.
               <span class="uk-krit-opt-err"></span>
             </div>
             <div class="uk-krit-opt" data-msidx="2" data-correct="false" data-error="sided" data-errtext="Begründung warum diese Antwort falsch ist."
-                 onclick="selKrit(this)">
+                 onclick="PLK.selKrit(this)">
               <span class="uk-krit-num">C</span>
               Falsches Kriterium C — nimmt Ergebnis vorweg.
               <span class="uk-krit-opt-err"></span>
@@ -793,7 +967,7 @@ teacher password provided with the worksheet.
         </div>
 
         <div class="uk-stage-footer">
-          <button class="uk-stage-submit" disabled onclick="submitStage(this, 1)">
+          <button class="uk-stage-submit" disabled onclick="PLK.submitStage(this, 1)">
             Weiter zum Hauptteil
           </button>
         </div>
@@ -873,7 +1047,7 @@ teacher password provided with the worksheet.
         </div>
 
         <div class="uk-stage-footer">
-          <button class="uk-stage-submit" disabled onclick="submitStage(this, 2)">
+          <button class="uk-stage-submit" disabled onclick="PLK.submitStage(this, 2)">
             Weiter zur Schlussfolgerung
           </button>
         </div>
@@ -920,7 +1094,7 @@ teacher password provided with the worksheet.
         </div>
 
         <div class="uk-stage-footer">
-          <button class="uk-stage-submit" disabled onclick="submitStage(this, 3)">
+          <button class="uk-stage-submit" disabled onclick="PLK.submitStage(this, 3)">
             Argumentation abschließen
           </button>
         </div>
@@ -961,14 +1135,62 @@ teacher password provided with the worksheet.
           style="width:100%;padding:.75rem;border:1px solid var(--border);border-radius:var(--r-sm);font-family:var(--ff-body);font-size:.88rem;background:var(--input-bg);color:var(--ink);resize:vertical;line-height:1.6"
           placeholder="Schreibe hier deine Antwort …"></textarea>
         <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.75rem">
-          <button class="btn btn-primary" onclick="chkFT('ft-auf5','auf5-result')">Speichern</button>
+          <button class="btn btn-primary" onclick="PLK.chkFT('ft-auf5','auf5-result')">Speichern</button>
         </div>
         <div class="mc-feedback" id="auf5-result" style="margin-top:.75rem"></div>
+
+        <!-- OPTIONAL: Musterlösung / Lehrkraft-Hinweis (only visible to teacher, styled dashed box)
+             .aufloesung-box is hidden by default (display:none); shown via JS/teacher password.
+             .lk-hint variant is always visible but visually subtle (dashed border, grey text).
+             FILL: heading text, solution / guidance content -->
+        <div class="aufloesung-box lk-hint" style="margin-top:1rem">
+          <div class="aufloesung-box-head">Hinweis Lehrkraft</div>
+          <p>Erwartete Kernaussagen: Argument 1, Argument 2, Gegenargument und Abwägung.</p>
+        </div>
       </div>
     </div>
 
 
   </div><!-- /#arbeitsblatt -->
+
+
+  <!-- ================================================================
+       OPTIONAL: DEBATTE / AKTIVITÄT
+       Always visible (not gated) — placed after arbeitsblatt.
+       ablauf-box = timing/meta info. act-box = debate content.
+       CSS for both is in style.css — no unit-specific styles needed.
+       FILL: timing, phase tags, activity title, phase questions.
+       ================================================================ -->
+
+  <!-- <div class="section-divider"><span class="section-divider-inner">Debatte</span></div>
+
+  <div class="ablauf-box">
+    <div class="ablauf-box-head">Ablauf <span class="ablauf-total">ca. 25–30 Min</span></div>
+    <div class="ablauf-meta">
+      <span class="ablauf-tag">Plenum</span>
+      <span class="ablauf-tag">3 Phasen à 7–10 min</span>
+      <span class="ablauf-tag">Lehrkraft moderiert</span>
+    </div>
+  </div>
+
+  <div class="act-box">
+    <div class="act-box-head">Debatte: Titel der Aktivität</div>
+    <p style="font-size:.9rem;color:var(--ink2);margin-bottom:1rem">Kurze Beschreibung: Was ist der Zweck der Debatte und worauf baut sie auf?</p>
+
+    <h3>Phase 1: Einstieg / Aktivierung</h3>
+    <p style="font-size:.88rem;color:var(--ink2)">Leitfrage Phase 1. Schüler beziehen Stellung auf Basis des Arbeitsblatts.</p>
+
+    <h3>Phase 2: Vertiefung / Auseinandersetzung</h3>
+    <p style="font-size:.88rem;color:var(--ink2)">Leitfrage Phase 2. Gegenposition einbringen, Abwägung einfordern.</p>
+
+    <h3>Phase 3: Urteil / Transfer</h3>
+    <p style="font-size:.88rem;color:var(--ink2)">Leitfrage Phase 3. Persönliches Fazit und Bezug zur Klausur-Relevanz.</p>
+
+    <div class="aufloesung-box lk-hint" style="margin-top:1rem">
+      <div class="aufloesung-box-head">Hinweis Lehrkraft — Didaktik</div>
+      <p>Erwartete Impulse, häufige Schülerfehler und wie die Phasen moderiert werden sollen.</p>
+    </div>
+  </div> -->
 
 
   <!-- ================================================================
@@ -1015,12 +1237,13 @@ var CONF = {
   masterPw: 'PO-LK'    /* keep as-is unless password changes */
 };
 </script>
-<script src="../js/progress.js"></script>
 <script src="../js/engine.js"></script>
+<script src="../js/quiz-base.js"></script>
+<script src="../js/quiz-ext.js"></script>
+<script src="../js/uk-quiz.js"></script>
 <script src="../data/glossary.js"></script>
 <script src="../data/operators.js"></script>
 <script src="../data/units.js"></script>
 <script src="../js/tooltips.js"></script>
-<script src="../js/uk-quiz.js"></script>
 </body>
 </html>
