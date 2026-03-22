@@ -556,7 +556,14 @@
     });
     Object.keys(mcGroups).forEach(function (name) {
       mcGroups[name].forEach(function (inp, idx) {
-        if (inp.checked) mcChecked[name] = idx;
+        if (inp.checked) {
+          if (inp.type === 'checkbox') {
+            if (!mcChecked[name]) mcChecked[name] = [];
+            mcChecked[name].push(idx);
+          } else {
+            mcChecked[name] = idx;
+          }
+        }
       });
     });
     if (Object.keys(mcChecked).length) snapshot.mcChecked = mcChecked;
@@ -592,11 +599,22 @@
         mcGroups[inp.name].push(inp);
       });
       Object.keys(snapshot.mcChecked).forEach(function (name) {
-        var idx = snapshot.mcChecked[name];
-        if (!mcGroups[name] || !mcGroups[name][idx]) return;
-        mcGroups[name][idx].checked = true;
-        var item = mcGroups[name][idx].closest('.mco');
-        if (item) item.classList.add('selected', 'correct');
+        if (Array.isArray(snapshot.mcChecked[name])) {
+          snapshot.mcChecked[name].forEach(function (idx) {
+            if (mcGroups[name] && mcGroups[name][idx]) {
+              mcGroups[name][idx].checked = true;
+              var item = mcGroups[name][idx].closest('.mco');
+              if (item) item.classList.add('selected', 'correct');
+            }
+          });
+        } else {
+          var idx = snapshot.mcChecked[name];
+          if (mcGroups[name] && mcGroups[name][idx]) {
+            mcGroups[name][idx].checked = true;
+            var item = mcGroups[name][idx].closest('.mco');
+            if (item) item.classList.add('selected', 'correct');
+          }
+        }
       });
     }
 
