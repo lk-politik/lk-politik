@@ -787,6 +787,8 @@
     var existing = PLK.Progress.load(CONF.id) || {};
     existing.ab = state;
     PLK.Progress.save(CONF.id, existing);
+    /* quiz-ext types */
+    if (PLK._saveExtState) PLK._saveExtState(ab, state);
   }
   PLK._saveAbState = _saveAbState; /* expose for use in quiz-base + quiz-ext */
 
@@ -865,6 +867,8 @@
         });
       });
     }
+    /* quiz-ext types */
+    if (PLK._restoreExtState) PLK._restoreExtState(ab, saved);
   }
 
   /* rstAllAB — moved to quiz-base.js (PLK.rstAllAB) */
