@@ -1,0 +1,81 @@
+<!-- _ex/def-match.html — Politik-LK Exercise Library -->
+<h2>Def-Match — Definition-Begriff Matching</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Definition-Match eignet sich, wenn Schülerinnen und Schüler Definitionen mit den dazugehörigen Fachbegriffen verbinden sollen. Anders als Zuordnung (links-rechts-Klick) wird hier beidseitig geklickt: zuerst eine Definition, dann ein Begriff (oder umgekehrt). Besonders geeignet für Glossar-Übungen mit 3 bis 6 Paaren.</p>
+
+<h3>Interaktion</h3>
+<p>Schülerinnen und Schüler klicken ein Element auf einer Seite, dann das passende auf der anderen Seite; einmal gepaarte Elemente sind gesperrt. Es gibt keine separate Check-Funktion: das Pairing ist der Abschluss-Schritt; Prüfung erfolgt via <code>PLK.chkDM()</code>.</p>
+
+<h3>JS-Modul</h3>
+<p><code>quiz-lib.js</code> — Funktionen: <code>PLK.dmSel(el, side)</code> (side: 'def' oder 'term'), <code>PLK.chkDM(wrapId, fbId)</code>, <code>PLK.rstDM(wrapId)</code>. Attribute: <code>data-id</code> auf jedem Element, <code>data-correct-def</code> auf jedem <code>.dm-term</code> = data-id der zugehörigen Definition.</p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;!-- Def-Match — FILL: wrapId, data-id auf allen Elementen, data-correct-def auf .dm-term --&gt;
+&lt;div class="dm-wrap" id="dm1"&gt;
+  &lt;div class="dm-cols"&gt;
+
+    &lt;!-- Linke Spalte: Definitionen --&gt;
+    &lt;div class="dm-defs"&gt;
+      &lt;!-- FILL: data-id = eindeutiger Bezeichner der Definition --&gt;
+      &lt;div class="dm-def" data-id="d1" onclick="PLK.dmSel(this,'def')"&gt;&lt;!-- FILL: Definition A --&gt;&lt;/div&gt;
+      &lt;div class="dm-def" data-id="d2" onclick="PLK.dmSel(this,'def')"&gt;&lt;!-- FILL: Definition B --&gt;&lt;/div&gt;
+      &lt;div class="dm-def" data-id="d3" onclick="PLK.dmSel(this,'def')"&gt;&lt;!-- FILL: Definition C --&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Rechte Spalte: Begriffe --&gt;
+    &lt;div class="dm-terms"&gt;
+      &lt;!-- FILL: data-id = eindeutiger Bezeichner des Begriffs
+               data-correct-def = data-id der zugehörigen Definition --&gt;
+      &lt;div class="dm-term" data-id="t1" data-correct-def="<!-- FILL: defId -->" onclick="PLK.dmSel(this,'term')"&gt;&lt;!-- FILL: Begriff A --&gt;&lt;/div&gt;
+      &lt;div class="dm-term" data-id="t2" data-correct-def="<!-- FILL: defId -->" onclick="PLK.dmSel(this,'term')"&gt;&lt;!-- FILL: Begriff B --&gt;&lt;/div&gt;
+      &lt;div class="dm-term" data-id="t3" data-correct-def="<!-- FILL: defId -->" onclick="PLK.dmSel(this,'term')"&gt;&lt;!-- FILL: Begriff C --&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+  &lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem"&gt;
+    &lt;button class="btn btn-primary" onclick="PLK.chkDM('dm1','dm1-result')"&gt;Überprüfen&lt;/button&gt;
+    &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rstDM('dm1')"&gt;Zurücksetzen&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="mc-feedback" id="dm1-result" style="display:none;margin-top:.75rem"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3>CSS-Klassen</h3>
+<ul>
+  <li><code>.dm-wrap</code> — Container; muss <code>id</code> haben</li>
+  <li><code>.dm-cols</code> — zweispaltiges Layout</li>
+  <li><code>.dm-defs</code> / <code>.dm-terms</code> — Spalten-Container</li>
+  <li><code>.dm-def</code> — Definition-Element; <code>data-id</code> eindeutig</li>
+  <li><code>.dm-term</code> — Begriff-Element; <code>data-id</code> eindeutig; <code>data-correct-def</code> = passende def data-id</li>
+  <li><code>.dm-def.dm-active</code> / <code>.dm-term.dm-active</code> — aktiv ausgewählt</li>
+  <li><code>.dm-def.paired</code> / <code>.dm-term.paired</code> — gepaart (gesperrt)</li>
+  <li><code>.dm-def.ok</code> / <code>.dm-term.ok</code> — richtig nach Prüfung</li>
+  <li><code>.dm-def.err</code> / <code>.dm-term.err</code> — falsch nach Prüfung</li>
+</ul>
+
+<h3>State-Schlüssel</h3>
+<p><code>state.ab.dm[wrapId]</code> — Objekt mit <code>{termId: defId}</code> für alle gepaarten Terme.</p>
+
+<h3>Vollständiges Beispiel (Politik-LK)</h3>
+<pre><code>&lt;!-- EU-Organe und ihre Kernfunktionen --&gt;
+&lt;div class="dm-wrap" id="dm1"&gt;
+  &lt;div class="dm-cols"&gt;
+    &lt;div class="dm-defs"&gt;
+      &lt;div class="dm-def" data-id="d1" onclick="PLK.dmSel(this,'def')"&gt;Hat das alleinige Initiativrecht: Nur dieses Organ darf Gesetze vorschlagen.&lt;/div&gt;
+      &lt;div class="dm-def" data-id="d2" onclick="PLK.dmSel(this,'def')"&gt;Vertritt die Regierungen der Mitgliedstaaten und beschließt Gesetze mit dem EP gemeinsam.&lt;/div&gt;
+      &lt;div class="dm-def" data-id="d3" onclick="PLK.dmSel(this,'def')"&gt;Wird direkt gewählt und übt demokratische Kontrolle über die Kommission aus.&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="dm-terms"&gt;
+      &lt;div class="dm-term" data-id="t1" data-correct-def="d2" onclick="PLK.dmSel(this,'term')"&gt;Rat der EU&lt;/div&gt;
+      &lt;div class="dm-term" data-id="t2" data-correct-def="d3" onclick="PLK.dmSel(this,'term')"&gt;Europäisches Parlament&lt;/div&gt;
+      &lt;div class="dm-term" data-id="t3" data-correct-def="d1" onclick="PLK.dmSel(this,'term')"&gt;Europäische Kommission&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem"&gt;
+    &lt;button class="btn btn-primary" onclick="PLK.chkDM('dm1','dm1-result')"&gt;Überprüfen&lt;/button&gt;
+    &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rstDM('dm1')"&gt;Zurücksetzen&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="mc-feedback" id="dm1-result" style="display:none;margin-top:.75rem"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>

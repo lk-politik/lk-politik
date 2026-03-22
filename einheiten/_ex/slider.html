@@ -1,0 +1,84 @@
+<!-- _ex/slider.html — Politik-LK Exercise Library -->
+<h2>Slider — Zahlenschätzung</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Slider eignen sich, wenn Schülerinnen und Schüler einen konkreten Prozentwert, eine Schwelle oder eine statistische Kennzahl schätzen sollen. Besonders wirkungsvoll für Quoten und Schwellenwerte in der EU-Politik, zum Beispiel QMV-Schwellen oder Mehrheitsverhältnisse. Schülerinnen und Schüler entwickeln ein Gefühl für Größenordnungen.</p>
+
+<h3>Interaktion</h3>
+<p>Schülerinnen und Schüler ziehen den Schieberegler auf den geschätzten Wert; beim Klick auf "Überprüfen" wird geprüft, ob der Wert innerhalb der Toleranz liegt (<code>data-tol</code>, Standard: ±5).</p>
+
+<h3>JS-Modul</h3>
+<p><code>quiz-lib.js</code> — Funktionen: <code>PLK.sldrLive(el)</code>, <code>PLK.chkSlider(wrapId, fbId)</code>, <code>PLK.rstSlider(wrapId)</code>. Attribute: <code>data-correct</code> (exakter Zielwert), <code>data-tol</code> (Toleranz, Standard 5). <code>data-default</code> wird automatisch bei init gesetzt, nicht im HTML eintragen.</p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;!-- Slider — FILL: wrapId, fbId, min/max/value, data-correct, data-tol --&gt;
+&lt;!-- NICHT data-default im HTML setzen — wird automatisch beim Init gesetzt --&gt;
+&lt;div class="sldr-wrap" id="sldr1"&gt;
+  &lt;!-- FILL: Beschriftung / Frage --&gt;
+  &lt;p class="sldr-label"&gt;&lt;!-- FILL: Frage, z. B. "Wie hoch ist der Anteil X?" --&gt;&lt;/p&gt;
+
+  &lt;div class="sldr-row"&gt;
+    &lt;!-- FILL: min, max, value (Startposition, z. B. 50 = Mitte) --&gt;
+    &lt;!-- data-correct = korrekter Wert; data-tol = akzeptierte Abweichung (Standard 5) --&gt;
+    &lt;input type="range" class="sldr-input"
+      min="<!-- FILL: min -->" max="<!-- FILL: max -->" value="<!-- FILL: Startwert -->"
+      data-correct="<!-- FILL: korrekter Wert -->"
+      data-tol="<!-- FILL: Toleranz, z. B. 3 -->"
+      oninput="PLK.sldrLive(this)"&gt;
+    &lt;span class="sldr-val"&gt;&lt;!-- FILL: Startwert (gleich wie value) --&gt;&lt;/span&gt;
+    &lt;span class="sldr-unit"&gt;&lt;!-- FILL: Einheit, z. B. "%" --&gt;&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Weitere Slider nach gleichem Muster falls mehrere Werte geschätzt werden --&gt;
+
+  &lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.75rem"&gt;
+    &lt;button class="btn btn-primary" onclick="PLK.chkSlider('sldr1','sldr1-result')"&gt;Überprüfen&lt;/button&gt;
+    &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rstSlider('sldr1')"&gt;Zurücksetzen&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="mc-feedback" id="sldr1-result" style="display:none;margin-top:.75rem"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3>CSS-Klassen</h3>
+<ul>
+  <li><code>.sldr-wrap</code> — Container; muss <code>id</code> haben</li>
+  <li><code>.sldr-input</code> — <code>&lt;input type="range"&gt;</code>; <code>data-correct</code> = Zielwert, <code>data-tol</code> = Toleranz</li>
+  <li><code>.sldr-input.correct</code> / <code>.sldr-input.wrong</code> — nach Prüfung</li>
+  <li><code>.sldr-val</code> — Anzeige des aktuellen Werts (live aktualisiert)</li>
+  <li><code>.sldr-unit</code> — Einheitsbezeichnung (%, Mio., usw.)</li>
+  <li><code>.sldr-correction</code> — wird von JS nach falscher Antwort dynamisch eingefügt (zeigt richtigen Wert)</li>
+</ul>
+
+<h3>State-Schlüssel</h3>
+<p><code>state.ab.sldr[wrapId][sliderIndex]</code> — aktueller Slider-Wert pro Slider im Wrapper.</p>
+
+<h3>Vollständiges Beispiel (Politik-LK)</h3>
+<pre><code>&lt;!-- QMV-Schwellen im Rat der EU --&gt;
+&lt;div class="sldr-wrap" id="sldr1"&gt;
+  &lt;p class="sldr-label"&gt;Wie hoch ist die Mindestschwelle der Mitgliedstaaten für eine qualifizierte Mehrheit im Rat der EU?&lt;/p&gt;
+  &lt;div class="sldr-row"&gt;
+    &lt;input type="range" class="sldr-input"
+      min="0" max="100" value="50"
+      data-correct="55"
+      data-tol="3"
+      oninput="PLK.sldrLive(this)"&gt;
+    &lt;span class="sldr-val"&gt;50&lt;/span&gt;
+    &lt;span class="sldr-unit"&gt;% der Mitgliedstaaten&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;p class="sldr-label" style="margin-top:.75rem"&gt;Und der Mindestanteil der EU-Bevölkerung, der diese Mehrheit repräsentieren muss?&lt;/p&gt;
+  &lt;div class="sldr-row"&gt;
+    &lt;input type="range" class="sldr-input"
+      min="0" max="100" value="50"
+      data-correct="65"
+      data-tol="3"
+      oninput="PLK.sldrLive(this)"&gt;
+    &lt;span class="sldr-val"&gt;50&lt;/span&gt;
+    &lt;span class="sldr-unit"&gt;% der EU-Bevölkerung&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.75rem"&gt;
+    &lt;button class="btn btn-primary" onclick="PLK.chkSlider('sldr1','sldr1-result')"&gt;Überprüfen&lt;/button&gt;
+    &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rstSlider('sldr1')"&gt;Zurücksetzen&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="mc-feedback" id="sldr1-result" style="display:none;margin-top:.75rem"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>

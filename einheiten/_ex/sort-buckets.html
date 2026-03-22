@@ -1,0 +1,88 @@
+<!-- _ex/sort-buckets.html — Politik-LK Exercise Library -->
+<h2>Sort-Buckets — Chips in Kategorien sortieren</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Sort-Buckets eignet sich, wenn Schülerinnen und Schüler eine Menge von Begriffen oder Aussagen auf zwei oder mehr Kategorien (Buckets) aufteilen sollen, zum Beispiel Vorteile / Nachteile oder Pro / Contra. Der Typ ist flexibler als Kategorisierung (jeder Chip geht in genau einen Bucket, Buckets können unterschiedlich viele Chips erhalten).</p>
+
+<h3>Interaktion</h3>
+<p>Schülerinnen und Schüler klicken einen Chip in der Bank (selektiert ihn), dann klicken sie auf einen Bucket, um ihn dort abzulegen; ein erneuter Klick auf den Chip hebt die Auswahl auf.</p>
+
+<h3>JS-Modul</h3>
+<p><code>quiz-lib.js</code> — Funktionen: <code>PLK.sbSel(el)</code>, <code>PLK.sbDrop(bucketEl)</code>, <code>PLK.chkSB(wrapId, fbId)</code>, <code>PLK.rstSB(wrapId)</code>. Attribute: <code>data-correct</code> auf jedem <code>.sb-chip</code> = bucket-id des richtigen Buckets; <code>data-bucket-id</code> auf jedem <code>.sb-bucket</code>. <code>data-order</code> wird automatisch beim Init gesetzt, nicht im HTML eintragen.</p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;!-- Sort-Buckets — FILL: wrapId, fbId, Chips und Buckets --&gt;
+&lt;!-- data-order wird automatisch gesetzt, NICHT im HTML eintragen --&gt;
+&lt;div class="sb-wrap" id="sb1"&gt;
+
+  &lt;!-- Chip-Bank --&gt;
+  &lt;div class="sb-bank"&gt;
+    &lt;!-- FILL: data-correct = data-bucket-id des richtigen Buckets --&gt;
+    &lt;span class="sb-chip" data-correct="<!-- FILL: bucketId -->" onclick="PLK.sbSel(this)"&gt;&lt;!-- FILL: Chip A --&gt;&lt;/span&gt;
+    &lt;span class="sb-chip" data-correct="<!-- FILL: bucketId -->" onclick="PLK.sbSel(this)"&gt;&lt;!-- FILL: Chip B --&gt;&lt;/span&gt;
+    &lt;span class="sb-chip" data-correct="<!-- FILL: bucketId -->" onclick="PLK.sbSel(this)"&gt;&lt;!-- FILL: Chip C --&gt;&lt;/span&gt;
+    &lt;span class="sb-chip" data-correct="<!-- FILL: bucketId -->" onclick="PLK.sbSel(this)"&gt;&lt;!-- FILL: Chip D --&gt;&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Buckets --&gt;
+  &lt;div class="sb-buckets"&gt;
+    &lt;!-- FILL: data-bucket-id muss mit data-correct der Chips übereinstimmen --&gt;
+    &lt;div class="sb-bucket" data-bucket-id="<!-- FILL: bucketId1 -->" onclick="PLK.sbDrop(this)"&gt;
+      &lt;div class="sb-bucket-label"&gt;&lt;!-- FILL: Bucket-Bezeichnung A --&gt;&lt;/div&gt;
+      &lt;div class="sb-bucket-items"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="sb-bucket" data-bucket-id="<!-- FILL: bucketId2 -->" onclick="PLK.sbDrop(this)"&gt;
+      &lt;div class="sb-bucket-label"&gt;&lt;!-- FILL: Bucket-Bezeichnung B --&gt;&lt;/div&gt;
+      &lt;div class="sb-bucket-items"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem"&gt;
+    &lt;button class="btn btn-primary" onclick="PLK.chkSB('sb1','sb1-result')"&gt;Überprüfen&lt;/button&gt;
+    &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rstSB('sb1')"&gt;Zurücksetzen&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="mc-feedback" id="sb1-result" style="display:none;margin-top:.75rem"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3>CSS-Klassen</h3>
+<ul>
+  <li><code>.sb-wrap</code> — Container; muss <code>id</code> haben</li>
+  <li><code>.sb-bank</code> — Chip-Vorrat (initial alle Chips hier)</li>
+  <li><code>.sb-chip</code> — einzelner Chip; <code>data-correct</code> = Bucket-ID; <code>data-order</code> automatisch gesetzt</li>
+  <li><code>.sb-chip.active</code> — aktiv ausgewählt</li>
+  <li><code>.sb-chip.ok</code> / <code>.sb-chip.err</code> — nach Prüfung</li>
+  <li><code>.sb-bucket</code> — Ziel-Bucket; <code>data-bucket-id</code> eindeutig</li>
+  <li><code>.sb-bucket-label</code> — Bucket-Überschrift</li>
+  <li><code>.sb-bucket-items</code> — Ablage-Bereich für Chips</li>
+</ul>
+
+<h3>State-Schlüssel</h3>
+<p><code>state.ab.sb[wrapId][order]</code> — bucket-id für jeden Chip indexiert nach <code>data-order</code>.</p>
+
+<h3>Vollständiges Beispiel (Politik-LK)</h3>
+<pre><code>&lt;!-- Binnenmarkt: Vorteile und Nachteile sortieren --&gt;
+&lt;div class="sb-wrap" id="sb1"&gt;
+  &lt;div class="sb-bank"&gt;
+    &lt;span class="sb-chip" data-correct="vorteil"  onclick="PLK.sbSel(this)"&gt;Freizügigkeit für Arbeitnehmer&lt;/span&gt;
+    &lt;span class="sb-chip" data-correct="vorteil"  onclick="PLK.sbSel(this)"&gt;Exportmarkt mit 450 Mio. Verbrauchern&lt;/span&gt;
+    &lt;span class="sb-chip" data-correct="nachteil" onclick="PLK.sbSel(this)"&gt;Regulierungsdichte durch EU-Normen&lt;/span&gt;
+    &lt;span class="sb-chip" data-correct="nachteil" onclick="PLK.sbSel(this)"&gt;Wettbewerbsdruck auf Niedriglohnländer&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;div class="sb-buckets"&gt;
+    &lt;div class="sb-bucket" data-bucket-id="vorteil" onclick="PLK.sbDrop(this)"&gt;
+      &lt;div class="sb-bucket-label"&gt;Vorteile&lt;/div&gt;
+      &lt;div class="sb-bucket-items"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="sb-bucket" data-bucket-id="nachteil" onclick="PLK.sbDrop(this)"&gt;
+      &lt;div class="sb-bucket-label"&gt;Nachteile / Herausforderungen&lt;/div&gt;
+      &lt;div class="sb-bucket-items"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem"&gt;
+    &lt;button class="btn btn-primary" onclick="PLK.chkSB('sb1','sb1-result')"&gt;Überprüfen&lt;/button&gt;
+    &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rstSB('sb1')"&gt;Zurücksetzen&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="mc-feedback" id="sb1-result" style="display:none;margin-top:.75rem"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>

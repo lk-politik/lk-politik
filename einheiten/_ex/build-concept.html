@@ -1,0 +1,66 @@
+<!-- _ex/build-concept.html — Politik-LK Exercise Library -->
+<h2>Build-a-Concept — Konzept zusammenbauen</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Build-a-Concept eignet sich, wenn Schülerinnen und Schüler aus einer gemischten Menge von richtigen und falschen Bausteinen diejenigen auswählen sollen, die zusammen ein Konzept oder einen Prozess vollständig beschreiben. Besonders geeignet für die Frage "Welche Organe / Schritte / Elemente gehören zu X?". Ablenker-Chips erzeugen kognitiven Anspruch.</p>
+
+<h3>Interaktion</h3>
+<p>Schülerinnen und Schüler klicken Chips an, um sie auszuwählen oder abzuwählen; beim Klick auf "Überprüfen" wird jeder Chip mit seinem <code>data-correct</code>-Wert verglichen.</p>
+
+<h3>JS-Modul</h3>
+<p><code>quiz-lib.js</code> — Funktionen: <code>PLK.bcTog(el)</code>, <code>PLK.chkBC(wrapId, fbId)</code>, <code>PLK.rstBC(wrapId)</code>. Attribute: <code>data-correct="1"</code> auf richtigen Chips, nichts (oder kein Attribut) auf Ablenkern.</p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;!-- Build-a-Concept — FILL: wrapId, fbId, Chips --&gt;
+&lt;!-- data-correct="1" nur auf den Chips, die zum Konzept gehören --&gt;
+&lt;div class="bc-wrap" id="bc1"&gt;
+  &lt;p class="bc-label"&gt;&lt;!-- FILL: Aufgabenstellung, z. B. "Wähle alle Bestandteile von X aus." --&gt;&lt;/p&gt;
+  &lt;div class="bc-chips"&gt;
+    &lt;!-- FILL: richtige Chips erhalten data-correct="1"; Ablenker kein data-correct --&gt;
+    &lt;span class="bc-chip" data-correct="1" onclick="PLK.bcTog(this)"&gt;&lt;!-- FILL: richtiger Baustein A --&gt;&lt;/span&gt;
+    &lt;span class="bc-chip" onclick="PLK.bcTog(this)"&gt;&lt;!-- FILL: Ablenker X --&gt;&lt;/span&gt;
+    &lt;span class="bc-chip" data-correct="1" onclick="PLK.bcTog(this)"&gt;&lt;!-- FILL: richtiger Baustein B --&gt;&lt;/span&gt;
+    &lt;span class="bc-chip" data-correct="1" onclick="PLK.bcTog(this)"&gt;&lt;!-- FILL: richtiger Baustein C --&gt;&lt;/span&gt;
+    &lt;span class="bc-chip" onclick="PLK.bcTog(this)"&gt;&lt;!-- FILL: Ablenker Y --&gt;&lt;/span&gt;
+    &lt;span class="bc-chip" onclick="PLK.bcTog(this)"&gt;&lt;!-- FILL: Ablenker Z --&gt;&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem"&gt;
+    &lt;button class="btn btn-primary" onclick="PLK.chkBC('bc1','bc1-result')"&gt;Überprüfen&lt;/button&gt;
+    &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rstBC('bc1')"&gt;Zurücksetzen&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="mc-feedback" id="bc1-result" style="display:none;margin-top:.75rem"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3>CSS-Klassen</h3>
+<ul>
+  <li><code>.bc-wrap</code> — Container; muss <code>id</code> haben</li>
+  <li><code>.bc-chips</code> — Chip-Container</li>
+  <li><code>.bc-chip</code> — einzelner Chip; <code>data-correct="1"</code> bei richtigen</li>
+  <li><code>.bc-chip.bc-selected</code> — ausgewählt (durch Klick)</li>
+  <li><code>.bc-chip.bc-correct</code> — nach Prüfung: Auswahl-Zustand stimmt (an wenn korrekt, aus wenn Ablenker)</li>
+  <li><code>.bc-chip.bc-wrong</code> — nach Prüfung: Auswahl-Zustand stimmt nicht</li>
+</ul>
+
+<h3>State-Schlüssel</h3>
+<p><code>state.ab.bc[wrapId][chipIndex]</code> — 1 wenn ausgewählt, 0 wenn nicht, indexiert nach Chip-Position im DOM.</p>
+
+<h3>Vollständiges Beispiel (Politik-LK)</h3>
+<pre><code>&lt;!-- Ordentliches Gesetzgebungsverfahren: beteiligte Organe auswählen --&gt;
+&lt;div class="bc-wrap" id="bc1"&gt;
+  &lt;p class="bc-label"&gt;Wähle alle Organe aus, die am ordentlichen Gesetzgebungsverfahren der EU beteiligt sind.&lt;/p&gt;
+  &lt;div class="bc-chips"&gt;
+    &lt;span class="bc-chip" data-correct="1" onclick="PLK.bcTog(this)"&gt;Europäisches Parlament&lt;/span&gt;
+    &lt;span class="bc-chip" onclick="PLK.bcTog(this)"&gt;Gerichtshof der EU&lt;/span&gt;
+    &lt;span class="bc-chip" data-correct="1" onclick="PLK.bcTog(this)"&gt;Rat der EU&lt;/span&gt;
+    &lt;span class="bc-chip" onclick="PLK.bcTog(this)"&gt;Europäische Zentralbank&lt;/span&gt;
+    &lt;span class="bc-chip" data-correct="1" onclick="PLK.bcTog(this)"&gt;Europäische Kommission&lt;/span&gt;
+    &lt;span class="bc-chip" onclick="PLK.bcTog(this)"&gt;Europäischer Rat&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem"&gt;
+    &lt;button class="btn btn-primary" onclick="PLK.chkBC('bc1','bc1-result')"&gt;Überprüfen&lt;/button&gt;
+    &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rstBC('bc1')"&gt;Zurücksetzen&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="mc-feedback" id="bc1-result" style="display:none;margin-top:.75rem"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>

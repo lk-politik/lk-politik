@@ -1,0 +1,93 @@
+<!-- _ex/flashcard.html — Politik-LK Exercise Library -->
+<h2>Flashcard — Lernkarten zum Umdrehen</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Flashcards eignen sich zur Wiederholung von Fachbegriffen und Definitionen, zum Beispiel vor einer Klausur oder am Ende eines Lernblocks. Der Typ ist nicht benotet und dient ausschließlich der Einprägung. Einsetzen, wenn eine Begriffsliste vorhanden ist, die Schülerinnen und Schüler selbständig einüben sollen.</p>
+
+<h3>Interaktion</h3>
+<p>Schülerinnen und Schüler klicken auf eine Karte, um sie umzudrehen (Vorderseite: Fachbegriff, Rückseite: Definition); ein Reset-Button dreht alle Karten zurück.</p>
+
+<h3>JS-Modul</h3>
+<p><code>quiz-lib.js</code> — Funktionen: <code>PLK.fcFlip(el)</code>, <code>PLK.rstFC(setId)</code>. Kein AB-Punkt. Flashcards sind ein Übungsformat, keine benotete Aktivität.</p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;!-- Flashcard-Set — FILL: setId, je eine .fc-card pro Begriff --&gt;
+&lt;!-- setId = id auf dem äußeren Container (für rstFC) --&gt;
+&lt;div class="fc-set" id="fcset1"&gt;
+  &lt;!-- FILL: Kartenanzahl beliebig; id der Karte für State-Restore nötig --&gt;
+  &lt;div class="fc-card" id="fcset1-1"&gt;
+    &lt;div class="fc-front" onclick="PLK.fcFlip(this)"&gt;
+      &lt;span class="fc-term"&gt;&lt;!-- FILL: Fachbegriff --&gt;&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="fc-back" onclick="PLK.fcFlip(this)"&gt;
+      &lt;p class="fc-def"&gt;&lt;!-- FILL: Definition --&gt;&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="fc-card" id="fcset1-2"&gt;
+    &lt;div class="fc-front" onclick="PLK.fcFlip(this)"&gt;
+      &lt;span class="fc-term"&gt;&lt;!-- FILL: Fachbegriff --&gt;&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="fc-back" onclick="PLK.fcFlip(this)"&gt;
+      &lt;p class="fc-def"&gt;&lt;!-- FILL: Definition --&gt;&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="fc-card" id="fcset1-3"&gt;
+    &lt;div class="fc-front" onclick="PLK.fcFlip(this)"&gt;
+      &lt;span class="fc-term"&gt;&lt;!-- FILL: Fachbegriff --&gt;&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="fc-back" onclick="PLK.fcFlip(this)"&gt;
+      &lt;p class="fc-def"&gt;&lt;!-- FILL: Definition --&gt;&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;button class="btn btn-ghost btn-sm" style="margin-top:.75rem" onclick="PLK.rstFC('fcset1')"&gt;Alle zurückdrehen&lt;/button&gt;</code></pre>
+
+<h3>CSS-Klassen</h3>
+<ul>
+  <li><code>.fc-set</code> — Container; <code>id</code> für <code>PLK.rstFC()</code></li>
+  <li><code>.fc-card</code> — einzelne Karte; <code>id</code> für State-Restore nötig</li>
+  <li><code>.fc-card.fc-flipped</code> — umgedreht (Rückseite sichtbar)</li>
+  <li><code>.fc-front</code> — Vorderseite (sichtbar wenn nicht geflippt)</li>
+  <li><code>.fc-back</code> — Rückseite (sichtbar wenn geflippt)</li>
+  <li><code>.fc-term</code> — Fachbegriff auf Vorderseite</li>
+  <li><code>.fc-def</code> — Definition auf Rückseite</li>
+</ul>
+
+<h3>State-Schlüssel</h3>
+<p><code>state.ab.fc[cardId]</code> — "seen" wenn die Karte mindestens einmal umgedreht wurde (persistiert den Flip-Zustand).</p>
+
+<h3>Vollständiges Beispiel (Politik-LK)</h3>
+<pre><code>&lt;!-- EU-Fachbegriffe: Subsidiaritätsprinzip, Verhältnismäßigkeit, Supranationalität --&gt;
+&lt;div class="fc-set" id="fcset1"&gt;
+  &lt;div class="fc-card" id="fcset1-1"&gt;
+    &lt;div class="fc-front" onclick="PLK.fcFlip(this)"&gt;
+      &lt;span class="fc-term"&gt;Subsidiaritätsprinzip&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="fc-back" onclick="PLK.fcFlip(this)"&gt;
+      &lt;p class="fc-def"&gt;Die EU darf nur dann tätig werden, wenn die Ziele einer Maßnahme auf nationaler, regionaler oder lokaler Ebene nicht ausreichend verwirklicht werden können und besser auf EU-Ebene erreicht werden.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="fc-card" id="fcset1-2"&gt;
+    &lt;div class="fc-front" onclick="PLK.fcFlip(this)"&gt;
+      &lt;span class="fc-term"&gt;Verhältnismäßigkeit&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="fc-back" onclick="PLK.fcFlip(this)"&gt;
+      &lt;p class="fc-def"&gt;EU-Maßnahmen dürfen inhaltlich und formal nicht über das hinausgehen, was zur Erreichung der Vertragsziele erforderlich ist.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="fc-card" id="fcset1-3"&gt;
+    &lt;div class="fc-front" onclick="PLK.fcFlip(this)"&gt;
+      &lt;span class="fc-term"&gt;Supranationalität&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="fc-back" onclick="PLK.fcFlip(this)"&gt;
+      &lt;p class="fc-def"&gt;Eigenschaft von EU-Organen wie Kommission, EP und EuGH, die im Gesamtinteresse der EU handeln und deren Entscheidungen dem nationalen Recht vorgehen.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;button class="btn btn-ghost btn-sm" style="margin-top:.75rem" onclick="PLK.rstFC('fcset1')"&gt;Alle zurückdrehen&lt;/button&gt;</code></pre>

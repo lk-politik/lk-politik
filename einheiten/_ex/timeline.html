@@ -1,0 +1,88 @@
+<!-- _ex/timeline.html — Politik-LK Exercise Library -->
+<h2>Timeline — Ereignisse in Zeitleiste einordnen</h2>
+
+<h3>Wann verwenden?</h3>
+<p>Timeline eignet sich, wenn Schülerinnen und Schüler historische Ereignisse oder Vertragsschritte in die chronologisch richtige Reihenfolge bringen sollen. Der Typ ist besonders wirkungsvoll für EU-Vertragsgeschichte oder politische Entwicklungen. Er ergänzt Lese-Einheiten, in denen Zeitachsen eine Rolle spielen.</p>
+
+<h3>Interaktion</h3>
+<p>Schülerinnen und Schüler klicken einen Chip in der Bank (selektiert ihn), dann klicken sie auf einen Slot in der Zeitleiste; ein gefüllter Slot wird automatisch beim nächsten Drop ausgetauscht.</p>
+
+<h3>JS-Modul</h3>
+<p><code>quiz-lib.js</code> — Funktionen: <code>PLK.tlSel(el)</code>, <code>PLK.tlDrop(el)</code>, <code>PLK.chkTL(wrapId, fbId)</code>, <code>PLK.rstTL(wrapId)</code></p>
+
+<h3>HTML-Pattern</h3>
+<pre><code>&lt;!-- Timeline — FILL: wrapId, fbId, Chips und Slots --&gt;
+&lt;!-- Wichtig: .tl-wrap muss eine id haben; .tl-bank und .tl-slot sind Kinder davon --&gt;
+&lt;div class="tl-wrap" id="tl1"&gt;
+
+  &lt;!-- Chip-Bank --&gt;
+  &lt;div class="tl-bank"&gt;
+    &lt;!-- FILL: data-id = eindeutiger Bezeichner; Anzahl Chips = Anzahl Slots --&gt;
+    &lt;span class="tl-chip" data-id="<!-- FILL: chipId1 -->" onclick="PLK.tlSel(this)"&gt;&lt;!-- FILL: Ereignis A --&gt;&lt;/span&gt;
+    &lt;span class="tl-chip" data-id="<!-- FILL: chipId2 -->" onclick="PLK.tlSel(this)"&gt;&lt;!-- FILL: Ereignis B --&gt;&lt;/span&gt;
+    &lt;span class="tl-chip" data-id="<!-- FILL: chipId3 -->" onclick="PLK.tlSel(this)"&gt;&lt;!-- FILL: Ereignis C --&gt;&lt;/span&gt;
+    &lt;span class="tl-chip" data-id="<!-- FILL: chipId4 -->" onclick="PLK.tlSel(this)"&gt;&lt;!-- FILL: Ereignis D --&gt;&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Slots in chronologischer Reihenfolge --&gt;
+  &lt;!-- data-correct = data-id des Chips der an diesen Slot gehört --&gt;
+  &lt;div class="tl-slots"&gt;
+    &lt;div class="tl-slot" data-correct="<!-- FILL: chipId -->" data-label="<!-- FILL: Jahreszahl/Label -->" onclick="PLK.tlDrop(this)"&gt;
+      &lt;span class="tl-slot-label"&gt;&lt;!-- FILL: Jahreszahl oder Bezeichnung --&gt;&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="tl-slot" data-correct="<!-- FILL: chipId -->" data-label="<!-- FILL -->" onclick="PLK.tlDrop(this)"&gt;
+      &lt;span class="tl-slot-label"&gt;&lt;!-- FILL --&gt;&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="tl-slot" data-correct="<!-- FILL: chipId -->" data-label="<!-- FILL -->" onclick="PLK.tlDrop(this)"&gt;
+      &lt;span class="tl-slot-label"&gt;&lt;!-- FILL --&gt;&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="tl-slot" data-correct="<!-- FILL: chipId -->" data-label="<!-- FILL -->" onclick="PLK.tlDrop(this)"&gt;
+      &lt;span class="tl-slot-label"&gt;&lt;!-- FILL --&gt;&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem"&gt;
+    &lt;button class="btn btn-primary" onclick="PLK.chkTL('tl1','tl1-result')"&gt;Überprüfen&lt;/button&gt;
+    &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rstTL('tl1')"&gt;Zurücksetzen&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="mc-feedback" id="tl1-result" style="display:none;margin-top:.75rem"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3>CSS-Klassen</h3>
+<ul>
+  <li><code>.tl-wrap</code> — Gesamt-Container; muss <code>id</code> haben</li>
+  <li><code>.tl-bank</code> — Chip-Vorrat</li>
+  <li><code>.tl-chip</code> — klickbarer Chip; <code>data-id</code> eindeutig</li>
+  <li><code>.tl-chip.active</code> — aktiv ausgewählt</li>
+  <li><code>.tl-slots</code> — Zeitleisten-Container</li>
+  <li><code>.tl-slot</code> — einzelner Slot; <code>data-correct</code> = erwartetes chip data-id</li>
+  <li><code>.tl-slot.filled</code> — Slot belegt</li>
+  <li><code>.tl-slot.ok</code> / <code>.tl-slot.err</code> — nach Prüfung</li>
+</ul>
+
+<h3>State-Schlüssel</h3>
+<p><code>state.ab.tl[wrapId][slotIndex]</code> — data-id des platzierten Chips pro Slot.</p>
+
+<h3>Vollständiges Beispiel (Politik-LK)</h3>
+<pre><code>&lt;!-- EU-Vertragsgeschichte: Rom, Maastricht, Amsterdam, Lissabon --&gt;
+&lt;div class="tl-wrap" id="tl1"&gt;
+  &lt;div class="tl-bank"&gt;
+    &lt;span class="tl-chip" data-id="maastricht" onclick="PLK.tlSel(this)"&gt;Vertrag von Maastricht (1992)&lt;/span&gt;
+    &lt;span class="tl-chip" data-id="lissabon"   onclick="PLK.tlSel(this)"&gt;Vertrag von Lissabon (2007)&lt;/span&gt;
+    &lt;span class="tl-chip" data-id="rom"        onclick="PLK.tlSel(this)"&gt;Römische Verträge (1957)&lt;/span&gt;
+    &lt;span class="tl-chip" data-id="amsterdam"  onclick="PLK.tlSel(this)"&gt;Vertrag von Amsterdam (1997)&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;div class="tl-slots"&gt;
+    &lt;div class="tl-slot" data-correct="rom"       onclick="PLK.tlDrop(this)"&gt;&lt;span class="tl-slot-label"&gt;1957&lt;/span&gt;&lt;/div&gt;
+    &lt;div class="tl-slot" data-correct="maastricht" onclick="PLK.tlDrop(this)"&gt;&lt;span class="tl-slot-label"&gt;1992&lt;/span&gt;&lt;/div&gt;
+    &lt;div class="tl-slot" data-correct="amsterdam"  onclick="PLK.tlDrop(this)"&gt;&lt;span class="tl-slot-label"&gt;1997&lt;/span&gt;&lt;/div&gt;
+    &lt;div class="tl-slot" data-correct="lissabon"   onclick="PLK.tlDrop(this)"&gt;&lt;span class="tl-slot-label"&gt;2007&lt;/span&gt;&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem"&gt;
+    &lt;button class="btn btn-primary" onclick="PLK.chkTL('tl1','tl1-result')"&gt;Überprüfen&lt;/button&gt;
+    &lt;button class="btn btn-ghost btn-sm" onclick="PLK.rstTL('tl1')"&gt;Zurücksetzen&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="mc-feedback" id="tl1-result" style="display:none;margin-top:.75rem"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
