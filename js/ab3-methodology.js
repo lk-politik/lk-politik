@@ -9,13 +9,6 @@
 ;(function () {
   'use strict';
 
-  /* Step metadata — indexed 0–6 */
-  var STEP_COLORS = ['#6366f1','#3b82f6','#0ea5e9','#10b981','#f59e0b','#f97316','#8b5cf6'];
-  var STEP_TINTS  = ['#eef2ff','#eff6ff','#f0f9ff','#f0fdf4','#fffbeb','#fff7ed','#faf5ff'];
-  var STEP_LABELS = ['Etappe 1','Schritt 1','Schritt 2','Schritt 3','Schritt 4','Schritt 5','Schluss'];
-  var STEP_NAMES  = ['Frage analysieren','Kriterium festlegen','Theoretischer Kontext',
-                     'Fallmaterial','Verbindungen','Abwägung','Schlussfolgerung'];
-
   PLK.register({
     name: 'ab3-methodology',
     init: function () {
@@ -29,14 +22,61 @@
      Queries all .ab3-block elements, shuffles options in each,
      attaches click handlers to .ab3-option and .ab3-submit-btn.
   -------------------------------------------------------- */
+  /* Shuffle only prose content between options; letter spans (A/B/C) stay in place. */
+  function _shuffleOptionProse(container) {
+    var opts = container.querySelectorAll('.ab3-option');
+    if (opts.length < 2) return;
+
+    /* Collect swappable payload from each option */
+    var payloads = [];
+    opts.forEach(function (opt) {
+      var textEl  = opt.querySelector('.ab3-opt-text');
+      var errorEl = opt.querySelector('.ab3-error');
+      payloads.push({
+        textHtml:  textEl  ? textEl.innerHTML  : '',
+        errorHtml: errorEl ? errorEl.innerHTML : null,
+        correct:   opt.hasAttribute('data-correct'),
+        summary:   opt.getAttribute('data-summary') || ''
+      });
+    });
+
+    /* Fisher-Yates shuffle */
+    for (var i = payloads.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = payloads[i]; payloads[i] = payloads[j]; payloads[j] = tmp;
+    }
+
+    /* Re-apply shuffled payloads, leaving letter spans untouched */
+    opts.forEach(function (opt, i) {
+      var p      = payloads[i];
+      var textEl = opt.querySelector('.ab3-opt-text');
+      if (textEl) textEl.innerHTML = p.textHtml;
+
+      var errorEl = opt.querySelector('.ab3-error');
+      if (errorEl && p.errorHtml !== null) errorEl.innerHTML = p.errorHtml;
+
+      if (p.correct) {
+        opt.setAttribute('data-correct', '');
+        opt.setAttribute('data-summary', p.summary);
+      } else {
+        opt.removeAttribute('data-correct');
+        opt.removeAttribute('data-summary');
+      }
+    });
+  }
+
   function _initBlocks() {
     var blocks = document.querySelectorAll('.ab3-block');
     blocks.forEach(function (block, idx) {
       block.setAttribute('data-step-idx', idx);
 
-      /* Shuffle options */
+      /* Store original section label for reset */
+      var sectionEl = block.querySelector('.ab3-header-section');
+      if (sectionEl) block.setAttribute('data-section', sectionEl.textContent.trim());
+
+      /* Shuffle prose content within options — letters (A/B/C) stay fixed */
       var optContainer = block.querySelector('.ab3-options');
-      if (optContainer) PLK._shuffleChildren(optContainer);
+      if (optContainer) _shuffleOptionProse(optContainer);
 
       /* Attach selection handler to each option */
       var opts = block.querySelectorAll('.ab3-option');
@@ -122,7 +162,6 @@
      2. Set data-state="done"
      3. Update header to show ✓ badge
      4. Inject .ab3-done-answer panel (correct answer text)
-     5. Append Kontext entry in all SUBSEQUENT blocks
   -------------------------------------------------------- */
   function _collapseBlock(block, stepIdx, summary, answerHtml) {
     /* 1. Save first */
@@ -150,44 +189,6 @@
       }
     }
 
-    /* 5. Append Kontext entry to all subsequent blocks */
-    var allBlocks = document.querySelectorAll('.ab3-block');
-    allBlocks.forEach(function (b) {
-      var bIdx = parseInt(b.getAttribute('data-step-idx'), 10);
-      if (bIdx > stepIdx) {
-        _appendKontextEntry(b, stepIdx, summary);
-      }
-    });
-  }
-
-  /* --------------------------------------------------------
-     _appendKontextEntry(block, stepIdx, summary)
-     Creates and appends one colored Kontext entry to .ab3-kontext.
-  -------------------------------------------------------- */
-  function _appendKontextEntry(block, stepIdx, summary) {
-    var kontext = block.querySelector('.ab3-kontext');
-    if (!kontext) return;
-
-    /* Remove placeholder if present */
-    var ph = kontext.querySelector('.ab3-kontext-placeholder');
-    if (ph) ph.parentNode.removeChild(ph);
-
-    var color = STEP_COLORS[stepIdx] || '#94a3b8';
-    var tint  = STEP_TINTS[stepIdx]  || '#f8fafc';
-    var label = STEP_LABELS[stepIdx] || ('Schritt ' + (stepIdx + 1));
-    var name  = STEP_NAMES[stepIdx]  || '';
-
-    var entry = document.createElement('div');
-    entry.className = 'ab3-kontext-entry';
-    entry.setAttribute('data-for-step', stepIdx);
-    entry.innerHTML =
-      '<div class="ab3-kontext-head" style="background:' + color + '">' +
-        '<span class="ab3-kontext-label">' + label + ' \u2713</span>' +
-        '<span class="ab3-kontext-name">' + name + '</span>' +
-      '</div>' +
-      '<div class="ab3-kontext-body" style="background:' + tint + '">' + _esc(summary) + '</div>';
-
-    kontext.appendChild(entry);
   }
 
   /* --------------------------------------------------------
@@ -246,8 +247,8 @@
 
   /* --------------------------------------------------------
      _restoreProgress()
-     On page load: re-applies done states, Kontext entries,
-     and done-answer panels from localStorage.
+     On page load: re-applies done states and done-answer panels
+     from localStorage.
      Shuffle already ran in _initBlocks().
      Data is read from localStorage, never from the shuffled DOM.
   -------------------------------------------------------- */
@@ -266,7 +267,6 @@
       .sort(function (a, b) { return a - b; });
 
     doneIndices.forEach(function (stepIdx) {
-      var summary    = steps[stepIdx].summary || '';
       var answerHtml = steps[stepIdx].answer  || '';
 
       /* Collapse the corresponding block */
@@ -293,15 +293,6 @@
         }
       }
 
-      /* Append Kontext entry to all subsequent blocks */
-      allBlocks.forEach(function (b) {
-        var bIdx = parseInt(b.getAttribute('data-step-idx'), 10);
-        if (bIdx > stepIdx) {
-          if (!b.querySelector('.ab3-kontext-entry[data-for-step="' + stepIdx + '"]')) {
-            _appendKontextEntry(b, stepIdx, summary);
-          }
-        }
-      });
     });
 
     /* Unlock the first non-done block */
@@ -321,14 +312,101 @@
   }
 
   /* --------------------------------------------------------
-     _esc(str) — minimal HTML escaping for text injected into innerHTML
+     PLK.resetAB3()
+     Resets the 7 AB3 step blocks to their initial state,
+     clears stored progress, and re-locks #ab-section.
+     Does NOT touch the UK quiz state.
   -------------------------------------------------------- */
-  function _esc(str) {
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  }
+  PLK.resetAB3 = function () {
+    if (!confirm('Lerneinheit zurücksetzen? Der Fortschritt der 7 Schritte wird gelöscht.')) return;
+
+    /* Clear localStorage ab3 data */
+    if (typeof CONF !== 'undefined') {
+      var d = PLK.Progress.load(CONF.id) || {};
+      delete d.ab3;
+      PLK.Progress.save(CONF.id, d);
+    }
+
+    var allBlocks = document.querySelectorAll('.ab3-block');
+    allBlocks.forEach(function (block, i) {
+      /* Remove done-answer panel */
+      var doneAnswer = block.querySelector('.ab3-done-answer');
+      if (doneAnswer) doneAnswer.parentNode.removeChild(doneAnswer);
+
+      /* Restore section badge from stored data-section */
+      var doneBadge = block.querySelector('.ab3-done-badge');
+      if (doneBadge) {
+        var sectionText = block.getAttribute('data-section') || '';
+        doneBadge.outerHTML = '<span class="ab3-header-section">' + sectionText + '</span>';
+      }
+
+      /* Reset data-state */
+      block.setAttribute('data-state', i === 0 ? 'active' : 'locked');
+
+      /* Clear option states */
+      block.querySelectorAll('.ab3-option').forEach(function (opt) {
+        opt.removeAttribute('data-selected');
+        opt.style.borderColor = '';
+        opt.style.background  = '';
+        var errPanel = opt.querySelector('.ab3-error');
+        if (errPanel) errPanel.classList.remove('visible');
+      });
+
+      /* Disable submit button */
+      var btn = block.querySelector('.ab3-submit-btn');
+      if (btn) btn.disabled = true;
+    });
+
+    /* Re-lock ab-section */
+    var abSection = document.getElementById('ab-section');
+    if (abSection) abSection.removeAttribute('data-state');
+  };
+
+  /* --------------------------------------------------------
+     PLK.resetUK(blockId)
+     Resets a UK quiz block to its initial state (Stage 1 active,
+     stages 2-3 locked, all selections cleared).
+     Called by the "↺ Zurücksetzen" button in the template.
+  -------------------------------------------------------- */
+  PLK.resetUK = function (blockId) {
+    var block = document.getElementById(blockId);
+    if (!block) return;
+
+    block.classList.remove('uk-complete');
+    block.removeAttribute('data-krit-idx');
+
+    /* Reset stage lock states */
+    var stages = block.querySelectorAll('.uk-stage');
+    stages.forEach(function (stage, i) {
+      stage.classList.remove('uk-stage-done');
+      if (i > 0) stage.classList.add('uk-stage-locked');
+    });
+
+    /* Clear kriterium option states + error text */
+    block.querySelectorAll('.uk-krit-opt').forEach(function (o) {
+      o.classList.remove('selected', 'correct', 'wrong');
+      var errSpan = o.querySelector('.uk-krit-opt-err');
+      if (errSpan) errSpan.textContent = '';
+    });
+
+    /* Clear step option states */
+    block.querySelectorAll('.uk-opt').forEach(function (o) {
+      o.classList.remove('selected', 'correct', 'incorrect');
+    });
+
+    /* Clear recheck chip states + error messages */
+    block.querySelectorAll('.uk-krit-chip').forEach(function (c) {
+      c.classList.remove('selected', 'wrong');
+    });
+    block.querySelectorAll('.uk-krit-recheck-err').forEach(function (el) {
+      el.textContent = '';
+      el.style.display = 'none';
+    });
+
+    /* Disable all submit buttons */
+    block.querySelectorAll('.uk-stage-submit').forEach(function (btn) {
+      btn.disabled = true;
+    });
+  };
 
 })();

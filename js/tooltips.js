@@ -1,35 +1,35 @@
-/* ==========================================================
-   Politik-LK — tooltips.js
-   Operator badge tooltips · Fachbegriff popovers
+﻿/* ==========================================================
+   Politik-LK â€” tooltips.js
+   Operator badge tooltips Â· Fachbegriff popovers
    Auto-tags glossary terms in prose at runtime.
    Requires: css/style.css sections 40-42
    Load after engine.js in unit HTML files.
-   ES5 only — no arrow functions, no const/let.
+   ES5 only â€” no arrow functions, no const/let.
    ========================================================== */
 
 ;(function () {
   'use strict';
 
-  /* ── Category colour palette ────────────────────────────── */
+  /* â”€â”€ Category colour palette â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   /* Colours grouped by super-category:
      Akteure      = blue family   (political actors)
-     Rechtsrahmen = green family  (dark → light, bridging to Konzepte)
-     Konzepte     = amber→yellow→pink (Struktur/Prinzip/Modell/Phänomen)  */
+     Rechtsrahmen = green family  (dark â†’ light, bridging to Konzepte)
+     Konzepte     = amberâ†’yellowâ†’pink (Struktur/Prinzip/Modell/PhÃ¤nomen)  */
   var CAT_COLORS = {
-    /* ── Akteure (blue) ─────────────────────────────────────── */
-    'Organisation':      '#1e3a8a',  /* navy — most structural              */
-    'Institution':       '#2563eb',  /* blue — operational bodies            */
-    'Posten':            '#60a5fa',  /* sky — role / function                */
-    'Person':            '#0891b2',  /* turquoise — individual, cool-toned   */
-    /* ── Rechtsrahmen (green, dark → light) ─────────────────── */
-    'Vertrag':           '#166534',  /* dark green — foundational treaties   */
-    'Rechtsnorm':        '#16a34a',  /* green — binding law                  */
-    'Verfahren':         '#65a30d',  /* lime-green — procedural, bridges     */
-    /* ── Konzepte (amber → yellow → pink) ─────────────────── */
-    'Struktur':          '#b45309',  /* amber — permanence                   */
-    'Prinzip':           '#ca8a04',  /* yellow — conceptual truth            */
-    'Modell':            '#eab308',  /* bright yellow — theoretical models   */
-    'Phänomen':          '#db2777'   /* pink — unexpected, distinct          */
+    /* â”€â”€ Akteure (blue) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    'Organisation':      '#1e3a8a',  /* navy â€” most structural              */
+    'Institution':       '#2563eb',  /* blue â€” operational bodies            */
+    'Posten':            '#60a5fa',  /* sky â€” role / function                */
+    'Person':            '#0891b2',  /* turquoise â€” individual, cool-toned   */
+    /* â”€â”€ Rechtsrahmen (green, dark â†’ light) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    'Vertrag':           '#166534',  /* dark green â€” foundational treaties   */
+    'Rechtsnorm':        '#16a34a',  /* green â€” binding law                  */
+    'Verfahren':         '#65a30d',  /* lime-green â€” procedural, bridges     */
+    /* â”€â”€ Konzepte (amber â†’ yellow â†’ pink) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    'Struktur':          '#b45309',  /* amber â€” permanence                   */
+    'Prinzip':           '#ca8a04',  /* yellow â€” conceptual truth            */
+    'Modell':            '#eab308',  /* bright yellow â€” theoretical models   */
+    'Ph\u00e4nomen':      '#db2777'   /* pink - unexpected, distinct           */
   };
 
   /* Expose so fachbegriffe.html and other pages can reuse */
@@ -39,39 +39,39 @@
 
   /* Categories with special badge rendering */
   var CAT_SPECIAL = {
-    'Struktur': { bg: '#292524', fg: '#fff' },        /* near-black bg, white text — permanence */
-    'Prinzip':  { bg: '#fefce8', fg: '#854d0e', border: '#e5d5a0' }  /* cream bg, dark yellow text — conceptual truth */
+    'Prinzip':  { bg: '#fefce8', fg: '#854d0e', border: '#e5d5a0' }  /* cream bg, dark yellow text - conceptual truth */
   };
 
-  /* Category descriptions — used in glossary page group headers */
+  /* Category descriptions â€” used in glossary page group headers */
   var CAT_DESCRIPTIONS = {
-    'Organisation':  'Überstaatliche oder internationale Zusammenschlüsse mit eigener Struktur und Mitgliedschaft.',
-    'Institution':   'Organe und Einrichtungen innerhalb eines politischen Systems, die eine bestimmte Funktion ausüben.',
-    'Posten':        'Politische Ämter und Funktionen, unabhängig von der Person, die sie besetzt.',
+    'Organisation':  '\u00dcberstaatliche oder internationale Zusammenschl\u00fcsse mit eigener Struktur und Mitgliedschaft.',
+    'Institution':   'Organe und Einrichtungen innerhalb eines politischen Systems, die eine bestimmte Funktion aus\u00fcben.',
+    'Posten':        'Politische \u00c4mter und Funktionen, unabh\u00e4ngig von der Person, die sie besetzt.',
     'Person':        'Historische oder aktuelle Einzelpersonen mit politischer Bedeutung.',
-    'Vertrag':       'Völkerrechtliche oder verfassungsrechtliche Grundlagentexte, die Rechte, Pflichten und Strukturen festlegen.',
+    'Vertrag':       'V\u00f6lkerrechtliche oder verfassungsrechtliche Grundlagentexte, die Rechte, Pflichten und Strukturen festlegen.',
     'Rechtsnorm':    'Konkrete Rechtsakte, Vorschriften oder kodifizierte Regeln, die aus einem Vertrag oder Gesetz hervorgehen.',
-    'Verfahren':     'Formalisierte Abläufe und Prozesse der politischen Entscheidungsfindung.',
+    'Verfahren':     'Formalisierte Abl\u00e4ufe und Prozesse der politischen Entscheidungsfindung.',
     'Struktur':      'Dauerhafte reale Ordnungssysteme, die den Rahmen politischen, wirtschaftlichen oder gesellschaftlichen Handelns bilden.',
-    'Prinzip':       'Normative Leitideen und Grundsätze, die politisches Handeln legitimieren oder begrenzen.',
-    'Modell':        'Theoretische Erklärungsrahmen, Denkschulen und analytische Konzepte, die Wirklichkeit deuten, aber nicht selbst Wirklichkeit sind.',
-    'Phänomen':      'Beobachtbare politische, gesellschaftliche oder wirtschaftliche Entwicklungen und Muster.'
+    'Prinzip':       'Normative Leitideen und Grunds\u00e4tze, die politisches Handeln legitimieren oder begrenzen.',
+    'Modell':        'Theoretische Erkl\u00e4rungsrahmen, Denkschulen und analytische Konzepte, die Wirklichkeit deuten, aber nicht selbst Wirklichkeit sind.',
+    'Ph\u00e4nomen':  'Beobachtbare politische, gesellschaftliche oder wirtschaftliche Entwicklungen und Muster.'
   };
   window._PLK_CAT_DESCRIPTIONS = CAT_DESCRIPTIONS;
 
-  /* Chapter colour map — used for unit-reference chips in tooltips */
+  /* Chapter colour map â€” used for unit-reference chips in tooltips */
   var CHAPTER_COLORS = { 3: '#2563eb' };   /* EU = blue */
-  var CHAPTER_TEXT   = { 3: '#fde68a' };   /* EU chips = gold text on blue */
+  var CHAPTER_LIGHTS = { 3: '#e8f0f9' };   /* EU chips = light blue background */
 
-  /* ── Shared state ──────────────────────────────────────── */
+  /* â”€â”€ Shared state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   var _operators     = null;
   var _glossary      = null;
   var _units         = null;
+  var _glossaryRefs  = null;
   var _activeTooltip = null;
   var _tooltipAnchor = null;   /* original anchor element for in-place replacement */
   var _tooltipStack  = [];     /* history stack for back-navigation in nested tooltips */
 
-  /* ── Base path (resolve from script src) ──────────────── */
+  /* â”€â”€ Base path (resolve from script src) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   var _base = (function () {
     var s = document.currentScript;
     if (s && s.src) return s.src.replace(/js\/tooltips\.js.*$/i, '');
@@ -80,7 +80,7 @@
     return './';
   })();
 
-  /* ── Data loading ──────────────────────────────────────── */
+  /* â”€â”€ Data loading â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
   function _fetchJSON(path, cb) {
     var url = /^https?:|^\//.test(path) ? path : _base + path;
@@ -102,13 +102,17 @@
 
     if (window._PLK_GLOSSARY) {
       _glossary = window._PLK_GLOSSARY;
-      /* sync path: glossary already available — auto-tag happens in DOMContentLoaded */
+      /* sync path: glossary already available â€” auto-tag happens in DOMContentLoaded */
     } else {
       _fetchJSON('data/glossary.json', function (d) {
         _glossary = d;
         _autoTagTerms(); /* async path: tag once data arrives */
+        _fixFbSpacing(); /* ensure spaces around newly tagged terms */
       });
     }
+
+    if (window._PLK_GLOSSARY_REFS) { _glossaryRefs = window._PLK_GLOSSARY_REFS; }
+    else { _fetchJSON('data/glossary-refs.json', function (d) { _glossaryRefs = d; }); }
 
     if (window._PLK_UNITS) { _units = window._PLK_UNITS; }
     else { _fetchJSON('data/units.json', function (d) { _units = d; }); }
@@ -138,7 +142,7 @@
     return _units.find(function (u) { return u.id === id; }) || null;
   }
 
-  /* ── Tooltip positioning ───────────────────────────────── */
+  /* â”€â”€ Tooltip positioning â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
   function _positionTooltip(tooltip, anchor) {
     var r   = anchor.getBoundingClientRect();
@@ -170,7 +174,7 @@
     }
   }
 
-  /* ── Build unit-reference chips for the tooltip ─────────── */
+  /* â”€â”€ Build unit-reference chips for the tooltip â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
   function _unitRefsHtml(unitIds) {
     if (!unitIds || !unitIds.length) return '';
@@ -179,25 +183,28 @@
       var num   = unit ? unit.num   : id;
       var title = unit ? unit.title : ('Einheit ' + id);
       var ch    = parseInt(id, 10);  /* chapter number from unit-id prefix */
-      var bg    = CHAPTER_COLORS[ch] || '';
-      var fg    = CHAPTER_TEXT[ch]   || '';
-      var cStyle = bg
-        ? 'color:' + fg + ';background:' + bg + ';border-color:' + bg
+      var fg    = CHAPTER_COLORS[ch] || '';
+      var bg    = CHAPTER_LIGHTS[ch] || '';
+      var cStyle = fg && bg
+        ? 'color:' + fg + ';background:' + bg
         : '';
       if (unit && unit.status === 'active' && unit.file) {
         var href = _base + 'einheiten/' + unit.file;
         return '<a class="fb-tooltip-unit-chip" href="' + href + '" title="' + title + '"' +
           (cStyle ? ' style="' + cStyle + '"' : '') + '>' + num + '</a>';
       }
-      var lStyle = bg
-        ? 'color:' + bg + '80;border-color:' + bg + '40;background:' + bg + '10'
-        : '';
+      var lStyle = 'color:var(--ink3);background:var(--border-l)';
       return '<span class="fb-tooltip-unit-chip locked" title="' + title + '"' +
         (lStyle ? ' style="' + lStyle + '"' : '') + '>' + num + '</span>';
     }).join('');
   }
 
-  /* ── Show helpers ───────────────────────────────────────── */
+  function _unitIdsForEntry(entry) {
+    if (!entry || !_glossaryRefs) return [];
+    return _glossaryRefs[entry.term] || [];
+  }
+
+  /* â”€â”€ Show helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
   /* Tag glossary terms inside a definition string as clickable fb spans */
   /* German adjective ending regex (shared with _autoTagTerms) */
@@ -238,7 +245,7 @@
     inlineEntries.sort(function (a, b) { return b.pattern.length - a.pattern.length; });
     var patterns = inlineEntries.map(function (e) { return e.pattern; });
     if (!patterns.length) return defText;
-    var re = new RegExp('\\b(' + patterns.join('|') + ')([a-zäöüß]*)', 'gi');
+    var re = new RegExp('\\b(' + patterns.join('|') + ')([a-z\\u00e4\\u00f6\\u00fc\\u00df]*)', 'gi');
     return defText.replace(re, function (full, base, suffix) {
       /* Resolve matched text to glossary term */
       var resolved = null;
@@ -263,7 +270,20 @@
     ee: '<svg viewBox="0 0 16 11" style="width:16px;height:11px;vertical-align:middle;margin-right:.3rem"><rect width="16" height="3.67" fill="#0072CE"/><rect y="3.67" width="16" height="3.67" fill="#000"/><rect y="7.33" width="16" height="3.67" fill="#fff"/></svg>'
   };
 
-  function _flagSvg(code) { return code && _FLAGS[code] ? _FLAGS[code] : ''; }
+  function _flagSvg(code) {
+    if (!code) return '';
+    if (Object.prototype.toString.call(code) === '[object Array]') {
+      return code.map(function (c) { return _FLAGS[c] || ''; }).join('');
+    }
+    return _FLAGS[code] || '';
+  }
+
+  function _mandateLabel(start, end) {
+    if (start && end) return start + '-' + end + ' &rarr; ';
+    if (start) return 'Seit ' + start + ' &rarr; ';
+    if (end) return 'Bis ' + end + ' &rarr; ';
+    return '&#9656; ';
+  }
 
   /* Build the inner HTML for a fb-tooltip given a glossary entry */
   function _fbTooltipHtml(entry, termText, showBack) {
@@ -271,7 +291,7 @@
       return '<div class="fb-tooltip-header">' +
         '<span class="fb-tooltip-term">' + termText + '</span>' +
       '</div>' +
-      '<div class="fb-tooltip-def">Lade Daten \u2026</div>';
+      '<div class="fb-tooltip-def">Lade Daten ...</div>';
     }
     if (!entry) {
       return '<div class="fb-tooltip-header">' +
@@ -292,7 +312,7 @@
 
     var termColor = color;
     var indexHref = _base + 'fachbegriffe.html?q=' + encodeURIComponent(entry.term);
-    var unitRefs  = _unitRefsHtml(entry.units);
+    var unitRefs  = _unitRefsHtml(_unitIdsForEntry(entry));
     var taggedDef = _tagDefsInline(entry.def, entry.term);
 
     var backHtml = showBack
@@ -301,27 +321,32 @@
 
     var flagHtml = _flagSvg(entry.flag);
     var temporalHtml = entry.temporal
-      ? '<span style="font-size:.65rem;color:#d97706;margin-left:.4rem;vertical-align:middle" title="Zeitgebundene Information — siehe Aktualit\u00e4tsindex">\u231b</span>'
+      ? '<span style="font-size:.65rem;color:#d97706;margin-left:.4rem;vertical-align:middle" title="Zeitgebundene Information - siehe Aktualit\u00e4tsindex">\u231b</span>'
       : '';
     var basisHtml = entry.basis
       ? '<span style="font-size:.6rem;color:#ca8a04;margin-left:.35rem;vertical-align:middle" title="Lehrplan-Basisbegriff">\u2605</span>'
       : '';
 
-    /* Cross-link: Person → Posten (with seit date) */
-    var crossLinkHtml = '';
+    /* Cross-link: Person â†’ Posten (with seit date) */
+    var crossLinks = [];
+    if (entry.institution) {
+      crossLinks.push('<div style="margin-top:.3rem;font-size:.8rem;color:var(--ink3)">' +
+        '&#9656; <strong class="fb" style="cursor:pointer" data-fb="' + entry.institution + '">' + entry.institution + '</strong>' +
+        '</div>');
+    }
     if (entry.posten) {
-      var seitStr = entry.seit ? ('Seit ' + entry.seit + ' \u2192 ') : '\u25b8 ';
-      crossLinkHtml = '<div style="margin-top:.3rem;font-size:.8rem;color:var(--ink3)">' +
+      var seitStr = _mandateLabel(entry.seit, entry.bis);
+      crossLinks.push('<div style="margin-top:.3rem;font-size:.8rem;color:var(--ink3)">' +
         seitStr + '<strong class="fb" style="cursor:pointer" data-fb="' + entry.posten + '">' + entry.posten + '</strong>' +
-        '</div>';
+        '</div>');
     }
-    /* Reverse cross-link: Posten → current Person (with seit date) */
     if (entry.person) {
-      var pSeitStr = entry.personSeit ? ('Seit ' + entry.personSeit + ' \u2192 ') : '\u25b8 ';
-      crossLinkHtml = '<div style="margin-top:.3rem;font-size:.8rem;color:var(--ink3)">' +
+      var pSeitStr = _mandateLabel(entry.personSeit, entry.personBis);
+      crossLinks.push('<div style="margin-top:.3rem;font-size:.8rem;color:var(--ink3)">' +
         pSeitStr + '<strong class="fb" style="cursor:pointer" data-fb="' + entry.person + '">' + entry.person + '</strong>' +
-        '</div>';
+        '</div>');
     }
+    var crossLinkHtml = crossLinks.join('');
 
     return '<div class="fb-tooltip-header">' +
         backHtml +
@@ -412,7 +437,7 @@
     _activeTooltip = tooltip;
   }
 
-  /* ── Auto-tag glossary terms in prose ──────────────────── */
+  /* â”€â”€ Auto-tag glossary terms in prose â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   /* Scans all text nodes in the page-wrap and wraps any
      untagged glossary term occurrence with <strong class="fb">.
      Uses event delegation, so no re-init needed afterward.    */
@@ -421,7 +446,7 @@
     if (!_glossary || !_glossary.length) return;
 
     /* Build combined list of terms + abbreviations, mapping each to its base term */
-    var abbrMap = {};   /* lowercase match → glossary term (for abbreviations) */
+    var abbrMap = {};   /* lowercase match â†’ glossary term (for abbreviations) */
 
     var allEntries = []; /* { pattern: regexStr, term: glossaryTerm, isAbbr: bool } */
 
@@ -436,13 +461,13 @@
       }
     });
 
-    /* Sort longer patterns first — prevents partial matches in combined regex */
+    /* Sort longer patterns first â€” prevents partial matches in combined regex */
     allEntries.sort(function (a, b) { return b.pattern.length - a.pattern.length; });
 
     var pattern = allEntries.map(function (e) { return e.pattern; }).join('|');
     /* Match pattern + optional trailing lowercase suffix (German noun inflection) */
     /* \b prevents matching "EP" inside "Rezept", "Konzept" etc. */
-    var re = new RegExp('\\b(' + pattern + ')([a-zäöüß]*)', 'gi');
+    var re = new RegExp('\\b(' + pattern + ')([a-z\\u00e4\\u00f6\\u00fc\\u00df]*)', 'gi');
 
     /* Build a lookup: given a matched string, find its glossary term */
     function _resolveMatch(matchedText) {
@@ -459,7 +484,7 @@
       return null;
     }
 
-    /* ── Skip zone detection ── */
+    /* â”€â”€ Skip zone detection â”€â”€ */
     var SKIP_TAGS = {
       BUTTON: 1, A: 1, INPUT: 1, TEXTAREA: 1, SELECT: 1,
       SCRIPT: 1, STYLE: 1, NAV: 1, FOOTER: 1,
@@ -530,13 +555,34 @@
     });
   }
 
-  /* ── Init ───────────────────────────────────────────────── */
+  /* â”€â”€ Init â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+
+  /* ── Space-guard: ensure spaces around strong.fb elements.
+        Handles both static markup and auto-tagged terms.
+        Called from both sync and async init paths.          */
+  function _fixFbSpacing() {
+    document.querySelectorAll('strong.fb').forEach(function (el) {
+      var prev = el.previousSibling;
+      if (prev && prev.nodeType === 3 && /\S$/.test(prev.nodeValue)
+          && !/[(„«‹\[{]$/.test(prev.nodeValue)) {
+        prev.nodeValue += ' ';
+      }
+      var next = el.nextSibling;
+      if (next && next.nodeType === 3
+          && /^\S/.test(next.nodeValue)
+          && !/^[,.:;!?\-–—)\]}"»›]/.test(next.nodeValue)) {
+        next.nodeValue = ' ' + next.nodeValue;
+      }
+    });
+  }
 
   document.addEventListener('DOMContentLoaded', function () {
     _loadData();
     _autoTagTerms(); /* sync path: window._PLK_GLOSSARY already set by script tag */
 
-    /* Close tooltip on scroll — fixes the "stuck tooltip" bug */
+    _fixFbSpacing();
+
+    /* Close tooltip on scroll â€” fixes the "stuck tooltip" bug */
     var _scrollTimer = null;
     window.addEventListener('scroll', function () {
       if (!_activeTooltip) return;
@@ -545,7 +591,7 @@
     }, true);
 
     /* Single delegated handler for all tooltip interactions.
-       No per-element listeners needed — works for auto-tagged
+       No per-element listeners needed â€” works for auto-tagged
        terms too, without any re-initialization.               */
     document.addEventListener('click', function (e) {
       var t = e.target;
@@ -557,7 +603,7 @@
         return;
       }
 
-      /* strong.fb inside an active tooltip → replace content in-place */
+      /* strong.fb inside an active tooltip â†’ replace content in-place */
       if (t.tagName === 'STRONG' && t.className && t.className.indexOf('fb') !== -1
           && _activeTooltip && _activeTooltip.contains(t)) {
         e.stopPropagation();
@@ -566,7 +612,7 @@
         return;
       }
 
-      /* strong.fb in page → glossary tooltip */
+      /* strong.fb in page â†’ glossary tooltip */
       if (t.tagName === 'STRONG' && t.className && t.className.indexOf('fb') !== -1) {
         e.stopPropagation();
         var termText = t.getAttribute('data-fb') || t.textContent.trim();
@@ -578,7 +624,7 @@
         return;
       }
 
-      /* .op-badge → operator tooltip */
+      /* .op-badge â†’ operator tooltip */
       if (t.className && t.className.indexOf('op-badge') !== -1) {
         e.stopPropagation();
         var opName = t.dataset.op;
@@ -590,7 +636,7 @@
         return;
       }
 
-      /* Outside click → close active tooltip */
+      /* Outside click â†’ close active tooltip */
       if (_activeTooltip && !_activeTooltip.contains(t)) {
         _closeTooltip();
       }

@@ -235,9 +235,9 @@
       hint.textContent = stu ? 'Passwort: ' + stu : '✓ Freigeschalten';
     }
 
-    /* Felder verstecken — fallback to #pw-wrap if no .pw-input container */
+    /* Passwort-Eingabe + Freischalten-Button ausblenden, Reset-Button bleibt */
     var wrap = inp.closest('.pw-input') || document.getElementById('pw-wrap');
-    if (wrap) wrap.style.display = 'none';
+    if (wrap) wrap.classList.add('pw-done');
 
     /* In localStorage speichern */
     _persistUnlock();
@@ -250,6 +250,20 @@
     locked.forEach(function (el) {
       el.classList.remove('locked');
     });
+
+    /* UK-Stage-Sperren aufheben */
+    document.querySelectorAll('.uk-stage-locked').forEach(function (el) {
+      el.classList.remove('uk-stage-locked');
+    });
+
+    /* AB3-Blöcke freischalten (data-state="locked" → "active") */
+    document.querySelectorAll('.ab3-block[data-state="locked"]').forEach(function (el) {
+      el.setAttribute('data-state', 'active');
+    });
+
+    /* AB-Section freischalten falls vorhanden */
+    var abSection = document.getElementById('ab-section');
+    if (abSection) abSection.setAttribute('data-state', 'ready');
 
     /* Auflösungs-Boxen sichtbar machen */
     var aufls = document.querySelectorAll('.aufloesung-box');
@@ -311,12 +325,12 @@
 
     if (saved.unlocked) {
       _unlockAll();
-      /* Passwort-Felder verstecken */
+      /* Passwort-Eingabe + Freischalten-Button ausblenden, Reset-Button bleibt */
       document.querySelectorAll('.pw-input').forEach(function (el) {
-        el.style.display = 'none';
+        el.classList.add('pw-done');
       });
       var pwWrap = document.getElementById('pw-wrap');
-      if (pwWrap) pwWrap.style.display = 'none';
+      if (pwWrap) pwWrap.classList.add('pw-done');
       _restoreAbState(saved);
       return;
     }
@@ -1276,7 +1290,30 @@
     });
   }
 
+  /* ── Stale inline-style guard (bfcache + old engine versions) ───────
+     Old engine.js set style.display='none' directly on #pw-wrap.
+     Clear any leftover inline style so CSS class pw-done is the only
+     hide mechanism. Also runs on bfcache-restore via pageshow.        */
+  function _clearPwInlineStyle() {
+    var pwWrap = document.getElementById('pw-wrap');
+    if (pwWrap) pwWrap.style.display = '';
+    document.querySelectorAll('.pw-input').forEach(function (el) {
+      el.style.display = '';
+    });
+  }
+
+  window.addEventListener('pageshow', function (e) {
+    if (e.persisted) {
+      /* bfcache restore — scripts didn't re-run, DOM has stale state */
+      _clearPwInlineStyle();
+      _restoreState();
+    }
+  });
+
   document.addEventListener('DOMContentLoaded', function () {
+    /* Clear any stale inline display from pw-wrap before restoring state */
+    _clearPwInlineStyle();
+
     PLK.init(); /* run all registered module init() hooks first */
 
     /* Zustand aus localStorage wiederherstellen */
