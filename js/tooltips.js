@@ -11,20 +11,26 @@
   'use strict';
 
   /* ── Category colour palette ────────────────────────────── */
-  /* Blue → teal → green spectrum for structural/procedural categories.
-     Grey, yellow, black, silver for the remaining types.
-     No red or red-adjacent colours.                              */
+  /* Colours grouped by super-category:
+     Akteure      = blue family   (political actors)
+     Rechtsrahmen = green family  (dark → light, bridging to Konzepte)
+     Konzepte     = mixed: Struktur=black, Prinzip=neutral, Phänomen=purple
+     "Konzept" sub-cat reserved but currently empty.            */
   var CAT_COLORS = {
-    'Organisation':      '#1e3a8a',  /* dark blue                           */
-    'Institution':       '#2563eb',  /* blue                                */
-    'Posten':            '#60a5fa',  /* light blue                          */
-    'Verfahren':         '#0d9488',  /* green-blue (teal)                   */
-    'Vertrag':           '#16a34a',  /* green                               */
-    'Rechtsnorm':        '#d97706',  /* amber                               */
-    'Prinzip':           '#ea580c',  /* orange                              */
-    'Struktur':          '#374151',  /* white bg + black text               */
-    'Konzept':           '#111827',  /* black bg + white text               */
-    'Phänomen':          '#a855f7'   /* purple-pink                         */
+    /* ── Akteure (blue) ─────────────────────────────────────── */
+    'Organisation':      '#1e3a8a',  /* navy — most structural              */
+    'Institution':       '#2563eb',  /* blue — operational bodies            */
+    'Posten':            '#60a5fa',  /* sky — role / function                */
+    'Person':            '#0891b2',  /* turquoise — individual, cool-toned   */
+    /* ── Rechtsrahmen (green, dark → light) ─────────────────── */
+    'Vertrag':           '#166534',  /* dark green — foundational treaties   */
+    'Rechtsnorm':        '#16a34a',  /* green — binding law                  */
+    'Verfahren':         '#65a30d',  /* lime-green — procedural, bridges     */
+    /* ── Konzepte (amber → yellow → pink) ─────────────────── */
+    'Struktur':          '#b45309',  /* amber — permanence                   */
+    'Prinzip':           '#ca8a04',  /* yellow — conceptual truth            */
+    'Ideologie':         '#eab308',  /* bright yellow — political thought    */
+    'Phänomen':          '#db2777'   /* pink — unexpected, distinct          */
   };
 
   /* Expose so fachbegriffe.html and other pages can reuse */
@@ -32,8 +38,11 @@
 
   function _catColor(cat) { return CAT_COLORS[cat] || '#6b7280'; }
 
-  /* Categories with inverted badge rendering (light bg + dark text) */
-  var CAT_INVERTED = { 'Konzept': 1, 'Struktur': 1 };
+  /* Categories with special badge rendering */
+  var CAT_SPECIAL = {
+    'Struktur': { bg: '#292524', fg: '#fff' },        /* near-black bg, white text — permanence */
+    'Prinzip':  { bg: '#fefce8', fg: '#854d0e', border: '#e5d5a0' }  /* cream bg, dark yellow text — conceptual truth */
+  };
 
   /* Chapter colour map — used for unit-reference chips in tooltips */
   var CHAPTER_COLORS = { 3: '#2563eb' };   /* EU = blue */
@@ -229,6 +238,18 @@
     });
   }
 
+  /* Inline SVG flags for glossary tooltip headers */
+  var _FLAGS = {
+    eu: '<svg viewBox="0 0 24 16" style="width:16px;height:11px;vertical-align:middle;margin-right:.3rem"><rect width="24" height="16" rx="1.5" fill="#003399"/><g fill="#FC0" transform="translate(12,8)"><circle r=".7" cx="0" cy="-3.5"/><circle r=".7" cx="1.75" cy="-3.03"/><circle r=".7" cx="3.03" cy="-1.75"/><circle r=".7" cx="3.5" cy="0"/><circle r=".7" cx="3.03" cy="1.75"/><circle r=".7" cx="1.75" cy="3.03"/><circle r=".7" cx="0" cy="3.5"/><circle r=".7" cx="-1.75" cy="3.03"/><circle r=".7" cx="-3.03" cy="1.75"/><circle r=".7" cx="-3.5" cy="0"/><circle r=".7" cx="-3.03" cy="-1.75"/><circle r=".7" cx="-1.75" cy="-3.03"/></g></svg>',
+    de: '<svg viewBox="0 0 16 11" style="width:16px;height:11px;vertical-align:middle;margin-right:.3rem"><rect width="16" height="11" fill="#FC0"/><rect width="16" height="3.67" fill="#000"/><rect y="7.33" width="16" height="3.67" fill="#D00"/></svg>',
+    lu: '<svg viewBox="0 0 16 11" style="width:16px;height:11px;vertical-align:middle;margin-right:.3rem"><rect width="16" height="3.67" fill="#EF3340"/><rect y="3.67" width="16" height="3.67" fill="#fff"/><rect y="7.33" width="16" height="3.67" fill="#00A3E0"/></svg>',
+    mt: '<svg viewBox="0 0 16 11" style="width:16px;height:11px;vertical-align:middle;margin-right:.3rem"><rect width="8" height="11" fill="#fff"/><rect x="8" width="8" height="11" fill="#CF142B"/></svg>',
+    pt: '<svg viewBox="0 0 16 11" style="width:16px;height:11px;vertical-align:middle;margin-right:.3rem"><rect width="6" height="11" fill="#006600"/><rect x="6" width="10" height="11" fill="#FF0000"/></svg>',
+    ee: '<svg viewBox="0 0 16 11" style="width:16px;height:11px;vertical-align:middle;margin-right:.3rem"><rect width="16" height="3.67" fill="#0072CE"/><rect y="3.67" width="16" height="3.67" fill="#000"/><rect y="7.33" width="16" height="3.67" fill="#fff"/></svg>'
+  };
+
+  function _flagSvg(code) { return code && _FLAGS[code] ? _FLAGS[code] : ''; }
+
   /* Build the inner HTML for a fb-tooltip given a glossary entry */
   function _fbTooltipHtml(entry, termText, showBack) {
     if (_glossary === null) {
@@ -245,20 +266,16 @@
     }
 
     var color = _catColor(entry.cat);
-    var isKonzept  = entry.cat === 'Konzept';   /* dark bg + white text */
-    var isStruktur = entry.cat === 'Struktur';   /* light bg + dark text */
-    var inverted   = CAT_INVERTED[entry.cat];
 
-    var catStyle = isKonzept
-      ? 'color:#fff;background:#111827'
-      : isStruktur
-        ? 'color:#1f2937;background:#f3f4f6;border:1px solid #d1d5db'
-        : 'color:' + color + ';background:' + color + '18';
+    var sp = CAT_SPECIAL[entry.cat];
+    var catStyle = sp
+      ? 'color:' + sp.fg + ';background:' + sp.bg + (sp.border ? ';border:1px solid ' + sp.border : '')
+      : 'color:' + color + ';background:' + color + '18';
     var catHtml = entry.cat
       ? '<span class="fb-tooltip-cat" style="' + catStyle + '">' + entry.cat + '</span>'
       : '';
 
-    var termColor = isKonzept ? '#111827' : (isStruktur ? '#374151' : color);
+    var termColor = color;
     var indexHref = _base + 'fachbegriffe.html?q=' + encodeURIComponent(entry.term);
     var unitRefs  = _unitRefsHtml(entry.units);
     var taggedDef = _tagDefsInline(entry.def, entry.term);
@@ -267,13 +284,37 @@
       ? '<span class="fb-tooltip-back" style="cursor:pointer;font-size:.7rem;color:var(--acc);margin-right:.5rem">\u2190 zur\u00fcck</span>'
       : '';
 
+    var flagHtml = _flagSvg(entry.flag);
+    var temporalHtml = entry.temporal
+      ? '<span style="font-size:.65rem;color:#d97706;margin-left:.4rem;vertical-align:middle" title="Zeitgebundene Information — siehe Aktualit\u00e4tsindex">\u231b</span>'
+      : '';
+
+    /* Cross-link: Person → Posten (with seit date) */
+    var crossLinkHtml = '';
+    if (entry.posten) {
+      var seitStr = entry.seit ? ('Seit ' + entry.seit + ' \u2192 ') : '\u25b8 ';
+      crossLinkHtml = '<div style="margin-top:.3rem;font-size:.8rem;color:var(--ink3)">' +
+        seitStr + '<strong class="fb" style="cursor:pointer" data-fb="' + entry.posten + '">' + entry.posten + '</strong>' +
+        '</div>';
+    }
+    /* Reverse cross-link: Posten → current Person (with seit date) */
+    if (entry.person) {
+      var pSeitStr = entry.personSeit ? ('Seit ' + entry.personSeit + ' \u2192 ') : '\u25b8 ';
+      crossLinkHtml = '<div style="margin-top:.3rem;font-size:.8rem;color:var(--ink3)">' +
+        pSeitStr + '<strong class="fb" style="cursor:pointer" data-fb="' + entry.person + '">' + entry.person + '</strong>' +
+        '</div>';
+    }
+
     return '<div class="fb-tooltip-header">' +
         backHtml +
         (entry.emoji ? '<span style="margin-right:.35rem;font-size:1.1rem;vertical-align:middle">' + entry.emoji + '</span>' : '') +
+        flagHtml +
         '<span class="fb-tooltip-term" style="color:' + termColor + '">' + entry.term + '</span>' +
+        temporalHtml +
         catHtml +
       '</div>' +
       '<div class="fb-tooltip-def">' + taggedDef + '</div>' +
+      crossLinkHtml +
       '<div class="fb-tooltip-footer">' +
         '<div class="fb-tooltip-units">' + unitRefs + '</div>' +
         '<a class="fb-tooltip-index-link" href="' + indexHref + '">Alle Begriffe \u2192</a>' +
@@ -283,9 +324,7 @@
   function _applyTooltipBorderColor(tooltip, entry) {
     if (!entry) return;
     var color = _catColor(entry.cat);
-    var isKonzept  = entry.cat === 'Konzept';
-    var isStruktur = entry.cat === 'Struktur';
-    tooltip.style.borderTopColor = isKonzept ? '#111827' : (isStruktur ? '#9ca3af' : color);
+    tooltip.style.borderTopColor = color;
   }
 
   function _showFbTooltip(anchor, termText) {
