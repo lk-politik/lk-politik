@@ -14,8 +14,7 @@
   /* Colours grouped by super-category:
      Akteure      = blue family   (political actors)
      Rechtsrahmen = green family  (dark → light, bridging to Konzepte)
-     Konzepte     = mixed: Struktur=black, Prinzip=neutral, Phänomen=purple
-     "Konzept" sub-cat reserved but currently empty.            */
+     Konzepte     = amber→yellow→pink (Struktur/Prinzip/Modell/Phänomen)  */
   var CAT_COLORS = {
     /* ── Akteure (blue) ─────────────────────────────────────── */
     'Organisation':      '#1e3a8a',  /* navy — most structural              */
@@ -29,7 +28,7 @@
     /* ── Konzepte (amber → yellow → pink) ─────────────────── */
     'Struktur':          '#b45309',  /* amber — permanence                   */
     'Prinzip':           '#ca8a04',  /* yellow — conceptual truth            */
-    'Ideologie':         '#eab308',  /* bright yellow — political thought    */
+    'Modell':            '#eab308',  /* bright yellow — theoretical models   */
     'Phänomen':          '#db2777'   /* pink — unexpected, distinct          */
   };
 
@@ -43,6 +42,22 @@
     'Struktur': { bg: '#292524', fg: '#fff' },        /* near-black bg, white text — permanence */
     'Prinzip':  { bg: '#fefce8', fg: '#854d0e', border: '#e5d5a0' }  /* cream bg, dark yellow text — conceptual truth */
   };
+
+  /* Category descriptions — used in glossary page group headers */
+  var CAT_DESCRIPTIONS = {
+    'Organisation':  'Überstaatliche oder internationale Zusammenschlüsse mit eigener Struktur und Mitgliedschaft.',
+    'Institution':   'Organe und Einrichtungen innerhalb eines politischen Systems, die eine bestimmte Funktion ausüben.',
+    'Posten':        'Politische Ämter und Funktionen, unabhängig von der Person, die sie besetzt.',
+    'Person':        'Historische oder aktuelle Einzelpersonen mit politischer Bedeutung.',
+    'Vertrag':       'Völkerrechtliche oder verfassungsrechtliche Grundlagentexte, die Rechte, Pflichten und Strukturen festlegen.',
+    'Rechtsnorm':    'Konkrete Rechtsakte, Vorschriften oder kodifizierte Regeln, die aus einem Vertrag oder Gesetz hervorgehen.',
+    'Verfahren':     'Formalisierte Abläufe und Prozesse der politischen Entscheidungsfindung.',
+    'Struktur':      'Dauerhafte reale Ordnungssysteme, die den Rahmen politischen, wirtschaftlichen oder gesellschaftlichen Handelns bilden.',
+    'Prinzip':       'Normative Leitideen und Grundsätze, die politisches Handeln legitimieren oder begrenzen.',
+    'Modell':        'Theoretische Erklärungsrahmen, Denkschulen und analytische Konzepte, die Wirklichkeit deuten, aber nicht selbst Wirklichkeit sind.',
+    'Phänomen':      'Beobachtbare politische, gesellschaftliche oder wirtschaftliche Entwicklungen und Muster.'
+  };
+  window._PLK_CAT_DESCRIPTIONS = CAT_DESCRIPTIONS;
 
   /* Chapter colour map — used for unit-reference chips in tooltips */
   var CHAPTER_COLORS = { 3: '#2563eb' };   /* EU = blue */
@@ -288,6 +303,9 @@
     var temporalHtml = entry.temporal
       ? '<span style="font-size:.65rem;color:#d97706;margin-left:.4rem;vertical-align:middle" title="Zeitgebundene Information — siehe Aktualit\u00e4tsindex">\u231b</span>'
       : '';
+    var basisHtml = entry.basis
+      ? '<span style="font-size:.6rem;color:#ca8a04;margin-left:.35rem;vertical-align:middle" title="Lehrplan-Basisbegriff">\u2605</span>'
+      : '';
 
     /* Cross-link: Person → Posten (with seit date) */
     var crossLinkHtml = '';
@@ -311,6 +329,7 @@
         flagHtml +
         '<span class="fb-tooltip-term" style="color:' + termColor + '">' + entry.term + '</span>' +
         temporalHtml +
+        basisHtml +
         catHtml +
       '</div>' +
       '<div class="fb-tooltip-def">' + taggedDef + '</div>' +

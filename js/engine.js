@@ -229,14 +229,14 @@
     /* Passwort korrekt → alles freischalten */
     _unlockAll();
 
-    /* Schülerpasswort anzeigen */
+    /* Schülerpasswort anzeigen (or generic success if none) */
     if (hint) {
       hint.className = 'pw-hint ok';
-      hint.textContent = 'Passwort: ' + stu;
+      hint.textContent = stu ? 'Passwort: ' + stu : '✓ Freigeschalten';
     }
 
-    /* Felder verstecken */
-    var wrap = inp.closest('.pw-input');
+    /* Felder verstecken — fallback to #pw-wrap if no .pw-input container */
+    var wrap = inp.closest('.pw-input') || document.getElementById('pw-wrap');
     if (wrap) wrap.style.display = 'none';
 
     /* In localStorage speichern */
@@ -315,6 +315,8 @@
       document.querySelectorAll('.pw-input').forEach(function (el) {
         el.style.display = 'none';
       });
+      var pwWrap = document.getElementById('pw-wrap');
+      if (pwWrap) pwWrap.style.display = 'none';
       _restoreAbState(saved);
       return;
     }
@@ -633,7 +635,14 @@
   function _saveGates() {
     if (typeof CONF === 'undefined') return;
     var existing = PLK.Progress.load(CONF.id) || {};
-    existing.gates = qgPass;
+    /* Normalize to "qgN" keys — qgPass uses integer keys but _persistUnlock
+       uses "qgN" keys; mixing them causes double-counting on the landing page. */
+    var normalized = {};
+    Object.keys(qgPass).forEach(function (k) {
+      var nr = parseInt(k, 10);
+      if (!isNaN(nr) && qgPass[k]) normalized['qg' + nr] = true;
+    });
+    existing.gates = normalized;
     PLK.Progress.save(CONF.id, existing);
   }
   PLK._saveGates = _saveGates;
