@@ -310,6 +310,14 @@
   function _restoreState() {
     if (typeof CONF === 'undefined') return;
     var saved = PLK.Progress.load(CONF.id);
+
+    /* Auto-unlock units flagged as freeUnlock (no gate required) */
+    if (CONF.freeUnlock && !(saved && saved.unlocked)) {
+      _unlockAll();
+      _persistUnlock();
+      saved = PLK.Progress.load(CONF.id);
+    }
+
     if (!saved) return;
 
     /* Restore Einstieg passed state — must come before saved.unlocked check */
