@@ -27,7 +27,7 @@
   /* --------------------------------------------------------
      _initBlocks()
      Queries all .ab3-block elements, shuffles options in each,
-     attaches click handlers to .ab3-option elements.
+     attaches click handlers to .ab3-option and .ab3-submit-btn.
   -------------------------------------------------------- */
   function _initBlocks() {
     var blocks = document.querySelectorAll('.ab3-block');
@@ -38,59 +38,95 @@
       var optContainer = block.querySelector('.ab3-options');
       if (optContainer) PLK._shuffleChildren(optContainer);
 
-      /* Attach click handler to each option */
+      /* Attach selection handler to each option */
       var opts = block.querySelectorAll('.ab3-option');
       opts.forEach(function (opt) {
         opt.addEventListener('click', function () {
           _handleOptionClick(block, idx, opt);
         });
       });
+
+      /* Attach submit handler to Prüfen button */
+      var submitBtn = block.querySelector('.ab3-submit-btn');
+      if (submitBtn) {
+        submitBtn.addEventListener('click', function () {
+          _handleSubmit(block, idx);
+        });
+      }
     });
   }
 
   /* --------------------------------------------------------
      _handleOptionClick(block, stepIdx, option)
-     Processes a student click on an option.
+     Marks a selection visually — does NOT validate.
+     Validation happens in _handleSubmit via the Prüfen button.
   -------------------------------------------------------- */
   function _handleOptionClick(block, stepIdx, option) {
-    /* Ignore clicks if block is not active */
+    /* Ignore if block is done or not active */
     if (block.getAttribute('data-state') !== 'active') return;
-    /* Ignore clicks if already answered correctly */
-    if (block.querySelector('.ab3-option[data-correct][data-selected]')) return;
 
-    /* Mark as selected */
+    /* Deselect all options and reset their styles */
+    var opts = block.querySelectorAll('.ab3-option');
+    opts.forEach(function (o) {
+      o.removeAttribute('data-selected');
+      o.style.borderColor = '';
+      o.style.background  = '';
+      var errPanel = o.querySelector('.ab3-error');
+      if (errPanel) errPanel.classList.remove('visible');
+    });
+
+    /* Select this option */
     option.setAttribute('data-selected', '1');
 
-    if (option.hasAttribute('data-correct')) {
-      /* ── Correct ── */
-      var row = option.querySelector('.ab3-option-row');
-      if (row) { row.style.borderColor = 'var(--ok)'; }
-      option.style.borderColor = 'var(--ok)';
-      option.style.background = '#f0fdf4';
+    /* Enable the submit button */
+    var submitBtn = block.querySelector('.ab3-submit-btn');
+    if (submitBtn) submitBtn.disabled = false;
+  }
 
-      var summary = option.getAttribute('data-summary') || '';
-      _collapseBlock(block, stepIdx, summary);
+  /* --------------------------------------------------------
+     _handleSubmit(block, stepIdx)
+     Validates the currently selected option.
+     Called by the "Antwort prüfen" button click.
+  -------------------------------------------------------- */
+  function _handleSubmit(block, stepIdx) {
+    if (block.getAttribute('data-state') !== 'active') return;
+
+    var selectedOpt = block.querySelector('.ab3-option[data-selected]');
+    if (!selectedOpt) return;
+
+    if (selectedOpt.hasAttribute('data-correct')) {
+      /* ── Correct ── */
+      selectedOpt.style.borderColor = 'var(--ok)';
+      selectedOpt.style.background  = '#f0fdf4';
+
+      var summary    = selectedOpt.getAttribute('data-summary') || '';
+      var answerEl   = selectedOpt.querySelector('.ab3-opt-text');
+      var answerHtml = answerEl ? answerEl.innerHTML : '';
+
+      _collapseBlock(block, stepIdx, summary, answerHtml);
       _unlockNext(block, stepIdx);
     } else {
       /* ── Wrong ── */
-      option.style.borderColor = 'var(--err)';
-      option.style.background = '#fff3f3';
+      selectedOpt.style.borderColor = 'var(--err)';
+      selectedOpt.style.background  = '#fff3f3';
 
-      var errPanel = option.querySelector('.ab3-error');
+      var errPanel = selectedOpt.querySelector('.ab3-error');
       if (errPanel) errPanel.classList.add('visible');
+      /* Submit stays enabled — student can pick a different option */
     }
   }
 
   /* --------------------------------------------------------
-     _collapseBlock(block, stepIdx, summary)
+     _collapseBlock(block, stepIdx, summary, answerHtml)
      1. Save progress (before DOM change)
      2. Set data-state="done"
      3. Update header to show ✓ badge
-     4. Append Kontext entry in all SUBSEQUENT blocks
+     4. Inject .ab3-done-answer panel (correct answer text)
+     5. Append Kontext entry in all SUBSEQUENT blocks
   -------------------------------------------------------- */
-  function _collapseBlock(block, stepIdx, summary) {
+  function _collapseBlock(block, stepIdx, summary, answerHtml) {
     /* 1. Save first */
-    _saveStep(stepIdx, summary);
+    _saveStep(stepIdx, summary, answerHtml || '');
 
     /* 2. Set state */
     block.setAttribute('data-state', 'done');
@@ -101,7 +137,20 @@
       sectionBadge.outerHTML = '<span class="ab3-done-badge">✓ abgeschlossen</span>';
     }
 
-    /* 4. Append Kontext entry to all subsequent blocks */
+    /* 4. Inject done-answer panel between header and body */
+    if (answerHtml) {
+      var doneAnswer = document.createElement('div');
+      doneAnswer.className = 'ab3-done-answer';
+      doneAnswer.innerHTML = answerHtml;
+      var header = block.querySelector('.ab3-header');
+      if (header && header.nextSibling) {
+        block.insertBefore(doneAnswer, header.nextSibling);
+      } else if (header) {
+        block.appendChild(doneAnswer);
+      }
+    }
+
+    /* 5. Append Kontext entry to all subsequent blocks */
     var allBlocks = document.querySelectorAll('.ab3-block');
     allBlocks.forEach(function (b) {
       var bIdx = parseInt(b.getAttribute('data-step-idx'), 10);
@@ -152,7 +201,7 @@
       nextBlock.setAttribute('data-state', 'active');
       setTimeout(function () {
         nextBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 200);
+      }, 400);
     } else {
       /* Last block completed — activate Arbeitsblatt */
       var abSection = document.getElementById('ab-section');
@@ -160,7 +209,7 @@
         abSection.setAttribute('data-state', 'ready');
         setTimeout(function () {
           abSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 200);
+        }, 400);
       }
     }
   }
@@ -183,24 +232,24 @@
   }
 
   /* --------------------------------------------------------
-     _saveStep(stepIdx, summary)
+     _saveStep(stepIdx, summary, answerHtml)
      Persists one completed step to localStorage.
   -------------------------------------------------------- */
-  function _saveStep(stepIdx, summary) {
+  function _saveStep(stepIdx, summary, answerHtml) {
     if (typeof CONF === 'undefined') return;
     var d = PLK.Progress.load(CONF.id) || {};
     if (!d.ab3) d.ab3 = { steps: {}, abGates: {} };
     if (!d.ab3.steps) d.ab3.steps = {};
-    d.ab3.steps[stepIdx] = { done: true, summary: summary };
+    d.ab3.steps[stepIdx] = { done: true, summary: summary, answer: answerHtml || '' };
     PLK.Progress.save(CONF.id, d);
   }
 
   /* --------------------------------------------------------
      _restoreProgress()
-     On page load: re-applies done states and Kontext entries
-     from localStorage. Shuffle already ran in _initBlocks().
-     Summary strings are read from localStorage, never from
-     the (now-shuffled) DOM.
+     On page load: re-applies done states, Kontext entries,
+     and done-answer panels from localStorage.
+     Shuffle already ran in _initBlocks().
+     Data is read from localStorage, never from the shuffled DOM.
   -------------------------------------------------------- */
   function _restoreProgress() {
     if (typeof CONF === 'undefined') return;
@@ -210,22 +259,37 @@
     var steps = d.ab3.steps;
     var allBlocks = document.querySelectorAll('.ab3-block');
 
-    /* Sort completed step indices ascending so Kontext entries are appended in order */
+    /* Sort completed step indices ascending */
     var doneIndices = Object.keys(steps)
       .map(function (k) { return parseInt(k, 10); })
       .filter(function (idx) { return steps[idx] && steps[idx].done; })
       .sort(function (a, b) { return a - b; });
 
     doneIndices.forEach(function (stepIdx) {
-      var summary = steps[stepIdx].summary || '';
+      var summary    = steps[stepIdx].summary || '';
+      var answerHtml = steps[stepIdx].answer  || '';
 
       /* Collapse the corresponding block */
       var block = allBlocks[stepIdx];
       if (block) {
         block.setAttribute('data-state', 'done');
+
         var sectionBadge = block.querySelector('.ab3-header-section');
         if (sectionBadge) {
           sectionBadge.outerHTML = '<span class="ab3-done-badge">✓ abgeschlossen</span>';
+        }
+
+        /* Inject done-answer panel */
+        if (answerHtml && !block.querySelector('.ab3-done-answer')) {
+          var doneAnswer = document.createElement('div');
+          doneAnswer.className = 'ab3-done-answer';
+          doneAnswer.innerHTML = answerHtml;
+          var header = block.querySelector('.ab3-header');
+          if (header && header.nextSibling) {
+            block.insertBefore(doneAnswer, header.nextSibling);
+          } else if (header) {
+            block.appendChild(doneAnswer);
+          }
         }
       }
 
@@ -233,7 +297,6 @@
       allBlocks.forEach(function (b) {
         var bIdx = parseInt(b.getAttribute('data-step-idx'), 10);
         if (bIdx > stepIdx) {
-          /* Only add if not already present */
           if (!b.querySelector('.ab3-kontext-entry[data-for-step="' + stepIdx + '"]')) {
             _appendKontextEntry(b, stepIdx, summary);
           }
@@ -241,7 +304,7 @@
       });
     });
 
-    /* Unlock the first non-done block if all previous are done */
+    /* Unlock the first non-done block */
     var lastDone = doneIndices.length > 0 ? Math.max.apply(null, doneIndices) : -1;
     allBlocks.forEach(function (b) {
       var bIdx = parseInt(b.getAttribute('data-step-idx'), 10);
