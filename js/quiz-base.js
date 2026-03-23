@@ -94,6 +94,14 @@
         });
       };
 
+      function _isModuleQgChild(el) {
+        return !!(PLK._closestQgItem && PLK._closestQgItem(el));
+      }
+
+      function _getGateItems(gate) {
+        return PLK._getGateItems ? PLK._getGateItems(gate) : [];
+      }
+
       /* --------------------------------------------------------
          chkQ(gateNr, questionCount)
          Prüft ein Quiz-Gate. Gibt Feedback, schaltet bei Erfolg frei.
@@ -110,6 +118,7 @@
         /* -- MC-Fragen prüfen -- */
         var mcGroups = {};
         gate.querySelectorAll('.mco input[type="radio"], .mco input[type="checkbox"]').forEach(function (inp) {
+          if (_isModuleQgChild(inp)) return;
           if (!mcGroups[inp.name]) mcGroups[inp.name] = [];
           mcGroups[inp.name].push(inp);
         });
@@ -145,6 +154,7 @@
 
         /* -- Texteingaben prüfen -- */
         gate.querySelectorAll('.qinp input[data-answers], .qinp textarea[data-answers]').forEach(function (inp) {
+          if (_isModuleQgChild(inp)) return;
           total++;
           var answers = inp.getAttribute('data-answers').split('|').map(function (s) { return s.trim().toLowerCase(); });
           var val     = inp.value.trim().toLowerCase();
@@ -164,6 +174,7 @@
 
         /* -- Reihenfolge-Aufgaben prüfen -- */
         gate.querySelectorAll('.olist[data-correct]').forEach(function (list) {
+          if (_isModuleQgChild(list)) return;
           total++;
           var expected = list.getAttribute('data-correct').split(',').map(function (s) { return s.trim(); });
           var items    = list.querySelectorAll('.oitem');
@@ -177,8 +188,16 @@
           if (ok) correct++;
         });
 
+        _getGateItems(gate).forEach(function (item) {
+          total++;
+          var type = item.getAttribute('data-qg-type');
+          var handler = type ? PLK._qgTypes[type] : null;
+          var result = handler && handler.check ? handler.check(item, gateNr, gate) : null;
+          if (result && result.ok) correct++;
+        });
+
         /* -- Feedback anzeigen -- */
-        var fbEl = document.getElementById('qfb' + gateNr);
+        var fbEl = PLK._getGateFeedbackEl ? PLK._getGateFeedbackEl(gateNr, gate) : document.getElementById('qfb' + gateNr);
         if (fbEl) {
           fbEl.style.display = 'block';
           if (correct === total) {
@@ -217,6 +236,7 @@
 
         /* MC zurücksetzen */
         gate.querySelectorAll('.mco input').forEach(function (inp) {
+          if (_isModuleQgChild(inp)) return;
           inp.checked = false;
           var item = inp.closest('.mco');
           if (item) item.classList.remove('selected', 'correct', 'wrong');
@@ -224,6 +244,7 @@
 
         /* Texteingaben */
         gate.querySelectorAll('.qinp input, .qinp textarea').forEach(function (inp) {
+          if (_isModuleQgChild(inp)) return;
           inp.value = '';
           inp.style.borderColor = '';
           var fb = inp.closest('.qinp') ? inp.closest('.qinp').querySelector('.qinp-feedback') : null;
@@ -232,11 +253,18 @@
 
         /* Reihenfolge-Feedback */
         gate.querySelectorAll('.oitem').forEach(function (item) {
+          if (_isModuleQgChild(item)) return;
           item.classList.remove('correct', 'wrong');
         });
 
+        _getGateItems(gate).forEach(function (item) {
+          var type = item.getAttribute('data-qg-type');
+          var handler = type ? PLK._qgTypes[type] : null;
+          if (handler && handler.reset) handler.reset(item);
+        });
+
         /* Gesamt-Feedback */
-        var fbEl = document.getElementById('qfb' + gateNr);
+        var fbEl = PLK._getGateFeedbackEl ? PLK._getGateFeedbackEl(gateNr, gate) : document.getElementById('qfb' + gateNr);
         if (fbEl) { fbEl.style.display = 'none'; fbEl.textContent = ''; }
       };
 
@@ -280,6 +308,37 @@
 
       /* ── LÜCKENTEXT — Chip-Bank + Slots ── */
 
+      function _clearSelectedSlot() {
+        if (PLK._sc.s && PLK._sc.s.el) PLK._sc.s.el.classList.remove('selected');
+        PLK._sc.s = null;
+      }
+
+      function _slotBankId(slot, fallbackBankId) {
+        if (!slot) return fallbackBankId || null;
+        if (slot.closest('[data-bankid]')) return slot.closest('[data-bankid]').getAttribute('data-bankid');
+        return slot.getAttribute('data-bank') || fallbackBankId || null;
+      }
+
+      function _placeSelectedChip(slot) {
+        if (!slot || !PLK._sc.v) return;
+
+        var prev = slot.getAttribute('data-v');
+        var bankId = _slotBankId(slot, PLK._sc.v.bankId);
+        if (prev) frC(prev, bankId);
+
+        slot.textContent  = PLK._sc.v.value;
+        slot.setAttribute('data-v', PLK._sc.v.value);
+        slot.classList.add('filled');
+        slot.classList.remove('selected', 'correct', 'wrong');
+
+        PLK._sc.v.el.classList.add('used');
+        PLK._sc.v.el.classList.remove('selected');
+        PLK._sc.v.el.setAttribute('data-used', '1');
+        PLK._sc.v = null;
+        _clearSelectedSlot();
+        PLK._scheduleAbSave();
+      }
+
       /**
        * selC(chip, bankId)
        * Chip auswählen oder abwählen.
@@ -296,6 +355,10 @@
 
         chip.classList.add('selected');
         PLK._sc.v = { el: chip, value: chip.getAttribute('data-v'), bankId: bankId };
+
+        if (PLK._sc.s && PLK._sc.s.el) {
+          _placeSelectedChip(PLK._sc.s.el);
+        }
       };
 
       /**
@@ -304,35 +367,32 @@
        */
       PLK.slCl = function (slot) {
         if (PLK._sc.v) {
-          /* Slot bereits belegt? Chip zurück in Bank */
-          var prev = slot.getAttribute('data-v');
-          if (prev) frC(prev, PLK._sc.v.bankId);
+          _placeSelectedChip(slot);
+          return;
+        }
 
-          /* Chip in Slot einsetzen */
-          slot.textContent  = PLK._sc.v.value;
-          slot.setAttribute('data-v', PLK._sc.v.value);
-          slot.classList.add('filled');
-          slot.classList.remove('correct', 'wrong');
+        if (PLK._sc.s && PLK._sc.s.el === slot) {
+          _clearSelectedSlot();
+          return;
+        }
 
-          /* Chip aus Bank entfernen (visuell deaktivieren) */
-          PLK._sc.v.el.classList.add('used');
-          PLK._sc.v.el.classList.remove('selected');
-          PLK._sc.v.el.setAttribute('data-used', '1');
-          PLK._sc.v = null;
+        _clearSelectedSlot();
+
+        if (!slot.getAttribute('data-v')) {
+          slot.classList.add('selected');
+          PLK._sc.s = { el: slot };
         } else {
-          /* Kein Chip ausgewählt → Slot leeren */
+          /* Kein Chip ausgewählt → belegten Slot leeren */
           var val = slot.getAttribute('data-v');
           if (val) {
-            var bankId = slot.closest('[data-bankid]') ?
-              slot.closest('[data-bankid]').getAttribute('data-bankid') :
-              slot.getAttribute('data-bank');
+            var bankId = _slotBankId(slot, null);
             frC(val, bankId);
             slot.textContent = '';
             slot.removeAttribute('data-v');
             slot.classList.remove('filled', 'correct', 'wrong');
           }
+          PLK._scheduleAbSave();
         }
-        PLK._scheduleAbSave();
       };
 
       /**
@@ -372,6 +432,7 @@
       PLK.retSl = function (aufgabeId, bankId) {
         var container = document.getElementById(aufgabeId);
         if (!container) return;
+        _clearSelectedSlot();
         container.querySelectorAll('.slot.wrong').forEach(function (slot) {
           var val = slot.getAttribute('data-v');
           if (val) frC(val, bankId);
@@ -388,6 +449,7 @@
       PLK.rsSl = function (aufgabeId, bankId) {
         var container = document.getElementById(aufgabeId);
         if (!container) return;
+        _clearSelectedSlot();
         container.querySelectorAll('.slot').forEach(function (slot) {
           var val = slot.getAttribute('data-v');
           if (val) frC(val, bankId);
@@ -410,48 +472,57 @@
         var _zSel = PLK._qs.zSel;
         var _zMap = PLK._qs.zMap;
         var side = el.getAttribute('data-z');
+        var id = el.getAttribute('data-id');
 
-        if (side === 'l') {
-          /* Linke Seite auswählen */
-          if (_zSel[taskNr]) _zSel[taskNr].el.classList.remove('selected');
-          if (_zSel[taskNr] && _zSel[taskNr].leftId === el.getAttribute('data-id')) {
-            _zSel[taskNr] = null;
-            return;
-          }
-          el.classList.add('selected');
-          _zSel[taskNr] = { leftId: el.getAttribute('data-id'), el: el };
-
-        } else if (side === 'r') {
-          /* Rechte Seite: Zuordnung herstellen */
-          if (!_zSel[taskNr]) return;
-
-          if (!_zMap[taskNr]) _zMap[taskNr] = {};
-          var leftId  = _zSel[taskNr].leftId;
-          var rightId = el.getAttribute('data-id');
-
-          /* Bereits vorhandene Zuordnung aufheben */
-          var existingRight = _zMap[taskNr][leftId];
-          if (existingRight) {
-            var oldRight = document.querySelector('[data-task="' + taskNr + '"][data-z="r"][data-id="' + existingRight + '"]');
-            if (oldRight) oldRight.classList.remove('matched');
-          }
-          /* Bereits rechts zugeordnetes linkes Element suchen */
-          Object.keys(_zMap[taskNr]).forEach(function (lId) {
-            if (_zMap[taskNr][lId] === rightId && lId !== leftId) {
-              delete _zMap[taskNr][lId];
-              var oldLeft = document.querySelector('[data-task="' + taskNr + '"][data-z="l"][data-id="' + lId + '"]');
-              if (oldLeft) { oldLeft.classList.remove('matched'); PLK._zVisConn(taskNr, lId, null); }
-            }
-          });
-
-          _zMap[taskNr][leftId] = rightId;
-          _zSel[taskNr].el.classList.remove('selected');
-          _zSel[taskNr].el.classList.add('matched');
-          el.classList.add('matched');
+        if (_zSel[taskNr] && _zSel[taskNr].el === el) {
+          el.classList.remove('selected');
           _zSel[taskNr] = null;
-          PLK._zVisConn(taskNr, leftId, rightId);
-          PLK._scheduleAbSave();
+          return;
         }
+
+        if (!_zSel[taskNr]) {
+          el.classList.add('selected');
+          _zSel[taskNr] = { side: side, id: id, el: el };
+          return;
+        }
+
+        if (_zSel[taskNr].side === side) {
+          _zSel[taskNr].el.classList.remove('selected');
+          el.classList.add('selected');
+          _zSel[taskNr] = { side: side, id: id, el: el };
+          return;
+        }
+
+        if (!_zMap[taskNr]) _zMap[taskNr] = {};
+
+        var leftId  = side === 'l' ? id : _zSel[taskNr].id;
+        var rightId = side === 'r' ? id : _zSel[taskNr].id;
+        var leftEl  = side === 'l' ? el : _zSel[taskNr].el;
+        var rightEl = side === 'r' ? el : _zSel[taskNr].el;
+
+        /* Bereits vorhandene Zuordnung aufheben */
+        var existingRight = _zMap[taskNr][leftId];
+        if (existingRight) {
+          var oldRight = document.querySelector('[data-task="' + taskNr + '"][data-z="r"][data-id="' + existingRight + '"]');
+          if (oldRight) oldRight.classList.remove('matched');
+        }
+        /* Bereits rechts zugeordnetes linkes Element suchen */
+        Object.keys(_zMap[taskNr]).forEach(function (lId) {
+          if (_zMap[taskNr][lId] === rightId && lId !== leftId) {
+            delete _zMap[taskNr][lId];
+            var oldLeft = document.querySelector('[data-task="' + taskNr + '"][data-z="l"][data-id="' + lId + '"]');
+            if (oldLeft) { oldLeft.classList.remove('matched'); PLK._zVisConn(taskNr, lId, null); }
+          }
+        });
+
+        _zMap[taskNr][leftId] = rightId;
+        leftEl.classList.remove('selected');
+        rightEl.classList.remove('selected');
+        leftEl.classList.add('matched');
+        rightEl.classList.add('matched');
+        _zSel[taskNr] = null;
+        PLK._zVisConn(taskNr, leftId, rightId);
+        PLK._scheduleAbSave();
       };
 
       /**
@@ -530,10 +601,11 @@
           var id       = item.getAttribute('data-id');
           var expected = item.getAttribute('data-correct');
           var given    = _kSel[id];
-          item.classList.remove('correct', 'wrong');
+          item.classList.remove('correct', 'wrong', 'missed');
 
-          if (given !== undefined && given === expected) { item.classList.add('correct'); correct++; }
-          else if (given !== undefined)                  { item.classList.add('wrong'); }
+          if (given === undefined)                       { item.classList.add('missed'); }
+          else if (given === expected)                   { item.classList.add('correct'); correct++; }
+          else                                           { item.classList.add('wrong'); }
         });
 
         abScores[aufgabeId] = correct;
@@ -542,11 +614,11 @@
         PLK._saveAbState();
       };
 
-      /** retK(aufgabeId) — Nur falsche Kategorien zurücksetzen */
+      /** retK(aufgabeId) — Falsche und fehlende Kategorien zurücksetzen */
       PLK.retK = function (aufgabeId) {
         var _kSel = PLK._qs.kSel;
-        document.querySelectorAll('#' + aufgabeId + ' .k-item.wrong').forEach(function (item) {
-          item.classList.remove('wrong');
+        document.querySelectorAll('#' + aufgabeId + ' .k-item.wrong, #' + aufgabeId + ' .k-item.missed').forEach(function (item) {
+          item.classList.remove('wrong', 'missed');
           var id = item.getAttribute('data-id');
           delete _kSel[id];
           item.querySelectorAll('.k-btn').forEach(function (btn) { btn.classList.remove('selected'); });
@@ -557,7 +629,7 @@
       PLK.rsK = function (aufgabeId) {
         var _kSel = PLK._qs.kSel;
         document.querySelectorAll('#' + aufgabeId + ' .k-item').forEach(function (item) {
-          item.classList.remove('correct', 'wrong');
+          item.classList.remove('correct', 'wrong', 'missed');
           var id = item.getAttribute('data-id');
           delete _kSel[id];
           item.querySelectorAll('.k-btn').forEach(function (btn) { btn.classList.remove('selected'); });
@@ -583,7 +655,9 @@
         Object.keys(_zMap).forEach(function (k) { delete _zMap[k]; });
         Object.keys(_zSel).forEach(function (k) { delete _zSel[k]; });
         if (PLK._sc.v) { PLK._sc.v.el.classList.remove('selected'); }
+        if (PLK._sc.s && PLK._sc.s.el) { PLK._sc.s.el.classList.remove('selected'); }
         PLK._sc.v = null;
+        PLK._sc.s = null;
 
         /* Alle Inputs leeren */
         var ab = document.getElementById('arbeitsblatt');
@@ -594,7 +668,7 @@
         });
         ab.querySelectorAll('.slot').forEach(function (slot) {
           slot.textContent = ''; slot.removeAttribute('data-v');
-          slot.classList.remove('filled', 'correct', 'wrong');
+          slot.classList.remove('filled', 'correct', 'wrong', 'selected');
         });
         ab.querySelectorAll('.chip').forEach(function (chip) {
           chip.classList.remove('used', 'selected'); chip.removeAttribute('data-used');

@@ -153,6 +153,90 @@
     }
   }
 
+  function _copyQgAttrs(src, dest) {
+    if (!src || !dest || !src.attributes) return;
+    _each(src.attributes, function (attr) {
+      if (attr && attr.name && attr.name.indexOf('data-qg-') === 0) {
+        dest.setAttribute(attr.name, attr.value);
+      }
+    });
+  }
+
+  function _resolveGateWrap(item, selector) {
+    if (!item) return null;
+    if (item.classList && item.classList.contains(selector.replace('.', ''))) return item;
+    return item.querySelector(selector);
+  }
+
+  function _saveTfState(id) {
+    var st = _tfState[id];
+    if (!st) return null;
+    return {
+      order:    st.order.slice(),
+      cur:      st.cur,
+      results:  st.results.slice(),
+      answered: st.answered
+    };
+  }
+
+  function _restoreTfState(id, state) {
+    if (!id || !state || !_tfState[id]) return;
+    _copyInto(_tfState[id], state);
+    if (_lib2Renders['tf-' + id]) _lib2Renders['tf-' + id]();
+  }
+
+  function _resetTfState(id) {
+    if (!id || !_tfState[id]) return;
+    var total = _tfState[id].order.length;
+    _copyInto(_tfState[id], {
+      order: _shuffle(_range(total)),
+      cur: 0,
+      results: [],
+      answered: false
+    });
+    if (_lib2Renders['tf-' + id]) _lib2Renders['tf-' + id]();
+  }
+
+  function _saveOooState(id) {
+    var st = _oooState[id];
+    if (!st) return null;
+    return {
+      order:       st.order.slice(),
+      cur:         st.cur,
+      results:     st.results.slice(),
+      answered:    st.answered,
+      hadWrong:    st.hadWrong,
+      roundOrders: JSON.parse(JSON.stringify(st.roundOrders)),
+      lockedIdxs:  st.lockedIdxs ? st.lockedIdxs.slice() : []
+    };
+  }
+
+  function _restoreOooState(id, state) {
+    if (!id || !state || !_oooState[id]) return;
+    _copyInto(_oooState[id], state);
+    if (_lib2Renders['ooo-' + id]) _lib2Renders['ooo-' + id]();
+  }
+
+  function _resetOooState(id) {
+    if (!id || !_oooState[id]) return;
+    var total = _oooState[id].order.length;
+    var prevOrders = _oooState[id].roundOrders || [];
+    var roundOrders = [];
+    for (var ri = 0; ri < prevOrders.length; ri++) {
+      roundOrders[ri] = _shuffle(_range(prevOrders[ri] ? prevOrders[ri].length : 0));
+    }
+    _copyInto(_oooState[id], {
+      order: _shuffle(_range(total)),
+      cur: 0,
+      results: [],
+      answered: false,
+      hadWrong: false,
+      roundOrders: roundOrders,
+      lockedIdxs: []
+    });
+    if (_lib2Renders['ooo-' + id]) _lib2Renders['ooo-' + id]();
+  }
+
   /* ════════════════════════════════════════════════════════
      1. WAHR / FALSCH
      ════════════════════════════════════════════════════════ */
@@ -234,6 +318,7 @@
     resetRow.appendChild(resetBtn);
     wrap.appendChild(resetRow);
 
+    _copyQgAttrs(aufgabe, wrap);
     aufgabe.parentNode.replaceChild(wrap, aufgabe);
 
     /* ── Render ── */
@@ -454,6 +539,7 @@
     resetRow.appendChild(resetBtn);
     wrap.appendChild(resetRow);
 
+    _copyQgAttrs(aufgabe, wrap);
     aufgabe.parentNode.replaceChild(wrap, aufgabe);
 
     var _wrongTapTimer = null;
@@ -679,6 +765,7 @@
     resetRow.appendChild(resetBtn);
     wrap.appendChild(resetRow);
 
+    _copyQgAttrs(aufgabe, wrap);
     aufgabe.parentNode.replaceChild(wrap, aufgabe);
 
     function _getOrder(i) {
@@ -911,6 +998,7 @@
     resetRow.appendChild(resetBtn);
     wrap.appendChild(resetRow);
 
+    _copyQgAttrs(aufgabe, wrap);
     aufgabe.parentNode.replaceChild(wrap, aufgabe);
 
     /* Runtime-only state (not persisted: locked) */
@@ -1150,6 +1238,64 @@
     init: function () {
       PLK._saveLib2State    = _saveLib2;
       PLK._restoreLib2State = _restoreLib2;
+
+      if (PLK.registerQgType) {
+        PLK.registerQgType(['wahr-falsch', 'true-false', 'tf'], {
+          check: function (item) {
+            var wrap = _resolveGateWrap(item, '.tf-wrap');
+            if (!wrap) return { ok: false };
+            var id = wrap.getAttribute('data-aufid');
+            var st = id ? _tfState[id] : null;
+            var total = st ? st.order.length : 0;
+            var ok = total > 0
+              && st.results.length === total
+              && st.results.every(function (v) { return !!v; });
+            return { ok: ok };
+          },
+          reset: function (item) {
+            var wrap = _resolveGateWrap(item, '.tf-wrap');
+            if (!wrap) return;
+            _resetTfState(wrap.getAttribute('data-aufid'));
+          },
+          save: function (item) {
+            var wrap = _resolveGateWrap(item, '.tf-wrap');
+            return wrap ? _saveTfState(wrap.getAttribute('data-aufid')) : null;
+          },
+          restore: function (item, state) {
+            var wrap = _resolveGateWrap(item, '.tf-wrap');
+            if (!wrap) return;
+            _restoreTfState(wrap.getAttribute('data-aufid'), state);
+          }
+        });
+
+        PLK.registerQgType(['odd-one-out', 'ooo'], {
+          check: function (item) {
+            var wrap = _resolveGateWrap(item, '.ooo-wrap');
+            if (!wrap) return { ok: false };
+            var id = wrap.getAttribute('data-aufid');
+            var st = id ? _oooState[id] : null;
+            var total = st ? st.order.length : 0;
+            var ok = total > 0
+              && st.results.length === total
+              && st.results.every(function (v) { return !!v; });
+            return { ok: ok };
+          },
+          reset: function (item) {
+            var wrap = _resolveGateWrap(item, '.ooo-wrap');
+            if (!wrap) return;
+            _resetOooState(wrap.getAttribute('data-aufid'));
+          },
+          save: function (item) {
+            var wrap = _resolveGateWrap(item, '.ooo-wrap');
+            return wrap ? _saveOooState(wrap.getAttribute('data-aufid')) : null;
+          },
+          restore: function (item, state) {
+            var wrap = _resolveGateWrap(item, '.ooo-wrap');
+            if (!wrap) return;
+            _restoreOooState(wrap.getAttribute('data-aufid'), state);
+          }
+        });
+      }
 
       _each(document.querySelectorAll(
         '.aufgabe[data-type="wahr-falsch"],'

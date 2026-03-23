@@ -18,6 +18,50 @@
 
   <!-- OPTIONAL: unit-specific styles.
        ─────────────────────────────────────────────────────────
+       DESIGN LOCK:
+         `3.4` is the completed canon for look, feel, visual hierarchy,
+         Sachwissen rhythm, and minimum expected unit quality in normal
+         Politik-LK units.
+         New units should inherit that system instead of reopening design.
+         If content needs a new visual, build a reusable shared module so the
+         change can apply to `3.4` and all following units.
+
+       AUTHORING OWNERSHIP:
+         The unit shell chooses WHICH didactic module to insert.
+         The module owns typography, spacing, and visual hierarchy.
+         Do not create per-unit font systems or ad hoc visual scales.
+         See docs/unit-authoring-standard.md for the full rule set.
+
+       HARD CONTENT RULES:
+         Lernziele use exact Lehrplan wording.
+         AB tasks may only assess existing Lernziele.
+         Use objective textbook register.
+         Direct address is rare and functional, mainly in task instructions.
+         No anecdotes, no `Stell dir vor`, no teacher references.
+         Keep prose lean: every sentence carries information.
+         Do not restate what the visual already shows.
+         Text explains WHY; visuals show WHAT.
+         Einstieg text = 1 to 2 sentences max.
+         Avoid em dashes and AI filler phrases.
+         Use chapter-appropriate vocabulary only.
+         Each .fb term needs a glossary entry.
+
+       MIGRATION WORKFLOW:
+         During rewrites, present one block for review before drafting the
+         next block. Do not pre-generate later blocks.
+
+       BLOCK-BY-BLOCK WORKFLOW:
+         1. Lock exact Lehrplan wording for all Lernziele first.
+         2. Draft one module only.
+         3. Before moving on, check that module against:
+            - the hard rules
+            - duplication inside the current unit
+            - duplication against the two preceding units
+         4. Draft the matching QG only after the Sachwissen block is stable.
+         5. Draft Arbeitsblatt and final activity only after all SW/QG pairs
+            are stable.
+         Do not solve later modules before the current one is coherent.
+
        GLOBAL VISUAL SYSTEM (style.css §8b) — use these for NEW visuals:
          .vis               Step / comparison grid (2-col)
          .vis-flow           Sequential process diagram
@@ -36,6 +80,12 @@
          .vis-title  .vis-lbl  .vis-tag  .vis-head  .vis .emo
          .fac-s .fac-i .fac-n .fac-de .fac-eu     Level badges
          .iflag                                     Inline flag SVGs
+
+       STANDARD SACHWISSEN RHYTHM:
+         Orientierung -> Kernidee -> ein dominantes Erklaerungsmodul ->
+         Beispiel/Kontrast -> Bridge
+         QGs should test retrieval/discrimination of the just-taught content.
+         Later blocks should lean mechanism first, then application/bridge.
 
        TYPOGRAPHIC SCALE (visual internals):
          T2  .vis-title          .85rem  700  Fraunces  --ink
@@ -192,6 +242,18 @@ teacher password provided with the worksheet.
 
 <div class="page-wrap">
 
+  <!--
+  AUTHORING RULE:
+  Start with Lernziele, then define the block job, then choose the best shared
+  visual/exercise module. Do not redesign the unit visually from scratch.
+  `3.4` is the completed reference and minimum standard for normal units.
+  Use exact Lehrplan wording, objective textbook register, and chapter-gated
+  vocabulary. Student-facing content must not reference the teacher.
+  Work block by block: before drafting the next module, check the current one
+  for hard-rule compliance and duplication inside the unit and against the two
+  preceding units.
+  -->
+
   <!-- ===== Breadcrumb ===== -->
   <!-- FILL: chapter number in span, unit number + title in .current -->
   <nav class="breadcrumb" aria-label="Breadcrumb">
@@ -251,6 +313,7 @@ teacher password provided with the worksheet.
   <!-- ================================================================
        EINSTIEG
        FILL: einstieg-title, auf-i text, 3–5 einstieg-cards.
+       Einstieg prose is capped at 1 to 2 sentences.
        Each card: data-sit="N" (1-based), data-answer="VALUE_OF_CORRECT_CHIP"
        Each chip: data-v="VALUE" (must match one data-answer), onclick="PLK.selEinstieg(this,N)"
        ================================================================ -->
@@ -264,8 +327,8 @@ teacher password provided with the worksheet.
     </div>
     <div class="einstieg-body" id="einstieg-body">
 
-      <!-- FILL: intro sentence describing what students will do -->
-      <p class="auf-i" style="padding:0;margin-top:.25rem">Kurze Einleitung: Vier Fragen zum Thema.</p>
+      <!-- FILL: 1 to 2 short sentences max; objective, information-dense -->
+      <p class="auf-i" style="padding:0;margin-top:.25rem">Kurze Einleitung in einem Satz. Vier Fragen prüfen Vorwissen und lenken auf den Kernbegriff.</p>
 
       <!-- FILL: repeat for each situation (data-sit increments by 1) -->
       <div class="einstieg-card" data-sit="1" data-answer="CORRECT_VALUE">
@@ -305,10 +368,33 @@ teacher password provided with the worksheet.
 
   <!-- ================================================================
        BLOCK 1: SACHWISSEN
-       FILL: sw-title, content paragraphs, quiz questions.
        First block has no "locked" class — subsequent blocks do.
        data-p="core"  → always shown in arc (Pflicht-Inhalt)
        data-p="imp"   → shown only when arc B is active (vertiefend)
+
+       STANDARD AUTHORING PATTERN:
+       1. Orientierung: short question / framing sentence / prior-knowledge cue
+       2. Kernidee: explicit explanation of the main concept (no unguided discovery)
+       3. ONE dominant explanatory module chosen by didactic role:
+          - chronology/background        → timeline
+          - actors/institutions          → org-grid/card
+          - process/sequence             → vis-flow / flow-*
+          - levels/hierarchy             → vis-stack / vis-matrix
+          - comparison/trade-offs        → vis-compare / de-grid / matrix
+          - key takeaway                 → callout / fazit
+       4. Optional example or contrast that makes the concept usable
+       5. Bridge sentence that prepares the gate
+
+       WRITING GUARDRAILS:
+       - one key concept per paragraph where possible
+       - prose stays lean and non-redundant with the visual
+       - avoid direct address in Sachwissen and feedback text
+       - use <strong class="fb"> only for true key terms, not whole claims
+       - every .fb term must exist in the glossary
+       - no teacher-facing wording inside student content
+
+       Gate questions must check taught content from this block; they should
+       not introduce a new reasoning demand.
        ================================================================ -->
   <div class="sw" id="sw1" data-p="core">
     <div class="sw-head">
@@ -318,11 +404,11 @@ teacher password provided with the worksheet.
     </div>
     <div style="padding:1.25rem 1.5rem">
 
-      <!-- ── OPTION A: Simple paragraph content ── -->
-      <!-- FILL: prose text; wrap glossary terms with <strong class="fb">TERM</strong> -->
-      <p>Einleitungstext des Blocks. Wichtige Begriffe wie <strong class="fb">Vertrag von Lissabon</strong> werden automatisch mit Tooltips versehen — manuelles Taggen ist nicht mehr nötig, schadet aber auch nicht.</p>
+      <!-- ── OPTION A: Simple paragraph content (core concept / explicit explanation) ── -->
+      <!-- FILL: one short, information-dense paragraph; use .fb only for glossary-backed key terms -->
+      <p>Einleitungstext des Blocks. Ein zentraler Begriff wie <strong class="fb">Vertrag von Lissabon</strong> kann hervorgehoben werden, wenn er in diesem Kapitel bereits eingeführt ist.</p>
 
-      <!-- ── OPTION B: Timeline (horizontal) ── -->
+      <!-- ── OPTION B: Timeline (background chronology / historical build-up) ── -->
       <!-- FILL: year, short label, optional bold term for each milestone -->
       <div style="margin-bottom:1rem">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
@@ -338,7 +424,7 @@ teacher password provided with the worksheet.
         <p style="font-size:.75rem;color:var(--ink3);line-height:1.55;margin:.6rem 0 0">Erläuterungstext unter der Timeline für zusätzlichen Kontext.</p>
       </div>
 
-      <!-- ── OPTION C: Organ / Person cards ── -->
+      <!-- ── OPTION C: Organ / Person cards (actors / institutions / roles) ── -->
       <!-- FILL: emoji, name, Sitz, Präsident, Mitglieder, Amtszeit, description, vote-box -->
       <div class="org-grid">
         <div class="org-card legislative">
@@ -364,7 +450,7 @@ teacher password provided with the worksheet.
         <!-- FILL: add more org-card divs for additional organs/persons -->
       </div>
 
-      <!-- ── OPTION D: Demokratie / Effizienz two-column grid ── -->
+      <!-- ── OPTION D: Demokratie / Effizienz two-column grid (comparison / tension / criteria) ── -->
       <!-- FILL: column headings, dot colour (dot-g=green, dot-y=yellow, dot-r=red), items -->
       <div class="de-grid">
         <div class="de-col">
@@ -500,11 +586,7 @@ teacher password provided with the worksheet.
       <!-- Add to the .sw-head row: -->
       <!-- <span class="badge badge-gold" style="margin-left:auto">Klausurrelevant</span> -->
 
-      <!-- ── OPTION: lk-note — always-visible teacher hint (no JS needed) ── -->
-      <!-- Place anywhere inside a .sw block or .auf block -->
-      <!-- <div class="lk-note">
-        <strong>Hinweis Lehrkraft:</strong> Didaktischer Hinweis oder Musterlösung.
-      </div> -->
+      <!-- No teacher-note boxes in student-facing unit content. -->
 
       <!-- ── OPTION K: Denkanstöße / Reflexion block (discussion prompt) ── -->
       <!-- Inline-styled — no CSS class needed. Replace --de/--eu colours as needed. -->
@@ -601,7 +683,15 @@ teacher password provided with the worksheet.
   <!-- ================================================================
        QUIZ-GATE 1
        FILL: N in qg1/qg1s/chkQ(1)/rstQ(1)/qfb1/qg1-retry/retryQg(1)
-       Questions: MC radio, text input, or olist — mix as needed.
+       Questions: MC radio, text input, olist, or module-backed QG items.
+       For new exercise modules, wrap one question in one [data-qg-type] root:
+       <div class="qi" data-qg-type="drop" data-qg-target="q1_2drop">...</div>
+       Supported shared QG types: drop, zt, mark, wahr-falsch / tf,
+       odd-one-out / ooo. Keep one module = one gate question.
+       PURPOSE: retrieval practice plus light discrimination of the content
+       that was just taught. Avoid open interpretation or AB II / AB III
+       reasoning here; those belong in later task modules.
+       Exercises do not resolve the analytical tension for students.
        ================================================================ -->
   <div class="qg-wrapper">
   <div class="qg" id="qg1">
@@ -690,7 +780,9 @@ teacher password provided with the worksheet.
 
   <!-- ================================================================
        BLOCK 2: SACHWISSEN (locked until gate 1 passed)
-       FILL: same pattern as Block 1; increment sw2, sw3, …
+       Usually the "mechanism / relation / structure" block:
+       move from isolated facts toward how elements interact.
+       Reuse the same pattern as Block 1 and keep one dominant module.
        ================================================================ -->
   <div class="sw locked" id="sw2" data-p="core">
     <div class="sw-head">
@@ -743,6 +835,10 @@ teacher password provided with the worksheet.
 
   <!-- ================================================================
        BLOCK 3: SACHWISSEN (locked until gate 2 passed)
+       Usually the "comparison / application / bridge to transfer" block:
+       use this block to prepare Arbeitsblatt, debate, or judgement work.
+       The final gate should still check taught content, not replace the
+       later AB II / AB III task itself.
        ================================================================ -->
   <div class="sw locked" id="sw3" data-p="core">
     <div class="sw-head">
@@ -804,7 +900,7 @@ teacher password provided with the worksheet.
 
   <div id="arbeitsblatt" class="locked">
     <div class="ab-gate-msg" style="text-align:center;padding:2rem 1rem;color:var(--ink3);font-size:.9rem">
-      &#128274; Das Arbeitsblatt wird freigeschaltet, sobald du alle Verständnischecks bestanden hast.
+      &#128274; Das Arbeitsblatt wird freigeschaltet, sobald alle Verständnischecks bestanden sind.
     </div>
 
     <!-- AB-Fortschritt -->
@@ -1077,7 +1173,7 @@ teacher password provided with the worksheet.
             <li class="uk-opt" data-correct="true">
               <span class="uk-opt-text">Richtiger Kontext: Ausgangslage, warum eine Reform/Maßnahme nötig war.</span>
             </li>
-            <li class="uk-opt" data-error="step" data-errtext="Fehlerbegründung: Du beschreibst bereits die Reform, nicht die Ausgangslage.">
+            <li class="uk-opt" data-error="step" data-errtext="Fehlerbegründung: Hier wird bereits die Reform beschrieben, nicht die Ausgangslage.">
               <span class="uk-opt-text">Falscher Kontext: beschreibt bereits die Ergebnisse statt der Ausgangslage.</span>
             </li>
           </ul>
@@ -1125,7 +1221,7 @@ teacher password provided with the worksheet.
             <li class="uk-opt" data-correct="true">
               <span class="uk-opt-text">Sachliche Darstellung der konkreten Fakten / Reformen ohne Wertung.</span>
             </li>
-            <li class="uk-opt" data-error="level" data-errtext="Fehlerbegründung: Du wertest bereits statt sachlich darzustellen.">
+            <li class="uk-opt" data-error="level" data-errtext="Fehlerbegründung: Hier wird bereits gewertet statt sachlich dargestellt.">
               <span class="uk-opt-text">Falscher Fall: enthält bereits Wertungen ('erfolgreich', 'überwunden').</span>
             </li>
           </ul>
@@ -1138,7 +1234,7 @@ teacher password provided with the worksheet.
           </div>
           <p class="uk-step-q">Inwiefern adressieren die Fakten das Kriterium?</p>
           <ul class="uk-opts">
-            <li class="uk-opt" data-error="chain" data-errtext="Fehlerbegründung: Du nennst die Fakten, verbindest sie aber nicht mit dem Kriterium.">
+            <li class="uk-opt" data-error="chain" data-errtext="Fehlerbegründung: Hier werden Fakten genannt, aber nicht mit dem Kriterium verbunden.">
               <span class="uk-opt-text">Falsche Analyse: listet Fakten auf, ohne Bezug zum Kriterium herzustellen.</span>
             </li>
             <li class="uk-opt" data-correct="true">
@@ -1157,7 +1253,7 @@ teacher password provided with the worksheet.
             <li class="uk-opt" data-correct="true">
               <span class="uk-opt-text">Richtige Abwägung: benennt Grenzen und Schwächen, ohne die Fortschritte zu ignorieren.</span>
             </li>
-            <li class="uk-opt" data-error="sided" data-errtext="Fehlerbegründung: Du siehst nur die Schwächen und überzeichnest sie.">
+            <li class="uk-opt" data-error="sided" data-errtext="Fehlerbegründung: Hier werden nur die Schwächen betont und überzeichnet.">
               <span class="uk-opt-text">Falsche Abwägung: übertreibt die Schwächen und widerspricht der eigenen Analyse.</span>
             </li>
           </ul>
@@ -1256,14 +1352,7 @@ teacher password provided with the worksheet.
         </div>
         <div class="mc-feedback" id="auf5-result" style="margin-top:.75rem"></div>
 
-        <!-- OPTIONAL: Musterlösung / Lehrkraft-Hinweis (only visible to teacher, styled dashed box)
-             .aufloesung-box is hidden by default (display:none); shown via JS/teacher password.
-             .lk-hint variant is always visible but visually subtle (dashed border, grey text).
-             FILL: heading text, solution / guidance content -->
-        <div class="aufloesung-box lk-hint" style="margin-top:1rem">
-          <div class="aufloesung-box-head">Hinweis Lehrkraft</div>
-          <p>Erwartete Kernaussagen: Argument 1, Argument 2, Gegenargument und Abwägung.</p>
-        </div>
+        <!-- No teacher-hint box in the student-facing template. -->
       </div>
     </div>
 
@@ -1292,7 +1381,7 @@ teacher password provided with the worksheet.
     <div class="ablauf-meta">
       <span class="ablauf-tag">Plenum</span>
       <span class="ablauf-tag">3 Phasen à 7–10 min</span>
-      <span class="ablauf-tag">Lehrkraft moderiert</span>
+      <span class="ablauf-tag">moderierte Diskussion</span>
     </div>
   </div>
 
@@ -1309,10 +1398,6 @@ teacher password provided with the worksheet.
     <h3>Phase 3: Urteil / Transfer</h3>
     <p style="font-size:.88rem;color:var(--ink2)">Leitfrage Phase 3. Persönliches Fazit und Bezug zur Klausur-Relevanz.</p>
 
-    <div class="aufloesung-box lk-hint" style="margin-top:1rem">
-      <div class="aufloesung-box-head">Hinweis Lehrkraft — Didaktik</div>
-      <p>Erwartete Impulse, häufige Schülerfehler und wie die Phasen moderiert werden sollen.</p>
-    </div>
   </div> -->
 
 
@@ -1368,6 +1453,7 @@ var CONF = {
 <!-- OPTIONAL: <script src="../js/quiz-lib2.js"></script> — für wahr-falsch, odd-one-out, flashcard-recall, memory-cards -->
 <script src="../js/uk-quiz.js"></script>
 <script src="../data/glossary.js"></script>
+<script src="../data/glossary-refs.js"></script>
 <script src="../data/operators.js"></script>
 <script src="../data/units.js"></script>
 <script src="../js/tooltips.js"></script>

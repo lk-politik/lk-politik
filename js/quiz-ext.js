@@ -129,6 +129,159 @@
     }
   }
 
+  function _resolveRoot(item) {
+    if (!item) return null;
+    return PLK._resolveQgTarget ? (PLK._resolveQgTarget(item, null) || item) : item;
+  }
+
+  function _evalDrop(wrap) {
+    if (!wrap) return { correct: 0, total: 0 };
+    var slots = wrap.querySelectorAll('.drop-slot[data-a]');
+    var correct = 0;
+    _each(slots, function (sel) {
+      var expected = (sel.getAttribute('data-a') || '').toLowerCase().trim();
+      var given    = (sel.value || '').toLowerCase().trim();
+      sel.classList.remove('ok', 'err');
+      if (given === expected) {
+        sel.classList.add('ok');
+        sel.disabled = true;
+        correct++;
+      } else {
+        sel.disabled = false;
+        if (given) sel.classList.add('err');
+      }
+    });
+    return { correct: correct, total: slots.length };
+  }
+
+  function _saveDrop(wrap) {
+    var values = [];
+    if (!wrap) return { values: values };
+    _each(wrap.querySelectorAll('.drop-slot'), function (sel) {
+      values.push(sel.value);
+    });
+    return { values: values };
+  }
+
+  function _restoreDrop(wrap, state) {
+    if (!wrap || !state || !state.values) return;
+    var slots = wrap.querySelectorAll('.drop-slot');
+    state.values.forEach(function (val, idx) {
+      if (slots[idx]) slots[idx].value = val;
+    });
+    _evalDrop(wrap);
+  }
+
+  function _resetDrop(wrap) {
+    if (!wrap) return;
+    _each(wrap.querySelectorAll('.drop-slot'), function (sel) {
+      sel.value = '';
+      sel.classList.remove('ok', 'err');
+      sel.disabled = false;
+    });
+  }
+
+  function _evalZT(table) {
+    if (!table) return { correct: 0, total: 0 };
+    var rows = table.querySelectorAll('tbody tr[data-correct]');
+    var correct = 0;
+    _each(rows, function (row) {
+      var expected = row.getAttribute('data-correct');
+      var checked  = row.querySelector('input[type="radio"]:checked');
+      row.classList.remove('ok', 'err');
+      if (checked && checked.value === expected) {
+        row.classList.add('ok');
+        correct++;
+      } else if (checked) {
+        row.classList.add('err');
+      }
+    });
+    return { correct: correct, total: rows.length };
+  }
+
+  function _saveZT(table) {
+    var values = {};
+    if (!table) return { values: values };
+    _each(table.querySelectorAll('tbody tr'), function (row, i) {
+      var checked = row.querySelector('input[type="radio"]:checked');
+      if (checked) values[i] = checked.value;
+    });
+    return { values: values };
+  }
+
+  function _restoreZT(table, state) {
+    if (!table || !state || !state.values) return;
+    var rows = table.querySelectorAll('tbody tr');
+    Object.keys(state.values).forEach(function (idx) {
+      var row = rows[parseInt(idx, 10)];
+      if (!row) return;
+      _each(row.querySelectorAll('input[type="radio"]'), function (radio) {
+        radio.checked = radio.value === state.values[idx];
+      });
+    });
+    _evalZT(table);
+  }
+
+  function _resetZT(table) {
+    if (!table) return;
+    _each(table.querySelectorAll('input[type="radio"]'), function (r) {
+      r.checked = false;
+    });
+    _each(table.querySelectorAll('tbody tr'), function (row) {
+      row.classList.remove('ok', 'err');
+    });
+  }
+
+  function _markExpectedCount(wrap) {
+    return wrap ? wrap.querySelectorAll('.mk[data-correct="1"]').length : 0;
+  }
+
+  function _evalMark(wrap) {
+    if (!wrap) return { correct: 0, total: 0 };
+    var spans = wrap.querySelectorAll('.mk');
+    var correct = 0;
+    var total = _markExpectedCount(wrap);
+    _each(spans, function (span) {
+      var isCorrect  = span.getAttribute('data-correct') === '1';
+      var isSelected = span.classList.contains('mk-selected');
+      span.classList.remove('ok', 'err', 'mk-selected');
+      if (isCorrect && isSelected) {
+        span.classList.add('ok');
+        correct++;
+      } else if (!isCorrect && isSelected) {
+        span.classList.add('err');
+      } else if (isCorrect && !isSelected) {
+        span.classList.add('err');
+      }
+    });
+    return { correct: correct, total: total };
+  }
+
+  function _saveMark(wrap) {
+    var selected = {};
+    if (!wrap) return { selected: selected };
+    _each(wrap.querySelectorAll('.mk'), function (span, i) {
+      if (span.classList.contains('mk-selected') || span.classList.contains('ok')) selected[i] = 1;
+    });
+    return { selected: selected };
+  }
+
+  function _restoreMark(wrap, state) {
+    if (!wrap || !state || !state.selected) return;
+    var spans = wrap.querySelectorAll('.mk');
+    Object.keys(state.selected).forEach(function (idx) {
+      if (spans[parseInt(idx, 10)]) spans[parseInt(idx, 10)].classList.add('mk-selected');
+    });
+    _evalMark(wrap);
+  }
+
+  function _resetMark(wrap) {
+    if (!wrap) return;
+    _each(wrap.querySelectorAll('.mk'), function (span) {
+      span.classList.remove('mk-selected', 'ok', 'err');
+    });
+  }
+
   PLK.register({
     name: 'quiz-ext',
     init: function () {
@@ -154,23 +307,10 @@
       PLK.chkDrop = function (wrapId, n, fbId, retryId) {
         var wrap = document.getElementById(wrapId);
         if (!wrap) return;
-        var slots = wrap.querySelectorAll('.drop-slot[data-a]');
-        var correct = 0;
-        _each(slots, function (sel) {
-          var expected = sel.getAttribute('data-a').toLowerCase().trim();
-          var given    = sel.value.toLowerCase().trim();
-          sel.classList.remove('ok', 'err');
-          if (given === expected) {
-            sel.classList.add('ok');
-            sel.disabled = true;
-            correct++;
-          } else if (given) {
-            sel.classList.add('err');
-          }
-        });
-        PLK.shR(fbId, correct, n);
+        var result = _evalDrop(wrap);
+        PLK.shR(fbId, result.correct, n);
         PLK._saveAbState();
-        if (correct === n) {
+        if (result.correct === n) {
           PLK.upAB();
           if (retryId) {
             var btn = document.getElementById(retryId);
@@ -185,11 +325,7 @@
       PLK.rstDrop = function (wrapId) {
         var wrap = document.getElementById(wrapId);
         if (!wrap) return;
-        _each(wrap.querySelectorAll('.drop-slot'), function (sel) {
-          sel.value = '';
-          sel.classList.remove('ok', 'err');
-          sel.disabled = false;
-        });
+        _resetDrop(wrap);
         PLK._saveAbState();
       };
 
@@ -216,20 +352,8 @@
       PLK.chkZT = function (tableId, fbId) {
         var table = document.getElementById(tableId);
         if (!table) return;
-        var rows = table.querySelectorAll('tbody tr[data-correct]');
-        var correct = 0;
-        _each(rows, function (row) {
-          var expected = row.getAttribute('data-correct');
-          var checked  = row.querySelector('input[type="radio"]:checked');
-          row.classList.remove('ok', 'err');
-          if (checked && checked.value === expected) {
-            row.classList.add('ok');
-            correct++;
-          } else if (checked) {
-            row.classList.add('err');
-          }
-        });
-        PLK.shR(fbId, correct, rows.length);
+        var result = _evalZT(table);
+        PLK.shR(fbId, result.correct, result.total);
         PLK.upAB();
         PLK._saveAbState();
       };
@@ -237,12 +361,7 @@
       PLK.rstZT = function (tableId) {
         var table = document.getElementById(tableId);
         if (!table) return;
-        _each(table.querySelectorAll('input[type="radio"]'), function (r) {
-          r.checked = false;
-        });
-        _each(table.querySelectorAll('tbody tr'), function (row) {
-          row.classList.remove('ok', 'err');
-        });
+        _resetZT(table);
         PLK._saveAbState();
       };
 
@@ -256,22 +375,8 @@
       PLK.chkMark = function (wrapId, n, fbId) {
         var wrap = document.getElementById(wrapId);
         if (!wrap) return;
-        var spans = wrap.querySelectorAll('.mk');
-        var correct = 0;
-        _each(spans, function (span) {
-          var isCorrect  = span.getAttribute('data-correct') === '1';
-          var isSelected = span.classList.contains('mk-selected');
-          span.classList.remove('ok', 'err', 'mk-selected');
-          if (isCorrect && isSelected) {
-            span.classList.add('ok');
-            correct++;
-          } else if (!isCorrect && isSelected) {
-            span.classList.add('err');
-          } else if (isCorrect && !isSelected) {
-            span.classList.add('err'); /* missed */
-          }
-        });
-        PLK.shR(fbId, correct, n);
+        var result = _evalMark(wrap);
+        PLK.shR(fbId, result.correct, n || result.total);
         PLK.upAB();
         PLK._saveAbState();
       };
@@ -279,11 +384,62 @@
       PLK.rstMark = function (wrapId) {
         var wrap = document.getElementById(wrapId);
         if (!wrap) return;
-        _each(wrap.querySelectorAll('.mk'), function (span) {
-          span.classList.remove('mk-selected', 'ok', 'err');
-        });
+        _resetMark(wrap);
         PLK._saveAbState();
       };
+
+      if (PLK.registerQgType) {
+        PLK.registerQgType(['drop', 'dropdown', 'gap-dropdown'], {
+          check: function (item) {
+            var wrap = _resolveRoot(item, '.drop-slot') || item;
+            var result = _evalDrop(wrap);
+            return { ok: result.total > 0 && result.correct === result.total };
+          },
+          reset: function (item) {
+            _resetDrop(_resolveRoot(item, '.drop-slot') || item);
+          },
+          save: function (item) {
+            return _saveDrop(_resolveRoot(item, '.drop-slot') || item);
+          },
+          restore: function (item, state) {
+            _restoreDrop(_resolveRoot(item, '.drop-slot') || item, state);
+          }
+        });
+
+        PLK.registerQgType(['zt', 'zuordnung-table'], {
+          check: function (item) {
+            var table = _resolveRoot(item, '.zt-table') || item;
+            var result = _evalZT(table);
+            return { ok: result.total > 0 && result.correct === result.total };
+          },
+          reset: function (item) {
+            _resetZT(_resolveRoot(item, '.zt-table') || item);
+          },
+          save: function (item) {
+            return _saveZT(_resolveRoot(item, '.zt-table') || item);
+          },
+          restore: function (item, state) {
+            _restoreZT(_resolveRoot(item, '.zt-table') || item, state);
+          }
+        });
+
+        PLK.registerQgType(['mark', 'markieren'], {
+          check: function (item) {
+            var wrap = _resolveRoot(item, '.mark-text') || item;
+            var result = _evalMark(wrap);
+            return { ok: result.total > 0 && result.correct === result.total };
+          },
+          reset: function (item) {
+            _resetMark(_resolveRoot(item, '.mark-text') || item);
+          },
+          save: function (item) {
+            return _saveMark(_resolveRoot(item, '.mark-text') || item);
+          },
+          restore: function (item, state) {
+            _restoreMark(_resolveRoot(item, '.mark-text') || item, state);
+          }
+        });
+      }
 
     } /* /init */
   });

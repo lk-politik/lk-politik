@@ -53,7 +53,21 @@
     .chapters { display: flex; flex-direction: column; gap: .6rem; }
     .chapter {
       background: var(--card); border: 1px solid var(--border);
+      border-left: 4px solid var(--acc);
       border-radius: var(--r); overflow: hidden;
+    }
+    .chapter.placeholder {
+      opacity: .66;
+    }
+    .chapter.placeholder .chapter-row:hover {
+      background: transparent;
+    }
+    .chapter.placeholder .chapter-name,
+    .chapter.placeholder .chapter-meta,
+    .chapter.placeholder .chapter-prog-pct,
+    .chapter.placeholder .chapter-icon,
+    .chapter.placeholder .unit-empty {
+      color: var(--ink3);
     }
     .chapter-row {
       display: flex; align-items: center; gap: .9rem;
@@ -87,6 +101,40 @@
     /* Unit list */
     .unit-list { border-top: 1px solid var(--border-l); display: none; }
     .chapter.open .unit-list { display: block; }
+    .unit-empty {
+      padding: .85rem 1.25rem .95rem 2.75rem;
+      color: var(--ink3);
+      font-size: .85rem;
+      font-style: italic;
+    }
+    .fb-cta-wrap { text-align:center; margin:1.8rem 0 1.3rem; }
+    .fb-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      font-family: var(--ff-head);
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      text-decoration: none;
+      background: var(--acc);
+      border: 1.5px solid var(--acc);
+      padding: .65em 1.25em;
+      border-radius: 999px;
+      box-shadow: 0 10px 22px rgba(45,89,134,.14);
+      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+    }
+    .fb-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(45,89,134,.18);
+      filter: brightness(.98);
+    }
+    .fb-cta-sub {
+      display: block;
+      margin-top: .55rem;
+      font-size: .78rem;
+      color: var(--ink3);
+    }
 
     .unit-row {
       display: flex; align-items: center; gap: .85rem;
@@ -119,6 +167,82 @@
     .unit-arrow { font-size: .85rem; color: var(--ink3); flex-shrink: 0; }
     .unit-lock  { font-size: .75rem; color: var(--ink3); flex-shrink: 0; }
 
+    /* Simulation banner */
+    .sim-banner {
+      margin: .5rem 1.25rem .5rem 2.75rem;
+      background: var(--accL, #e8f0f9);
+      border: 1px solid var(--acc, #2d5986);
+      border-radius: 8px;
+      padding: .75rem 1rem;
+    }
+    .sim-label {
+      display: block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--acc, #2d5986);
+      margin-bottom: .5rem;
+    }
+    .sim-lock-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      padding: .15rem 0;
+    }
+    .sim-label-inline {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--acc, #2d5986);
+    }
+    .sim-lock-icon {
+      font-size: .7rem;
+      color: var(--ink3, #8a8278);
+    }
+    .sim-pw-wrap .sim-label { margin-bottom: .4rem; }
+    .sim-pw-row {
+      display: flex;
+      gap: .4rem;
+      align-items: center;
+    }
+    .sim-pw-input {
+      flex: 1;
+      font-family: inherit;
+      font-size: .82rem;
+      padding: .35rem .6rem;
+      border: 1px solid var(--border-l, #d6cfc4);
+      border-radius: 6px;
+      background: #fff;
+      outline: none;
+    }
+    .sim-pw-input:focus { border-color: var(--acc, #2d5986); }
+    .sim-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .5rem;
+    }
+    .sim-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem;
+      padding: .55rem .75rem;
+      background: var(--acc, #2d5986);
+      color: #fff;
+      font-family: inherit;
+      font-size: .82rem;
+      font-weight: 600;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: opacity .15s;
+    }
+    .sim-btn:hover { opacity: .85; }
+
     @media (max-width: 600px) {
       .chapter-meta { display: none; }
       .unit-prog { min-width: 70px; }
@@ -142,8 +266,12 @@
 
   <div class="chapters" id="chapters"></div>
 
-  <div style="text-align:center;margin:1.5rem 0">
-    <a href="fachbegriffe.html" style="font-family:var(--ff-head);font-size:.9rem;font-weight:600;color:var(--acc);text-decoration:none;border:1.5px solid var(--acc);padding:.4em 1.1em;border-radius:6px;">&#128218; Fachbegriffe</a>
+  <div class="fb-cta-wrap">
+    <a href="fachbegriffe.html" class="fb-cta">
+      <span aria-hidden="true">&#128218;</span>
+      <span>Fachbegriffe</span>
+    </a>
+    <span class="fb-cta-sub">Glossar, Lehrplanbegriffe und Kapitelvokabular</span>
   </div>
 
   <footer class="page-footer">
@@ -162,6 +290,16 @@ var Progress = {
     catch (e) { return null; }
   }
 };
+/* 3.3 done in class — seed as complete so gate chain is satisfied */
+(function () {
+  try {
+    var key = 'plk_3-3';
+    var existing = localStorage.getItem(key);
+    if (!existing || JSON.parse(existing).progressPct < 100) {
+      localStorage.setItem(key, JSON.stringify({ complete: true, progressPct: 100, gates: { '1': true, '2': true, '3': true } }));
+    }
+  } catch (e) {}
+})();
 </script>
 <script>
 /* ==========================================================
@@ -172,6 +310,9 @@ var SECTIONS = [
   {
     id: 'methodik',
     label: 'Methodik',
+    color: '#111111',
+    colorL: '#f3f4f6',
+    colorG: 'rgba(17,17,17,.06)',
     units: [
       { id: 'M-1', num: 'M.1', title: 'AB I — Wissen zeigen',              href: 'einheiten/m-1_ab1.html', status: 'pending', color: null },
       { id: 'M-2', num: 'M.2', title: 'AB II — Analysieren und Einordnen', href: 'einheiten/m-2_ab2.html', status: 'pending', color: null },
@@ -179,13 +320,32 @@ var SECTIONS = [
     ]
   },
   {
+    id: 'kap1',
+    label: 'Kapitel 1 &mdash; Gesellschaft im Wandel',
+    color: '#c24175',
+    colorL: '#fbe8f0',
+    colorG: 'rgba(194,65,117,.10)',
+    units: []
+  },
+  {
+    id: 'kap2',
+    label: 'Kapitel 2 &mdash; Grundwerte und Grundrechte in der politischen Ordnung der BRD',
+    color: '#1f7a3f',
+    colorL: '#e8f4ec',
+    colorG: 'rgba(31,122,63,.10)',
+    units: []
+  },
+  {
     id: 'kap3',
+    color: '#2d5986',
+    colorL: '#e8f0f9',
+    colorG: 'rgba(45,89,134,.08)',
     label: 'Kapitel 3 — Die Europäische Union',
     units: [
-      { id: '3-2',  num: '3.2',  title: 'Die EU nach dem Vertrag von Lissabon',          href: 'einheiten/3-2_lissabon.html',         status: 'active',  color: '#2d5986' },
-      { id: '3-3',  num: '3.3',  title: 'Gesetzgebung in der EU und in Deutschland',        href: 'einheiten/3-3_gesetzgebung.html',      status: 'active',  color: '#2d5986', freeUnlock: true },
-      { id: '3-4',  num: '3.4',  title: 'Das Mehrebenensystem der EU',                    href: 'einheiten/3-4_mehrebenensystem.html',  status: 'pending', color: null },
-      { id: '3-5',  num: '3.5',  title: 'Der Binnenmarkt und die vier Freiheiten',        href: 'einheiten/3-5_binnenmarkt.html',       status: 'pending', color: '#b45309' },
+      { id: '3-2',  num: '3.2',  title: 'Die EU nach dem Vertrag von Lissabon',          href: 'einheiten/3-2_lissabon.html',         status: 'active',  color: '#2d5986', gates: 3, abPts: 19, einstieg: true },
+      { id: '3-3',  num: '3.3',  title: 'Gesetzgebung in der EU und in Deutschland',        href: 'einheiten/3-3_gesetzgebung.html',      status: 'active',  color: '#2d5986', gates: 3, abPts: 12, einstieg: true, freeUnlock: true },
+      { id: '3-4',  num: '3.4',  title: 'Das Mehrebenensystem der EU',                    href: 'einheiten/3-4_mehrebenensystem.html',  status: 'active',  color: '#2d5986', gates: 3, abPts: 21, einstieg: true, freeUnlock: true },
+      { id: '3-5',  num: '3.5',  title: 'Der EU-Binnenmarkt und die vier Freiheiten',     href: 'einheiten/3-5_binnenmarkt.html',       status: 'pending', color: '#2d5986', gates: 3, abPts: 12, einstieg: true, prereq: '3-4' },
       { id: '3-6',  num: '3.6',  title: 'Stufen der wirtschaftlichen Integration',        href: 'einheiten/3-6_integration.html',       status: 'pending', color: null },
       { id: '3-7',  num: '3.7',  title: 'Die Eurozone',                                   href: 'einheiten/3-7_eurozone.html',          status: 'pending', color: null },
       { id: '3-8',  num: '3.8',  title: 'EZB und Stabilitätskriterien',                   href: 'einheiten/3-8_ezb.html',               status: 'pending', color: null },
@@ -201,6 +361,38 @@ var SECTIONS = [
       { id: '3-19', num: '3.19', title: 'Bundesstaat, Staatenbund oder Staatenverbund?',  href: 'einheiten/3-19_integration.html',      status: 'pending', color: null },
       { id: '3-20', num: '3.20', title: 'Differenzierte Integration',                     href: 'einheiten/3-20_differenziert.html',    status: 'pending', color: null }
     ]
+  },
+  {
+    id: 'kap4',
+    label: 'Kapitel 4 &mdash; Internationale Politik',
+    color: '#b88900',
+    colorL: '#faf4df',
+    colorG: 'rgba(184,137,0,.10)',
+    units: []
+  },
+  {
+    id: 'kap5',
+    label: 'Kapitel 5 &mdash; Wirtschaft',
+    color: '#a16207',
+    colorL: '#fbf1e2',
+    colorG: 'rgba(161,98,7,.10)',
+    units: []
+  },
+  {
+    id: 'kap6',
+    label: 'Kapitel 6 &mdash; Entwicklungszusammenarbeit',
+    color: '#0f766e',
+    colorL: '#e5f5f3',
+    colorG: 'rgba(15,118,110,.10)',
+    units: []
+  },
+  {
+    id: 'kap7',
+    label: 'Kapitel 7 &mdash; Politische Systeme',
+    color: '#8a8175',
+    colorL: '#f4f1ed',
+    colorG: 'rgba(138,129,117,.10)',
+    units: []
   }
 ];
 
@@ -208,20 +400,67 @@ var SECTIONS = [
 function _calcPct(id) {
   var prog = Progress.load(id);
   if (!prog) return 0;
-  if (prog.unlocked) return 100;
-  if (!prog.gates) return 0;
-  var keys = Object.keys(prog.gates);
-  if (!keys.length) return 0;
-  var done = 0;
-  for (var i = 0; i < keys.length; i++) {
-    if (prog.gates[keys[i]]) done++;
+  var unit = _findUnit(id);
+
+  if (unit && unit.gates) {
+    var total = unit.gates;
+    var done  = 0;
+    var keys  = prog.gates ? Object.keys(prog.gates) : [];
+
+    /* Deduplicate: "1" and "qg1" both refer to gate 1 — normalize before counting */
+    var counted = {};
+    for (var i = 0; i < keys.length; i++) {
+      if (prog.gates[keys[i]]) {
+        var nr = parseInt(keys[i].replace('qg', ''), 10);
+        if (!isNaN(nr)) counted[nr] = true;
+      }
+    }
+    done = Math.min(Object.keys(counted).length, unit.gates);
+
+    if (unit.einstieg) {
+      total += 1;
+      if (prog.einstieg) done += 1;
+    }
+
+    if (unit.abPts > 0) {
+      total += 1;
+      done += Math.min((prog.abPts || 0) / unit.abPts, 1);
+    }
+
+    return total > 0 ? Math.round(done / total * 100) : 0;
   }
-  return Math.round(done / keys.length * 100);
+
+  if (typeof prog.progressPct === 'number') return Math.max(0, Math.min(100, Math.round(prog.progressPct)));
+  if (prog.complete === true) return 100;
+  if (!prog.gates) return 0;
+  var fallbackKeys = Object.keys(prog.gates);
+  if (!fallbackKeys.length) return 0;
+  var fallbackDone = 0;
+  for (var j = 0; j < fallbackKeys.length; j++) {
+    if (prog.gates[fallbackKeys[j]]) fallbackDone++;
+  }
+  return Math.round(fallbackDone / fallbackKeys.length * 100);
 }
 
 function _isComplete(id) {
-  var prog = Progress.load(id);
-  return prog !== null && prog.unlocked === true;
+  return _calcPct(id) >= 100;
+}
+
+function _findUnit(id) {
+  var found = null;
+  SECTIONS.forEach(function (sec) {
+    sec.units.forEach(function (u) {
+      if (u.id === id) found = u;
+    });
+  });
+  return found;
+}
+
+function _getPrereqId(unit, idx, rendered) {
+  if (unit.freeUnlock) return null;
+  if (unit.prereq) return unit.prereq;
+  if (idx > 0) return rendered[idx - 1].id;
+  return null;
 }
 
 /* ── Render ─────────────────────────────────────────────── */
@@ -247,26 +486,40 @@ function _renderAll() {
   /* Chapter accordion */
   var container = document.getElementById('chapters');
   container.innerHTML = '';
-  var firstChapter = true;
+  var firstChapterId = SECTIONS.length ? SECTIONS[0].id : null;
+
+  for (var s = 0; s < SECTIONS.length; s++) {
+    var secUnits = SECTIONS[s].units || [];
+    for (var su = 0; su < secUnits.length; su++) {
+      if (secUnits[su].status !== 'pending') {
+        firstChapterId = SECTIONS[s].id;
+        s = SECTIONS.length;
+        break;
+      }
+    }
+  }
 
   SECTIONS.forEach(function (sec) {
     var rendered = [];
     sec.units.forEach(function (u) {
       if (u.status !== 'pending') rendered.push(u);
     });
-    if (!rendered.length) return;
 
     /* Chapter aggregate */
     var chSum = 0;
     rendered.forEach(function (u) { chSum += _calcPct(u.id); });
-    var chPct  = Math.round(chSum / rendered.length);
-    var chColor = (rendered.length === 1 && rendered[0].color) ? rendered[0].color : 'var(--acc)';
+    var chPct  = rendered.length ? Math.round(chSum / rendered.length) : 0;
+    var chColor = sec.color || ((rendered.length === 1 && rendered[0].color) ? rendered[0].color : '#2d5986');
+    var chColorL = sec.colorL || '#e8f0f9';
+    var chColorG = sec.colorG || 'rgba(45,89,134,.08)';
     var unitWord = rendered.length === 1 ? 'Einheit' : 'Einheiten';
 
     var ch = document.createElement('div');
-    ch.className = 'chapter' + (firstChapter ? ' open' : '');
+    ch.className = 'chapter' + (!rendered.length ? ' placeholder' : '') + (sec.id === firstChapterId ? ' open' : '');
     ch.id = 'ch-' + sec.id;
-    firstChapter = false;
+    ch.style.setProperty('--acc', chColor);
+    ch.style.setProperty('--accL', chColorL);
+    ch.style.setProperty('--accG', chColorG);
 
     ch.innerHTML =
       '<div class="chapter-row" onclick="toggleChapter(\'ch-' + sec.id + '\')">' +
@@ -286,8 +539,13 @@ function _renderAll() {
 
     /* Unit rows */
     var ul = document.getElementById('ul-' + sec.id);
+    if (!rendered.length) {
+      ul.innerHTML = '<div class="unit-empty">Noch keine Einheiten angelegt.</div>';
+      return;
+    }
     rendered.forEach(function (u, idx) {
-      var locked = idx > 0 && !u.freeUnlock && !_isComplete(rendered[idx - 1].id);
+      var prereqId = _getPrereqId(u, idx, rendered);
+      var locked = prereqId ? !_isComplete(prereqId) : false;
       var pct    = _calcPct(u.id);
       var barClr = u.color ? u.color : 'var(--acc)';
       var row;
@@ -317,9 +575,66 @@ function _renderAll() {
           '<span class="unit-arrow">&#8594;</span>';
       }
       ul.appendChild(row);
+
+      /* Simulation banner after 3.4 — only if unit is complete */
+      if (u.id === '3-4' && pct >= 100) {
+        var sim = document.createElement('div');
+        sim.className = 'sim-banner';
+        sim.id = 'sim-banner';
+        sim.innerHTML =
+          '<div class="sim-lock" id="sim-lock">' +
+            '<div class="sim-lock-row" onclick="document.getElementById(\'sim-pw-wrap\').style.display=\'flex\';this.style.display=\'none\'">' +
+              '<span class="sim-label-inline">🏛️ EU-Werkstatt · Simulation</span>' +
+              '<span class="sim-lock-icon">&#128274;</span>' +
+            '</div>' +
+            '<div class="sim-pw-wrap" id="sim-pw-wrap" style="display:none">' +
+              '<span class="sim-label">🏛️ EU-Werkstatt · Simulation</span>' +
+              '<div class="sim-pw-row">' +
+                '<input type="password" id="sim-pw" class="sim-pw-input" placeholder="Passwort …" onkeydown="if(event.key===\'Enter\')unlockSim()">' +
+                '<button class="btn btn-primary btn-sm" onclick="unlockSim()">&#128275;</button>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="sim-content" id="sim-content" style="display:none">' +
+            '<span class="sim-label">🏛️ EU-Werkstatt · Simulation</span>' +
+            '<div class="sim-buttons">' +
+              '<a class="sim-btn" href="legacy/3-4_EU-Werkstatt_Social-Media_v1.0.html">📋 Ablauf</a>' +
+              '<a class="sim-btn" href="legacy/3-4_EU-Werkstatt_Rollenkarten_v1_1.html">🎭 Rollen</a>' +
+            '</div>' +
+          '</div>';
+        ul.appendChild(sim);
+      }
     });
   });
 }
+
+function unlockSim() {
+  var pw = document.getElementById('sim-pw');
+  if (!pw) return;
+  var val = pw.value.trim().toLowerCase().replace(/\s+/g, ' ');
+  if (val === 'password') {
+    document.getElementById('sim-lock').style.display = 'none';
+    document.getElementById('sim-content').style.display = '';
+    try { localStorage.setItem('plk_sim_3-4', '1'); } catch (e) {}
+  } else {
+    pw.style.borderColor = '#b83232';
+    pw.value = '';
+    pw.placeholder = 'Falsches Passwort …';
+  }
+}
+/* Auto-unlock if previously unlocked */
+(function () {
+  try {
+    if (localStorage.getItem('plk_sim_3-4') === '1') {
+      setTimeout(function () {
+        var lock = document.getElementById('sim-lock');
+        var content = document.getElementById('sim-content');
+        if (lock) lock.style.display = 'none';
+        if (content) content.style.display = '';
+      }, 100);
+    }
+  } catch (e) {}
+})();
 
 function toggleChapter(id) {
   var el = document.getElementById(id);
@@ -341,6 +656,11 @@ function _mergeUnits(data) {
       if (remote.title)  u.title  = remote.title;
       if (remote.status) u.status = remote.status;
       if (remote.accent) u.color  = remote.accent;
+      if (remote.gates) u.gates = remote.gates;
+      if (Object.prototype.hasOwnProperty.call(remote, 'abPts')) u.abPts = remote.abPts;
+      if (Object.prototype.hasOwnProperty.call(remote, 'einstieg')) u.einstieg = !!remote.einstieg;
+      if (Object.prototype.hasOwnProperty.call(remote, 'freeUnlock')) u.freeUnlock = !!remote.freeUnlock;
+      if (Object.prototype.hasOwnProperty.call(remote, 'prereq')) u.prereq = remote.prereq;
     });
   });
 }

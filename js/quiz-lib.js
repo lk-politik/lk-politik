@@ -197,6 +197,18 @@
 
   /* ── Module registration ─────────────────────────────────── */
 
+  function _scoreAbFromWrap(wrap, correct, total) {
+    if (!wrap || !total || !PLK._qs || !PLK._qs.abScores) return;
+    var task = wrap;
+    while (task && (!task.classList || !task.classList.contains('auf') || !task.id)) {
+      task = task.parentElement;
+    }
+    if (!task || !task.id) return;
+    var abScores = PLK._qs.abScores;
+    var max = abScores[task.id + '_max'] || total;
+    abScores[task.id] = Math.round((correct / total) * max);
+  }
+
   PLK.register({
     name: 'quiz-lib',
     init: function () {
@@ -272,6 +284,7 @@
             slot.classList.add('err');
           }
         });
+        _scoreAbFromWrap(wrap, correct, slots.length);
         PLK.shR(fbId, correct, slots.length);
         PLK.upAB();
         PLK._saveAbState();
@@ -343,6 +356,7 @@
             inp.classList.add('wrong');
           }
         });
+        _scoreAbFromWrap(wrap, correct, inputs.length);
         PLK.shR(fbId, correct, inputs.length);
         /* Show correct value for each wrong slider (spec §4.3) */
         var fbEl = document.getElementById(fbId);
@@ -436,6 +450,7 @@
             if (defEl) defEl.classList.add('err');
           }
         });
+        _scoreAbFromWrap(wrap, correct, terms.length);
         PLK.shR(fbId, correct, terms.length);
         PLK.upAB();
         PLK._saveAbState();
@@ -501,6 +516,7 @@
             chip.classList.add('err');
           }
         });
+        _scoreAbFromWrap(wrap, correct, chips.length);
         PLK.shR(fbId, correct, chips.length);
         PLK.upAB();
         PLK._saveAbState();
@@ -546,6 +562,7 @@
             chip.classList.add('bc-wrong');
           }
         });
+        _scoreAbFromWrap(wrap, correct, chips.length);
         PLK.shR(fbId, correct, chips.length);
         PLK.upAB();
         PLK._saveAbState();

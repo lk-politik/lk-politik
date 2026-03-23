@@ -1,424 +1,546 @@
-var _PLK_GLOSSARY = [
+window._PLK_GLOSSARY = [
   {
     "term": "Binnenmarkt",
     "def": "Ein gemeinsamer Wirtschaftsraum, in dem Waren, Personen, Dienstleistungen und Kapital frei zirkulieren können — die vier Grundfreiheiten. Der EU-Binnenmarkt besteht seit dem 1. Januar 1993.",
-    "units": [
-      "3-2",
-      "3-5"
-    ],
     "chapter": 3,
-    "cat": "Konzept"
+    "cat": "Struktur",
+    "basis": true
+  },
+  {
+    "term": "Zollunion",
+    "def": "Eine Form wirtschaftlicher Integration, bei der die Mitgliedstaaten im Handel untereinander keine Zölle mehr erheben und gegenüber Drittstaaten gemeinsame Außenzölle anwenden.",
+    "chapter": 3,
+    "cat": "Struktur"
+  },
+  {
+    "term": "Währungsunion",
+    "def": "Eine Form wirtschaftlicher Integration, bei der mehrere Staaten eine gemeinsame Währung nutzen und ihre Währungspolitik gemeinsam organisieren. In der EU betrifft das die Eurozone.",
+    "chapter": 3,
+    "cat": "Struktur",
+    "basis": true
+  },
+  {
+    "term": "Integration",
+    "def": "Die schrittweise Vertiefung der Zusammenarbeit zwischen Staaten. In der EU bedeutet Integration, dass gemeinsame Regeln, gemeinsame Institutionen und teilweise gemeinsame Politikfelder aufgebaut werden.",
+    "chapter": 3,
+    "cat": "Prinzip",
+    "basis": true
+  },
+  {
+    "term": "Europa der zwei Geschwindigkeiten",
+    "def": "Leitprinzip der differenzierten Integration: Nicht alle Mitgliedstaaten müssen jeden Integrationsschritt gleichzeitig mitgehen. Einzelne Staaten können in bestimmten Bereichen enger zusammenarbeiten — etwa in der Eurozone oder im Schengen-Raum — während andere vorerst außen vor bleiben. Ermöglicht Fortschritt, ohne den Zusammenhalt der gesamten EU zu blockieren.",
+    "chapter": 3,
+    "cat": "Prinzip",
+    "basis": true
   },
   {
     "term": "Vier Grundfreiheiten",
     "def": "Die vier Kernfreiheiten des EU-Binnenmarkts: freier Warenverkehr, freier Personenverkehr, freier Dienstleistungsverkehr und freier Kapitalverkehr.",
-    "units": [
-      "3-5"
-    ],
     "chapter": 3,
-    "cat": "Prinzip"
+    "cat": "Prinzip",
+    "basis": true
+  },
+  {
+    "term": "Warenverkehr",
+    "def": "Eine der vier Grundfreiheiten des Binnenmarktes. Produkte dürfen innerhalb der EU ohne Binnenzölle und ohne mengenmäßige Beschränkungen gehandelt werden. Ziel ist, dass Waren an den Grenzen der Mitgliedstaaten nicht durch neue Handelshindernisse aufgehalten werden. Gegenüber Drittstaaten gelten gemeinsame Außenzölle der Zollunion.",
+    "chapter": 3,
+    "cat": "Prinzip",
+    "basis": true
+  },
+  {
+    "term": "Personenverkehr",
+    "def": "Eine der vier Grundfreiheiten des Binnenmarktes. EU-Bürgerinnen und -Bürger dürfen in anderen Mitgliedstaaten reisen, wohnen, arbeiten oder sich dort niederlassen. So kann der Lebens- und Arbeitsort innerhalb der EU frei gewählt werden. Diese Freiheit wird auch als Freizügigkeit bezeichnet.",
+    "chapter": 3,
+    "cat": "Prinzip",
+    "basis": true
+  },
+  {
+    "term": "Dienstleistungsverkehr",
+    "def": "Eine der vier Grundfreiheiten des Binnenmarktes. Unternehmen und Selbstständige dürfen ihre Leistungen in anderen EU-Staaten anbieten, ohne dort dauerhaft ansässig zu sein. Das betrifft etwa Handwerk, Beratung oder digitale Angebote. In diesem Bereich bestehen bis heute besonders viele unterschiedliche nationale Regeln.",
+    "chapter": 3,
+    "cat": "Prinzip",
+    "basis": true
+  },
+  {
+    "term": "Kapitalverkehr",
+    "def": "Eine der vier Grundfreiheiten des Binnenmarktes. Geld darf innerhalb der EU grenzüberschreitend überwiesen, investiert oder angelegt werden. Das ermöglicht etwa Lohnüberweisungen, Kredite oder Investitionen über Staatsgrenzen hinweg. Die Kapitalverkehrsfreiheit gilt in Teilen auch gegenüber Drittstaaten.",
+    "chapter": 3,
+    "cat": "Prinzip",
+    "basis": true
   },
   {
     "term": "Sozialdumping",
     "def": "Das Phänomen, dass Unternehmen oder Arbeitnehmer aus Ländern mit niedrigen Lohn- und Sozialstandards in Ländern mit höheren Standards zu geringeren Kosten anbieten, was dort Löhne und Arbeitsbedingungen unter Druck setzt.",
-    "units": [
-      "3-5"
-    ],
     "chapter": 3,
     "cat": "Phänomen"
   },
   {
     "term": "Brain Drain",
     "def": "Die Abwanderung gut ausgebildeter Fachkräfte aus wirtschaftlich schwächeren Regionen in stärkere, was die Herkunftsregion weiter schwächt.",
-    "units": [
-      "3-5"
-    ],
     "chapter": 3,
     "cat": "Phänomen"
   },
   {
     "term": "Steuerwettbewerb",
     "def": "Der Wettbewerb zwischen Staaten um Unternehmensansiedlungen durch niedrige Steuersätze, was Steuereinnahmen anderer Staaten untergräbt.",
-    "units": [
-      "3-5"
-    ],
     "chapter": 3,
     "cat": "Phänomen"
   },
   {
-    "term": "Cassis-de-Dijon-Prinzip",
-    "def": "Grundsatz des EuGH (1979): Ein in einem EU-Mitgliedstaat rechtmäßig hergestelltes und vertriebenes Produkt darf in allen anderen Mitgliedstaaten verkauft werden. Basis des gegenseitigen Anerkennungsprinzips.",
-    "units": [
-      "3-5"
-    ],
-    "chapter": 3,
-    "cat": "Prinzip"
-  },
-  {
     "term": "Entsenderichtlinie",
     "def": "EU-Richtlinie, die Mindestarbeitsbedingungen (u.a. Mindestlohn des Gastlandes) für Arbeitnehmer festlegt, die vorübergehend in einen anderen EU-Staat entsandt werden.",
-    "units": [
-      "3-5"
-    ],
     "chapter": 3,
     "cat": "Rechtsnorm"
   },
   {
     "term": "Ordentliches Gesetzgebungsverfahren",
-    "abbr": "OGV",
-    "emoji": "📜",
-    "def": "Das Standardverfahren der EU-Gesetzgebung: Die Kommission schlägt vor, das Europäische Parlament und der Rat der EU entscheiden gleichberechtigt. Es können bis zu drei Lesungen stattfinden.",
-    "units": [
-      "3-3"
+    "abbr": [
+      "OGV",
+      "Ordentliche Gesetzgebungsverfahren",
+      "Ordentlichen Gesetzgebungsverfahren"
     ],
+    "emoji": "📜",
+    "def": "OGV, das Standardverfahren der EU-Gesetzgebung: Die Kommission schlägt vor, das Europäische Parlament und der Rat der EU entscheiden gleichberechtigt. Es können bis zu drei Lesungen stattfinden.",
     "chapter": 3,
-    "cat": "Verfahren"
+    "cat": "Verfahren",
+    "basis": true
   },
   {
     "term": "Initiativrecht",
     "def": "Das alleinige Recht der Europäischen Kommission, Gesetzesvorschläge einzubringen. Weder das EP noch der Rat können selbst Gesetzentwürfe vorlegen — ein wesentlicher Unterschied zum deutschen System.",
-    "units": [
-      "3-2",
-      "3-3"
-    ],
     "chapter": 3,
-    "cat": "Verfahren"
+    "cat": "Verfahren",
+    "basis": true
   },
   {
     "term": "Trilog",
     "emoji": "🤝",
     "def": "Informelle Dreierverhandlung zwischen Vertretern des EP, des Rates und der Kommission, um einen Kompromiss zu erarbeiten. Triloge beschleunigen das Verfahren, stehen aber wegen mangelnder Transparenz in der Kritik.",
-    "units": [
-      "3-3"
-    ],
     "chapter": 3,
-    "cat": "Verfahren"
+    "cat": "Verfahren",
+    "basis": true
   },
   {
     "term": "Richtlinie",
     "def": "Ein EU-Rechtsakt, der ein Ziel vorgibt, aber den Mitgliedstaaten überlässt, wie sie es in nationales Recht umsetzen. Jeder Staat muss dafür ein eigenes Gesetz erlassen (Umsetzungsfrist).",
-    "units": [
-      "3-3",
-      "3-5"
-    ],
     "chapter": 3,
-    "cat": "Rechtsnorm"
+    "cat": "Rechtsnorm",
+    "basis": true
   },
   {
     "term": "Verordnung",
     "def": "Ein EU-Rechtsakt, der sofort und unmittelbar in allen Mitgliedstaaten gilt, ohne dass nationale Parlamente ein eigenes Gesetz erlassen müssen. Gilt wortgleich in der gesamten EU.",
-    "units": [
-      "3-3"
-    ],
     "chapter": 3,
-    "cat": "Rechtsnorm"
+    "cat": "Rechtsnorm",
+    "basis": true
+  },
+  {
+    "term": "Verhältnismäßigkeit",
+    "def": "Ein Rechtsgrundsatz, nach dem staatliches Handeln geeignet, erforderlich und angemessen sein muss, um ein legitimes Ziel zu erreichen. Eingriffe in Grundrechte dürfen nicht über das hinausgehen, was zur Zielerreichung nötig ist. Gilt im deutschen Verfassungsrecht (GG) ebenso wie im EU-Recht (Art. 5 Abs. 4 EUV).",
+    "chapter": 2,
+    "cat": "Prinzip",
+    "basis": true
   },
   {
     "term": "Vermittlungsausschuss",
     "def": "Ein gemeinsames Gremium aus EP und Rat (EU) bzw. Bundestag und Bundesrat (DE), das bei Uneinigkeit über einen Gesetzentwurf einen Kompromiss aushandelt. Letzte Stufe vor dem Scheitern eines Gesetzes.",
-    "units": [
-      "3-3"
-    ],
     "chapter": 3,
-    "cat": "Institution"
+    "cat": "Institution",
+    "flag": [
+      "eu",
+      "de"
+    ],
+    "basis": true
   },
   {
     "term": "Vertrag von Lissabon",
     "def": "Der aktuell gültige EU-Grundlagenvertrag (unterzeichnet 2007, in Kraft seit 2009). Stärkt das EP, führt die doppelte Mehrheit ein, macht die Grundrechtecharta verbindlich und schafft die Position des ständigen Ratspräsidenten und des Hohen Vertreters.",
-    "units": [
-      "3-2"
-    ],
     "chapter": 3,
-    "cat": "Vertrag"
+    "cat": "Vertrag",
+    "basis": true
   },
   {
     "term": "Vertrag von Maastricht",
-    "def": "Der Gründungsvertrag der Europäischen Union (1992). Schuf die EU als politische Union auf Basis der bestehenden Wirtschaftsgemeinschaft und legte den Grundstein für die gemeinsame Währung (Euro).",
-    "units": [
-      "3-2"
+    "abbr": [
+      "Maastricht"
     ],
+    "def": "Der Gründungsvertrag der Europäischen Union (1992). Schuf die EU als politische Union auf Basis der bestehenden Wirtschaftsgemeinschaft und legte den Grundstein für die gemeinsame Währung (Euro).",
     "chapter": 3,
     "cat": "Vertrag"
   },
   {
     "term": "EU-Verfassungsvertrag",
     "def": "Ein 2004 unterzeichneter Vertrag, der die EU-Verträge in einer einzigen Verfassung zusammenfassen sollte. Scheiterte 2005 an Referenden in Frankreich und den Niederlanden. Wesentliche Inhalte wurden später in den Vertrag von Lissabon übernommen, aber ohne den Begriff 'Verfassung'.",
-    "units": [
-      "3-4"
-    ],
     "chapter": 3,
     "cat": "Vertrag"
   },
   {
+    "term": "Eurozone",
+    "abbr": [
+      "Wirtschafts- und Währungsunion",
+      "WWU"
+    ],
+    "def": "Die Gruppe der EU-Mitgliedstaaten, die den Euro als gemeinsame Währung eingeführt haben und deren Geldpolitik von der Europäischen Zentralbank gesteuert wird. Aktuell gehören 21 EU-Mitgliedstaaten zur Eurozone (Stand 2026, plus 6 Nicht-EU-Staaten). Die Eurozone ist die tiefste Stufe der wirtschaftlichen Integration innerhalb der EU.",
+    "chapter": 3,
+    "cat": "Struktur",
+    "basis": true,
+    "flag": "eu",
+    "temporal": true
+  },
+  {
     "term": "Europäisches Parlament",
-    "abbr": "EP",
+    "abbr": [
+      "EP",
+      "Europäische Parlament",
+      "Europäischen Parlament"
+    ],
     "emoji": "🗳️",
     "def": "Das einzige direkt von den EU-Bürgern gewählte Organ. Entscheidet gleichberechtigt mit dem Rat über Gesetze, kontrolliert die Kommission und beschließt den EU-Haushalt. Sitz: Straßburg/Brüssel, max. 705 Abgeordnete + Präsidentin.",
-    "units": [
-      "3-2"
-    ],
     "chapter": 3,
-    "cat": "Institution"
+    "cat": "Institution",
+    "flag": "eu",
+    "posten": "Präsident des Europäischen Parlaments",
+    "person": "Roberta Metsola",
+    "personSeit": "2022",
+    "personBis": "2027",
+    "basis": true
   },
   {
     "term": "Rat der EU",
     "emoji": "📋",
     "def": "Das Gesetzgebungsorgan der Mitgliedstaaten. Besteht je nach Thema aus den zuständigen Fachministern (1 pro Land). Beschließt seit Lissabon mit doppelter Mehrheit gemeinsam mit dem EP Gesetze.",
-    "units": [
-      "3-2"
-    ],
     "chapter": 3,
-    "cat": "Institution"
+    "cat": "Institution",
+    "flag": "eu",
+    "basis": true
   },
   {
     "term": "Europäische Kommission",
     "abbr": "Kommission",
     "emoji": "⚙️",
     "def": "Das Exekutivorgan der EU mit alleinigem Initiativrecht für Gesetzesvorschläge. 'Hüterin der Verträge': überwacht die Einhaltung des EU-Rechts. 27 Kommissare (1 pro Land), Sitz: Brüssel.",
-    "units": [
-      "3-2"
-    ],
     "chapter": 3,
-    "cat": "Institution"
+    "cat": "Institution",
+    "flag": "eu",
+    "posten": "Kommissionspräsident",
+    "person": "Ursula von der Leyen",
+    "personSeit": "2019",
+    "personBis": "2029",
+    "basis": true
   },
   {
     "term": "Europäischer Rat",
+    "abbr": [
+      "Europäische Rat",
+      "Europäischen Rat"
+    ],
     "emoji": "👑",
     "def": "Die Staats- und Regierungschefs der 27 EU-Staaten. Legt die großen politischen Ziele der EU fest, beschließt aber keine Gesetze. Seit Lissabon mit ständigem Präsidenten (2,5 Jahre). Nicht verwechseln mit dem Rat der EU!",
-    "units": [
-      "3-2"
-    ],
     "chapter": 3,
-    "cat": "Institution"
+    "cat": "Institution",
+    "flag": "eu",
+    "posten": "Präsident des Europäischen Rates",
+    "person": "António Costa",
+    "personSeit": "2024",
+    "personBis": "2027",
+    "basis": true
   },
   {
     "term": "Europäische Zentralbank",
     "abbr": "EZB",
     "emoji": "💶",
     "def": "Verantwortlich für stabile Preise im Euroraum. Legt die Geldpolitik fest, gibt den Euro aus und überwacht Banken. Unabhängig von Politik. Sitz: Frankfurt am Main.",
-    "units": [
-      "3-2"
-    ],
     "chapter": 3,
-    "cat": "Institution"
+    "cat": "Institution",
+    "flag": "eu",
+    "basis": true
   },
   {
     "term": "Gerichtshof der EU",
     "abbr": "EuGH",
     "emoji": "⚖️",
     "def": "Stellt sicher, dass EU-Recht in allen Mitgliedstaaten gleich angewendet wird. 27 Richter (1 pro Staat). Seit Lissabon: Grundrechtecharta als Prüfungsmaßstab. Sitz: Luxemburg.",
-    "units": [
-      "3-2"
-    ],
     "chapter": 3,
-    "cat": "Institution"
+    "cat": "Institution",
+    "flag": "eu",
+    "basis": true
   },
   {
     "term": "Europäischer Rechnungshof",
     "emoji": "🔍",
     "def": "Prüft alle Einnahmen und Ausgaben der EU auf ordnungsgemäße und sinnvolle Verwendung. 27 Mitglieder (1 pro Staat). Sitz: Luxemburg.",
-    "units": [
-      "3-2"
-    ],
     "chapter": 3,
-    "cat": "Institution"
-  },
-  {
-    "term": "Doppelte Mehrheit",
-    "def": "Das seit Lissabon geltende Verfahren der qualifizierten Mehrheit im Rat der EU: Ein Beschluss braucht 55 % der Mitgliedstaaten (mind. 15) und 65 % der EU-Bevölkerung. Einfacher und transparenter als das vorherige Nizza-System. Im Lehrplan auch als 'qualifizierte Mehrheit' bezeichnet.",
-    "units": [
-      "3-2"
-    ],
-    "chapter": 3,
-    "cat": "Verfahren"
+    "cat": "Institution",
+    "flag": "eu",
+    "basis": true
   },
   {
     "term": "Europäische Bürgerinitiative",
     "def": "Durch Lissabon eingeführtes Instrument der direkten Demokratie: 1 Million Bürger aus mindestens 7 EU-Ländern können die Kommission auffordern, einen Gesetzesvorschlag zu prüfen. Die Kommission ist aber nicht verpflichtet zu handeln.",
-    "units": [
-      "3-2"
-    ],
     "chapter": 3,
     "cat": "Verfahren"
   },
   {
     "term": "Subsidiaritätsprinzip",
-    "def": "Grundsatz, dass die EU nur dann handeln soll, wenn ein Ziel auf nationaler/regionaler Ebene nicht ausreichend erreicht werden kann. Seit Lissabon können nationale Parlamente prüfen, ob dieser Grundsatz eingehalten wird.",
-    "units": [
-      "3-2"
+    "abbr": [
+      "Subsidiarität"
     ],
+    "def": "Grundsatz, dass die EU nur dann handeln soll, wenn ein Ziel auf nationaler/regionaler Ebene nicht ausreichend erreicht werden kann. Seit Lissabon können nationale Parlamente prüfen, ob dieser Grundsatz eingehalten wird.",
     "chapter": 3,
-    "cat": "Prinzip"
+    "cat": "Prinzip",
+    "basis": true
   },
   {
     "term": "Grundrechtecharta",
     "def": "Die EU-Grundrechtecharta enthält die Grundrechte aller EU-Bürger (z.B. Meinungsfreiheit, Datenschutz, Verbot der Todesstrafe). Seit dem Vertrag von Lissabon rechtsverbindlich und vor dem EuGH einklagbar.",
-    "units": [
-      "3-2"
-    ],
     "chapter": 3,
-    "cat": "Rechtsnorm"
+    "cat": "Rechtsnorm",
+    "basis": true
   },
   {
-    "term": "qualifizierte Mehrheit",
-    "def": "Im Lehrplan verwendeter Begriff für die Doppelte Mehrheit: 55 % der Mitgliedstaaten (mind. 15) und 65 % der EU-Bevölkerung müssen zustimmen. Seit dem Vertrag von Lissabon das Standard-Abstimmungsverfahren im Rat der EU.",
-    "units": [
-      "3-2"
-    ],
+    "term": "Qualifizierte Mehrheit",
+    "abbr": "Doppelte Mehrheit",
+    "def": "Das seit dem Vertrag von Lissabon geltende Standard-Abstimmungsverfahren im Rat der EU: Ein Beschluss braucht 55 % der Mitgliedstaaten (mind. 15) und 65 % der EU-Bevölkerung. Auch als Doppelte Mehrheit bezeichnet. Einfacher und transparenter als das vorherige Nizza-System.",
     "chapter": 3,
-    "cat": "Verfahren"
+    "cat": "Verfahren",
+    "basis": true
   },
   {
     "term": "Kommissionspräsident",
     "def": "Leiter der Europäischen Kommission. Wird vom Europäischen Rat unter Berücksichtigung des EP-Wahlergebnisses vorgeschlagen und vom Europäischen Parlament gewählt. Bestimmt die politischen Leitlinien der Kommission und repräsentiert die EU auf internationaler Ebene. Aktuell: Ursula von der Leyen (seit 2019).",
-    "units": [
-      "3-2"
-    ],
     "chapter": 3,
-    "cat": "Posten"
+    "cat": "Posten",
+    "temporal": true,
+    "flag": "eu",
+    "institution": "Europäische Kommission",
+    "person": "Ursula von der Leyen",
+    "personSeit": "2019",
+    "personBis": "2029",
+    "basis": true
   },
   {
     "term": "Robert Schuman",
-    "def": "In Luxemburg-Stadt (Clausen) geborener und in Luxemburg aufgewachsener Politiker, der als französischer Außenminister am 9. Mai 1950 den Plan vorlegte, die Kohle- und Stahlproduktion Frankreichs und Deutschlands einer gemeinsamen supranationalen Behörde zu unterstellen. Sein Vater besaß durch den Wechsel Lothringens zwischen Frankreich und dem Deutschen Reich sowohl die deutsche als auch die französische Staatsangehörigkeit. Schuman selbst wuchs in Luxemburg auf und besuchte dort das Athenäum. Diese grenzüberschreitende Biografie prägte seine Überzeugung, dass Frieden in Europa nur durch gemeinsame Institutionen gesichert werden kann. Die Schuman-Erklärung führte zur Gründung der EGKS und gilt als Geburtsstunde der europäischen Integration. Der 9. Mai ist heute Europatag.",
-    "units": [
-      "3-1",
-      "3-4"
-    ],
+    "def": "1886 in Luxemburg geborener Politiker, der dort aufwuchs, aber über seinen lothringischen Vater auch die französische und deutsche Staatsangehörigkeit besaß. Als französischer Außenminister legte er am 9. Mai 1950 den Plan vor, die Kohle- und Stahlproduktion Frankreichs und Deutschlands einer gemeinsamen supranationalen Behörde zu unterstellen. Die Schuman-Erklärung führte zur Gründung der EGKS und gilt als Geburtsstunde der europäischen Integration. Der 9. Mai ist heute Europatag.",
     "chapter": 3,
-    "cat": "Posten"
+    "cat": "Person",
+    "flag": "lu",
+    "basis": true
   },
   {
     "term": "Hoher Vertreter für Außen- und Sicherheitspolitik",
-    "abbr": ["Hohen Vertreter für Außen- und Sicherheitspolitik", "Hohem Vertreter für Außen- und Sicherheitspolitik", "Hohe Vertreterin für Außen- und Sicherheitspolitik", "Hohen Vertreters", "HV", "EU-Außenminister", "EU-Außenministerin"],
-    "def": "Durch Lissabon geschaffene Position, die die Außenpolitik der EU bündelt. Zugleich Vizepräsident der Kommission. Aktuell: Kaja Kallas (Estland). Soll der EU ein einheitlicheres Auftreten in der Weltpolitik ermöglichen.",
-    "units": [
-      "3-2"
+    "abbr": [
+      "Hohen Vertreter für Außen- und Sicherheitspolitik",
+      "Hohem Vertreter für Außen- und Sicherheitspolitik",
+      "Hohe Vertreterin für Außen- und Sicherheitspolitik",
+      "Hohen Vertreters",
+      "HV",
+      "EU-Außenminister",
+      "EU-Außenministerin"
     ],
+    "def": "Durch Lissabon geschaffene Position, die die Außenpolitik der EU bündelt. Zugleich Vizepräsident der Kommission. Aktuell: Kaja Kallas (Estland). Soll der EU ein einheitlicheres Auftreten in der Weltpolitik ermöglichen.",
     "chapter": 3,
-    "cat": "Posten"
+    "cat": "Posten",
+    "temporal": true,
+    "flag": "eu",
+    "person": "Kaja Kallas",
+    "personSeit": "2024",
+    "personBis": "2029",
+    "basis": true
   },
   {
     "term": "supranational",
-    "def": "Überstaatlich: Ebene, auf der gemeinsame Organe eigenständig Entscheidungen treffen, die für alle Mitgliedstaaten verbindlich sind. Diese Organe vertreten das Gesamtinteresse der Organisation, nicht einzelne Staaten.",
-    "units": [
-      "3-4"
+    "abbr": [
+      "supranationalen",
+      "supranationale",
+      "supranationaler"
     ],
+    "def": "Überstaatlich: Ebene, auf der gemeinsame Organe eigenständig Entscheidungen treffen, die für alle Mitgliedstaaten verbindlich sind. Diese Organe vertreten das Gesamtinteresse der Organisation, nicht einzelne Staaten.",
     "chapter": 3,
-    "cat": "Struktur"
+    "cat": "Struktur",
+    "basis": true
   },
   {
     "term": "intergouvernemental",
-    "def": "Zwischenstaatlich: Ebene, auf der die Regierungen der Mitgliedstaaten zusammenarbeiten und ihre nationalen Interessen vertreten. Entscheidungen erfordern oft Einstimmigkeit oder qualifizierte Mehrheit.",
-    "units": [
-      "3-4"
+    "abbr": [
+      "intergouvernementalen",
+      "intergouvernementale",
+      "intergouvernementaler"
     ],
+    "def": "Zwischenstaatlich: Ebene, auf der die Regierungen der Mitgliedstaaten zusammenarbeiten und ihre nationalen Interessen vertreten. Entscheidungen erfordern oft Einstimmigkeit oder qualifizierte Mehrheit.",
     "chapter": 3,
-    "cat": "Struktur"
+    "cat": "Struktur",
+    "basis": true
   },
   {
     "term": "Staatenverbund",
     "def": "Eine enge Verbindung souveräner Staaten, die freiwillig nationale Kompetenzen an gemeinsame Organe übertragen, ohne ihre Eigenstaatlichkeit zu verlieren. Weder Bundesstaat noch Staatenbund.",
-    "units": [
-      "3-4"
-    ],
     "chapter": 3,
-    "cat": "Struktur"
+    "cat": "Struktur",
+    "basis": true
   },
   {
     "term": "Mehrebenensystem",
     "def": "Politisches System, in dem Zuständigkeiten auf mehrere Ebenen verteilt sind (z.B. Gemeinde, Land, Bund, EU). Jede Ebene trifft in ihrem Kompetenzbereich eigene Entscheidungen.",
-    "units": [
-      "3-4"
-    ],
     "chapter": 3,
-    "cat": "Struktur"
+    "cat": "Struktur",
+    "basis": true
   },
   {
     "term": "Bundesstaat",
     "def": "Ein Staat, in dem die Gliedstaaten (z.B. Bundesländer) einen Teil ihrer Souveränität an den Gesamtstaat abgetreten haben. Die Bundesebene kann verbindlich für alle Gliedstaaten entscheiden. Beispiele: Deutschland, USA.",
-    "units": [
-      "3-4"
-    ],
     "chapter": 3,
     "cat": "Struktur"
   },
   {
     "term": "Staatenbund",
     "def": "Ein loser Zusammenschluss souveräner Staaten, die in bestimmten Bereichen kooperieren, aber ihre volle Souveränität behalten. Entscheidungen erfordern in der Regel Einstimmigkeit. Beispiel: die Vereinten Nationen.",
-    "units": [
-      "3-4"
-    ],
     "chapter": 3,
     "cat": "Struktur"
   },
   {
     "term": "Souveränität",
     "def": "Das Recht eines Staates, seine inneren und äußeren Angelegenheiten unabhängig und ohne Einmischung anderer Staaten zu regeln. In der EU übertragen die Mitgliedstaaten Teile ihrer Souveränität an gemeinsame Organe.",
-    "units": [
-      "3-4"
-    ],
     "chapter": 3,
-    "cat": "Konzept"
+    "cat": "Prinzip",
+    "basis": true
   },
   {
     "term": "Bundesverfassungsgericht",
     "abbr": "BVerfG",
     "emoji": "⚖️",
     "def": "Oberstes Verfassungsorgan der Bundesrepublik Deutschland. Wacht über die Einhaltung des Grundgesetzes und entscheidet u.a. über die Vereinbarkeit von EU-Verträgen mit dem deutschen Verfassungsrecht.",
-    "units": [
-      "2-1",
-      "3-4"
-    ],
     "chapter": 2,
-    "cat": "Institution"
+    "cat": "Institution",
+    "flag": "de",
+    "basis": true
   },
   {
-    "term": "EGKS",
-    "def": "Die Europäische Gemeinschaft für Kohle und Stahl, gegründet 1952 (Vertrag von Paris). Erste supranationale Organisation Europas: Sechs Staaten unterstellten ihre Kohle- und Stahlproduktion einer gemeinsamen Hohen Behörde. Wurde durch die EWG (1958) erweitert und ging 1993 in die Europäische Union auf.",
-    "units": [
-      "3-1",
-      "3-4"
-    ],
+    "term": "Europäische Gemeinschaft für Kohle und Stahl",
+    "def": "Die EGKS wurde 1952 auf Grundlage des Vertrags von Paris gegründet. Sie war die erste supranationale Organisation Europas. Sechs Staaten unterstellten ihre Kohle- und Stahlproduktion einer gemeinsamen Hohen Behörde. 1993 ging sie in der Europäischen Union auf.",
     "chapter": 3,
-    "cat": "Organisation"
+    "cat": "Organisation",
+    "flag": "eu",
+    "abbr": "EGKS",
+    "basis": true
   },
   {
-    "term": "EWG",
-    "def": "Die Europäische Wirtschaftsgemeinschaft, gegründet 1958 (Römische Verträge). Ziel: schrittweiser Aufbau eines gemeinsamen Marktes und einer Zollunion zwischen den sechs Gründerstaaten. Wurde 1993 (Vertrag von Maastricht) in die Europäische Union überführt.",
-    "units": [
-      "3-1",
-      "3-4"
-    ],
+    "term": "Europäische Wirtschaftsgemeinschaft",
+    "def": "Die EWG wurde 1958 durch die Römischen Verträge gegründet. Ihr Ziel war der schrittweise Aufbau eines gemeinsamen Marktes und einer Zollunion zwischen den sechs Gründerstaaten. 1993 wurde sie durch den Vertrag von Maastricht in die Europäische Union überführt.",
     "chapter": 3,
-    "cat": "Organisation"
+    "cat": "Organisation",
+    "flag": "eu",
+    "abbr": "EWG",
+    "basis": true
   },
   {
     "term": "Europäische Union",
-    "def": "Politische und wirtschaftliche Gemeinschaft von 27 europäischen Staaten, gegründet 1992 durch den Vertrag von Maastricht. Vereint supranationale und intergouvernementale Entscheidungsebenen in einem Mehrebenensystem.",
-    "units": [
-      "3-1",
-      "3-2",
-      "3-4"
-    ],
+    "def": "Die EU ist eine politische und wirtschaftliche Gemeinschaft von 27 europäischen Staaten. Sie wurde 1992 durch den Vertrag von Maastricht gegründet. Zu ihren zentralen wirtschaftlichen Strukturen gehört der Binnenmarkt. Sie vereint supranationale und intergouvernementale Entscheidungsebenen in einem Mehrebenensystem.",
     "chapter": 3,
-    "cat": "Organisation"
+    "cat": "Organisation",
+    "flag": "eu",
+    "abbr": "EU",
+    "basis": true
   },
   {
     "term": "Vertrag von Paris",
     "def": "Gründungsvertrag der EGKS (unterzeichnet 1951, in Kraft 1952). Erster Vertrag, der Souveränitätsrechte an eine supranationale europäische Institution übertrug. Lief 2002 planmäßig aus.",
-    "units": [
-      "3-1"
-    ],
     "chapter": 3,
     "cat": "Vertrag"
   },
   {
     "term": "Römische Verträge",
     "def": "Die 1957 unterzeichneten Verträge zur Gründung der EWG und der Europäischen Atomgemeinschaft (Euratom). Legten den Grundstein für den gemeinsamen Markt und die wirtschaftliche Integration Europas.",
-    "units": [
-      "3-1"
-    ],
     "chapter": 3,
     "cat": "Vertrag"
+  },
+  {
+    "term": "Präsident des Europäischen Parlaments",
+    "abbr": [
+      "EP-Präsident",
+      "EP-Präsidentin",
+      "Parlamentspräsidentin"
+    ],
+    "def": "Vorsitzender des Europäischen Parlaments, gewählt von den Abgeordneten für eine Amtszeit von 2,5 Jahren. Leitet die Plenarsitzungen, vertritt das EP nach außen und unterzeichnet EU-Gesetze gemeinsam mit dem Ratsvorsitz. Aktuell: Roberta Metsola (seit 2022).",
+    "chapter": 3,
+    "cat": "Posten",
+    "temporal": true,
+    "flag": "eu",
+    "institution": "Europäisches Parlament",
+    "person": "Roberta Metsola",
+    "personSeit": "2022",
+    "personBis": "2027",
+    "basis": true
+  },
+  {
+    "term": "Präsident des Europäischen Rates",
+    "abbr": [
+      "Ratspräsident",
+      "Ratspräsidenten"
+    ],
+    "def": "Seit dem Vertrag von Lissabon ständiger Vorsitzender des Europäischen Rates (2,5-Jahres-Mandat, einmal verlängerbar). Leitet die Gipfeltreffen und vertritt die EU nach außen auf Ebene der Staats- und Regierungschefs. Aktuell: António Costa (seit Dezember 2024).",
+    "chapter": 3,
+    "cat": "Posten",
+    "temporal": true,
+    "flag": "eu",
+    "institution": "Europäischer Rat",
+    "person": "António Costa",
+    "personSeit": "2024",
+    "personBis": "2027",
+    "basis": true
+  },
+  {
+    "term": "Ursula von der Leyen",
+    "abbr": "von der Leyen",
+    "def": "Deutsche Politikerin (CDU). Zuvor Bundesverteidigungsministerin (2013–2019) und Bundesfamilienministerin (2005–2009).",
+    "chapter": 3,
+    "cat": "Person",
+    "flag": "de",
+    "institution": "Europäische Kommission",
+    "posten": "Kommissionspräsident",
+    "temporal": true,
+    "seit": "2019",
+    "basis": true,
+    "bis": "2029"
+  },
+  {
+    "term": "Roberta Metsola",
+    "abbr": "Metsola",
+    "def": "Maltesische Politikerin (EVP). Zuvor EP-Vizepräsidentin (2020–2022) und EP-Abgeordnete seit 2013.",
+    "chapter": 3,
+    "cat": "Person",
+    "flag": "mt",
+    "institution": "Europäisches Parlament",
+    "posten": "Präsident des Europäischen Parlaments",
+    "temporal": true,
+    "seit": "2022",
+    "basis": true,
+    "bis": "2027"
+  },
+  {
+    "term": "António Costa",
+    "abbr": "Costa",
+    "def": "Portugiesischer Politiker (PS). Zuvor Premierminister Portugals (2015–2024) und Bürgermeister von Lissabon (2007–2015).",
+    "chapter": 3,
+    "cat": "Person",
+    "flag": "pt",
+    "institution": "Europäischer Rat",
+    "posten": "Präsident des Europäischen Rates",
+    "temporal": true,
+    "seit": "2024",
+    "basis": true,
+    "bis": "2027"
+  },
+  {
+    "term": "Kaja Kallas",
+    "abbr": "Kallas",
+    "def": "Estnische Politikerin (RE). Zuvor Premierministerin Estlands (2021–2024) und Mitglied des EP (2014–2018).",
+    "chapter": 3,
+    "cat": "Person",
+    "flag": "ee",
+    "posten": "Hoher Vertreter für Außen- und Sicherheitspolitik",
+    "temporal": true,
+    "seit": "2024",
+    "basis": true,
+    "bis": "2029"
   }
 ];

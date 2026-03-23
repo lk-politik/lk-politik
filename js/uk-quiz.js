@@ -77,6 +77,11 @@
             });
             var rErr = recheck.querySelector('.uk-krit-recheck-err');
             if (rErr) { rErr.textContent = ''; rErr.style.display = 'none'; }
+            var stage = chip.closest('.uk-stage');
+            if (stage) {
+              var fErr = stage.querySelector('.uk-stage-krit-err');
+              if (fErr) { fErr.textContent = ''; fErr.style.display = 'none'; }
+            }
             chip.classList.add('selected');
             _checkStageReady(block);
           });
@@ -149,12 +154,6 @@
     var kritOpts = stage.querySelector('.uk-krit-opts');
     if (kritOpts) {
       if (!kritOpts.querySelector('.uk-krit-opt.selected')) allReady = false;
-    }
-
-    /* Recheck chip must be selected (stages 2+) */
-    var recheck = stage.querySelector('.uk-krit-recheck');
-    if (recheck) {
-      if (!recheck.querySelector('.uk-krit-chip.selected')) allReady = false;
     }
 
     /* Every step in this stage must have a selection */
@@ -239,8 +238,17 @@
         });
         var rErr = recheck.querySelector('.uk-krit-recheck-err');
         if (rErr) {
-          rErr.textContent = 'Dieser Maßstab stimmt nicht mit deiner Wahl überein. Überprüfe dein Kriterium.';
+          rErr.textContent = selChip
+            ? 'Dieser Maßstab stimmt nicht mit deinem Kriterium aus der Einleitung überein.'
+            : 'Bitte bestätige zuerst dein Kriterium aus der Einleitung.';
           rErr.style.display = 'block';
+        }
+        var footerErr = stage.querySelector('.uk-stage-krit-err');
+        if (footerErr) {
+          footerErr.textContent = selChip
+            ? '⚠ Kriterium stimmt nicht überein'
+            : '⚠ Kriterium bestätigen';
+          footerErr.style.display = 'inline';
         }
       }
     }
@@ -260,7 +268,9 @@
       return;
     }
 
-    /* Stage passed — show compact done view */
+    /* Stage passed — clear footer error and show compact done view */
+    var footerErrClear = stage.querySelector('.uk-stage-krit-err');
+    if (footerErrClear) { footerErrClear.textContent = ''; footerErrClear.style.display = 'none'; }
     stage.classList.add('uk-stage-done');
 
     var nextNum = stageNum + 1;

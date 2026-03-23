@@ -12,10 +12,24 @@ body{font-family:'DM Sans',sans-serif;color:#1a1a1a;line-height:1.5;background:#
 
 /* ===== SCREEN: Vorschau ===== */
 @media screen{
-  body{background:#e8e2d8;padding:20px}
-  .page-wrap{max-width:210mm;margin:0 auto}
-  .print-hint{text-align:center;padding:16px;margin-bottom:20px;background:#fff;border-radius:10px;font-size:13px;color:#4a4540;border:1px solid #d6cfc4}
+  body{background:#e8e2d8;padding:20px;font-size:15px}
+  .page-wrap{max-width:780px;margin:0 auto}
+  .print-hint{text-align:center;padding:16px;margin-bottom:20px;background:#fff;border-radius:10px;font-size:14px;color:#4a4540;border:1px solid #d6cfc4}
   .print-hint strong{color:#7c3aed}
+  .card{padding:20px 22px;margin-bottom:14px;border-radius:14px}
+  .card-hd .emo{font-size:28px}
+  .card-hd .name{font-size:20px}
+  .card-hd .land{font-size:11px}
+  .tag{font-size:10px;padding:3px 8px}
+  .lbl{font-size:10px}
+  .card-body p,.card-body li{font-size:14px;line-height:1.6}
+  .phase-box{padding:12px 14px}
+  .phase-box .ph-title{font-size:14px}
+  .phase-box li{font-size:13px;line-height:1.55}
+  .pos-box{padding:12px 14px}
+  .sheet-hd .title{font-size:22px}
+  .sheet-hd .sub{font-size:12px}
+  .cpr{font-size:10px}
 }
 @media print{
   .print-hint{display:none!important}
@@ -32,6 +46,7 @@ body{font-family:'DM Sans',sans-serif;color:#1a1a1a;line-height:1.5;background:#
 .tag.inter{color:#d97706;border-color:#d97706;background:#fef9ee}
 .tag.natl{color:#059669;border-color:#059669;background:#ecfdf5}
 .tag.presse{color:#7c3aed;border-color:#7c3aed;background:#f3eeff}
+.iflag{display:inline-block;width:18px;height:12px;border-radius:1.5px;vertical-align:middle;margin-right:2px;box-shadow:0 0 0 .5px rgba(0,0,0,.12)}
 
 .card-body p{margin-bottom:6px}
 .card-body strong{color:#000}
@@ -56,12 +71,23 @@ body{font-family:'DM Sans',sans-serif;color:#1a1a1a;line-height:1.5;background:#
 .sheet-hd .title{font-family:'Fraunces',serif;font-size:16px;font-weight:800}
 .sheet-hd .sub{font-size:9px;color:#888;margin-top:2px}
 
+/* ===== BREADCRUMB ===== */
+.breadcrumb{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#888;margin-bottom:16px;display:none}
+.breadcrumb a{color:#7c3aed;text-decoration:none}
+.breadcrumb a:hover{text-decoration:underline}
+.breadcrumb span{margin:0 6px;color:#ccc}
+@media screen{.breadcrumb{display:block}}
+
 /* ===== FOOTER ===== */
 .cpr{font-size:8px;color:#999;text-align:center;margin-top:8px;padding-top:6px;border-top:1px solid #ddd}
 </style>
 </head>
 <body>
 <div class="page-wrap">
+
+<nav class="breadcrumb">
+  <a href="../index.html">← Kursübersicht</a><span>/</span>Einheit 3.4<span>/</span>EU-Werkstatt: Rollenkarten
+</nav>
 
 <div class="print-hint">
   <strong>Druckhinweis:</strong> Diese Datei ist für den Ausdruck auf A4 optimiert (2 Karten pro Blatt). Im Druckdialog bitte "Hintergrundfarben drucken" aktivieren und Ränder auf "minimal" stellen.
@@ -78,9 +104,9 @@ body{font-family:'DM Sans',sans-serif;color:#1a1a1a;line-height:1.5;background:#
 <!-- KOMMISSION -->
 <div class="card">
   <div class="card-hd">
-    <span class="emo">⚔️🛡️</span>
+    <span class="emo">⚙️</span>
     <span class="name">Europäische Kommission (2 Schüler)</span>
-    <span class="tag supra">Supranational</span>
+    <span class="tag supra">🔵 Supranational</span>
   </div>
   <div class="card-body">
     <p><strong>Eure Rolle:</strong> Ihr habt den Gesetzesvorschlag erarbeitet und müsst ihn verteidigen. Nur die Kommission darf Gesetzesvorschläge einbringen (das nennt man alleiniges Initiativrecht). Ihr vertretet das Gesamtinteresse der EU, nicht einzelne Länder.</p>
@@ -136,7 +162,7 @@ body{font-family:'DM Sans',sans-serif;color:#1a1a1a;line-height:1.5;background:#
   <div class="card-hd">
     <span class="emo">🗳️</span>
     <span class="name">Europäisches Parlament (4 Schüler)</span>
-    <span class="tag supra">Supranational</span>
+    <span class="tag supra">🔵 Supranational</span>
   </div>
   <div class="card-body">
     <p><strong>Eure Rolle:</strong> Ihr seid direkt von den Bürgern der EU gewählt und vertretet deren Interessen. Ihr entscheidet gleichberechtigt mit dem Rat über dieses Gesetz.</p>
@@ -161,7 +187,7 @@ body{font-family:'DM Sans',sans-serif;color:#1a1a1a;line-height:1.5;background:#
     <div class="phase-box">
       <div class="ph-title">Phase 2: Erste Lesung + Trilog</div>
       <ol>
-        <li><strong>Erste Lesung (4 Min):</strong> Formuliert als Gruppe maximal 2 konkrete Änderungswünsche. Stimmt intern ab, ob ihr den Vorschlag mit diesen Änderungen annehmen wollt.</li>
+        <li><strong>Erste Lesung (4 Min):</strong> Formuliert als Gruppe 1 konkreter Änderungswunsch. Stimmt intern ab, ob ihr den Vorschlag mit dieser Änderung annehmen wollt.</li>
         <li><strong>Wählt 1 Person</strong> aus eurer Gruppe, die euch im Trilog vertritt.</li>
         <li><strong>Trilog (8 Min):</strong> Euer Vertreter verhandelt mit Rat und Kommission. Die restlichen 3 dürfen kurze Zwischenrufe machen ("Das unterstützen wir!" oder "Das geht zu weit!").</li>
       </ol>
@@ -193,9 +219,9 @@ body{font-family:'DM Sans',sans-serif;color:#1a1a1a;line-height:1.5;background:#
 <div class="card">
   <div class="card-hd">
     <span class="emo">📋</span>
-    <span class="name">Rat der EU: 🇩🇪 Deutschland</span>
+    <span class="name">Rat der EU: <svg class="iflag" viewBox="0 0 16 11"><rect y="0" width="16" height="3.67" fill="#000"/><rect y="3.67" width="16" height="3.67" fill="#D00"/><rect y="7.33" width="16" height="3.67" fill="#FFCE00"/></svg> Deutschland</span>
     <span class="land">84 Mio Einwohner (42 %)</span>
-    <span class="tag inter">Intergouvernemental</span>
+    <span class="tag inter">🟠 Intergouvernemental</span>
   </div>
   <div class="card-body">
     <p><strong>Eure Rolle:</strong> Ihr seid der deutsche Digitalminister im Rat der EU. Ihr vertretet die Interessen Deutschlands.</p>
@@ -238,9 +264,9 @@ body{font-family:'DM Sans',sans-serif;color:#1a1a1a;line-height:1.5;background:#
 <div class="card">
   <div class="card-hd">
     <span class="emo">📋</span>
-    <span class="name">Rat der EU: 🇫🇷 Frankreich</span>
+    <span class="name">Rat der EU: <svg class="iflag" viewBox="0 0 16 11"><rect x="0" width="5.33" height="11" fill="#002395"/><rect x="5.33" width="5.34" height="11" fill="#fff"/><rect x="10.67" width="5.33" height="11" fill="#ED2939"/></svg> Frankreich</span>
     <span class="land">68 Mio Einwohner (34 %)</span>
-    <span class="tag inter">Intergouvernemental</span>
+    <span class="tag inter">🟠 Intergouvernemental</span>
   </div>
   <div class="card-body">
     <p><strong>Eure Rolle:</strong> Ihr seid der französische Digitalminister im Rat der EU. Ihr vertretet die Interessen Frankreichs.</p>
@@ -292,9 +318,9 @@ body{font-family:'DM Sans',sans-serif;color:#1a1a1a;line-height:1.5;background:#
 <div class="card">
   <div class="card-hd">
     <span class="emo">📋</span>
-    <span class="name">Rat der EU: 🇸🇪 Schweden</span>
+    <span class="name">Rat der EU: <svg class="iflag" viewBox="0 0 16 11"><rect width="16" height="11" fill="#005BAA"/><rect x="4.5" width="2" height="11" fill="#FECC00"/><rect y="4.5" width="16" height="2" fill="#FECC00"/></svg> Schweden</span>
     <span class="land">10 Mio Einwohner (5 %)</span>
-    <span class="tag inter">Intergouvernemental</span>
+    <span class="tag inter">🟠 Intergouvernemental</span>
   </div>
   <div class="card-body">
     <p><strong>Eure Rolle:</strong> Ihr seid der schwedische Digitalminister im Rat der EU. Ihr vertretet die Interessen Schwedens.</p>
@@ -335,9 +361,9 @@ body{font-family:'DM Sans',sans-serif;color:#1a1a1a;line-height:1.5;background:#
 <div class="card">
   <div class="card-hd">
     <span class="emo">📋</span>
-    <span class="name">Rat der EU: 🇵🇱 Polen</span>
+    <span class="name">Rat der EU: <svg class="iflag" viewBox="0 0 16 11"><rect y="0" width="16" height="5.5" fill="#fff"/><rect y="5.5" width="16" height="5.5" fill="#DC143C"/></svg> Polen</span>
     <span class="land">38 Mio Einwohner (19 %)</span>
-    <span class="tag inter">Intergouvernemental</span>
+    <span class="tag inter">🟠 Intergouvernemental</span>
   </div>
   <div class="card-body">
     <p><strong>Eure Rolle:</strong> Ihr seid der polnische Digitalminister im Rat der EU. Ihr vertretet die Interessen Polens.</p>
@@ -389,8 +415,8 @@ body{font-family:'DM Sans',sans-serif;color:#1a1a1a;line-height:1.5;background:#
 <div class="card">
   <div class="card-hd">
     <span class="emo">🏛️</span>
-    <span class="name">Nationales Parlament: 🇩🇪 Bundestag</span>
-    <span class="tag natl">National</span>
+    <span class="name">Nationales Parlament: <svg class="iflag" viewBox="0 0 16 11"><rect y="0" width="16" height="3.67" fill="#000"/><rect y="3.67" width="16" height="3.67" fill="#D00"/><rect y="7.33" width="16" height="3.67" fill="#FFCE00"/></svg> Bundestag</span>
+    <span class="tag natl">🟢 National</span>
   </div>
   <div class="card-body">
     <p><strong>Eure Rolle:</strong> Ihr seid Abgeordnete des Deutschen Bundestags. Ihr prüft, ob der EU-Vorschlag das Subsidiaritätsprinzip einhält.</p>
@@ -431,8 +457,8 @@ body{font-family:'DM Sans',sans-serif;color:#1a1a1a;line-height:1.5;background:#
 <div class="card">
   <div class="card-hd">
     <span class="emo">🏛️</span>
-    <span class="name">Nationales Parlament: 🇫🇷 Assemblée nationale</span>
-    <span class="tag natl">National</span>
+    <span class="name">Nationales Parlament: <svg class="iflag" viewBox="0 0 16 11"><rect x="0" width="5.33" height="11" fill="#002395"/><rect x="5.33" width="5.34" height="11" fill="#fff"/><rect x="10.67" width="5.33" height="11" fill="#ED2939"/></svg> Assemblée nationale</span>
+    <span class="tag natl">🟢 National</span>
   </div>
   <div class="card-body">
     <p><strong>Eure Rolle:</strong> Ihr seid Abgeordnete der französischen Nationalversammlung. Ihr prüft, ob der EU-Vorschlag das Subsidiaritätsprinzip einhält.</p>
@@ -484,8 +510,8 @@ body{font-family:'DM Sans',sans-serif;color:#1a1a1a;line-height:1.5;background:#
 <div class="card">
   <div class="card-hd">
     <span class="emo">🏛️</span>
-    <span class="name">Nationales Parlament: 🇸🇪 Riksdag (Schweden)</span>
-    <span class="tag natl">National</span>
+    <span class="name">Nationales Parlament: <svg class="iflag" viewBox="0 0 16 11"><rect width="16" height="11" fill="#005BAA"/><rect x="4.5" width="2" height="11" fill="#FECC00"/><rect y="4.5" width="16" height="2" fill="#FECC00"/></svg> Riksdag (Schweden)</span>
+    <span class="tag natl">🟢 National</span>
   </div>
   <div class="card-body">
     <p><strong>Eure Rolle:</strong> Ihr seid Abgeordnete des schwedischen Riksdag. Ihr prüft, ob der EU-Vorschlag das Subsidiaritätsprinzip einhält.</p>
@@ -526,8 +552,8 @@ body{font-family:'DM Sans',sans-serif;color:#1a1a1a;line-height:1.5;background:#
 <div class="card">
   <div class="card-hd">
     <span class="emo">🏛️</span>
-    <span class="name">Nationales Parlament: 🇵🇱 Sejm (Polen)</span>
-    <span class="tag natl">National</span>
+    <span class="name">Nationales Parlament: <svg class="iflag" viewBox="0 0 16 11"><rect y="0" width="16" height="5.5" fill="#fff"/><rect y="5.5" width="16" height="5.5" fill="#DC143C"/></svg> Sejm (Polen)</span>
+    <span class="tag natl">🟢 National</span>
   </div>
   <div class="card-body">
     <p><strong>Eure Rolle:</strong> Ihr seid Abgeordnete des polnischen Sejm. Ihr prüft, ob der EU-Vorschlag das Subsidiaritätsprinzip einhält.</p>

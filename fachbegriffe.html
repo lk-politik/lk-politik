@@ -1,44 +1,162 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fachbegriffe — Politik-LK</title>
+<title>Glossar - Politik-LK</title>
 <link rel="stylesheet" href="css/style.css">
 <style>
 :root { --acc: #2d5986; --accL: #e8f0f8; --accG: rgba(45,89,134,.08); }
 
-.fb-page-filter {
-  display: flex;
-  gap: .6rem;
-  flex-wrap: wrap;
-  margin-bottom: 1.5rem;
+/* â”€â”€â”€ Filter area â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.gl-filters { margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: .5rem; }
+
+.gl-group {
+  border: 1px solid var(--border-l);
+  border-radius: var(--r);
+  overflow: hidden;
+  background: var(--card);
+  border-left: 3px solid var(--border);  /* overridden per group via JS */
 }
 
-.fb-filter-btn {
+.gl-group-head {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .35rem .75rem;
+  background: #f8fafc;
+  font-family: var(--ff-mono);
+  font-size: .6rem;
+  font-weight: 700;
+  color: var(--ink3);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  border-bottom: 1px solid var(--border-l);
+}
+
+.gl-group-pills {
+  display: flex;
+  gap: .35rem;
+  flex-wrap: wrap;
+  padding: .4rem .75rem;
+}
+
+/* â”€â”€â”€ Pills â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.gl-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .35em;
+  font-family: var(--ff-mono);
+  font-size: .65rem;
+  font-weight: 600;
+  padding: .25em .65em;
+  border-radius: 99px;
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  transition: all .15s;
+  background: transparent;
+  color: var(--ink3);
+  white-space: nowrap;
+}
+.gl-pill:hover { border-color: #9ca3af; color: var(--ink2); }
+.gl-pill.active { color: #fff; }
+.gl-pill-dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.gl-pill-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
+  font-size: .82em;
+  transform: translateY(-.02em);
+}
+.gl-pill .gl-pill-ct {
+  opacity: .5;
+  font-weight: 500;
+  margin-left: .1em;
+}
+.gl-pill.active .gl-pill-ct { opacity: .8; }
+
+/* "Alle" pill */
+.gl-pill-all {
+  font-family: var(--ff-mono);
+  font-size: .68rem;
+  font-weight: 700;
+  padding: .3em .8em;
+  border-radius: 99px;
+  border: 1.5px solid var(--acc);
+  cursor: pointer;
+  transition: all .15s;
+  background: var(--acc);
+  color: #fff;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.gl-pill-all.inactive {
+  background: transparent;
+  color: var(--ink3);
+  border-color: var(--border);
+}
+.gl-pill-all:hover { filter: brightness(.92); }
+.gl-pill-all .gl-pill-ct { opacity: .7; font-weight: 500; margin-left: .2em; }
+
+/* â”€â”€â”€ Active filter tags (shown below groups) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.gl-active-tags {
+  display: flex;
+  gap: .4rem;
+  flex-wrap: wrap;
+  align-items: center;
+  min-height: 0;
+}
+.gl-active-tags:empty { display: none; }
+.gl-active-tag {
+  font-family: var(--ff-mono);
+  font-size: .6rem;
+  font-weight: 600;
+  padding: .2em .55em;
+  border-radius: 4px;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: .3em;
+}
+.gl-active-tag-x {
+  cursor: pointer;
+  opacity: .7;
+  font-size: .7rem;
+  line-height: 1;
+}
+.gl-active-tag-x:hover { opacity: 1; }
+
+/* â”€â”€â”€ Status bar (Alle + tags + count in one row) â”€â”€â”€â”€â”€â”€â”€â”€ */
+.gl-status-bar {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+  margin-bottom: .75rem;
+}
+#gl-all-wrap { display: inline-flex; flex-shrink: 0; gap: .35rem; align-items: center; }
+.gl-count {
   font-family: var(--ff-mono);
   font-size: .7rem;
-  font-weight: 600;
-  padding: .3em .8em;
-  border: 1px solid currentColor;
-  border-radius: 4px;
-  background: transparent;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  transition: filter .12s, background .12s;
-  /* color set per-category via inline style */
+  color: var(--ink3);
+  margin-left: auto;
+  white-space: nowrap;
 }
 
-.fb-filter-btn:hover { filter: brightness(.85); }
-.fb-filter-btn.active { /* background set via inline style in JS */ }
-
+/* â”€â”€â”€ Entry cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .fb-list { list-style: none; padding: 0; }
 
 .fb-entry {
   background: var(--card);
   border: 1px solid var(--border-l);
-  border-left: 4px solid var(--sw); /* overridden per-category by inline style */
+  border-left: 4px solid var(--sw);
   border-radius: var(--r);
   padding: .85rem 1.1rem;
   margin-bottom: .75rem;
@@ -48,7 +166,7 @@
   font-family: var(--ff-mono);
   font-size: .8rem;
   font-weight: 700;
-  color: var(--sw); /* overridden per-category by inline style */
+  color: var(--sw);
   text-transform: uppercase;
   letter-spacing: .08em;
   margin-bottom: .3rem;
@@ -64,8 +182,8 @@
   font-weight: 600;
   letter-spacing: .06em;
   text-transform: uppercase;
-  background: var(--accG); /* overridden per-category by inline style */
-  color: var(--acc);       /* overridden per-category by inline style */
+  background: var(--accG);
+  color: var(--acc);
   border: 1px solid currentColor;
   padding: .1em .55em;
   border-radius: 3px;
@@ -84,22 +202,23 @@
   gap: .25rem;
 }
 
-/* Compact unit-number chip — shared with tooltip */
 .fb-unit-chip {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-family: var(--ff-mono);
-  font-size: .62rem;
-  font-weight: 600;
-  padding: .1em .45em;
-  border-radius: 3px;
-  border: 1px solid currentColor;
-  line-height: 1.5;
+  font-size: .65rem;
+  font-weight: 500;
+  padding: .18em .65em;
+  border-radius: 99px;
+  border: none;
+  line-height: 1.2;
   white-space: nowrap;
   text-decoration: none;
 }
-a.fb-unit-chip          { color: var(--acc); background: var(--accG); }
+a.fb-unit-chip          { color: var(--acc); background: var(--accL); }
 a.fb-unit-chip:hover    { filter: brightness(.88); }
-span.fb-unit-chip.locked { color: var(--ink3); border-color: var(--border); }
+span.fb-unit-chip.locked { color: var(--ink3); background: var(--border-l); }
 
 .fb-empty {
   color: var(--ink3);
@@ -108,9 +227,10 @@ span.fb-unit-chip.locked { color: var(--ink3); border-color: var(--border); }
   text-align: center;
 }
 
+/* â”€â”€â”€ Search â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #fb-search {
   width: 100%;
-  max-width: 420px;
+  max-width: 460px;
   padding: .55rem .85rem;
   border: 1px solid var(--border);
   border-radius: var(--r-sm);
@@ -120,8 +240,13 @@ span.fb-unit-chip.locked { color: var(--ink3); border-color: var(--border); }
   color: var(--ink);
   margin-bottom: 1.25rem;
 }
+#fb-search:focus { outline: none; border-color: var(--acc); box-shadow: 0 0 0 2px var(--accG); }
 
-#fb-search:focus { outline: none; border-color: var(--sw); }
+/* â”€â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+@media (max-width: 600px) {
+  .gl-group-pills { gap: .25rem; padding: .35rem .55rem; }
+  .gl-pill { font-size: .6rem; padding: .2em .5em; }
+}
 </style>
 </head>
 <body>
@@ -130,110 +255,250 @@ span.fb-unit-chip.locked { color: var(--ink3); border-color: var(--border); }
 
   <nav class="breadcrumb">
     <a href="index.html">Startseite</a>
-    <span class="sep">›</span>
-    <span class="current">Fachbegriffe</span>
+    <span class="sep">&rsaquo;</span>
+    <span class="current">Glossar</span>
   </nav>
 
   <div class="unit-header" style="text-align:left;border-bottom:none;padding-left:0">
-    <h1>Fachbegriffe</h1>
-    <p class="sub">Alle Fachbegriffe alphabetisch — klicke einen Begriff für die Definition an.</p>
+    <h1>Glossar</h1>
+    <p class="sub" style="max-width:none;margin-left:0">Nachschlagewerk f&uuml;r alle Fachbegriffe des Kurses. Nutze die Kategorien oder die Suche zum Filtern.</p>
   </div>
 
-  <input type="search" id="fb-search" placeholder="Begriff suchen …" autocomplete="off">
+  <input type="search" id="fb-search" placeholder="Begriff suchen ..." autocomplete="off">
 
-  <div class="fb-page-filter" id="fb-chapter-filters" style="margin-bottom:.5rem">
-    <button class="fb-filter-btn active" data-chapter="all" style="color:#fff;border-color:var(--acc);background:var(--acc)">Alle Kapitel</button>
-    <!-- Chapter buttons rendered by JS -->
+  <div class="gl-filters" id="gl-filters">
+    <!-- Populated by JS -->
   </div>
 
-  <div class="fb-page-filter" id="fb-filters">
-    <button class="fb-filter-btn active" data-filter="all">Alle</button>
-    <!-- Category buttons rendered by JS -->
+  <div class="gl-status-bar" id="gl-status-bar">
+    <div id="gl-all-wrap"></div>
+    <div class="gl-active-tags" id="gl-tags"></div>
+    <div class="gl-count" id="gl-count"></div>
   </div>
 
   <ul class="fb-list" id="fb-list">
-    <li class="fb-empty">Lade Fachbegriffe …</li>
+    <li class="fb-empty">Lade Fachbegriffe ...</li>
   </ul>
 
 </div>
 
 <script src="data/glossary.js"></script>
+<script src="data/glossary-refs.js"></script>
 <script src="data/units.js"></script>
 <script>
 (function () {
-  /* ── Category colour palette (mirrors tooltips.js) ───── */
+  /* â”€â”€ Category colour palette (mirrors tooltips.js) â”€â”€â”€â”€â”€ */
   var CAT_COLORS = {
+    /* Akteure (blue) */
     'Organisation':      '#1e3a8a',
     'Institution':       '#2563eb',
     'Posten':            '#60a5fa',
-    'Verfahren':         '#0d9488',
-    'Vertrag':           '#16a34a',
-    'Rechtsnorm':        '#d97706',
-    'Prinzip':           '#ea580c',
-    'Struktur':          '#374151',
-    'Konzept':           '#111827',
-    'Phänomen':          '#a855f7'
+    'Person':            '#0891b2',
+    /* Rechtsrahmen (green, dark â†’ light) */
+    'Vertrag':           '#166534',
+    'Rechtsnorm':        '#16a34a',
+    'Verfahren':         '#65a30d',
+    /* Konzepte (amber â†’ yellow â†’ pink) */
+    'Struktur':          '#b45309',
+    'Prinzip':           '#ca8a04',
+    'Modell':            '#eab308',
+    'Ph\u00e4nomen':      '#db2777'
   };
-  var CAT_INVERTED = { 'Konzept': 1, 'Struktur': 1 };
   function _catColor(cat) { return CAT_COLORS[cat] || '#6b7280'; }
 
-  /* Chapter colour map — EU chapter is blue, others TBD */
+  /* Special badge rendering (overrides default color+18% bg) */
+  var CAT_SPECIAL = {
+    'Prinzip':  { bg: '#fefce8', fg: '#854d0e', border: '#e5d5a0' }
+  };
+
+  /* Inline SVG flags (mirrors tooltips.js _FLAGS) */
+  var _FLAGS = {
+    eu: '<svg viewBox="0 0 24 16" style="width:16px;height:11px;vertical-align:middle;margin-right:.3rem"><rect width="24" height="16" rx="1.5" fill="#003399"/><g fill="#FC0" transform="translate(12,8)"><circle r=".7" cx="0" cy="-3.5"/><circle r=".7" cx="1.75" cy="-3.03"/><circle r=".7" cx="3.03" cy="-1.75"/><circle r=".7" cx="3.5" cy="0"/><circle r=".7" cx="3.03" cy="1.75"/><circle r=".7" cx="1.75" cy="3.03"/><circle r=".7" cx="0" cy="3.5"/><circle r=".7" cx="-1.75" cy="3.03"/><circle r=".7" cx="-3.03" cy="1.75"/><circle r=".7" cx="-3.5" cy="0"/><circle r=".7" cx="-3.03" cy="-1.75"/><circle r=".7" cx="-1.75" cy="-3.03"/></g></svg>',
+    de: '<svg viewBox="0 0 16 11" style="width:16px;height:11px;vertical-align:middle;margin-right:.3rem"><rect width="16" height="11" fill="#FC0"/><rect width="16" height="3.67" fill="#000"/><rect y="7.33" width="16" height="3.67" fill="#D00"/></svg>',
+    lu: '<svg viewBox="0 0 16 11" style="width:16px;height:11px;vertical-align:middle;margin-right:.3rem"><rect width="16" height="3.67" fill="#EF3340"/><rect y="3.67" width="16" height="3.67" fill="#fff"/><rect y="7.33" width="16" height="3.67" fill="#00A3E0"/></svg>',
+    mt: '<svg viewBox="0 0 16 11" style="width:16px;height:11px;vertical-align:middle;margin-right:.3rem"><rect width="8" height="11" fill="#fff"/><rect x="8" width="8" height="11" fill="#CF142B"/></svg>',
+    pt: '<svg viewBox="0 0 16 11" style="width:16px;height:11px;vertical-align:middle;margin-right:.3rem"><rect width="6" height="11" fill="#006600"/><rect x="6" width="10" height="11" fill="#FF0000"/></svg>',
+    ee: '<svg viewBox="0 0 16 11" style="width:16px;height:11px;vertical-align:middle;margin-right:.3rem"><rect width="16" height="3.67" fill="#0072CE"/><rect y="3.67" width="16" height="3.67" fill="#000"/><rect y="7.33" width="16" height="3.67" fill="#fff"/></svg>'
+  };
+  function _flagSvg(code) {
+    if (!code) return '';
+    if (Array.isArray(code)) {
+      return code.map(function (c) { return _FLAGS[c] || ''; }).join('');
+    }
+    return _FLAGS[code] || '';
+  }
+
+  /* Chapter colour map */
   var CHAPTER_COLORS = {
-    3: '#2563eb'   /* EU / Kapitel 3 — blue */
+    1: '#c24175',
+    2: '#1f7a3f',
+    3: '#2563eb',
+    4: '#b88900',
+    5: '#a16207',
+    6: '#0f766e',
+    7: '#8a8175'
   };
-  var CHAPTER_TEXT_COLORS = {
-    3: '#fde68a'   /* gold on blue for chapter 3 */
+  var CHAPTER_LIGHTS = {
+    1: '#fbe8f0',
+    2: '#e8f4ec',
+    3: '#e8f0f9',
+    4: '#faf4df',
+    5: '#fbf1e2',
+    6: '#e5f5f3',
+    7: '#f4f1ed'
   };
-  var CHAPTER_NAMES = {
-    1: 'K1:BRD',
-    2: 'K2:GG',
-    3: 'K3:EU'
+  var CHAPTER_NAMES  = {
+    1: 'K1: BRD',
+    2: 'K2: GG',
+    3: 'K3: EU',
+    4: 'K4: INT',
+    5: 'K5: ECO',
+    6: 'K6: EWZ',
+    7: 'K7: SYS'
   };
+  var CHIP_TEXT      = CHAPTER_COLORS;
+
+  /* Group accent colours â€” left-border tint for each group box */
+  var GROUP_ACCENTS = {
+    'Kapitel':      '#6b7280',   /* neutral gray â€” chapters have individual colors */
+    'Akteure':      '#2563eb',   /* blue family */
+    'Rechtsrahmen': '#16a34a',   /* green family */
+    'Konzepte':     '#ca8a04'    /* yellow family */
+  };
+
+  /* Category descriptions */
+  var CAT_DESCRIPTIONS = {
+    'Organisation':  '\u00dcberstaatliche oder internationale Zusammenschl\u00fcsse mit eigener Struktur und Mitgliedschaft.',
+    'Institution':   'Organe und Einrichtungen innerhalb eines politischen Systems, die eine bestimmte Funktion aus\u00fcben.',
+    'Posten':        'Politische \u00c4mter und Funktionen, unabh\u00e4ngig von der Person, die sie besetzt.',
+    'Person':        'Historische oder aktuelle Einzelpersonen mit politischer Bedeutung.',
+    'Vertrag':       'V\u00f6lkerrechtliche oder verfassungsrechtliche Grundlagentexte, die Rechte, Pflichten und Strukturen festlegen.',
+    'Rechtsnorm':    'Konkrete Rechtsakte, Vorschriften oder kodifizierte Regeln, die aus einem Vertrag oder Gesetz hervorgehen.',
+    'Verfahren':     'Formalisierte Abl\u00e4ufe und Prozesse der politischen Entscheidungsfindung.',
+    'Struktur':      'Dauerhafte reale Ordnungssysteme, die den Rahmen politischen, wirtschaftlichen oder gesellschaftlichen Handelns bilden.',
+    'Prinzip':       'Normative Leitideen und Grunds\u00e4tze, die politisches Handeln legitimieren oder begrenzen.',
+    'Modell':        'Theoretische Erkl\u00e4rungsrahmen, Denkschulen und analytische Konzepte, die Wirklichkeit deuten, aber nicht selbst Wirklichkeit sind.',
+    'Ph\u00e4nomen':  'Beobachtbare politische, gesellschaftliche oder wirtschaftliche Entwicklungen und Muster.'
+  };
+
+  /* â”€â”€ Super-groups â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  var SUPER_GROUPS = [
+    { label: 'Kapitel',      type: 'chapter' },
+    { label: 'Akteure',      cats: ['Organisation', 'Institution', 'Posten', 'Person'] },
+    { label: 'Rechtsrahmen', cats: ['Vertrag', 'Rechtsnorm', 'Verfahren'] },
+    { label: 'Konzepte',     cats: ['Struktur', 'Prinzip', 'Modell', 'Ph\u00e4nomen'] }
+  ];
 
   var _all           = [];
+  var _glossaryRefs  = window._PLK_GLOSSARY_REFS || {};
   var _filter        = 'all';
   var _chapterFilter = 'all';
+  var _basisOnly     = false;
   var _search        = '';
 
-  var listEl         = document.getElementById('fb-list');
-  var filtersEl      = document.getElementById('fb-filters');
-  var chapterFilEl   = document.getElementById('fb-chapter-filters');
-  var searchEl       = document.getElementById('fb-search');
-  var _units         = window._PLK_UNITS || [];
+  /* Separate pill tracking: chapter pills vs category pills */
+  var _chapPills = [];
+  var _catPills  = [];
+  var _basisPill = null;
+  var _allBtn    = null;
 
-  /* Chapter chip colours — blue bg + gold text for EU */
-  var CHIP_TEXT = { 3: '#fde68a' };
+  var listEl    = document.getElementById('fb-list');
+  var filtersEl = document.getElementById('gl-filters');
+  var allWrapEl = document.getElementById('gl-all-wrap');
+  var tagsEl    = document.getElementById('gl-tags');
+  var searchEl  = document.getElementById('fb-search');
+  var countEl   = document.getElementById('gl-count');
+  var _units    = window._PLK_UNITS || [];
 
+  /* â”€â”€ Unit chip renderer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function _unitHtml(unitId) {
     var unit  = _units.find(function (u) { return u.id === unitId; });
     var num   = unit ? unit.num   : unitId;
     var title = unit ? unit.title : ('Einheit ' + unitId);
     var ch    = parseInt(unitId, 10);
-    var bg    = CHAPTER_COLORS[ch] || '';
-    var fg    = CHIP_TEXT[ch]      || '';
-    var cStyle = bg ? 'color:' + fg + ';background:' + bg + ';border-color:' + bg : '';
+    var fg    = CHAPTER_COLORS[ch] || '';
+    var bg    = CHAPTER_LIGHTS[ch] || '';
+    var cStyle = fg && bg ? 'color:' + fg + ';background:' + bg : '';
     if (unit && unit.status === 'active' && unit.file) {
       return '<a class="fb-unit-chip" href="einheiten/' + unit.file + '" title="' + title + '"' +
         (cStyle ? ' style="' + cStyle + '"' : '') + '>' + num + '</a>';
     }
-    var lStyle = bg ? 'color:' + bg + '80;border-color:' + bg + '40;background:' + bg + '10' : '';
+    var lStyle = 'color:var(--ink3);background:var(--border-l)';
     return '<span class="fb-unit-chip locked" title="' + title + '"' +
       (lStyle ? ' style="' + lStyle + '"' : '') + '>' + num + '</span>';
   }
 
+  function _unitIdsFor(term) {
+    return _glossaryRefs[term] || [];
+  }
+
+  /* â”€â”€ Inline definition tagging (mirrors tooltips.js) â”€â”€â”€ */
+  var _ADJ_END = /^(.*?)(e|en|em|er|es)$/i;
+
+  function _flexPattern(term) {
+    var escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return escaped.split(/(\s+)/).map(function (tok) {
+      if (/^\s+$/.test(tok)) return tok;
+      var raw = tok.replace(/\\(.)/g, '$1');
+      var m = _ADJ_END.exec(raw);
+      if (m && m[1].length >= 2) {
+        var stem = m[1].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        return stem + '(?:e|en|em|er|es)';
+      }
+      return tok;
+    }).join('');
+  }
+
+  function _tagDefsInline(defText, excludeTerm) {
+    if (!_all || !_all.length) return defText;
+    var exLower = excludeTerm.toLowerCase();
+    var inlineEntries = [];
+    _all.forEach(function (g) {
+      if (g.term.toLowerCase() !== exLower) {
+        inlineEntries.push({ pattern: _flexPattern(g.term), term: g.term });
+      }
+      if (g.abbr) {
+        var abbrs = typeof g.abbr === 'string' ? [g.abbr] : g.abbr;
+        abbrs.forEach(function (a) {
+          if (a.toLowerCase() !== exLower) {
+            inlineEntries.push({ pattern: _flexPattern(a), term: g.term });
+          }
+        });
+      }
+    });
+    inlineEntries.sort(function (a, b) { return b.pattern.length - a.pattern.length; });
+    var patterns = inlineEntries.map(function (e) { return e.pattern; });
+    if (!patterns.length) return defText;
+    var re = new RegExp('\\b(' + patterns.join('|') + ')([a-z\u00e4\u00f6\u00fc\u00df]*)', 'gi');
+    return defText.replace(re, function (full, base, suffix) {
+      var resolved = null;
+      for (var i = 0; i < inlineEntries.length; i++) {
+        var testRe = new RegExp('^' + inlineEntries[i].pattern + '$', 'i');
+        if (testRe.test(base)) { resolved = inlineEntries[i].term; break; }
+      }
+      var needsFb = (resolved && resolved.toLowerCase() !== base.toLowerCase()) || suffix;
+      var fbVal = resolved || base;
+      var attr = needsFb ? ' data-fb="' + fbVal + '"' : '';
+      return '<strong class="fb" style="cursor:pointer"' + attr + '>' + base + suffix + '</strong>';
+    });
+  }
+
+  /* â”€â”€ Main render â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function _render() {
     var items = _all.filter(function (g) {
       var matchCat     = _filter === 'all' || g.cat === _filter;
       var matchChapter = _chapterFilter === 'all' || g.chapter === _chapterFilter;
+      var matchBasis   = !_basisOnly || g.basis;
       var abbrStr = g.abbr ? (typeof g.abbr === 'string' ? g.abbr : g.abbr.join(' ')).toLowerCase() : '';
       var matchSearch  = !_search ||
         g.term.toLowerCase().indexOf(_search) !== -1 ||
         g.def.toLowerCase().indexOf(_search) !== -1 ||
         abbrStr.indexOf(_search) !== -1;
-      return matchCat && matchChapter && matchSearch;
+      return matchCat && matchChapter && matchBasis && matchSearch;
     });
 
     items.sort(function (a, b) { return a.term.localeCompare(b.term, 'de'); });
+    countEl.textContent = items.length + ' von ' + _all.length + ' Begriffen';
 
     if (!items.length) {
       listEl.innerHTML = '<li class="fb-empty">Keine Begriffe gefunden.</li>';
@@ -242,198 +507,357 @@ span.fb-unit-chip.locked { color: var(--ink3); border-color: var(--border); }
 
     listEl.innerHTML = items.map(function (g) {
       var color    = _catColor(g.cat);
-      var isKonzept  = g.cat === 'Konzept';
-      var isStruktur = g.cat === 'Struktur';
-      var catStyle = isKonzept
-        ? 'color:#fff;background:#111827'
-        : isStruktur
-          ? 'color:#1f2937;background:#f3f4f6;border:1px solid #d1d5db'
-          : 'color:' + color + ';background:' + color + '18';
+      var sp       = CAT_SPECIAL[g.cat];
+      var catStyle = sp
+        ? 'color:' + sp.fg + ';background:' + sp.bg + (sp.border ? ';border:1px solid ' + sp.border : '')
+        : 'color:' + color + ';background:' + color + '18';
       var catBadge = g.cat
         ? '<span class="fb-cat-badge" style="' + catStyle + '">' + g.cat + '</span>'
         : '';
-      var termColor = isKonzept ? '#111827' : (isStruktur ? '#374151' : color);
-      var borderColor = isKonzept ? '#111827' : (isStruktur ? '#9ca3af' : color);
-      var unitLinks = g.units.map(_unitHtml).join('');
-      return '<li class="fb-entry" style="border-left-color:' + borderColor + '">' +
-        '<div class="fb-entry-term" style="color:' + termColor + '">' + (g.emoji ? '<span style="margin-right:.35rem">' + g.emoji + '</span>' : '') + g.term + catBadge + '</div>' +
-        '<div class="fb-entry-def">' + g.def + '</div>' +
+      var termColor   = color;
+      var borderColor = color;
+      var unitLinks = _unitIdsFor(g.term).map(_unitHtml).join('');
+      var flagHtml = _flagSvg(g.flag);
+      var temporalHtml = g.temporal
+        ? '<span style="font-size:.65rem;color:#d97706;margin-left:.4rem;vertical-align:middle" title="Zeitgebundene Information">\u231b</span>'
+        : '';
+      var basisHtml = g.basis
+        ? '<span style="font-size:.6rem;color:#ca8a04;margin-left:.35rem;vertical-align:middle" title="Lehrplan-Basisbegriff">\u2605</span>'
+        : '';
+      var crossLinks = [];
+      if (g.institution) {
+        crossLinks.push('<div style="margin-top:.3rem;font-size:.82rem;color:var(--ink3)">' +
+          '&#9656; <strong class="fb" style="cursor:pointer;color:' + _catColor('Institution') + '">' + g.institution + '</strong></div>');
+      }
+      if (g.posten) {
+        var seitStr = _mandateLabel(g.seit, g.bis);
+        crossLinks.push('<div style="margin-top:.3rem;font-size:.82rem;color:var(--ink3)">' +
+          seitStr + '<strong class="fb" style="cursor:pointer;color:' + _catColor('Posten') + '">' + g.posten + '</strong></div>');
+      }
+      if (g.person) {
+        var pSeitStr = _mandateLabel(g.personSeit, g.personBis);
+        crossLinks.push('<div style="margin-top:.3rem;font-size:.82rem;color:var(--ink3)">' +
+          pSeitStr + '<strong class="fb" style="cursor:pointer;color:' + _catColor('Person') + '">' + g.person + '</strong></div>');
+      }
+      var crossLinkHtml = crossLinks.join('');
+      return '<li class="fb-entry" data-term="' + g.term + '" style="border-left-color:' + borderColor + '">' +
+        '<div class="fb-entry-term" style="color:' + termColor + '">' +
+          (g.emoji ? '<span style="margin-right:.35rem">' + g.emoji + '</span>' : '') +
+          flagHtml + g.term + temporalHtml + basisHtml + catBadge +
+        '</div>' +
+        '<div class="fb-entry-def">' + _tagDefsInline(g.def, g.term) + '</div>' +
+        crossLinkHtml +
         '<div class="fb-entry-units">' + unitLinks + '</div>' +
         '</li>';
     }).join('');
   }
 
-  /* colorOf: reads the color stored on the btn via data attr */
-  function _colorOf(btn) { return btn.dataset.catColor || null; }
+  /* â”€â”€ Pill styling helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  function _resetPill(p) {
+    p.classList.remove('active');
+    p.style.color = '';
+    p.style.borderColor = '';
+    p.style.background = '';
+  }
+  function _fillPill(p, color) {
+    p.classList.add('active');
+    p.style.borderColor = color;
+    p.style.background = color;
+    p.style.color = '#fff';
+  }
 
-  function _applyBtnStyle(btn, active) {
-    var color = _colorOf(btn);
-    var cat   = btn.dataset.filter;
-    if (!color) {
-      /* "Alle" button — use accent */
-      btn.style.color       = active ? '#fff' : 'var(--ink3)';
-      btn.style.borderColor = active ? 'var(--acc)' : 'var(--border)';
-      btn.style.background  = active ? 'var(--acc)' : '';
-    } else if (cat === 'Konzept') {
-      btn.style.color       = active ? '#fff' : '#6b7280';
-      btn.style.borderColor = active ? '#111827' : '#d1d5db';
-      btn.style.background  = active ? '#111827' : '';
-    } else if (cat === 'Struktur') {
-      btn.style.color       = active ? '#1f2937' : '#6b7280';
-      btn.style.borderColor = active ? '#374151' : '#d1d5db';
-      btn.style.background  = active ? '#e5e7eb' : '';
-      btn.style.fontWeight  = active ? '800' : '600';
+  /* â”€â”€ Update "Alle" button state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  function _syncAllBtn() {
+    if (_filter === 'all' && _chapterFilter === 'all' && !_basisOnly) {
+      _allBtn.classList.remove('inactive');
     } else {
-      btn.style.color       = active ? '#fff' : '#6b7280';
-      btn.style.borderColor = active ? color : '#d1d5db';
-      btn.style.background  = active ? color : '';
+      _allBtn.classList.add('inactive');
     }
   }
 
-  function _setFilterActive(activeBtn) {
-    filtersEl.querySelectorAll('.fb-filter-btn').forEach(function (b) {
-      b.classList.remove('active');
-      _applyBtnStyle(b, false);
-    });
-    activeBtn.classList.add('active');
-    _applyBtnStyle(activeBtn, true);
+  /* â”€â”€ Active-tag bar (shows combined active filters) â”€â”€â”€â”€ */
+  function _renderTags() {
+    tagsEl.innerHTML = '';
+    if (_chapterFilter !== 'all') {
+      var chName = CHAPTER_NAMES[_chapterFilter] || ('K' + _chapterFilter);
+      var chCol  = CHAPTER_COLORS[_chapterFilter] || 'var(--acc)';
+      var tag = document.createElement('span');
+      tag.className = 'gl-active-tag';
+      tag.style.background = chCol;
+      tag.innerHTML = chName + ' <span class="gl-active-tag-x">\u00d7</span>';
+      tag.querySelector('.gl-active-tag-x').addEventListener('click', function () {
+        _chapterFilter = 'all';
+        _chapPills.forEach(_resetPill);
+        _syncAllBtn();
+        _renderTags();
+        _render();
+      });
+      tagsEl.appendChild(tag);
+    }
+    if (_filter !== 'all') {
+      var catCol = _catColor(_filter);
+      var tag2 = document.createElement('span');
+      tag2.className = 'gl-active-tag';
+      tag2.style.background = catCol;
+      tag2.innerHTML = _filter + ' <span class="gl-active-tag-x">\u00d7</span>';
+      tag2.querySelector('.gl-active-tag-x').addEventListener('click', function () {
+        _filter = 'all';
+        _catPills.forEach(_resetPill);
+        _syncAllBtn();
+        _renderTags();
+        _render();
+      });
+      tagsEl.appendChild(tag2);
+    }
   }
 
+  function _mandateLabel(start, end) {
+    if (start && end) return start + '-' + end + ' &rarr; ';
+    if (start) return 'Seit ' + start + ' \u2192 ';
+    if (end) return 'Bis ' + end + ' \u2192 ';
+    return '\u25b8 ';
+  }
+
+  /* â”€â”€ Build filter groups â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function _buildFilters(data) {
-    var catSet = {};
-    data.forEach(function (g) { if (g.cat) catSet[g.cat] = true; });
-    /* Ordered by colour spectrum: navy → blue → light-blue → teal →
-       light-green → green → grey → gold → black → silver            */
-    var CAT_ORDER = [
-      'Organisation', 'Institution', 'Posten', 'Verfahren',
-      'Vertrag', 'Rechtsnorm', 'Prinzip',
-      'Struktur', 'Konzept', 'Phänomen'
-    ];
-    var cats = CAT_ORDER.filter(function (c) { return catSet[c]; });
-    /* Append any unknown categories not in the ordered list */
-    Object.keys(catSet).forEach(function (c) {
-      if (cats.indexOf(c) === -1) cats.push(c);
-    });
-    cats.forEach(function (cat) {
-      var color = _catColor(cat);
-      var btn = document.createElement('button');
-      btn.className = 'fb-filter-btn';
-      btn.dataset.filter = cat;
-      btn.dataset.catColor = color;
-      btn.textContent = cat;
-      _applyBtnStyle(btn, false);
-      btn.addEventListener('click', function () {
-        _filter = cat;
-        _setFilterActive(btn);
-        _render();
-      });
-      filtersEl.appendChild(btn);
+    var catCounts = {};
+    var chapCounts = {};
+    data.forEach(function (g) {
+      if (g.cat) catCounts[g.cat] = (catCounts[g.cat] || 0) + 1;
+      if (g.chapter) chapCounts[g.chapter] = (chapCounts[g.chapter] || 0) + 1;
     });
 
-    var allBtn = filtersEl.querySelector('[data-filter="all"]');
-    _applyBtnStyle(allBtn, true);  /* "Alle" starts active */
-    allBtn.addEventListener('click', function () {
-      _filter = 'all';
-      _setFilterActive(allBtn);
+    allWrapEl.innerHTML = '';
+
+    /* "Alle" button */
+    _allBtn = document.createElement('button');
+    _allBtn.className = 'gl-pill-all';
+    _allBtn.innerHTML = 'Alle <span class="gl-pill-ct">' + data.length + '</span>';
+    _allBtn.addEventListener('click', function () {
+      _filter = 'all'; _chapterFilter = 'all'; _basisOnly = false;
+      _chapPills.forEach(_resetPill);
+      _catPills.forEach(_resetPill);
+      if (_basisPill) _resetPill(_basisPill);
+      _syncAllBtn();
+      _renderTags();
       _render();
     });
-  }
+    allWrapEl.appendChild(_allBtn);
 
-  /* ── Chapter filter builder ──────────────────────────── */
-  function _setChapterActive(activeBtn) {
-    chapterFilEl.querySelectorAll('.fb-filter-btn').forEach(function (b) {
-      b.classList.remove('active');
-      var ch = b.dataset.chapter;
-      var col = ch !== 'all' ? (CHAPTER_COLORS[Number(ch)] || 'var(--ink3)') : null;
-      if (col) {
-        b.style.color = '#6b7280';
-        b.style.borderColor = '#d1d5db';
-        b.style.background = '';
-      } else {
-        b.style.color = '#6b7280';
-        b.style.borderColor = '#d1d5db';
-        b.style.background = '';
-      }
-    });
-    activeBtn.classList.add('active');
-    var ach = activeBtn.dataset.chapter;
-    var acol = ach !== 'all' ? (CHAPTER_COLORS[Number(ach)] || 'var(--ink3)') : null;
-    var atxt = ach !== 'all' ? (CHAPTER_TEXT_COLORS[Number(ach)] || '#fff') : '#fff';
-    if (acol) {
-      activeBtn.style.color = atxt;
-      activeBtn.style.borderColor = acol;
-      activeBtn.style.background = acol;
-    } else {
-      activeBtn.style.color = '#fff';
-      activeBtn.style.borderColor = 'var(--acc)';
-      activeBtn.style.background = 'var(--acc)';
+    /* â˜… Lehrplan toggle pill, directly right of "Alle" */
+    var basisCount = data.filter(function (g) { return g.basis; }).length;
+    _basisPill = null;
+    if (basisCount) {
+      _basisPill = document.createElement('button');
+      _basisPill.className = 'gl-pill';
+      _basisPill.innerHTML = '<span class="gl-pill-icon" style="color:#ca8a04">\u2605</span>' +
+        'Lehrplan <span class="gl-pill-ct">' + basisCount + '</span>';
+      _basisPill.addEventListener('click', function () {
+        _basisOnly = !_basisOnly;
+        if (_basisOnly) {
+          _fillPill(_basisPill, '#ca8a04');
+        } else {
+          _resetPill(_basisPill);
+        }
+        _syncAllBtn();
+        _renderTags();
+        _render();
+      });
+      allWrapEl.appendChild(_basisPill);
     }
-  }
 
-  function _buildChapterFilters(data) {
-    var chapSet = {};
-    data.forEach(function (g) { if (g.chapter) chapSet[g.chapter] = true; });
-    var chapters = Object.keys(chapSet).map(Number).sort();
+    filtersEl.innerHTML = '';
 
-    chapters.forEach(function (ch) {
-      var btn = document.createElement('button');
-      btn.className = 'fb-filter-btn';
-      btn.dataset.chapter = String(ch);
-      btn.textContent = CHAPTER_NAMES[ch] || ('K' + ch);
-      btn.style.color = '#6b7280';
-      btn.style.borderColor = '#d1d5db';
-      btn.style.background = '';
-      btn.addEventListener('click', function () {
-        _chapterFilter = ch;
-        _setChapterActive(btn);
-        _render();
+    SUPER_GROUPS.forEach(function (group) {
+      var accent = GROUP_ACCENTS[group.label] || 'var(--border)';
+      var groupDiv = document.createElement('div');
+      groupDiv.className = 'gl-group';
+      groupDiv.style.borderLeftColor = accent;
+
+      var head = document.createElement('div');
+      head.className = 'gl-group-head';
+      head.textContent = group.label;
+      groupDiv.appendChild(head);
+
+      var pillsDiv = document.createElement('div');
+      pillsDiv.className = 'gl-group-pills';
+
+      /* Add category descriptions as tooltips on individual pills */
+
+      if (group.type === 'chapter') {
+        [1, 2, 3, 4, 5, 6, 7].forEach(function (ch) {
+          var count = chapCounts[ch] || 0;
+          var col = CHAPTER_COLORS[ch] || 'var(--acc)';
+          var pill = document.createElement('button');
+          pill.className = 'gl-pill';
+          pill.innerHTML = '<span class="gl-pill-dot" style="background:' + col + '"></span>' +
+            (CHAPTER_NAMES[ch] || 'K' + ch) +
+            ' <span class="gl-pill-ct">' + count + '</span>';
+          if (!count) {
+            pill.style.opacity = '0.38';
+            pill.style.pointerEvents = 'none';
+            pill.style.cursor = 'default';
+          } else {
+            pill.addEventListener('click', function () {
+              /* Toggle: click again to deselect */
+              if (_chapterFilter === ch) {
+                _chapterFilter = 'all';
+                _resetPill(pill);
+              } else {
+                _chapterFilter = ch;
+                _chapPills.forEach(_resetPill);
+                _fillPill(pill, col);
+              }
+              _syncAllBtn();
+              _renderTags();
+              _render();
+            });
+          }
+          _chapPills.push(pill);
+          pillsDiv.appendChild(pill);
+        });
+      } else {
+        group.cats.forEach(function (cat) {
+          var count = catCounts[cat] || 0;
+          var color = _catColor(cat);
+          var pill = document.createElement('button');
+          pill.className = 'gl-pill';
+          if (CAT_DESCRIPTIONS[cat]) pill.title = CAT_DESCRIPTIONS[cat];
+          pill.innerHTML = '<span class="gl-pill-dot" style="background:' + color + '"></span>' +
+            cat +
+            ' <span class="gl-pill-ct">' + count + '</span>';
+          if (!count) {
+            /* No entries yet â€” render muted, non-interactive */
+            pill.style.opacity = '0.38';
+            pill.style.pointerEvents = 'none';
+            pill.style.cursor = 'default';
+          } else {
+            pill.addEventListener('click', function () {
+              if (_filter === cat) {
+                _filter = 'all';
+                _resetPill(pill);
+              } else {
+                _filter = cat;
+                _catPills.forEach(_resetPill);
+                _fillPill(pill, color);
+              }
+              _syncAllBtn();
+              _renderTags();
+              _render();
+            });
+            _catPills.push(pill);
+          }
+          pillsDiv.appendChild(pill);
+        });
+      }
+
+      groupDiv.appendChild(pillsDiv);
+      filtersEl.appendChild(groupDiv);
+    });
+
+    /* Append unknown categories */
+    var listed = {};
+    SUPER_GROUPS.forEach(function (g) {
+      if (g.cats) g.cats.forEach(function (c) { listed[c] = true; });
+    });
+    var extras = Object.keys(catCounts).filter(function (c) { return !listed[c]; });
+    if (extras.length) {
+      var groupDiv = document.createElement('div');
+      groupDiv.className = 'gl-group';
+      groupDiv.style.borderLeftColor = '#6b7280';
+      var head = document.createElement('div');
+      head.className = 'gl-group-head';
+      head.textContent = 'Sonstige';
+      groupDiv.appendChild(head);
+      var pillsDiv = document.createElement('div');
+      pillsDiv.className = 'gl-group-pills';
+      extras.forEach(function (cat) {
+        var color = _catColor(cat);
+        var pill = document.createElement('button');
+        pill.className = 'gl-pill';
+        pill.innerHTML = '<span class="gl-pill-dot" style="background:' + color + '"></span>' +
+          cat + ' <span class="gl-pill-ct">' + catCounts[cat] + '</span>';
+        pill.addEventListener('click', function () {
+          if (_filter === cat) {
+            _filter = 'all'; _resetPill(pill);
+          } else {
+            _filter = cat; _catPills.forEach(_resetPill); _fillPill(pill, color);
+          }
+          _syncAllBtn(); _renderTags(); _render();
+        });
+        _catPills.push(pill);
+        pillsDiv.appendChild(pill);
       });
-      chapterFilEl.appendChild(btn);
-    });
+      groupDiv.appendChild(pillsDiv);
+      filtersEl.appendChild(groupDiv);
+    }
 
-    var allChBtn = chapterFilEl.querySelector('[data-chapter="all"]');
-    _setChapterActive(allChBtn);
-    allChBtn.addEventListener('click', function () {
-      _chapterFilter = 'all';
-      _setChapterActive(allChBtn);
-      _render();
-    });
   }
 
+  /* â”€â”€ Search â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   searchEl.addEventListener('input', function () {
     _search = searchEl.value.trim().toLowerCase();
     _render();
   });
 
-  /* Pre-fill search from ?q= URL param (linked from tooltips) */
-  function _styleSearch() {
-    if (searchEl.value.trim()) {
-      searchEl.style.borderColor = 'var(--acc)';
-      searchEl.style.boxShadow = '0 0 0 2px var(--accG)';
-    } else {
-      searchEl.style.borderColor = '';
-      searchEl.style.boxShadow = '';
-    }
-  }
-  searchEl.addEventListener('input', _styleSearch);
-
   var urlQ = (location.search.match(/[?&]q=([^&]*)/) || [])[1];
   if (urlQ) {
     _search = decodeURIComponent(urlQ).toLowerCase();
     searchEl.value = decodeURIComponent(urlQ);
-    _styleSearch();
   }
 
+  /* â”€â”€ Init â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   if (window._PLK_GLOSSARY && window._PLK_GLOSSARY.length) {
     _all = window._PLK_GLOSSARY;
-    _buildChapterFilters(_all);
     _buildFilters(_all);
     _render();
   } else {
     listEl.innerHTML = '<li class="fb-empty">Fachbegriffe konnten nicht geladen werden.</li>';
   }
+
+  /* â”€â”€ Cross-link click handler â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  function _findEntryByText(text) {
+    var lower = text.toLowerCase();
+    return _all.find(function (g) {
+      if (g.term.toLowerCase() === lower) return true;
+      if (!g.abbr) return false;
+      var abbrs = typeof g.abbr === 'string' ? [g.abbr] : g.abbr;
+      return abbrs.some(function (a) { return a.toLowerCase() === lower; });
+    }) || null;
+  }
+
+  function _scrollToEntry(termText) {
+    var entry = _findEntryByText(termText);
+    if (!entry) return;
+
+    _filter = 'all'; _chapterFilter = 'all';
+    _search = ''; searchEl.value = '';
+    _chapPills.forEach(_resetPill);
+    _catPills.forEach(_resetPill);
+    _syncAllBtn();
+    _renderTags();
+    _render();
+
+    var target = listEl.querySelector('[data-term="' + entry.term + '"]');
+    if (!target) return;
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    target.style.transition = 'box-shadow .2s';
+    target.style.boxShadow = '0 0 0 3px ' + _catColor(entry.cat) + '60';
+    setTimeout(function () { target.style.boxShadow = ''; }, 2000);
+  }
+
+  listEl.addEventListener('click', function (e) {
+    var t = e.target;
+    if (t.tagName === 'STRONG' && t.className && t.className.indexOf('fb') !== -1) {
+      e.preventDefault();
+      e.stopPropagation();
+      var termText = t.getAttribute('data-fb') || t.textContent.trim();
+      _scrollToEntry(termText);
+    }
+  });
 })();
 </script>
 
 </body>
 </html>
+
