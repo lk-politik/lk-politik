@@ -20,7 +20,15 @@
   /* ── PLK Module Registry ──────────────────────────────── */
   window.PLK = {
     _mods: [],
+    _qgTypes: {},
     register: function (mod) { PLK._mods.push(mod); },
+    registerQgType: function (names, def) {
+      if (!names || !def) return;
+      if (!Array.isArray(names)) names = [names];
+      names.forEach(function (name) {
+        if (name) PLK._qgTypes[name] = def;
+      });
+    },
     init:     function ()    {
       PLK._mods.forEach(function (m) { if (m.init) m.init(); });
     }
@@ -221,15 +229,15 @@
     /* Passwort korrekt → alles freischalten */
     _unlockAll();
 
-    /* Schülerpasswort anzeigen */
+    /* Schülerpasswort anzeigen (or generic success if none) */
     if (hint) {
       hint.className = 'pw-hint ok';
-      hint.textContent = 'Passwort: ' + stu;
+      hint.textContent = stu ? 'Passwort: ' + stu : '✓ Freigeschalten';
     }
 
-    /* Felder verstecken */
-    var wrap = inp.closest('.pw-input');
-    if (wrap) wrap.style.display = 'none';
+    /* Passwort-Eingabe + Freischalten-Button ausblenden, Reset-Button bleibt */
+    var wrap = inp.closest('.pw-input') || document.getElementById('pw-wrap');
+    if (wrap) wrap.classList.add('pw-done');
 
     /* In localStorage speichern */
     _persistUnlock();
@@ -243,6 +251,20 @@
       el.classList.remove('locked');
     });
 
+    /* UK-Stage-Sperren aufheben */
+    document.querySelectorAll('.uk-stage-locked').forEach(function (el) {
+      el.classList.remove('uk-stage-locked');
+    });
+
+    /* AB3-Blöcke freischalten (data-state="locked" → "active") */
+    document.querySelectorAll('.ab3-block[data-state="locked"]').forEach(function (el) {
+      el.setAttribute('data-state', 'active');
+    });
+
+    /* AB-Section freischalten falls vorhanden */
+    var abSection = document.getElementById('ab-section');
+    if (abSection) abSection.setAttribute('data-state', 'ready');
+
     /* Auflösungs-Boxen sichtbar machen */
     var aufls = document.querySelectorAll('.aufloesung-box');
     aufls.forEach(function (el) { el.classList.add('vis'); });
@@ -252,25 +274,34 @@
       for (var g = 1; g <= CONF.gates; g++) {
         qgPass[g] = true;
         var gate = document.getElementById('qg' + g);
-        if (gate) gate.setAttribute('data-passed', '1');
+        if (gate) {
+          gate.setAttribute('data-passed', '1');
+          gate.setAttribute('data-state', 'passed');
+        }
+        var pill = document.getElementById('qg' + g + 's');
+        if (pill) {
+          pill.textContent = 'Block ' + g + ': Bestanden';
+          pill.className = 'qg-status pass';
+        }
       }
     }
 
-    /* Fortschrittsbalken auf 100% */
-    _setProgressBar(100);
+    /* Fortschrittsbalken anhand des echten Zustands aktualisieren */
+    _updateProgressBar();
   }
 
   /* Speichert freigeschalteten Zustand */
   function _persistUnlock() {
     if (typeof CONF === 'undefined') return;
-    var existing = PLK.Progress.load(CONF.id) || { gates: {} };
+    var existing = PLK.Progress.load(CONF.id) || {};
     existing.unlocked = true;
-    if (typeof CONF !== 'undefined') {
-      for (var g = 1; g <= CONF.gates; g++) {
-        existing.gates['qg' + g] = true;
-      }
+    /* Guard: existing might not have a gates object if only einstieg was saved */
+    if (!existing.gates) existing.gates = {};
+    for (var g = 1; g <= CONF.gates; g++) {
+      existing.gates['qg' + g] = true;
     }
     PLK.Progress.save(CONF.id, existing);
+    _updateProgressBar();
   }
 
   /* --------------------------------------------------------
@@ -302,10 +333,12 @@
 
     if (saved.unlocked) {
       _unlockAll();
-      /* Passwort-Felder verstecken */
+      /* Passwort-Eingabe + Freischalten-Button ausblenden, Reset-Button bleibt */
       document.querySelectorAll('.pw-input').forEach(function (el) {
-        el.style.display = 'none';
+        el.classList.add('pw-done');
       });
+      var pwWrap = document.getElementById('pw-wrap');
+      if (pwWrap) pwWrap.classList.add('pw-done');
       _restoreAbState(saved);
       return;
     }
@@ -384,6 +417,62 @@
   var qgPass = {};
   PLK._qs = { qgPass: qgPass };  /* shared quiz state for quiz-base.js */
 
+  function _matches(el, selector) {
+    if (!el || !selector) return false;
+    var fn = el.matches || el.msMatchesSelector || el.webkitMatchesSelector;
+    return fn ? fn.call(el, selector) : false;
+  }
+
+  function _closestQgItem(el) {
+    while (el) {
+      if (el.getAttribute && el.getAttribute('data-qg-type')) return el;
+      el = el.parentElement;
+    }
+    return null;
+  }
+
+  function _getGateItems(gate) {
+    if (!gate) return [];
+    return Array.from(gate.querySelectorAll('[data-qg-type]')).filter(function (el) {
+      var parent = el.parentElement;
+      while (parent && parent !== gate) {
+        if (parent.getAttribute && parent.getAttribute('data-qg-type')) return false;
+        parent = parent.parentElement;
+      }
+      return true;
+    });
+  }
+
+  function _getGateItemKey(item, fallbackIdx) {
+    if (!item) return 'qg-item-' + fallbackIdx;
+    return item.getAttribute('data-qg-key')
+      || item.id
+      || item.getAttribute('data-qg-id')
+      || ('qg-item-' + fallbackIdx);
+  }
+
+  function _getGateFeedbackEl(gateNr, gate) {
+    return document.getElementById('qfb' + gateNr)
+      || document.getElementById('qg' + gateNr + 'r')
+      || (gate ? gate.querySelector('[data-qg-feedback]') : null);
+  }
+
+  function _resolveQgTarget(item, selector) {
+    if (!item) return null;
+    var targetId = item.getAttribute('data-qg-target');
+    var target = targetId ? document.getElementById(targetId) : null;
+    if (target) return target;
+    if (!selector) return item;
+    if (_matches(item, selector)) return item;
+    return item.querySelector(selector);
+  }
+
+  PLK._closestQgItem = _closestQgItem;
+  PLK._getGateItems = _getGateItems;
+  PLK._getGateItemKey = _getGateItemKey;
+  PLK._getGateFeedbackEl = _getGateFeedbackEl;
+  PLK._resolveQgTarget = _resolveQgTarget;
+
   /* mcS, oMv, oRenum — moved to quiz-base.js (PLK.mcS, PLK.oMv, PLK.oRenum) */
 
   /* chkQ, rstQ, toggleQg, retryQg — moved to quiz-base.js */
@@ -404,6 +493,9 @@
   /* Resets answers inside a QG and shuffles option order so students can't
      memorise position. qgPass[gateNr] and data-passed are NOT cleared. */
   function _resetQgForRetry(gateNr, gate) {
+    /* Allow re-submission after retry */
+    gate.removeAttribute('data-passed');
+
     gate.querySelectorAll('.mco input').forEach(function (inp) {
       inp.checked = false;
       var item = inp.closest('.mco');
@@ -418,7 +510,7 @@
     gate.querySelectorAll('.oitem').forEach(function (item) {
       item.classList.remove('correct', 'wrong');
     });
-    var fbEl = document.getElementById('qfb' + gateNr);
+    var fbEl = _getGateFeedbackEl(gateNr, gate);
     if (fbEl) { fbEl.style.display = 'none'; fbEl.textContent = ''; }
 
     /* Shuffle MC option order */
@@ -430,6 +522,14 @@
       _shuffleChildren(list);
       PLK.oRenum(list);
     });
+
+    if (PLK._getGateItems) {
+      PLK._getGateItems(gate).forEach(function (item) {
+        var type = item.getAttribute('data-qg-type');
+        var handler = type ? PLK._qgTypes[type] : null;
+        if (handler && handler.reset) handler.reset(item);
+      });
+    }
   }
   PLK._resetQgForRetry = _resetQgForRetry;
 
@@ -498,21 +598,50 @@
   /* --------------------------------------------------------
      Fortschrittsbalken
   -------------------------------------------------------- */
-  function _updateProgressBar() {
-    if (typeof CONF === 'undefined') return;
+  function _hasEinstieg() {
+    return !!document.getElementById('einstieg');
+  }
+
+  function _calcProgressPct(saved) {
+    if (typeof CONF === 'undefined') return 0;
+
+    var prog = saved || PLK.Progress.load(CONF.id) || {};
+
     var passed = Object.keys(qgPass).filter(function (k) { return qgPass[k]; }).length;
-    var hasAB  = CONF.abPts > 0;
-    var pct;
-    if (hasAB) {
-      /* Gates + Arbeitsblatt each count as one step toward completion.
-         AB score is read from localStorage so it survives page refresh. */
-      var savedAbPts = ((PLK.Progress.load(CONF.id) || {}).abPts) || 0;
-      var abFrac = Math.min(savedAbPts / CONF.abPts, 1);
-      pct = Math.round(((passed + abFrac) / (CONF.gates + 1)) * 100);
-    } else {
-      pct = CONF.gates > 0 ? Math.round((passed / CONF.gates) * 100) : 0;
+    var done   = passed;
+    var total  = CONF.gates || 0;
+
+    if (_hasEinstieg()) {
+      total += 1;
+      if (prog.einstieg) done += 1;
     }
+
+    if (CONF.abPts > 0) {
+      total += 1;
+      done += Math.min((prog.abPts || 0) / CONF.abPts, 1);
+    }
+
+    return total > 0 ? Math.round((done / total) * 100) : 0;
+  }
+
+  function _syncProgressMeta(pct) {
+    if (typeof CONF === 'undefined') return;
+
+    var existing = PLK.Progress.load(CONF.id);
+    if (!existing) {
+      if (!pct) return;
+      existing = {};
+    }
+
+    existing.progressPct = pct;
+    existing.complete = pct >= 100;
+    PLK.Progress.save(CONF.id, existing);
+  }
+
+  function _updateProgressBar() {
+    var pct = _calcProgressPct();
     _setProgressBar(pct);
+    _syncProgressMeta(pct);
   }
 
   function _setProgressBar(pct) {
@@ -528,7 +657,14 @@
   function _saveGates() {
     if (typeof CONF === 'undefined') return;
     var existing = PLK.Progress.load(CONF.id) || {};
-    existing.gates = qgPass;
+    /* Normalize to "qgN" keys — qgPass uses integer keys but _persistUnlock
+       uses "qgN" keys; mixing them causes double-counting on the landing page. */
+    var normalized = {};
+    Object.keys(qgPass).forEach(function (k) {
+      var nr = parseInt(k, 10);
+      if (!isNaN(nr) && qgPass[k]) normalized['qg' + nr] = true;
+    });
+    existing.gates = normalized;
     PLK.Progress.save(CONF.id, existing);
   }
   PLK._saveGates = _saveGates;
@@ -541,6 +677,7 @@
     /* Text input values */
     var qinpValues = [];
     gate.querySelectorAll('.qinp input[data-answers], .qinp textarea[data-answers]').forEach(function (inp) {
+      if (PLK._closestQgItem && PLK._closestQgItem(inp)) return;
       qinpValues.push(inp.value);
     });
     if (qinpValues.length) snapshot.qinpValues = qinpValues;
@@ -549,6 +686,7 @@
     var mcChecked = {};
     var mcGroups = {};
     gate.querySelectorAll('.mco input[type="radio"], .mco input[type="checkbox"]').forEach(function (inp) {
+      if (PLK._closestQgItem && PLK._closestQgItem(inp)) return;
       if (!mcGroups[inp.name]) mcGroups[inp.name] = [];
       mcGroups[inp.name].push(inp);
     });
@@ -566,6 +704,32 @@
     });
     if (Object.keys(mcChecked).length) snapshot.mcChecked = mcChecked;
 
+    var olistOrder = {};
+    var olistCount = 0;
+    gate.querySelectorAll('.olist[data-correct]').forEach(function (list) {
+      if (PLK._closestQgItem && PLK._closestQgItem(list)) return;
+      olistOrder[list.id || ('olist-' + olistCount)] = Array.from(list.querySelectorAll('.oitem')).map(function (item) {
+        return item.getAttribute('data-id') || '';
+      });
+      olistCount++;
+    });
+    if (Object.keys(olistOrder).length) snapshot.olistOrder = olistOrder;
+
+    if (PLK._getGateItems) {
+      var qgItems = [];
+      PLK._getGateItems(gate).forEach(function (item, idx) {
+        var type = item.getAttribute('data-qg-type');
+        var handler = type ? PLK._qgTypes[type] : null;
+        if (!handler || !handler.save) return;
+        qgItems.push({
+          key: _getGateItemKey(item, idx),
+          type: type,
+          state: handler.save(item)
+        });
+      });
+      if (qgItems.length) snapshot.qgItems = qgItems;
+    }
+
     var existing = PLK.Progress.load(CONF.id) || {};
     if (!existing.gateAnswers) existing.gateAnswers = {};
     existing.gateAnswers[gateNr] = snapshot;
@@ -579,7 +743,9 @@
 
     /* Restore text inputs — green border since gate was passed (all correct) */
     if (snapshot.qinpValues) {
-      var inputs = Array.from(gate.querySelectorAll('.qinp input[data-answers], .qinp textarea[data-answers]'));
+      var inputs = Array.from(gate.querySelectorAll('.qinp input[data-answers], .qinp textarea[data-answers]')).filter(function (inp) {
+        return !(PLK._closestQgItem && PLK._closestQgItem(inp));
+      });
       snapshot.qinpValues.forEach(function (val, i) {
         if (!inputs[i] || !val) return;
         inputs[i].value = val;
@@ -593,6 +759,7 @@
     if (snapshot.mcChecked) {
       var mcGroups = {};
       gate.querySelectorAll('.mco input[type="radio"], .mco input[type="checkbox"]').forEach(function (inp) {
+        if (PLK._closestQgItem && PLK._closestQgItem(inp)) return;
         if (!mcGroups[inp.name]) mcGroups[inp.name] = [];
         mcGroups[inp.name].push(inp);
       });
@@ -617,7 +784,45 @@
     }
 
     /* Restore overall feedback box ("✓ Alle Antworten richtig!") */
-    var fbEl = document.getElementById('qfb' + gateNr);
+    if (snapshot.olistOrder) {
+      var olistMap = {};
+      var olistCount = 0;
+      gate.querySelectorAll('.olist[data-correct]').forEach(function (list) {
+        if (PLK._closestQgItem && PLK._closestQgItem(list)) return;
+        olistMap[list.id || ('olist-' + olistCount)] = list;
+        olistCount++;
+      });
+      Object.keys(snapshot.olistOrder).forEach(function (key) {
+        var list = olistMap[key];
+        if (!list) return;
+        var itemsById = {};
+        Array.from(list.querySelectorAll('.oitem')).forEach(function (item) {
+          itemsById[item.getAttribute('data-id') || ''] = item;
+        });
+        snapshot.olistOrder[key].forEach(function (id) {
+          if (itemsById[id]) list.appendChild(itemsById[id]);
+        });
+        PLK.oRenum(list);
+        list.querySelectorAll('.oitem').forEach(function (item) {
+          item.classList.remove('wrong');
+          item.classList.add('correct');
+        });
+      });
+    }
+
+    if (snapshot.qgItems && PLK._getGateItems) {
+      var itemMap = {};
+      PLK._getGateItems(gate).forEach(function (item, idx) {
+        itemMap[_getGateItemKey(item, idx)] = item;
+      });
+      snapshot.qgItems.forEach(function (entry) {
+        var item = itemMap[entry.key];
+        var handler = entry.type ? PLK._qgTypes[entry.type] : null;
+        if (item && handler && handler.restore) handler.restore(item, entry.state);
+      });
+    }
+
+    var fbEl = _getGateFeedbackEl(gateNr, gate);
     if (fbEl) {
       fbEl.style.display = 'block';
       fbEl.className = 'mc-feedback ok';
@@ -638,7 +843,8 @@
   -------------------------------------------------------- */
 
   var _selectedChip  = null;  /* { el, value, bankId } */
-  PLK._sc = { v: _selectedChip };  /* wrapper for reassignable chip ref */
+  var _selectedSlot  = null;  /* { el } */
+  PLK._sc = { v: _selectedChip, s: _selectedSlot };  /* shared chip/slot selection state */
 
   /* selC, slCl, frC, chkSl, retSl, rsSl — moved to quiz-base.js */
 
@@ -743,6 +949,41 @@
    * Speichert Slots, Kategorisierungen, Zuordnungen und Texteingaben in localStorage.
    * Wird nach jedem Prüfen und bei Texteingabe (debounced) aufgerufen.
    */
+  function _taskLooksChecked(task) {
+    if (!task) return false;
+
+    var kItems = task.querySelectorAll('.k-item[data-id]');
+    if (kItems.length) {
+      return Array.from(kItems).every(function (item) {
+        return !!_kSel[item.getAttribute('data-id')];
+      });
+    }
+
+    var slots = task.querySelectorAll('.slot[data-a]');
+    if (slots.length) {
+      return Array.from(slots).every(function (slot) {
+        return !!slot.getAttribute('data-v');
+      });
+    }
+
+    var lefts = task.querySelectorAll('[data-z="l"][data-id]');
+    if (lefts.length) {
+      var taskNr = lefts[0].getAttribute('data-task');
+      return Array.from(lefts).every(function (left) {
+        return _zMap[taskNr] && _zMap[taskNr][left.getAttribute('data-id')];
+      });
+    }
+
+    var ptsFields = task.querySelectorAll('textarea[data-pts], input[type="text"][data-pts]');
+    if (ptsFields.length) {
+      return Array.from(ptsFields).some(function (el) {
+        return !!(el.value && el.value.trim());
+      });
+    }
+
+    return false;
+  }
+
   function _saveAbState() {
     if (typeof CONF === 'undefined') return;
     var ab = document.getElementById('arbeitsblatt');
@@ -782,6 +1023,20 @@
     Object.keys(_zMap).forEach(function (k) {
       state.zMap[k] = {};
       Object.keys(_zMap[k]).forEach(function (l) { state.zMap[k][l] = _zMap[k][l]; });
+    });
+
+    state.scores = {};
+    Object.keys(abScores).forEach(function (k) {
+      state.scores[k] = abScores[k];
+    });
+
+    state.checked = [];
+    ab.querySelectorAll('.mc-feedback').forEach(function (fb) {
+      var task = fb.closest('.auf[id]');
+      if (!task) return;
+      if (!fb.classList.contains('ok') && !fb.classList.contains('warn') && !fb.classList.contains('err')) return;
+      if (!fb.textContent || !fb.textContent.trim()) return;
+      if (state.checked.indexOf(task.id) === -1) state.checked.push(task.id);
     });
 
     var existing = PLK.Progress.load(CONF.id) || {};
@@ -869,10 +1124,37 @@
         });
       });
     }
+
+    if (state.scores) {
+      Object.keys(state.scores).forEach(function (k) {
+        abScores[k] = state.scores[k];
+      });
+    }
+
     /* quiz-ext types */
     if (PLK._restoreExtState) PLK._restoreExtState(ab, saved);
     if (PLK._restoreLibState) PLK._restoreLibState(ab, saved);
     if (PLK._restoreLib2State) PLK._restoreLib2State(ab, saved);
+
+    var replayTasks = (state.checked && state.checked.length) ? state.checked.slice() : [];
+    if (!replayTasks.length) {
+      ab.querySelectorAll('.auf[id]').forEach(function (task) {
+        if (_taskLooksChecked(task) && replayTasks.indexOf(task.id) === -1) replayTasks.push(task.id);
+      });
+    }
+
+    if (replayTasks.length) {
+      replayTasks.forEach(function (taskId) {
+        var task = document.getElementById(taskId);
+        if (!task || !ab.contains(task)) return;
+        var btn = task.querySelector('button[onclick*="PLK.chk"]');
+        if (btn && btn.click) btn.click();
+      });
+    } else if (Object.keys(abScores).length) {
+      PLK.upAB();
+    } else {
+      _updateProgressBar();
+    }
   }
 
   /* rstAllAB — moved to quiz-base.js (PLK.rstAllAB) */
@@ -964,6 +1246,7 @@
         existing.einstiegSel = _einstiegSel;
         PLK.Progress.save(CONF.id, existing);
       }
+      _updateProgressBar();
     }
   };
 
@@ -1015,7 +1298,30 @@
     });
   }
 
+  /* ── Stale inline-style guard (bfcache + old engine versions) ───────
+     Old engine.js set style.display='none' directly on #pw-wrap.
+     Clear any leftover inline style so CSS class pw-done is the only
+     hide mechanism. Also runs on bfcache-restore via pageshow.        */
+  function _clearPwInlineStyle() {
+    var pwWrap = document.getElementById('pw-wrap');
+    if (pwWrap) pwWrap.style.display = '';
+    document.querySelectorAll('.pw-input').forEach(function (el) {
+      el.style.display = '';
+    });
+  }
+
+  window.addEventListener('pageshow', function (e) {
+    if (e.persisted) {
+      /* bfcache restore — scripts didn't re-run, DOM has stale state */
+      _clearPwInlineStyle();
+      _restoreState();
+    }
+  });
+
   document.addEventListener('DOMContentLoaded', function () {
+    /* Clear any stale inline display from pw-wrap before restoring state */
+    _clearPwInlineStyle();
+
     PLK.init(); /* run all registered module init() hooks first */
 
     /* Zustand aus localStorage wiederherstellen */
