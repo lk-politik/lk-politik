@@ -274,7 +274,15 @@
       for (var g = 1; g <= CONF.gates; g++) {
         qgPass[g] = true;
         var gate = document.getElementById('qg' + g);
-        if (gate) gate.setAttribute('data-passed', '1');
+        if (gate) {
+          gate.setAttribute('data-passed', '1');
+          gate.setAttribute('data-state', 'passed');
+        }
+        var pill = document.getElementById('qg' + g + 's');
+        if (pill) {
+          pill.textContent = 'Block ' + g + ': Bestanden';
+          pill.className = 'qg-status pass';
+        }
       }
     }
 
@@ -285,12 +293,12 @@
   /* Speichert freigeschalteten Zustand */
   function _persistUnlock() {
     if (typeof CONF === 'undefined') return;
-    var existing = PLK.Progress.load(CONF.id) || { gates: {} };
+    var existing = PLK.Progress.load(CONF.id) || {};
     existing.unlocked = true;
-    if (typeof CONF !== 'undefined') {
-      for (var g = 1; g <= CONF.gates; g++) {
-        existing.gates['qg' + g] = true;
-      }
+    /* Guard: existing might not have a gates object if only einstieg was saved */
+    if (!existing.gates) existing.gates = {};
+    for (var g = 1; g <= CONF.gates; g++) {
+      existing.gates['qg' + g] = true;
     }
     PLK.Progress.save(CONF.id, existing);
     _updateProgressBar();
