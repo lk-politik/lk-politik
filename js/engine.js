@@ -569,8 +569,19 @@
           ab.classList.add('unlocking');
           setTimeout(function () { ab.classList.remove('unlocking'); }, 600);
         }
+        PLK.unlockEwh(CONF.id);
       }
     }
+  };
+
+  PLK.unlockEwh = function (unitId) {
+    var block = document.querySelector('.ewh-block[data-unit="' + unitId + '"]');
+    if (!block) block = document.querySelector('.ewh-block');
+    if (block) {
+      block.classList.remove('ewh-locked');
+      block.classList.add('ewh-unlocked');
+    }
+    localStorage.setItem('plk_' + unitId + '.ewhUnlocked', '1');
   };
 
   /* Schaltet den Block nach Gate nr frei (mit oder ohne Animation) */
@@ -1334,6 +1345,12 @@
 
     /* Zustand aus localStorage wiederherstellen */
     _restoreState();
+
+    /* EWH-Block sofort anzeigen falls bereits freigeschaltet */
+    if (typeof CONF !== 'undefined' && localStorage.getItem('plk_' + CONF.id + '.ewhUnlocked') === '1') {
+      var ewhEl = document.querySelector('.ewh-block');
+      if (ewhEl) { ewhEl.classList.remove('ewh-locked'); ewhEl.classList.add('ewh-unlocked'); }
+    }
 
     /* Initiales Fortschritts-Update */
     _updateProgressBar();

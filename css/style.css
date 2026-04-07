@@ -4510,3 +4510,12 @@ span.fb-tooltip-unit-chip.locked { color: var(--ink3); background: var(--border-
 
 /* ── Arbeitsblatt section unlock indicator ── */
 #ab-section[data-state="ready"] { border: 2px solid var(--ok); border-radius: .875rem; padding: .5rem; }
+
+/* ── EWH block ── */
+.ewh-block.ewh-locked { display: none; }
+.ewh-block.ewh-unlocked { display: block; animation: fadeInEwh 0.4s ease; }
+@keyframes fadeInEwh { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.ewh-heading { font-size: 1rem; font-weight: 600; margin: 1rem 0 .5rem; color: var(--ink); }
+.ewh-item { padding: .5rem .75rem; border-bottom: 1px solid var(--border); display: flex; gap: .75rem; align-items: flex-start; }
+.ewh-ab-badge { font-size: .7rem; font-weight: 700; padding: .15rem .5rem; border-radius: .6rem; background: var(--bg2); white-space: nowrap; }
+.ewh-text { flex: 1; font-size: .85rem; line-height: 1.5; color: var(--ink2); }
