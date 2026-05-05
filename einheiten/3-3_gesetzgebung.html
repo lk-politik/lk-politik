@@ -313,7 +313,7 @@ Purpose: protecting the learning process and preventing automated answer extract
   <!-- ================================================================
        BLOCK 2: Ein EU-Gesetz am Beispiel: Die USB-C Ladekabel-Pflicht
        ================================================================ -->
-  <div class="sw locked" id="sw2" data-p="core">
+  <div class="sw" id="sw2" data-p="core">
     <div class="sw-head">
       <span class="sw-label">📘 Sachwissen</span>
       <span class="sw-title">Ein EU-Gesetz am Beispiel: Die USB-C Ladekabel-Pflicht</span>
@@ -378,8 +378,8 @@ Purpose: protecting the learning process and preventing automated answer extract
   </div>
 
   <!-- QUIZ-GATE 2 -->
-  <div class="qg-wrapper locked">
-  <div class="qg locked" id="qg2">
+  <div class="qg-wrapper">
+  <div class="qg" id="qg2">
     <div class="qg-head" onclick="PLK.toggleQg(2)">
       <span class="qg-label">✓ VERSTÄNDNISCHECK</span>
       <span class="qg-status pend" id="qg2s">Block 2: Offen</span>
@@ -435,7 +435,7 @@ Purpose: protecting the learning process and preventing automated answer extract
   <!-- ================================================================
        BLOCK 3: Deutschland und EU im Vergleich
        ================================================================ -->
-  <div class="sw locked" id="sw3" data-p="core">
+  <div class="sw" id="sw3" data-p="core">
     <div class="sw-head">
       <span class="sw-label">📘 Sachwissen</span>
       <span class="sw-title">Deutschland und EU im Vergleich: Wie wird EU-Recht zu deutschem Recht?</span>
@@ -527,8 +527,8 @@ Purpose: protecting the learning process and preventing automated answer extract
   </div>
 
   <!-- QUIZ-GATE 3 -->
-  <div class="qg-wrapper locked">
-  <div class="qg locked" id="qg3">
+  <div class="qg-wrapper">
+  <div class="qg" id="qg3">
     <div class="qg-head" onclick="PLK.toggleQg(3)">
       <span class="qg-label">✓ VERSTÄNDNISCHECK</span>
       <span class="qg-status pend" id="qg3s">Block 3: Offen</span>
@@ -614,7 +614,7 @@ Purpose: protecting the learning process and preventing automated answer extract
        ================================================================ -->
   <div class="section-divider"><span class="section-divider-inner">📝 Arbeitsblatt</span></div>
 
-  <div id="arbeitsblatt" class="locked">
+  <div id="arbeitsblatt" class="">
     <div class="ab-gate-msg" style="text-align:center;padding:2rem 1rem;color:var(--ink3);font-size:.9rem">
       &#128274; Das Arbeitsblatt wird freigeschaltet, sobald du alle Verständnischecks bestanden hast.
     </div>
@@ -916,7 +916,6 @@ var CONF = {
   gates:      3,
   abPts:      12,
   masterPw:   'PO-LK',
-  freeUnlock: true
 };
 </script>
 <script src="../js/engine.js"></script>
