@@ -55,6 +55,7 @@
     function saveProgress(unitId, data) {
       if (!unitId) return;
       data.timestamp = Date.now();
+      if (typeof CONF !== 'undefined' && CONF.v) data._v = CONF.v;
       try {
         localStorage.setItem(PREFIX + unitId, JSON.stringify(data));
       } catch (e) {
@@ -310,6 +311,12 @@
   function _restoreState() {
     if (typeof CONF === 'undefined') return;
     var saved = PLK.Progress.load(CONF.id);
+
+    /* Invalidate saved progress when CONF.v changes (forces fresh start) */
+    if (saved && CONF.v && saved._v !== CONF.v) {
+      PLK.Progress.clear(CONF.id);
+      saved = null;
+    }
 
     /* Auto-unlock units flagged as freeUnlock (no gate required) */
     if (CONF.freeUnlock && !(saved && saved.unlocked)) {
