@@ -282,6 +282,22 @@
 </div>
 
 <script>
+/* Version-based cache bust — increment PLK_VER to wipe all stale localStorage */
+(function () {
+  var PLK_VER = '4';
+  try {
+    if (localStorage.getItem('plk_version') !== PLK_VER) {
+      var keys = [];
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k && k.indexOf('plk_') === 0) keys.push(k);
+      }
+      for (var j = 0; j < keys.length; j++) localStorage.removeItem(keys[j]);
+      localStorage.setItem('plk_version', PLK_VER);
+    }
+  } catch (e) {}
+})();
+
 /* Minimal Progress shim for index — reads localStorage only.
    Full implementation lives in engine.js (PLK.Progress). */
 var Progress = {
@@ -290,16 +306,6 @@ var Progress = {
     catch (e) { return null; }
   }
 };
-/* 3.3 done in class — seed as complete so gate chain is satisfied */
-(function () {
-  try {
-    var key = 'plk_3-3';
-    var existing = localStorage.getItem(key);
-    if (!existing || JSON.parse(existing).progressPct < 100) {
-      localStorage.setItem(key, JSON.stringify({ complete: true, progressPct: 100, gates: { '1': true, '2': true, '3': true } }));
-    }
-  } catch (e) {}
-})();
 </script>
 <script>
 /* ==========================================================
@@ -345,7 +351,7 @@ var SECTIONS = [
       { id: '3-2',  num: '3.2',  title: 'Die EU nach dem Vertrag von Lissabon',          href: 'einheiten/3-2_lissabon.html',         status: 'active',  color: '#2d5986', gates: 3, abPts: 19, einstieg: true },
       { id: '3-3',  num: '3.3',  title: 'Gesetzgebung in der EU und in Deutschland',        href: 'einheiten/3-3_gesetzgebung.html',      status: 'active',  color: '#2d5986', gates: 3, abPts: 12, einstieg: true, freeUnlock: true },
       { id: '3-4',  num: '3.4',  title: 'Das Mehrebenensystem der EU',                    href: 'einheiten/3-4_mehrebenensystem.html',  status: 'active',  color: '#2d5986', gates: 3, abPts: 21, einstieg: true, freeUnlock: true },
-      { id: '3-5',  num: '3.5',  title: 'Der EU-Binnenmarkt und die vier Freiheiten',     href: 'einheiten/3-5_binnenmarkt.html',       status: 'pending', color: '#2d5986', gates: 3, abPts: 12, einstieg: true, prereq: '3-4' },
+      { id: '3-5',  num: '3.5',  title: 'Der EU-Binnenmarkt und die vier Freiheiten',     href: 'einheiten/3-5_binnenmarkt.html',       status: 'pending', color: '#2d5986', gates: 3, abPts: 12, einstieg: true, freeUnlock: true },
       { id: '3-6',  num: '3.6',  title: 'Stufen der wirtschaftlichen Integration',        href: 'einheiten/3-6_integration.html',       status: 'pending', color: null },
       { id: '3-7',  num: '3.7',  title: 'Die Eurozone',                                   href: 'einheiten/3-7_eurozone.html',          status: 'pending', color: null },
       { id: '3-8',  num: '3.8',  title: 'EZB und Stabilitätskriterien',                   href: 'einheiten/3-8_ezb.html',               status: 'pending', color: null },
@@ -400,6 +406,7 @@ var SECTIONS = [
 function _calcPct(id) {
   var prog = Progress.load(id);
   if (!prog) return 0;
+  if (prog.complete === true) return 100;
   var unit = _findUnit(id);
 
   if (unit && unit.gates) {
@@ -576,31 +583,16 @@ function _renderAll() {
       }
       ul.appendChild(row);
 
-      /* Simulation banner after 3.4 — only if unit is complete */
-      if (u.id === '3-4' && pct >= 100) {
+      /* Simulation banner after 3.4 — always visible */
+      if (u.id === '3-4') {
         var sim = document.createElement('div');
         sim.className = 'sim-banner';
         sim.id = 'sim-banner';
         sim.innerHTML =
-          '<div class="sim-lock" id="sim-lock">' +
-            '<div class="sim-lock-row" onclick="document.getElementById(\'sim-pw-wrap\').style.display=\'flex\';this.style.display=\'none\'">' +
-              '<span class="sim-label-inline">🏛️ EU-Werkstatt · Simulation</span>' +
-              '<span class="sim-lock-icon">&#128274;</span>' +
-            '</div>' +
-            '<div class="sim-pw-wrap" id="sim-pw-wrap" style="display:none">' +
-              '<span class="sim-label">🏛️ EU-Werkstatt · Simulation</span>' +
-              '<div class="sim-pw-row">' +
-                '<input type="password" id="sim-pw" class="sim-pw-input" placeholder="Passwort …" onkeydown="if(event.key===\'Enter\')unlockSim()">' +
-                '<button class="btn btn-primary btn-sm" onclick="unlockSim()">&#128275;</button>' +
-              '</div>' +
-            '</div>' +
-          '</div>' +
-          '<div class="sim-content" id="sim-content" style="display:none">' +
-            '<span class="sim-label">🏛️ EU-Werkstatt · Simulation</span>' +
-            '<div class="sim-buttons">' +
-              '<a class="sim-btn" href="legacy/3-4_EU-Werkstatt_Social-Media_v1.0.html">📋 Ablauf</a>' +
-              '<a class="sim-btn" href="legacy/3-4_EU-Werkstatt_Rollenkarten_v1_1.html">🎭 Rollen</a>' +
-            '</div>' +
+          '<span class="sim-label">🏛️ EU-Werkstatt · Simulation</span>' +
+          '<div class="sim-buttons">' +
+            '<a class="sim-btn" href="legacy/3-4_EU-Werkstatt_Social-Media_v1.0.html">📋 Ablauf</a>' +
+            '<a class="sim-btn" href="legacy/3-4_EU-Werkstatt_Rollenkarten_v1_1.html">🎭 Rollen</a>' +
           '</div>';
         ul.appendChild(sim);
       }
@@ -608,33 +600,6 @@ function _renderAll() {
   });
 }
 
-function unlockSim() {
-  var pw = document.getElementById('sim-pw');
-  if (!pw) return;
-  var val = pw.value.trim().toLowerCase().replace(/\s+/g, ' ');
-  if (val === 'password') {
-    document.getElementById('sim-lock').style.display = 'none';
-    document.getElementById('sim-content').style.display = '';
-    try { localStorage.setItem('plk_sim_3-4', '1'); } catch (e) {}
-  } else {
-    pw.style.borderColor = '#b83232';
-    pw.value = '';
-    pw.placeholder = 'Falsches Passwort …';
-  }
-}
-/* Auto-unlock if previously unlocked */
-(function () {
-  try {
-    if (localStorage.getItem('plk_sim_3-4') === '1') {
-      setTimeout(function () {
-        var lock = document.getElementById('sim-lock');
-        var content = document.getElementById('sim-content');
-        if (lock) lock.style.display = 'none';
-        if (content) content.style.display = '';
-      }, 100);
-    }
-  } catch (e) {}
-})();
 
 function toggleChapter(id) {
   var el = document.getElementById(id);
